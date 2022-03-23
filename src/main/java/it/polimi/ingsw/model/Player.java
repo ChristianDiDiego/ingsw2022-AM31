@@ -18,8 +18,8 @@ public class Player {
         return nickname;
     }
 
-    public void chooseCardToUse(Card cardToBeUsed) {
-       lastUsedCard= myDeck.useCard(cardToBeUsed);
+    public void chooseCardToUse(Card toUse) {
+       lastUsedCard= myDeck.useCard(toUse);
     }
 
     public Card getLastUsedCard() {

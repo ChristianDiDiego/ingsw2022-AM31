@@ -3,12 +3,19 @@ package it.polimi.ingsw.model;
 import java.util.List;
 
 public class Archipelago {
+    private int idArchipelago;
     private List<Island> belongingIsland;
     private boolean isMNPresent;
 
-    public Archipelago(Island island) {
-        belongingIsland.add(island);
+    public Archipelago(int idArchipelago) {
+        this.idArchipelago = idArchipelago;
+        Island temp = new Island(idArchipelago);
+        belongingIsland.add(temp);
         isMNPresent = false;
+    }
+
+    public int getIdArchipelago() {
+        return idArchipelago;
     }
 
     public boolean getIsMNPresent() {

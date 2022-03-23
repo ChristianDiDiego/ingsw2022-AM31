@@ -12,10 +12,6 @@ public class Island {
         }
     }
 
-    public int getIdIsland() {
-        return idIsland;
-    }
-
     public Player getOwner() {
         return owner;
     }

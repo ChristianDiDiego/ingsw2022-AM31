@@ -2,14 +2,14 @@ package it.polimi.ingsw.model;
 
 public class Cloud {
     private int idCloud;
-    private int[] studentOnCloud = new int[5];
+    private int[] studentsOnCloud = new int[5];
     private boolean isTaken;
 
     public Cloud(int idCloud) {
         this.idCloud = idCloud;
         isTaken = false;
         for(int i = 0; i < 5; i++) {
-            studentOnCloud[i] = 0;
+            studentsOnCloud[i] = 0;
         }
     }
 
@@ -18,7 +18,7 @@ public class Cloud {
     }
 
     public int[] getStudents() {
-        return studentOnCloud;
+        return studentsOnCloud;
     }
 
     public boolean getIsTaken() {
@@ -27,13 +27,13 @@ public class Cloud {
 
     public void addStudents(int[] toAdd) {
         for(int i = 0; i < 5; i++) {
-            studentOnCloud[i] += toAdd[i];
+            studentsOnCloud[i] += toAdd[i];
         }
     }
 
     public void removeStudents() {
         for(int i = 0; i < 5; i++) {
-            studentOnCloud[i] = 0;
+            studentsOnCloud[i] = 0;
         }
     }
 
