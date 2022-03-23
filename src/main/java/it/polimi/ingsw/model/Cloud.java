@@ -25,6 +25,10 @@ public class Cloud {
         return isTaken;
     }
 
+    /**
+     * Add a student in the
+     * @param toAdd
+     */
     public void addStudents(int[] toAdd) {
         for(int i = 0; i < 5; i++) {
             studentsOnCloud[i] += toAdd[i];

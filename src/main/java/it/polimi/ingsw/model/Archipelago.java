@@ -22,6 +22,10 @@ public class Archipelago {
         return isMNPresent;
     }
 
+    /**
+     * If we merge 2 Archipelagos, add the second Archipelago's islands to this one
+     * @param island
+     */
     public void addIsland(Island island) {
         belongingIsland.add(island);
     }
@@ -30,6 +34,9 @@ public class Archipelago {
 
     } */
 
+    /**
+     * change the flag that shows if Mother Nature is on the Archipelago
+     */
     public void changeMNPresence() {
         if (isMNPresent == false) {
             this.isMNPresent = true;

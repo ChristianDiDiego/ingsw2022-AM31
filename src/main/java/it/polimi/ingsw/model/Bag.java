@@ -22,6 +22,10 @@ public class Bag {
         return temp;
     }
 
+    /**
+     * Return a random generated array of students that will be moved from bag to clouds
+     * @return
+     */
     public int[] pickStudent(){
         int[] studentsToPick = new int[5];
         for(int i=0; i<5;i++){
