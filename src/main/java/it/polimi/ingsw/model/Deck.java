@@ -13,10 +13,19 @@ public class Deck {
 
     }
 
+    /**
+     * return the list of left cards in deck
+     * @return
+     */
     public List<Card> getLeftCards() {
         return playerCards;
     }
 
+    /**
+     * removes the chosen card from deck
+     * @param cardToUse
+     * @return
+     */
     public Card useCard(Card cardToUse){
         playerCards.remove(cardToUse);
         return cardToUse;

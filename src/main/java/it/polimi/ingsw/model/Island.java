@@ -20,14 +20,27 @@ public class Island {
         return studentOnIsland;
     }
 
+    /**
+     * returns the number of student of the selected color present on the island
+     * @param color
+     * @return
+     */
     public int getStudentsByColor(int color) {
         return studentOnIsland[color];
     }
 
+    /**
+     * increments the counter of che received student's color in the island
+     * @param color
+     */
     public void addStudent(int color) {
         studentOnIsland[color] += 1;
     }
 
+    /**
+     * if a player conquered the island the method changes the owner
+     * @param player
+     */
     public void changeOwner(Player player) {
         this.owner = player;
     }

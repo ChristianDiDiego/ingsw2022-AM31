@@ -18,13 +18,19 @@ public class Player {
         return nickname;
     }
 
+    public Card getLastUsedCard() {
+        return lastUsedCard;
+    }
+
+    /**
+     * receives the card chosen by player and removes it from deck
+     * @param toUse
+     */
     public void chooseCardToUse(Card toUse) {
        lastUsedCard= myDeck.useCard(toUse);
     }
 
-    public Card getLastUsedCard() {
-        return lastUsedCard;
-    }
+
 
    // public Board getMyBoard() {
    //     return myBoard;

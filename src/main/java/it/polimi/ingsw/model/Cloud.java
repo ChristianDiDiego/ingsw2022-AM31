@@ -24,9 +24,9 @@ public class Cloud {
     public boolean getIsTaken() {
         return isTaken;
     }
-
+    
     /**
-     * Add a student in the
+     * at the beginning of each turn adds a student in the cloud
      * @param toAdd
      */
     public void addStudents(int[] toAdd) {
@@ -35,12 +35,18 @@ public class Cloud {
         }
     }
 
+    /**
+     * when a cloud is chosen it removes all the students from it
+     */
     public void removeStudents() {
         for(int i = 0; i < 5; i++) {
             studentsOnCloud[i] = 0;
         }
     }
 
+    /**
+     * it sets the status of de cloud -if it has already been chosen or not
+     */
     public void changeStatus() {
         if (isTaken == false) {
             this.isTaken = true;
