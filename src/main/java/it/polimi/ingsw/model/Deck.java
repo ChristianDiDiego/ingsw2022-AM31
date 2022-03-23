@@ -1,11 +1,14 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Deck {
     private List<Card> playerCards;
 
     public Deck(){
+        this.playerCards = new ArrayList<>();
+
         for(int i=0; i<10; i++){
             Card temp = new Card(i+1,9 ); //to add: max number of steps of each card
             playerCards.add(temp);

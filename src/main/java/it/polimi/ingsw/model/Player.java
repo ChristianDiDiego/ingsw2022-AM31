@@ -5,12 +5,12 @@ public class Player {
     private Deck myDeck;
     private ColorOfTower colorOfTowers;
     private Card lastUsedCard;
-   // private Board myBoard;
+    private Board myBoard;
 
     public Player(String nickname, ColorOfTower colorOfTowers){
         this.nickname = nickname;
         this.colorOfTowers = colorOfTowers;
-       // myBoard = new Board();
+        this.myBoard = new Board();
         myDeck = new Deck();
     }
 
@@ -32,7 +32,7 @@ public class Player {
 
 
 
-   // public Board getMyBoard() {
-   //     return myBoard;
-   // }
+    public Board getMyBoard() {
+        return myBoard;
+    }
 }
