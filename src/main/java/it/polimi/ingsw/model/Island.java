@@ -11,6 +11,9 @@ public class Island {
             studentOnIsland[i] = 0;
         }
     }
+    public int getIdIsland(){
+        return idIsland;
+    }
 
     public Player getOwner() {
         return owner;

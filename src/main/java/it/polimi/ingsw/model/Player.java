@@ -37,4 +37,8 @@ public class Player {
     public Board getMyBoard() {
         return myBoard;
     }
+
+    public Deck getMyDeck() {
+        return myDeck;
+    }
 }

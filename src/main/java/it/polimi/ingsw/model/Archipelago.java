@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Archipelago {
@@ -10,8 +11,13 @@ public class Archipelago {
     public Archipelago(int idArchipelago) {
         this.idArchipelago = idArchipelago;
         Island temp = new Island(idArchipelago);
+        this.belongingIsland = new ArrayList<>();
         belongingIsland.add(temp);
-        isMNPresent = false;
+        if(idArchipelago == 0){
+            isMNPresent = true;
+        }else{
+            isMNPresent = false;
+        }
     }
 
     public int getIdArchipelago() {
@@ -43,5 +49,9 @@ public class Archipelago {
         } else {
             this.isMNPresent = false;
         }
+    }
+
+    public List<Island> getBelongingIsland(){
+        return belongingIsland;
     }
 }

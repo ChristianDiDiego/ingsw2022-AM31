@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-public class Card {
+public class Card implements Comparable<Card> {
     private final int power;
     private final int maxSteps;
 
@@ -16,4 +16,11 @@ public class Card {
     public int getPower() {
         return power;
     }
+
+    @Override
+    public int compareTo(Card card){
+       return Integer.compare(getPower(), card.getPower());
+    }
+
+
 }

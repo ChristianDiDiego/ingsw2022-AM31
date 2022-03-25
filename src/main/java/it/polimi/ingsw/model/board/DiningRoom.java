@@ -10,7 +10,11 @@ public class DiningRoom {
         this.studentsInDN = new int[5];
     }
 
-    //Receive the color ( identified by the enum) of the student to add in the Dining Room
+    /**
+     * Receive the color ( identified by the enum) of the student to add in the Dining Room
+     * @param studColor
+     * @throws DiningRoomFullException
+     */
     public void addStudent(StudsAndProfsColor studColor) throws DiningRoomFullException {
         if(studentsInDN[studColor.ordinal()] < 10){
             studentsInDN[studColor.ordinal()]++;
@@ -18,7 +22,13 @@ public class DiningRoom {
             throw new DiningRoomFullException(studColor);
         }
     }
-    //Receive the color ( identified by the enum) of the student and return the number of students of that color
+
+
+    /**
+     * Receive the color ( identified by the enum) of the student and return the number of students of that color
+     * @param studColor
+     * @return int
+     */
     public int getStudentsByColor(StudsAndProfsColor studColor){
 
         return studentsInDN[studColor.ordinal()];
