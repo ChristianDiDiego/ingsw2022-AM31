@@ -33,6 +33,10 @@ public class Game {
             Archipelago arc = new Archipelago(i);
             listOfArchipelagos.add(arc);
         }
+        for(int i = 0; i < numberOfPlayers; i++){
+            Cloud cloud = new Cloud(i);
+            listOfClouds.add(cloud);
+        }
 
     }
 
