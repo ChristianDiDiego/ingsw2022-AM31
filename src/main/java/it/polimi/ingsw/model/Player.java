@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.board.Board;
+
 public class Player {
     private String nickname;
     private Deck myDeck;

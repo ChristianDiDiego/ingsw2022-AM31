@@ -1,4 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.board;
+
+import it.polimi.ingsw.model.StudsAndProfsColor;
 
 public class ProfessorsTable {
     /*This array contains the status of the prof for each color depending on the position.
