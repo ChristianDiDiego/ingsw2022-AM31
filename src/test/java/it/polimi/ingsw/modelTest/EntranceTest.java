@@ -11,14 +11,18 @@ public class EntranceTest {
 
     @Test
     public void addAndGetTest(){
-
-            entrance.addStudent(StudsAndProfsColor.BLUE);
-            entrance.addStudent(StudsAndProfsColor.BLUE);
-            entrance.addStudent(StudsAndProfsColor.BLUE);
-            entrance.addStudent(StudsAndProfsColor.BLUE);
-            entrance.addStudent(StudsAndProfsColor.YELLOW);
-            entrance.addStudent(StudsAndProfsColor.GREEN);
-            entrance.addStudent(StudsAndProfsColor.PINK);
+        assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.RED));
+        assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.GREEN));
+        assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.YELLOW));
+        assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.PINK));
+        assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.BLUE));
+        entrance.addStudent(StudsAndProfsColor.BLUE);
+        entrance.addStudent(StudsAndProfsColor.BLUE);
+        entrance.addStudent(StudsAndProfsColor.BLUE);
+        entrance.addStudent(StudsAndProfsColor.BLUE);
+        entrance.addStudent(StudsAndProfsColor.YELLOW);
+        entrance.addStudent(StudsAndProfsColor.GREEN);
+        entrance.addStudent(StudsAndProfsColor.PINK);
         assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.RED));
         assertEquals(1, entrance.getStudentsByColor(StudsAndProfsColor.GREEN));
         assertEquals(1, entrance.getStudentsByColor(StudsAndProfsColor.YELLOW));
@@ -29,15 +33,20 @@ public class EntranceTest {
 
     @Test
     public void removeAndGetTest(){
-            entrance.addStudent(StudsAndProfsColor.BLUE);
-            entrance.addStudent(StudsAndProfsColor.BLUE);
-            entrance.addStudent(StudsAndProfsColor.BLUE);
-            entrance.addStudent(StudsAndProfsColor.BLUE);
-            entrance.addStudent(StudsAndProfsColor.YELLOW);
-            entrance.addStudent(StudsAndProfsColor.GREEN);
-            entrance.addStudent(StudsAndProfsColor.PINK);
-            entrance.removeStudent(StudsAndProfsColor.BLUE);
-            entrance.removeStudent(StudsAndProfsColor.BLUE);
+        assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.RED));
+        assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.GREEN));
+        assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.YELLOW));
+        assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.PINK));
+        assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.BLUE));
+        entrance.addStudent(StudsAndProfsColor.BLUE);
+        entrance.addStudent(StudsAndProfsColor.BLUE);
+        entrance.addStudent(StudsAndProfsColor.BLUE);
+        entrance.addStudent(StudsAndProfsColor.BLUE);
+        entrance.addStudent(StudsAndProfsColor.YELLOW);
+        entrance.addStudent(StudsAndProfsColor.GREEN);
+        entrance.addStudent(StudsAndProfsColor.PINK);
+        entrance.removeStudent(StudsAndProfsColor.BLUE);
+        entrance.removeStudent(StudsAndProfsColor.BLUE);
         assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.RED));
         assertEquals(1, entrance.getStudentsByColor(StudsAndProfsColor.GREEN));
         assertEquals(1, entrance.getStudentsByColor(StudsAndProfsColor.YELLOW));

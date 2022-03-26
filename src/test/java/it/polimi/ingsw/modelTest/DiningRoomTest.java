@@ -12,11 +12,16 @@ public class DiningRoomTest {
 
     @Test
     public void addAndGetTest(){
-            diningRoom.addStudent(StudsAndProfsColor.RED);
-            diningRoom.addStudent(StudsAndProfsColor.RED);
-            diningRoom.addStudent(StudsAndProfsColor.RED);
-            diningRoom.addStudent(StudsAndProfsColor.BLUE);
-            diningRoom.addStudent(StudsAndProfsColor.GREEN);
+        assertEquals(0, diningRoom.getStudentsByColor(StudsAndProfsColor.RED));
+        assertEquals(0, diningRoom.getStudentsByColor(StudsAndProfsColor.GREEN));
+        assertEquals(0, diningRoom.getStudentsByColor(StudsAndProfsColor.YELLOW));
+        assertEquals(0, diningRoom.getStudentsByColor(StudsAndProfsColor.PINK));
+        assertEquals(0, diningRoom.getStudentsByColor(StudsAndProfsColor.BLUE));
+        diningRoom.addStudent(StudsAndProfsColor.RED);
+        diningRoom.addStudent(StudsAndProfsColor.RED);
+        diningRoom.addStudent(StudsAndProfsColor.RED);
+        diningRoom.addStudent(StudsAndProfsColor.BLUE);
+        diningRoom.addStudent(StudsAndProfsColor.GREEN);
         assertEquals(3, diningRoom.getStudentsByColor(StudsAndProfsColor.RED));
         assertEquals(1, diningRoom.getStudentsByColor(StudsAndProfsColor.GREEN));
         assertEquals(0, diningRoom.getStudentsByColor(StudsAndProfsColor.YELLOW));

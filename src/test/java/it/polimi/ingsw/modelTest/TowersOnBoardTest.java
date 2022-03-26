@@ -9,15 +9,17 @@ public class TowersOnBoardTest {
 
     @Test
     public void addAndGetTest(){
-            towersOnBoard.addTower();
-            towersOnBoard.addTower();
-            towersOnBoard.addTower();
+        assertEquals(0, towersOnBoard.getNumberOfTowers());
+        towersOnBoard.addTower();
+        towersOnBoard.addTower();
+        towersOnBoard.addTower();
       assertEquals(3, towersOnBoard.getNumberOfTowers());
 
     }
 
     @Test
     public void removeTowers(){
+        assertEquals(0, towersOnBoard.getNumberOfTowers());
             towersOnBoard.addTower();
             towersOnBoard.addTower();
             towersOnBoard.addTower();
