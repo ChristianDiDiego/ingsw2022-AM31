@@ -165,7 +165,7 @@ public class Game {
                 for(Archipelago arch : listOfArchipelagos){
                     for(Island island : arch.getBelongingIsland()){
                         if(island.getIdIsland() == destination){
-                            island.addStudent(colorToMove.ordinal());
+                            island.addStudent(colorToMove);
                         }
                     }
                 }
@@ -174,8 +174,4 @@ public class Game {
             }
         }
     }
-
-
-
-
 }

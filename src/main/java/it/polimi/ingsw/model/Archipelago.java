@@ -28,6 +28,10 @@ public class Archipelago {
         return isMNPresent;
     }
 
+    public List<Island> getBelongingIsland() {
+        return belongingIsland;
+    }
+
     /**
      * If we merge 2 Archipelagos, add the second Archipelago's islands to this one
      * @param island
@@ -35,10 +39,6 @@ public class Archipelago {
     public void addIsland(Island island) {
         belongingIsland.add(island);
     }
-
-    /* public void calculateInfluence() {     //to add in future
-
-    } */
 
     /**
      * change the flag that shows if Mother Nature is on the Archipelago
@@ -49,9 +49,5 @@ public class Archipelago {
         } else {
             this.isMNPresent = false;
         }
-    }
-
-    public List<Island> getBelongingIsland(){
-        return belongingIsland;
     }
 }

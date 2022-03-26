@@ -3,6 +3,13 @@ package it.polimi.ingsw.model;
 public class Island {
     private int idIsland;
     private int[] studentOnIsland = new int[5];
+    /*This array contains the number of students for each color depending on the position.
+      0 - RED
+      1 - GREEN
+      2 - YELLOW
+      3 - PINK
+      4 - BLUE
+     */
     private Player owner;
 
     public Island(int idIsland) {
@@ -15,8 +22,12 @@ public class Island {
         return idIsland;
     }
 
-    public Player getOwner() {
-        return owner;
+    public Player getOwner() throws NullPointerException {
+        if(owner != null) {
+            return owner;
+        } else {
+            throw new NullPointerException();
+        }
     }
 
     public int[] getAllStudents() {
@@ -25,19 +36,19 @@ public class Island {
 
     /**
      * returns the number of student of the selected color present on the island
-     * @param color
-     * @return
+     * @param studColor
+     * @return integer
      */
-    public int getStudentsByColor(int color) {
-        return studentOnIsland[color];
+    public int getStudentsByColor(StudsAndProfsColor studColor) {
+        return studentOnIsland[studColor.ordinal()];
     }
 
     /**
      * increments the counter of che received student's color in the island
-     * @param color
+     * @param studColor
      */
-    public void addStudent(int color) {
-        studentOnIsland[color] += 1;
+    public void addStudent(StudsAndProfsColor studColor) {
+        studentOnIsland[studColor.ordinal()] += 1;
     }
 
     /**
