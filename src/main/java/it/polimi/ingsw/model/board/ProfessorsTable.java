@@ -16,17 +16,27 @@ public class ProfessorsTable {
         this.hasProfessor = new boolean[5];
     }
 
-    //Receive the color ( identified by the enum) of the Professor to remove from the board
+    /**
+     * Remove a professor from the player's board
+     * @param profColor color of the Professor to be removed
+     */
     public void removeProfessor(StudsAndProfsColor profColor){
         hasProfessor[profColor.ordinal()] = false;
     }
 
-    //Receive the color ( identified by the enum) of the Professor to add in the board
+    /**
+     * Add a professor in the player's board
+     * @param profColor Color of the professor to be added
+     */
     public void addProfessor(StudsAndProfsColor profColor){
         hasProfessor[profColor.ordinal()] = true;
     }
 
-    //return true if in the table there is the professor of color profColor
+    /**
+     * Check if the player has a professor
+     * @param profColor color of the Professor to be checked
+     * @return true if the professor of color profColor is on the board, false otherwise
+     */
     public boolean getHasProf(StudsAndProfsColor profColor){
         return hasProfessor[profColor.ordinal()];
     }

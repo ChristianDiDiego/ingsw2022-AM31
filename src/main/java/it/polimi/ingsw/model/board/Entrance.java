@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model.board;
 
-import it.polimi.ingsw.exceptions.board.EntranceFullException;
-import it.polimi.ingsw.exceptions.board.NoStudentsOfColorException;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 
 public class Entrance {
@@ -17,33 +15,39 @@ public class Entrance {
         studentsInEntrance = new int[5];
     }
 
-    //Receive the color ( identified by the enum) of the student to remove from entrance
-    public void removeStudent(StudsAndProfsColor studColor) throws NoStudentsOfColorException{
-        if(studentsInEntrance[studColor.ordinal()] == 0){
-            throw new NoStudentsOfColorException(studColor);
-        }else {
+    /**
+     * Remove a student from the entrance
+     * @param studColor color of the student to be removed
+     */
+
+    public void removeStudent(StudsAndProfsColor studColor) {
             studentsInEntrance[studColor.ordinal()]--;
-        }
     }
 
-    //Receive the color ( identified by the enum) of the student to add in the entrance
+    /**
+     * Add a student in the entrance
+     * @param studColor color of the student to added
+     */
 
     //TODO: SUBSTITUTE 7 with a parametric number
-    public void addStudent(StudsAndProfsColor studColor) throws EntranceFullException{
-        if(getNumberOfStudentsInEntrance() == 7){
-            throw new EntranceFullException();
-        }else{
-            studentsInEntrance[studColor.ordinal()]++;
-        }
+    public void addStudent(StudsAndProfsColor studColor){
+        studentsInEntrance[studColor.ordinal()]++;
     }
 
-    //Receive the color ( identified by the enum) of the student and return the number of students of that color
+    /**
+     * Return the number of students of a color in the dining room
+     * @param studColor color of the students to be counted
+     * @return number of the students of color studColor in the entrance
+     */
     public int getStudentsByColor(StudsAndProfsColor studColor){
 
         return studentsInEntrance[studColor.ordinal()];
     }
 
-    //Calculate the number of students on the entrance
+    /**
+     * Calculate the total number of students in the entrance
+     * @return Total number of students in entrance
+     */
     private int getNumberOfStudentsInEntrance(){
         int tot = 0;
         for(int i = 0; i < 5; i++){

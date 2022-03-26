@@ -1,8 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.board.DiningRoomFullException;
-import it.polimi.ingsw.exceptions.board.NoStudentsOfColorException;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -152,15 +149,10 @@ public class Game {
     }
     public void moveStudents(StudsAndProfsColor colorToMove, int destination){
         if(destination == 0){
-            try {
                 currentPlayer.getMyBoard().getEntrance().removeStudent(colorToMove);
                 currentPlayer.getMyBoard().getDiningRoom().addStudent(colorToMove);
-            } catch (NoStudentsOfColorException | DiningRoomFullException e) {
-                e.printStackTrace();
-            }
         }
         else{
-            try {
                 currentPlayer.getMyBoard().getEntrance().removeStudent(colorToMove);
                 for(Archipelago arch : listOfArchipelagos){
                     for(Island island : arch.getBelongingIsland()){
@@ -169,9 +161,6 @@ public class Game {
                         }
                     }
                 }
-            } catch (NoStudentsOfColorException e) {
-                e.printStackTrace();
-            }
         }
     }
 }

@@ -1,8 +1,5 @@
 package it.polimi.ingsw.model.board;
 
-import it.polimi.ingsw.exceptions.board.TowersBoardEmptyException;
-import it.polimi.ingsw.exceptions.board.TowersBoardFullException;
-
 public class TowersOnBoard {
 
     private int numberOfTowers;
@@ -10,26 +7,27 @@ public class TowersOnBoard {
     public TowersOnBoard(){
         this.numberOfTowers = 0;
     }
+
+    /**
+     * Add a tower on the table of the player
+     */
     //Todo : add a parameter for the max number of towers
-    public void addTower() throws TowersBoardFullException {
-        if (numberOfTowers <8){
-            numberOfTowers++;
-        }
-        else {
-            throw new TowersBoardFullException();
-        }
+    public void addTower() {
+        numberOfTowers++;
 
     }
-    public void removeTower() throws TowersBoardEmptyException {
-        if (numberOfTowers >0){
+
+    /**
+     * Remove a tower from the table of the player
+     */
+    public void removeTower() {
             numberOfTowers--;
-        }
-        else {
-            throw new TowersBoardEmptyException();
-        }
     }
 
-    //Return the number of towers on the board of the player
+    /**
+     * Get the number of towers on the table of the player
+     * @return the number of towers on the table
+     */
     public int getNumberOfTowers() {
         return numberOfTowers;
     }
