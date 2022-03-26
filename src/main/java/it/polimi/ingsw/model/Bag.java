@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.constants.Constants;
+
 import java.util.Random;
 
 public class Bag {
@@ -8,9 +10,9 @@ public class Bag {
 
     public Bag(int numberPlayer){
         this.numberPlayer= numberPlayer;
-        studentsInBag= new int[5];
-        for(int i=0; i<5; i++){
-            studentsInBag[i] = 26;
+        studentsInBag= new int[Constants.NUMBEROFKINGDOMS];
+        for(int i=0; i<Constants.NUMBEROFKINGDOMS; i++){
+            studentsInBag[i] = Constants.NUMBEROFSTUDENTSOFEACHCOLOR;
         }
     }
 
@@ -27,7 +29,7 @@ public class Bag {
      * @return
      */
     public int[] pickStudent(){
-        int[] studentsToPick = new int[5];
+        int[] studentsToPick = new int[Constants.NUMBEROFKINGDOMS];
         for(int i=0; i<5;i++){
             studentsToPick[i]=0;
         }

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.constants.Constants;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,7 +28,7 @@ public class Game {
         this.bag = new Bag(numberOfPlayers);
         this.currentPlayer = player;
 
-        for(int i = 0; i< 12; i++){
+        for(int i = 0; i< Constants.NUMBEROFISLANDS; i++){
             Archipelago arc = new Archipelago(i);
             listOfArchipelagos.add(arc);
         }
@@ -148,7 +150,7 @@ public class Game {
         return bag;
     }
     public void moveStudents(StudsAndProfsColor colorToMove, int destination){
-        if(destination == 0){
+        if(destination == Constants.DININGROOMDESTINATION){
                 currentPlayer.getMyBoard().getEntrance().removeStudent(colorToMove);
                 currentPlayer.getMyBoard().getDiningRoom().addStudent(colorToMove);
         }

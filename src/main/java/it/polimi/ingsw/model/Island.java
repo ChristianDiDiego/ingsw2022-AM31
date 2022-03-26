@@ -1,8 +1,10 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.constants.Constants;
+
 public class Island {
     private int idIsland;
-    private int[] studentOnIsland = new int[5];
+    private int[] studentOnIsland = new int[Constants.NUMBEROFKINGDOMS];
     /*This array contains the number of students for each color depending on the position.
       0 - RED
       1 - GREEN
@@ -14,7 +16,7 @@ public class Island {
 
     public Island(int idIsland) {
         this.idIsland = idIsland;
-        for(int i = 0; i < 5; i++) {
+        for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
             studentOnIsland[i] = 0;
         }
     }

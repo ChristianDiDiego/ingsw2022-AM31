@@ -1,14 +1,13 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 
 public class DiningRoom {
     private int[] studentsInDN;
 
     public DiningRoom(){
-        // 5 is the number of the different kingdoms
-        //TODO: substitute 5 with a parametric number
-        this.studentsInDN = new int[5];
+        this.studentsInDN = new int[Constants.NUMBEROFKINGDOMS];
     }
 
     /**

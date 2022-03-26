@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 
 public class ProfessorsTable {
@@ -13,7 +14,7 @@ public class ProfessorsTable {
     private boolean[] hasProfessor;
 
     public ProfessorsTable(){
-        this.hasProfessor = new boolean[5];
+        this.hasProfessor = new boolean[Constants.NUMBEROFKINGDOMS];
     }
 
     /**

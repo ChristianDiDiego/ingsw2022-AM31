@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 
 public class Entrance {
@@ -12,7 +13,7 @@ public class Entrance {
      */
     private int[] studentsInEntrance;
     public Entrance(){
-        studentsInEntrance = new int[5];
+        studentsInEntrance = new int[Constants.NUMBEROFKINGDOMS];
     }
 
     /**
@@ -50,7 +51,7 @@ public class Entrance {
      */
     private int getNumberOfStudentsInEntrance(){
         int tot = 0;
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
             tot += studentsInEntrance[i];
         }
         return tot;

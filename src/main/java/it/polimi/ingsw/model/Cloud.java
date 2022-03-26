@@ -1,8 +1,10 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.constants.Constants;
+
 public class Cloud {
     private int idCloud;
-    private int[] studentsOnCloud = new int[5];
+    private int[] studentsOnCloud = new int[Constants.NUMBEROFKINGDOMS];
     /*This array contains the number of students for each color depending on the position.
       0 - RED
       1 - GREEN
@@ -15,7 +17,7 @@ public class Cloud {
     public Cloud(int idCloud) {
         this.idCloud = idCloud;
         isTaken = true;
-        for(int i = 0; i < 5; i++) {
+        for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
             studentsOnCloud[i] = 0;
         }
     }
@@ -37,7 +39,7 @@ public class Cloud {
      * @param toAdd
      */
     public void addStudents(int[] toAdd) {
-        for(int i = 0; i < 5; i++) {
+        for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
             studentsOnCloud[i] += toAdd[i];
         }
         changeStatus();
@@ -47,7 +49,7 @@ public class Cloud {
      * when a cloud is chosen it removes all the students from it
      */
     public void removeStudents() {
-        for(int i = 0; i < 5; i++) {
+        for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
             studentsOnCloud[i] = 0;
         }
         changeStatus();
