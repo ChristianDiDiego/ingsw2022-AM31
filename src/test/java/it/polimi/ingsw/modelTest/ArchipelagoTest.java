@@ -13,9 +13,9 @@ class ArchipelagoTest {
 
     @Test
     void addIsland() {
-        assertEquals(1, archi.getBelongingIsland().size());
+        assertEquals(1, archi.getBelongingIslands().size());
         archi.addIsland(new Island(3));
-        assertEquals(2, archi.getBelongingIsland().size());
+        assertEquals(2, archi.getBelongingIslands().size());
     }
 
     @Test

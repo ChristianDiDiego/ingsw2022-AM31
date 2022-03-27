@@ -4,10 +4,10 @@ import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 
 public class DiningRoom {
-    private int[] studentsInDN;
+    private int[] studentsInDR;
 
     public DiningRoom(){
-        this.studentsInDN = new int[Constants.NUMBEROFKINGDOMS];
+        this.studentsInDR = new int[Constants.NUMBEROFKINGDOMS];
     }
 
     /**
@@ -15,7 +15,7 @@ public class DiningRoom {
      * @param studColor color of the student that needs to be added
      */
     public void addStudent(StudsAndProfsColor studColor) {
-        studentsInDN[studColor.ordinal()]++;
+        studentsInDR[studColor.ordinal()]++;
     }
 
 
@@ -26,6 +26,6 @@ public class DiningRoom {
      */
     public int getStudentsByColor(StudsAndProfsColor studColor){
 
-        return studentsInDN[studColor.ordinal()];
+        return studentsInDR[studColor.ordinal()];
     }
 }

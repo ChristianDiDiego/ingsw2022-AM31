@@ -10,12 +10,15 @@ public class Deck {
 
     public Deck(){
         this.playerCards = new ArrayList<>();
-
-        for(int i = 0; i< Constants.NUMBEROFCARDSINDECK; i++){
-            Card temp = new Card(i+1,9 ); //to add: max number of steps of each card
-            playerCards.add(temp);
-        }
-
+        int maxSteps = 1;
+            for (int power = 1; power <= Constants.NUMBEROFCARDSINDECK; power++) {
+                Card temp = new Card(power, maxSteps);
+                playerCards.add(temp);
+                power=power+1;
+                temp = new Card(power, maxSteps);
+                playerCards.add(temp);
+                maxSteps++;
+            }
     }
 
     /**

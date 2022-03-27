@@ -18,8 +18,8 @@ public class Bag {
 
     public int getNumberOfLeftStudents(){
         int temp = 0;
-        for(int i=0; i<5; i++){
-            temp = temp +studentsInBag[i];
+        for(int i=0; i<Constants.NUMBEROFKINGDOMS; i++){
+            temp = temp + studentsInBag[i];
         }
         return temp;
     }
@@ -36,18 +36,18 @@ public class Bag {
 
         Random random = new Random();
         if(numberPlayer==4) {
-            for (int i = 0; i<3; i++) {
-                int value = random.nextInt(5 + 0);
-                studentsToPick[i]++;
-                studentsInBag[i]--;
-            }
-        }else {
             for (int i = 0; i < 3; i++) {
                 int value = random.nextInt(5 + 0);
                 studentsToPick[i]++;
                 studentsInBag[i]--;
             }
 
+        }else {
+            for (int i = 0; i < 4; i++) {
+                int value = random.nextInt(5 + 0);
+                studentsToPick[i]++;
+                studentsInBag[i]--;
+            }
         }
         return studentsToPick;
     }

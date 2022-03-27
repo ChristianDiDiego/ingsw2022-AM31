@@ -55,9 +55,9 @@ public class Island {
 
     /**
      * if a player conquered the island the method changes the owner
-     * @param player
+     * @param newOwner
      */
-    public void changeOwner(Player player) {
-        this.owner = player;
+    public void changeOwner(Player newOwner) {
+        this.owner = newOwner;
     }
 }

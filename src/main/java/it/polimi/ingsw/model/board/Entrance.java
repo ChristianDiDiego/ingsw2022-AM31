@@ -41,7 +41,6 @@ public class Entrance {
      * @return number of the students of color studColor in the entrance
      */
     public int getStudentsByColor(StudsAndProfsColor studColor){
-
         return studentsInEntrance[studColor.ordinal()];
     }
 

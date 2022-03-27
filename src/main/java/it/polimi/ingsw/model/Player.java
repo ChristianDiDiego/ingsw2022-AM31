@@ -32,8 +32,6 @@ public class Player {
        lastUsedCard= myDeck.useCard(toUse);
     }
 
-
-
     public Board getMyBoard() {
         return myBoard;
     }

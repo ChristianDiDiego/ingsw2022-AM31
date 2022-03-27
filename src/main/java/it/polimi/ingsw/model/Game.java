@@ -119,7 +119,7 @@ public class Game {
     }
 
     public void unifyArchipelagos(Archipelago actualArchipelago, Archipelago archToBeUnified){
-        for(Island island: archToBeUnified.getBelongingIsland()){
+        for(Island island: archToBeUnified.getBelongingIslands()){
             actualArchipelago.addIsland(island);
         }
         listOfArchipelagos.remove(archToBeUnified);
@@ -129,6 +129,7 @@ public class Game {
     public Phase getPhase(){
         return phase;
     }
+
     public void nextPhase(){
         switch (phase){
             case CARD_SELECTION:
@@ -149,6 +150,7 @@ public class Game {
     public Bag getBag(){
         return bag;
     }
+
     public void moveStudents(StudsAndProfsColor colorToMove, int destination){
         if(destination == Constants.DININGROOMDESTINATION){
                 currentPlayer.getMyBoard().getEntrance().removeStudent(colorToMove);
@@ -157,7 +159,7 @@ public class Game {
         else{
                 currentPlayer.getMyBoard().getEntrance().removeStudent(colorToMove);
                 for(Archipelago arch : listOfArchipelagos){
-                    for(Island island : arch.getBelongingIsland()){
+                    for(Island island : arch.getBelongingIslands()){
                         if(island.getIdIsland() == destination){
                             island.addStudent(colorToMove);
                         }

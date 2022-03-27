@@ -28,7 +28,7 @@ public class Archipelago {
         return isMNPresent;
     }
 
-    public List<Island> getBelongingIsland() {
+    public List<Island> getBelongingIslands() {
         return belongingIsland;
     }
 
