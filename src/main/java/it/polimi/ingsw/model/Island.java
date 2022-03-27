@@ -12,7 +12,6 @@ public class Island {
       3 - PINK
       4 - BLUE
      */
-    private Player owner;
 
     public Island(int idIsland) {
         this.idIsland = idIsland;
@@ -22,14 +21,6 @@ public class Island {
     }
     public int getIdIsland(){
         return idIsland;
-    }
-
-    public Player getOwner() throws NullPointerException {
-        if(owner != null) {
-            return owner;
-        } else {
-            throw new NullPointerException();
-        }
     }
 
     public int[] getAllStudents() {
@@ -53,11 +44,4 @@ public class Island {
         studentOnIsland[studColor.ordinal()] += 1;
     }
 
-    /**
-     * if a player conquered the island the method changes the owner
-     * @param newOwner
-     */
-    public void changeOwner(Player newOwner) {
-        this.owner = newOwner;
-    }
 }

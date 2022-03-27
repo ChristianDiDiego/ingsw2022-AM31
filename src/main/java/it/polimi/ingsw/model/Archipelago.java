@@ -7,6 +7,7 @@ public class Archipelago {
     private int idArchipelago;
     private List<Island> belongingIsland;
     private boolean isMNPresent;
+    private Player owner;
 
     public Archipelago(int idArchipelago) {
         this.idArchipelago = idArchipelago;
@@ -32,6 +33,14 @@ public class Archipelago {
         return belongingIsland;
     }
 
+    public Player getOwner() throws NullPointerException {
+        if(owner != null) {
+            return owner;
+        } else {
+            throw new NullPointerException();
+        }
+    }
+
     /**
      * If we merge 2 Archipelagos, add the second Archipelago's islands to this one
      * @param island
@@ -49,5 +58,13 @@ public class Archipelago {
         } else {
             this.isMNPresent = false;
         }
+    }
+
+    /**
+     * if a player conquered the archipelago the method changes the owner
+     * @param newOwner
+     */
+    public void changeOwner(Player newOwner) {
+        this.owner = newOwner;
     }
 }

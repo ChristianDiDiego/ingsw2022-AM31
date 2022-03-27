@@ -25,11 +25,4 @@ class IslandTest {
         assertEquals(0, island.getStudentsByColor(StudsAndProfsColor.YELLOW));
 
     }
-
-    @Test
-    void changeOwner() {
-        Player player = new Player("Pippo", ColorOfTower.BLACK);
-        island.changeOwner(player);
-        assertEquals(player, island.getOwner());
-    }
 }
