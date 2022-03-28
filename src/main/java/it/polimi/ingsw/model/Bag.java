@@ -12,7 +12,7 @@ public class Bag {
         this.numberPlayer= numberPlayer;
         studentsInBag= new int[Constants.NUMBEROFKINGDOMS];
         for(int i=0; i<Constants.NUMBEROFKINGDOMS; i++){
-            studentsInBag[i] = Constants.NUMBEROFSTUDENTSOFEACHCOLOR;
+            studentsInBag[i] = Constants.NUMBEROFSTUDENTSOFEACHCOLOR - 2;
         }
     }
 
@@ -28,25 +28,34 @@ public class Bag {
      * Return a random generated array of students that will be moved from bag to clouds
      * @return
      */
+
     public int[] pickStudent(){
         int[] studentsToPick = new int[Constants.NUMBEROFKINGDOMS];
         for(int i=0; i<5;i++){
             studentsToPick[i]=0;
         }
-
         Random random = new Random();
-        if(numberPlayer==4) {
-            for (int i = 0; i < 3; i++) {
+        int i = 0;
+        if(numberPlayer==4 || numberPlayer == 2) {
+            while (i < 3) {
                 int value = random.nextInt(5 + 0);
-                studentsToPick[i]++;
-                studentsInBag[i]--;
+                if(studentsInBag[i] > 0) {
+                    studentsToPick[i]++;
+                    studentsInBag[i]--;
+                    i++;
+                }
+
             }
 
         }else {
-            for (int i = 0; i < 4; i++) {
+            while (i < 3) {
                 int value = random.nextInt(5 + 0);
-                studentsToPick[i]++;
-                studentsInBag[i]--;
+                if(studentsInBag[i] > 0) {
+                    studentsToPick[i]++;
+                    studentsInBag[i]--;
+                    i++;
+                }
+
             }
         }
         return studentsToPick;

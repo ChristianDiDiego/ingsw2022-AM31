@@ -34,8 +34,7 @@ public class Deck {
      * @param cardToUse
      * @return
      */
-    public Card useCard(Card cardToUse){
-        playerCards.remove(cardToUse);
-        return cardToUse;
+    public boolean useCard(Card cardToUse){
+        return playerCards.remove(cardToUse);
     }
 }

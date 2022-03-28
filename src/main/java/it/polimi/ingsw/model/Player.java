@@ -28,8 +28,14 @@ public class Player {
      * receives the card chosen by player and removes it from deck
      * @param toUse
      */
-    public void chooseCardToUse(Card toUse) {
-       lastUsedCard= myDeck.useCard(toUse);
+    public boolean chooseCardToUse(Card toUse) {
+       if(myDeck.useCard(toUse)) {
+           lastUsedCard = toUse;
+           return true;
+       }else{
+           return false;
+       }
+
     }
 
     public Board getMyBoard() {

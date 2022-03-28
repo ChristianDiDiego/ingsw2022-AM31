@@ -37,6 +37,10 @@ public class Game {
             listOfClouds.add(cloud);
         }
 
+        //creo un array con 2studenti per colore e poi pesco random per ogni isola tranne la 0 e la 5
+
+
+
     }
 
     public void addPlayer(Player player){
