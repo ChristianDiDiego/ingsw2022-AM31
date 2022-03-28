@@ -1,5 +1,7 @@
 # Eryantis Board Game 
-## Software engineering project a.a. 2021/22
+## Software engineering project a.y. 2021/22
+
+Group: AM31
 
 Professor : Alessandro Margara
 
