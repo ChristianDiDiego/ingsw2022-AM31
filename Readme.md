@@ -1,9 +1,9 @@
-#Eryantis Board Game 
-##Software engineering project a.a. 2021/22
+# Eryantis Board Game 
+## Software engineering project a.a. 2021/22
 
 Professor : Alessandro Margara
 
-##Implemented functions: 
+## Implemented functions: 
 
 | Functionality | Status |
 |:-----------------------|:------------------------------------:|
@@ -17,12 +17,12 @@ Professor : Alessandro Margara
 | Persistence |Coming soon... |
 |  | |
 
-##Team:
+## Team:
 * [Federica Di Filippo](https://github.com/FedericaDiFilippo)
 * [Carmine Faino](https://github.com/CarmineFaino)
 * [Christian Di Diego](https://github.com/ChristianDiDiego)
 
-##Software used:
+## Software used:
 
 **AstahUML** - UML diagrams
 
