@@ -17,7 +17,6 @@ Professor : Alessandro Margara
 | Multiple games |Coming soon... |
 | 4 players |Coming soon... |
 | Persistence |Coming soon... |
-|  | |
 
 ## Team:
 * [Federica Di Filippo](https://github.com/FedericaDiFilippo)
