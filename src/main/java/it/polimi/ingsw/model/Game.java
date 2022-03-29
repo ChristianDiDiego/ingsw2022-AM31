@@ -2,10 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.constants.Constants;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Game {
     public static final int MAXPLAYERS = 4;
@@ -37,11 +34,26 @@ public class Game {
             listOfClouds.add(cloud);
         }
 
-        //creo un array con 2studenti per colore e poi pesco random per ogni isola tranne la 0 e la 5
-
+        int[] studentsForIslands = new int[Constants.NUMBEROFKINGDOMS];
+        for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
+            studentsForIslands[i] = 2;
+        }
+        Random random = new Random();
+        for(Archipelago a : this.listOfArchipelagos){
+            for(Island i : a.getBelongingIslands()) {
+                int value = random.nextInt(5 + 0);
+                if(studentsForIslands[value] > 0) {
+                    i.addStudent(StudsAndProfsColor.GREEN);
+                    //todo: aggiungere la funzione che converte value in enum
+                    //non devo mettere green ma il colore che esce random
+                    studentsForIslands[value]--;
+                }
+            }
+        }
 
 
     }
+
 
     public void addPlayer(Player player){
         listOfPlayers.add(player);
@@ -170,5 +182,9 @@ public class Game {
                     }
                 }
         }
+    }
+
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
     }
 }

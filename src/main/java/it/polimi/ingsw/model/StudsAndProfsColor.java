@@ -7,3 +7,5 @@ public enum StudsAndProfsColor {
     PINK,
     BLUE
 }
+
+//aggiungere valueof

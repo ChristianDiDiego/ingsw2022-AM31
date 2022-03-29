@@ -8,9 +8,11 @@ public class ActionController {
     private Phase phase;
     private Game game;
     private Player currentPlayer;
+    private int isFinished;
 
     public ActionController(Game game){
         this.game = game;
+        isFinished = 0;
     }
 
     public Phase getPhase() {
@@ -32,7 +34,6 @@ public class ActionController {
 
         return true;
     }
-
 
     public void sendActionToGame(){
 
@@ -59,6 +60,7 @@ public class ActionController {
     }
 
     public void endGameImmediately(){
+        isFinished = 1;
         //chiamata se cambia l'influenza e quindi posiziono nuove torri, finisce istantaneamente la partita
     }
 }

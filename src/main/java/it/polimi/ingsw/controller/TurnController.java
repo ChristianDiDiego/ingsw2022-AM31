@@ -27,6 +27,8 @@ public class TurnController {
     }
 
     public void endGame(){
+        gameHandler.setIsStarted(-1);
+        //notifyAll per gamehandler che chiama endgame
     }
 
     public boolean isCurrentPhase(Phase action){

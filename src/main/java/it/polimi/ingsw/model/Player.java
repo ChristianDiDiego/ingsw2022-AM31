@@ -45,4 +45,8 @@ public class Player {
     public Deck getMyDeck() {
         return myDeck;
     }
+
+    public ColorOfTower getColorOfTowers() {
+        return colorOfTowers;
+    }
 }

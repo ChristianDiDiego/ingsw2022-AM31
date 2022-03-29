@@ -27,12 +27,13 @@ public class Entrance {
 
     /**
      * Add a student in the entrance
-     * @param studColor color of the student to added
+     * @param toAdd array of students to add
      */
 
-    //TODO: SUBSTITUTE 7 with a parametric number
-    public void addStudent(StudsAndProfsColor studColor){
-        studentsInEntrance[studColor.ordinal()]++;
+    public void addStudent(int[] toAdd){
+        for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
+           studentsInEntrance[i] += toAdd[i];
+        }
     }
 
     /**
