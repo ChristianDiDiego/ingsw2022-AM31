@@ -1,5 +1,7 @@
 # Eryantis Board Game 
-## Software engineering project a.a. 2021/22
+## Software engineering project a.y. 2021/22
+
+Group: AM31
 
 Professor : Alessandro Margara
 
@@ -15,7 +17,6 @@ Professor : Alessandro Margara
 | Multiple games |Coming soon... |
 | 4 players |Coming soon... |
 | Persistence |Coming soon... |
-|  | |
 
 ## Team:
 * [Federica Di Filippo](https://github.com/FedericaDiFilippo)
