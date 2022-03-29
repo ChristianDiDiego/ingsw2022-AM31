@@ -1,13 +1,13 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Phase;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.constants.Constants;
+import it.polimi.ingsw.model.*;
+
+import static it.polimi.ingsw.model.ColorOfTower.BLACK;
 
 public class ActionController {
     private Phase phase;
     private Game game;
-    private Player currentPlayer;
     private int isFinished;
 
     public ActionController(Game game){
@@ -23,19 +23,21 @@ public class ActionController {
         return game;
     }
 
+    /**
+     * finisce il turno di ogni giocatore, aggiorna la fase 2 volte per saltare quella della selezione carte
+     */
     public void endPlayerTurn(){
-        //reimposta la fase a move students
+        game.nextPhase();
+        game.nextPhase();
+        phase = game.getPhase();
+
     }
 
-    public boolean checkReceivedAction(Phase action){
-        //riceve un'azione, controlla che sia la fase giusta,
-        //chiama sendActionToGame
-        //mette fase successiva (tranne se la fase era l'ultima che allora chiama end turn
+    public void checkReceivedAction(Player player, Phase sentPhase, Action sentAction){
 
-        return true;
     }
 
-    public void sendActionToGame(){
+    public void sendActionToGame(Action action){
 
     }
     //chiamato da checkRA
@@ -46,15 +48,78 @@ public class ActionController {
     }
     //questa chiama quella sopra
 
-    public boolean checkCurrentPlayer(){
-        return true;
+    public void calculateInfluence(){
+        for(Archipelago a: game.getListOfArchipelagos()){
+            if(a.getIsMNPresent()==true){
+                Player newOwner;
+                Player oldOwner;
+                int maxInfluence =0;
+                if(a.getOwner() == null){
+                    oldOwner = null;
+                    newOwner = game.getCurrentPlayer();
+
+                }else {
+                    oldOwner = a.getOwner();
+                    newOwner = a.getOwner();
+                    maxInfluence = a.getBelongingIslands().size();
+                }
+
+                for(int c=0; c< Constants.NUMBEROFKINGDOMS; c++){
+                    for(Island i: a.getBelongingIslands()){
+                        if(i.getAllStudents()[c] > 0 && a.getOwner().getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
+                            maxInfluence += i.getAllStudents()[c];
+                        }
+                    }
+                }
+                for(Player p : game.getOrderOfPlayers()){
+                    if(p != newOwner){
+                        int newInfluence = 0;
+                        for(int c=0; c< Constants.NUMBEROFKINGDOMS; c++){
+                            for(Island i: a.getBelongingIslands()){
+                                if(i.getAllStudents()[c] > 0 && p.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
+                                    newInfluence += i.getAllStudents()[c];
+                                }
+                            }
+
+                        }
+                        if(newInfluence > maxInfluence){
+                            newOwner = p;
+                            maxInfluence = newInfluence;
+                        }
+                    }
+                }
+
+                if(maxInfluence > 0){
+                    a.changeOwner(newOwner);
+                    for(int i = 0; i < a.getBelongingIslands().size(); i++) {
+                        if(oldOwner != null){
+                            oldOwner.getMyBoard().getTowersOnBoard().removeTower();
+                        }
+                        newOwner.getMyBoard().getTowersOnBoard().removeTower();
+                    }
+                    checkUnification(a);
+                }
+            }
+        }
     }
 
-    public Player calculateInfluence(){
-        return currentPlayer; //non ritorna questo ma il player che ha influenza maggiore sull'isola
-    }
+    public void checkUnification(Archipelago a){
+        int index = game.getListOfArchipelagos().indexOf(a);
+        int previous = index - 1;
+        int next = index + 1;
+        if(index == 0) {
+            previous = game.getListOfArchipelagos().size() - 1;
+        }
+        if(index == game.getListOfArchipelagos().size() - 1) {
+            next = 0;
+        }
 
-    public void checkUnification(){
+        if(a.getOwner() == game.getListOfArchipelagos().get(previous).getOwner()) {
+            game.unifyArchipelagos(a, game.getListOfArchipelagos().get(previous));
+        }
+        if(a.getOwner() == game.getListOfArchipelagos().get(next).getOwner()) {
+            game.unifyArchipelagos(a, game.getListOfArchipelagos().get(next));
+        }
         //guarda su che arcipelago sia MN e controlla se è da unificare con prec o succ
         //in caso chiama unifyarchipelagos
     }

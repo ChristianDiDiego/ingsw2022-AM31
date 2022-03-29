@@ -31,6 +31,7 @@ public class GameHandler {
     public void setIsStarted(int i){
         this.isStarted = i;
     }
+
     public int getIsStarted(){
         return isStarted;
     }
@@ -40,7 +41,7 @@ public class GameHandler {
         if(checkColorTower(colorOfTower)) {
             game.addPlayer(newPlayer);
             if (game.getOrderOfPlayers().size() == game.getNumberOfPlayers()) {
-                isStarted = 1;
+                setIsStarted(1);
                 //notifyall
             }
         }else{

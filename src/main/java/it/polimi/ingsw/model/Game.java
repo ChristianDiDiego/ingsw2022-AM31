@@ -14,6 +14,7 @@ public class Game {
     private int numberOfPlayers;
     private Player currentPlayer;
     private Phase phase;
+    private boolean endTurn;
 
     public Game(int numberOfPlayers, Player player){
         this.listOfPlayers = new ArrayList<>();
@@ -43,7 +44,7 @@ public class Game {
             for(Island i : a.getBelongingIslands()) {
                 int value = random.nextInt(5 + 0);
                 if(studentsForIslands[value] > 0) {
-                    i.addStudent(StudsAndProfsColor.GREEN);
+                    i.addStudent(StudsAndProfsColor.values()[value]);
                     //todo: aggiungere la funzione che converte value in enum
                     //non devo mettere green ma il colore che esce random
                     studentsForIslands[value]--;
@@ -148,9 +149,6 @@ public class Game {
 
     public void nextPhase(){
         switch (phase){
-            case CARD_SELECTION:
-                phase = Phase.MOVE_STUDENTS;
-                break;
             case MOVE_STUDENTS:
                 phase = Phase.MOVE_MN;
                 break;
@@ -158,7 +156,7 @@ public class Game {
                 phase = Phase.CLOUD_SELECTION;
                 break;
             case CLOUD_SELECTION:
-                phase = Phase.CARD_SELECTION;
+                phase = Phase.MOVE_STUDENTS;
                 break;
         }
     }

@@ -26,23 +26,18 @@ public class TurnController {
         return gameHandler;
     }
 
-    public void endGame(){
-        gameHandler.setIsStarted(-1);
-        //notifyAll per gamehandler che chiama endgame
-    }
-
-    public boolean isCurrentPhase(Phase action){
-       return true;
-    }
-
-    public void endTurn(){}
-
     public void startTurn(){}
     //aggiunge gli studenti sulle nuvole
     //riceve tutte le carte
     //controlla che nessuno giochi carta usata da altri se size del  deck è >1
     //chiama in caso EndGame se ho finito gli studenti o se il 10 turno
 
+    public void endTurn(){}
+
+    public void endGame(){
+        gameHandler.setIsStarted(-1);
+        //notifyAll per gamehandler che chiama endgame
+    }
 }
 
 
