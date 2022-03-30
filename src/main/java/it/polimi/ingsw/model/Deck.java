@@ -32,9 +32,15 @@ public class Deck {
     /**
      * removes the chosen card from deck
      * @param cardToUse
-     * @return
+     * @return true or false if the card has been correctly removed or not
      */
     public boolean useCard(Card cardToUse){
-        return playerCards.remove(cardToUse);
+        for(Card c: this.getLeftCards()){
+            if(c.getPower() == cardToUse.getPower()){
+                playerCards.remove(c);
+                return true;
+            }
+        }
+        return false;
     }
 }

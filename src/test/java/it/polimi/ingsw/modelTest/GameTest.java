@@ -1,8 +1,7 @@
 package it.polimi.ingsw.modelTest;
 
-import it.polimi.ingsw.model.ColorOfTower;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.constants.Constants;
+import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -18,13 +17,6 @@ class GameTest {
     Player pl2 = new Player("chri", ColorOfTower.BLACK);
     Player pl3 = new Player("fede", ColorOfTower.GREY);
 
-    @Test
-    void addPlayer() {
-    }
-
-    @Test
-    void getCurrentPlayer() {
-    }
 
     @Test
     void findPlayerOrder() {
@@ -58,5 +50,20 @@ class GameTest {
         game.calculateCurrentPlayer();
         assertEquals(game.getCurrentPlayer(), pl2);
 
+    }
+
+    @Test
+    void gameConstructorTest() {
+        for(Archipelago a : game.getListOfArchipelagos()) {
+            for(Island i : a.getBelongingIslands()) {
+                if(a.getIdArchipelago() != 0 && a.getIdArchipelago() != 5) {
+                    int sum = 0;
+                    for(int s = 0; s < Constants.NUMBEROFKINGDOMS; s++) {
+                        sum += i.getStudentsByColor(StudsAndProfsColor.values()[s]);
+                    }
+                    assertEquals(1, sum);
+                }
+            }
+        }
     }
 }

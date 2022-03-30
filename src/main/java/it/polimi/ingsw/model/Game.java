@@ -44,11 +44,12 @@ public class Game {
         Random random = new Random();
         for(Archipelago a : this.listOfArchipelagos){
             for(Island i : a.getBelongingIslands()) {
-                int value = random.nextInt(5 + 0);
-                if(studentsForIslands[value] > 0) {
+                if(a.getIdArchipelago() != 0 && a.getIdArchipelago() !=5) {
+                    int value = random.nextInt(5 + 0);
+                    while (studentsForIslands[value] <= 0) {
+                        value = random.nextInt(5 + 0);
+                    }
                     i.addStudent(StudsAndProfsColor.values()[value]);
-                    //todo: aggiungere la funzione che converte value in enum
-                    //non devo mettere green ma il colore che esce random
                     studentsForIslands[value]--;
                 }
             }

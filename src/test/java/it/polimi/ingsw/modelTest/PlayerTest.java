@@ -20,6 +20,7 @@ class PlayerTest {
     void getLastUsedCardAndChooseCardTuUse() {
         Player player = new Player("PAOLO", ColorOfTower.GREY);
         assertEquals(null, player.getLastUsedCard());
+
         Card card = new Card(3,2);
         player.chooseCardToUse(card);
         assertEquals(card, player.getLastUsedCard());
