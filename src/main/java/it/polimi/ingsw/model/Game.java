@@ -16,11 +16,13 @@ public class Game {
     private Phase phase;
     private boolean endTurn;
 
+    //Aggiungi expertMode come parametro
     public Game(int numberOfPlayers, Player player){
         this.listOfPlayers = new ArrayList<>();
         this.listOfArchipelagos = new ArrayList<>();
         this.listOfClouds = new ArrayList<>();
         this.orderOfPlayers = new ArrayList<>();
+       // Parameters parameters = new Parameters(numberOfPlayers, expertMode);
         listOfPlayers.add(player);
         orderOfPlayers.add(player);
         this.bag = new Bag(numberOfPlayers);
@@ -59,6 +61,9 @@ public class Game {
     public void addPlayer(Player player){
         listOfPlayers.add(player);
         orderOfPlayers.add(player);
+    }
+    public List<Cloud> getListOfClouds(){
+        return this.listOfClouds;
     }
 
     public Player getCurrentPlayer(){
@@ -169,6 +174,7 @@ public class Game {
         if(destination == Constants.DININGROOMDESTINATION){
                 currentPlayer.getMyBoard().getEntrance().removeStudent(colorToMove);
                 currentPlayer.getMyBoard().getDiningRoom().addStudent(colorToMove);
+
         }
         else{
                 currentPlayer.getMyBoard().getEntrance().removeStudent(colorToMove);
@@ -184,5 +190,39 @@ public class Game {
 
     public int getNumberOfPlayers() {
         return numberOfPlayers;
+    }
+
+    /*
+    For each color counts the number of students of that color in the arch
+    and get the dominantColor
+    for every player, check which player has that prof
+
+    ToDo: if another player already have influence, count also the tower
+          if the influence is the same for two players, the towers are not going to anyone
+     */
+    public void calculateInfluence(Archipelago arch){
+        int highestNumberOfStuds = 0;
+        StudsAndProfsColor dominantColor = StudsAndProfsColor.RED;
+
+        for(StudsAndProfsColor color : StudsAndProfsColor.values()){
+            int tempNOfStuds = 0;
+            for(Island island : arch.getBelongingIslands()){
+                tempNOfStuds = island.getStudentsByColor(color);
+            }
+            if(tempNOfStuds > highestNumberOfStuds){
+                highestNumberOfStuds = tempNOfStuds;
+                dominantColor = color;
+            }
+
+        }
+        for(Player player : listOfPlayers){
+            if(player.getMyBoard().getProfessorsTable().getHasProf(dominantColor)){
+                //if the ownership of arch is of another player, add towers to his table and remove from the other
+                //if the same player remains, do not change the number of towers on his board
+                //change ownership of arch
+            }
+        }
+
+
     }
 }

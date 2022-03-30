@@ -11,7 +11,6 @@ public class TowersOnBoard {
     /**
      * Add a tower on the table of the player
      */
-    //Todo : add a parameter for the max number of towers
     public void addTower() {
         numberOfTowers++;
 

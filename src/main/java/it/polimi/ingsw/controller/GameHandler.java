@@ -8,10 +8,18 @@ public class GameHandler {
     private int isStarted;
     private int playersNumber;
 
+    private int numberOfClouds;
+    private int maxNumberOfTowers;
+    private int maxStudentsInEntrance;
+    private int numberOfStudentsOnCloud;
+    private int numberOfMovements;
+
     public GameHandler(Player firstPlayer, int playersNumber){
         this.playersNumber = playersNumber;
         this.game = new Game(playersNumber, firstPlayer);
         this.controller = new Controller(this.game, this);
+        //TODO: parse expertMode
+        parametersSwitch(playersNumber, false);
         isStarted = 0;
     }
 
@@ -59,20 +67,66 @@ public class GameHandler {
         return true;
     }
 
+    //Set isStarted true
+    //pick n students from bag and place to the players' board
+    //Controller.turnController.startTurn
     public void startGame(){
         //wait finche isstarted non diventa true
-        //TODO: the hardcode values will be replaced with parameters
-        if(playersNumber == 3){
             for(Player p : game.getOrderOfPlayers()){
-                p.getMyBoard().getEntrance().addStudent(game.getBag().pickStudent(9));
+                p.getMyBoard().getEntrance().addStudent(game.getBag().pickStudent(maxStudentsInEntrance));
+                for(int i = 0; i< maxNumberOfTowers; i++){
+                    p.getMyBoard().getTowersOnBoard().addTower();
+                }
             }
-        } else{
-            for(Player p : game.getOrderOfPlayers()) {
-                p.getMyBoard().getEntrance().addStudent(game.getBag().pickStudent(7));
-            }
-        }
+
 
     }
 
+    private void parametersSwitch(int numberOfPlayers, boolean expertMode){
 
+        switch (numberOfPlayers){
+            case 2:
+                numberOfClouds = 2;
+                maxNumberOfTowers = 8;
+                maxStudentsInEntrance = 7;
+                numberOfStudentsOnCloud = 3;
+                numberOfMovements = 3;
+                break;
+            case 3:
+                numberOfClouds = 3;
+                maxNumberOfTowers = 6;
+                maxStudentsInEntrance = 9;
+                numberOfStudentsOnCloud = 4;
+                numberOfMovements = 4;
+                break;
+            case 4:
+                numberOfClouds = 4;
+                maxNumberOfTowers = 8;
+                maxStudentsInEntrance = 7;
+                numberOfStudentsOnCloud = 3;
+                numberOfMovements = 3;
+                break;
+        }
+    }
+
+
+    public int getNumberOfStudentsOnCloud() {
+        return numberOfStudentsOnCloud;
+    }
+
+    public int getNumberOfClouds() {
+        return numberOfClouds;
+    }
+
+    public int getMaxStudentsInEntrance() {
+        return maxStudentsInEntrance;
+    }
+
+    public int getNumberOfMovements() {
+        return numberOfMovements;
+    }
+
+    public int getMaxNumberOfTowers() {
+        return maxNumberOfTowers;
+    }
 }
