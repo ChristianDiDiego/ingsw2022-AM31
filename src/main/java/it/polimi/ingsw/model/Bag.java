@@ -30,16 +30,16 @@ public class Bag {
      */
     public int[] pickStudent(int studToPick){
         int[] studentsToPick = new int[Constants.NUMBEROFKINGDOMS];
-        for(int i=0; i<5;i++){
+        for(int i=0; i<Constants.NUMBEROFKINGDOMS;i++){
             studentsToPick[i]=0;
         }
         Random random = new Random();
         int i = 0;
             while (i < studToPick) {
                 int value = random.nextInt(5 + 0);
-                if(studentsInBag[i] > 0) {
-                    studentsToPick[i]++;
-                    studentsInBag[i]--;
+                if(studentsInBag[value] > 0) {
+                    studentsToPick[value]++;
+                    studentsInBag[value]--;
                     i++;
                 }
             }

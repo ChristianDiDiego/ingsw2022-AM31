@@ -50,7 +50,8 @@ public class GameHandler {
             game.addPlayer(newPlayer);
             if (game.getOrderOfPlayers().size() == game.getNumberOfPlayers()) {
                 setIsStarted(1);
-                //notifyall
+              //  this.notifyAll();
+                startGame();
             }
         }else{
             System.out.println("colore già scelto, scegline un altro");
@@ -71,7 +72,7 @@ public class GameHandler {
     //pick n students from bag and place to the players' board
     //Controller.turnController.startTurn
     public void startGame(){
-        //wait finche isstarted non diventa true
+
             for(Player p : game.getOrderOfPlayers()){
                 p.getMyBoard().getEntrance().addStudent(game.getBag().pickStudent(maxStudentsInEntrance));
                 for(int i = 0; i< maxNumberOfTowers; i++){

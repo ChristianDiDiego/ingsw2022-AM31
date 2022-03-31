@@ -49,9 +49,9 @@ public class TurnController {
     public boolean checkCardPresence(Player p, Card card){
         return p.getMyDeck().getLeftCards().contains(card);
     }
-    public boolean checkValidCard(Card card){
+    /*public boolean checkValidCard(Card card){
 
-    }
+    } */
 
 
     public void endTurn(){}

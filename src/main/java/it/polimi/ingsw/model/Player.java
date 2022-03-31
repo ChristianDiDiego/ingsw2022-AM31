@@ -8,7 +8,7 @@ public class Player {
     private ColorOfTower colorOfTowers;
     private Card lastUsedCard;
     private Board myBoard;
-    private int coins;
+    private int wallet;
 
     public Player(String nickname, ColorOfTower colorOfTowers){
         this.nickname = nickname;
@@ -51,14 +51,14 @@ public class Player {
         return colorOfTowers;
     }
 
-    public int getCoins() {
-        return coins;
+    public int getWallet() {
+        return wallet;
     }
 
-    public void addCoins(int coins) {
-        this.coins += coins;
+    public void addCoinsToWallet(int coins) {
+        this.wallet += coins;
     }
-    public void removeCoins(int coins) {
-        this.coins -= coins;
+    public void removeCoinsFromWallet(int coins) {
+        this.wallet -= coins;
     }
 }

@@ -15,6 +15,7 @@ public class Game {
     private Player currentPlayer;
     private Phase phase;
     private boolean endTurn;
+    private int bank;
 
     //Aggiungi expertMode come parametro
     public Game(int numberOfPlayers, Player player){
@@ -22,7 +23,7 @@ public class Game {
         this.listOfArchipelagos = new ArrayList<>();
         this.listOfClouds = new ArrayList<>();
         this.orderOfPlayers = new ArrayList<>();
-       // Parameters parameters = new Parameters(numberOfPlayers, expertMode);
+        this.numberOfPlayers = numberOfPlayers;
         listOfPlayers.add(player);
         orderOfPlayers.add(player);
         this.bag = new Bag(numberOfPlayers);
@@ -225,5 +226,21 @@ public class Game {
         }
 
 
+    }
+
+    public void getCoinFromBank(int coins) {
+        bank -= coins;
+    }
+
+    public int getBank() {
+        return bank;
+    }
+
+    public void addCoinInBank(int coins) {
+        bank += coins;
+    }
+
+    public void setBank(int bank) {
+        bank = bank;
     }
 }

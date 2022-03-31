@@ -33,13 +33,9 @@ public class ActionController {
 
     }
 
-    public void checkReceivedAction(Player player, Phase sentPhase, Action sentAction){
+    //public void checkReceivedAction(Player player, Phase sentPhase, Action sentAction){}
 
-    }
-
-    public void sendActionToGame(Action action){
-
-    }
+   // public void sendActionToGame(Action action){}
     //chiamato da checkRA
     //a seconda della fase c'è switch case che fa le cose nel game
 
@@ -50,7 +46,7 @@ public class ActionController {
 
     public void calculateInfluence(){
         for(Archipelago a: game.getListOfArchipelagos()){
-            if(a.getIsMNPresent()==true){
+            if(a.getIsMNPresent()){
                 Player newOwner;
                 Player oldOwner;
                 int maxInfluence =0;
