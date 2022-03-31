@@ -110,7 +110,6 @@ public class GameHandler {
         }
     }
 
-
     public int getNumberOfStudentsOnCloud() {
         return numberOfStudentsOnCloud;
     }

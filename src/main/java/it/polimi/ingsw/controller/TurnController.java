@@ -1,19 +1,19 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Card;
-import it.polimi.ingsw.model.Cloud;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.*;
 
 public class TurnController {
     private Controller controller;
     private ActionController actionController;
     private GameHandler gameHandler;
+    private Game game;
 
     public TurnController(Controller controller, GameHandler gameHandler, Game game){
         this.controller = controller;
         this.actionController = new ActionController(game);
         this.gameHandler = gameHandler;
+        this.game = game;
+
     }
 
     public Controller getController() {
@@ -34,6 +34,7 @@ public class TurnController {
             cloud.addStudents( gameHandler.getGame().getBag().pickStudent(gameHandler.getNumberOfStudentsOnCloud()) );
         }
 
+
         //riceve tutte le carte
         //Get the current player and wait a card from him
 
@@ -46,6 +47,17 @@ public class TurnController {
         //Otherwise call game.findPlayerOrder
     }
 
+    public void checkReceivedCard(Player player, int power){
+        if(game.getPhase()== Phase.CARD_SELECTION && player == game.getCurrentPlayer()){
+            //check che l'azione sia valida, in caso modifico il model
+
+        }else if(game.getPhase()== Phase.CARD_SELECTION && player != game.getCurrentPlayer()){
+            System.out.println("non è il tuo turno!!");
+        }else if(game.getPhase()!= Phase.CARD_SELECTION && player == game.getCurrentPlayer()){
+            System.out.println("hai inviato un'azione non valida, riprova");
+        }
+    }
+
     public boolean checkCardPresence(Player p, Card card){
         return p.getMyDeck().getLeftCards().contains(card);
     }
@@ -54,7 +66,9 @@ public class TurnController {
     } */
 
 
-    public void endTurn(){}
+    public void endTurn(){
+
+    }
 
     public void endGame(){
         gameHandler.setIsStarted(-1);

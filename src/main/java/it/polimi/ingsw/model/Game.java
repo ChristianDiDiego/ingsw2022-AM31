@@ -156,6 +156,9 @@ public class Game {
 
     public void nextPhase(){
         switch (phase){
+            case CARD_SELECTION:
+                phase = Phase.MOVE_STUDENTS;
+                break;
             case MOVE_STUDENTS:
                 phase = Phase.MOVE_MN;
                 break;
@@ -163,7 +166,11 @@ public class Game {
                 phase = Phase.CLOUD_SELECTION;
                 break;
             case CLOUD_SELECTION:
-                phase = Phase.MOVE_STUDENTS;
+                if(getCurrentPlayer()==orderOfPlayers.get(orderOfPlayers.size()-1)){
+                    phase = Phase.CARD_SELECTION;
+                }else{
+                    phase = Phase.MOVE_STUDENTS;
+                }
                 break;
         }
     }

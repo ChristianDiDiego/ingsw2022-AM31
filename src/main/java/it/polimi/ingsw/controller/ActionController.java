@@ -33,11 +33,41 @@ public class ActionController {
 
     }
 
-    //public void checkReceivedAction(Player player, Phase sentPhase, Action sentAction){}
 
-   // public void sendActionToGame(Action action){}
-    //chiamato da checkRA
-    //a seconda della fase c'è switch case che fa le cose nel game
+   public void checkActionMoveStudent(Player player,StudsAndProfsColor[] colors, int[] destinations){
+        if(game.getPhase()== Phase.MOVE_STUDENTS && player == game.getCurrentPlayer()){
+            //check che l'azione sia valida, in caso aggiorno Model
+
+        }else if(game.getPhase()== Phase.MOVE_STUDENTS && player != game.getCurrentPlayer()){
+            System.out.println("non è il tuo turno!!");
+       }else if(game.getPhase()!= Phase.MOVE_STUDENTS && player == game.getCurrentPlayer()){
+            System.out.println("hai inviato un'azione non valida, riprova");
+        }
+   }
+
+    public void checkActionMoveMN(Player player,int destination){
+        if(game.getPhase()== Phase.MOVE_MN && player == game.getCurrentPlayer()){
+            //check che l'azione sia valida, in caso modifico il model
+
+        }else if(game.getPhase()== Phase.MOVE_MN && player != game.getCurrentPlayer()){
+            System.out.println("non è il tuo turno!!");
+        }else if(game.getPhase()!= Phase.MOVE_MN && player == game.getCurrentPlayer()){
+            System.out.println("hai inviato un'azione non valida, riprova");
+        }
+    }
+
+    public void checkActionCloud(Player player,int cloudId){
+        if(game.getPhase()== Phase.CLOUD_SELECTION && player == game.getCurrentPlayer()){
+            //check che l'azione sia valida, in caso modifico il model
+
+        }else if(game.getPhase()== Phase.CLOUD_SELECTION && player != game.getCurrentPlayer()){
+            System.out.println("non è il tuo turno!!");
+        }else if(game.getPhase()!= Phase.CLOUD_SELECTION && player == game.getCurrentPlayer()){
+            System.out.println("hai inviato un'azione non valida, riprova");
+        }
+    }
+
+   public void sendActionToGame(){}
 
     public Player getCurrentPlayer(){
         return game.getCurrentPlayer();
@@ -99,6 +129,11 @@ public class ActionController {
         }
     }
 
+    /**
+     * check if the archipelago received has to be unified with previous or next,
+     * if yes, it calls game.unifyArchipelagos()
+     * @param a
+     */
     public void checkUnification(Archipelago a){
         int index = game.getListOfArchipelagos().indexOf(a);
         int previous = index - 1;
@@ -116,8 +151,7 @@ public class ActionController {
         if(a.getOwner() == game.getListOfArchipelagos().get(next).getOwner()) {
             game.unifyArchipelagos(a, game.getListOfArchipelagos().get(next));
         }
-        //guarda su che arcipelago sia MN e controlla se è da unificare con prec o succ
-        //in caso chiama unifyarchipelagos
+
     }
 
     public void endGameImmediately(){
