@@ -29,7 +29,6 @@ public class Entrance {
      * Add a student in the entrance
      * @param toAdd array of students to add
      */
-
     public void addStudent(int[] toAdd){
         for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
            studentsInEntrance[i] += toAdd[i];

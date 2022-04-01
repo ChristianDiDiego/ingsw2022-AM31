@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
+import com.sun.tools.javac.code.Attribute;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.model.*;
 
@@ -51,7 +52,49 @@ public class Cli implements View {
 
     @Override
     public void printBoards(List<Player> players) {
+        for(Player p : players){
+            String green, red, yellow, pink, blue;
+            int[] nSDN = new int[]{0,0,0,0,0};
+            int[] nSE = new int[]{0,0,0,0,0};
+            int nT = p.getMyBoard().getTowersOnBoard().getNumberOfTowers();
+            boolean[] hasProf =  new boolean[]{false, false, false, false, false};
+            for(int i=0; i<5; i++){
+                nSDN[i] = p.getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]);
+                nSE[i] = p.getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]);
+                hasProf[i] = p.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[i]);
+            }
 
+            StringBuilder board = new StringBuilder();
+            board.append(ColorsCli.BLACK).append("\n Board of player: "+ p + "\n").append(ColorsCli.BLACK);
+            for(int j=0 ; j<5 ; j++){
+                for(int k = 0; k<nSDN[j]; k++){
+                    board.append(ColorsCli.getColorByNumber(j)).append(" ●").append(ColorsCli.getColorByNumber(j));
+                }
+                for(int k=nSDN[j]; k<10; k++){
+                    board.append(ColorsCli.getColorByNumber(j)).append(" ◯").append(ColorsCli.getColorByNumber(j));
+                }
+                if(hasProf[j]){
+                    board.append(ColorsCli.getColorByNumber(j)).append(" | ⬢  ").append(ColorsCli.getColorByNumber(j));
+                }else{
+                    board.append(ColorsCli.getColorByNumber(j)).append(" | ⬡  ").append(ColorsCli.getColorByNumber(j));
+                }
+                board.append(ColorsCli.BLACK).append("\n").append(ColorsCli.BLACK);
+            }
+
+            board.append(ColorsCli.BLACK).append("Students in entrance: \n").append(ColorsCli.BLACK);
+            for(int i=0; i<5; i++){
+                for(int k=0; k<nSE[i]; k++){
+                    board.append(ColorsCli.getColorByNumber(i)).append("● ").append(ColorsCli.getColorByNumber(i));
+                }
+                board.append(ColorsCli.BLACK).append("\n").append(ColorsCli.BLACK);
+            }
+            board.append(ColorsCli.BLACK).append("Towers on board: \n").append(ColorsCli.BLACK);
+            for(int i = 0; i<nT; i++){
+                board.append(ColorsCli.BLACK).append("♜ ").append(ColorsCli.BLACK).append(ColorsCli.RESET);
+            }
+            System.out.println(board.toString());
+
+        }
     }
 
     @Override
