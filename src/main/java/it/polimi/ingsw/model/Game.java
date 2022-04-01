@@ -47,9 +47,9 @@ public class Game {
         for(Archipelago a : this.listOfArchipelagos){
             for(Island i : a.getBelongingIslands()) {
                 if(a.getIdArchipelago() != 0 && a.getIdArchipelago() !=5) {
-                    int value = random.nextInt(5 + 0);
+                    int value = random.nextInt(Constants.NUMBEROFKINGDOMS);
                     while (studentsForIslands[value] <= 0) {
-                        value = random.nextInt(5 + 0);
+                        value = random.nextInt(Constants.NUMBEROFKINGDOMS);
                     }
                     i.addStudent(StudsAndProfsColor.values()[value]);
                     studentsForIslands[value]--;
