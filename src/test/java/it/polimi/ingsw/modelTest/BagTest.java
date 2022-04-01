@@ -8,6 +8,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BagTest {
 
+    /**
+     * Check that the correct number of students is picked from the bag
+     */
     @Test
     void getNumberOfLeftStudentsAndPickTest() {
         Bag bag = new Bag(3);

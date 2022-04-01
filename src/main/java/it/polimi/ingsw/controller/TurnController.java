@@ -28,23 +28,20 @@ public class TurnController {
         return gameHandler;
     }
 
+    /**
+     * Start the turn :
+     * Add the students to the clouds
+     * Receive all the cards: for every card received check if he has that card in the deck calling checkCardPresence
+     * Check that no one else chose the same card before if the size of the player that send it is >1 calling ...
+     * Pick the card from the deck and place it in lastUsedCard
+     * Call endGame if the number of the students in the bag is finished
+     * Otherwise call findPlayerOrder to order the players according to the card that they used
+     */
     public void startTurn(){
         //aggiunge gli studenti sulle nuvole
         for(Cloud cloud : gameHandler.getGame().getListOfClouds()){
             cloud.addStudents( gameHandler.getGame().getBag().pickStudent(gameHandler.getNumberOfStudentsOnCloud()) );
         }
-
-
-        //riceve tutte le carte
-        //Get the current player and wait a card from him
-
-        //for every card received check if he has that card in the deck
-        //checkCardPresence
-
-        //controlla che nessuno giochi carta usata da altri se size del  deck è >1
-        //pick the card from the deck and place it in lastUsedCard
-        //chiama in caso EndGame se ho finito gli studenti o se il 10 turno
-        //Otherwise call game.findPlayerOrder
     }
 
     public void checkReceivedCard(Player player, int power){
@@ -58,6 +55,12 @@ public class TurnController {
         }
     }
 
+    /**
+     * Check if a card is present in the player's deck
+     * @param p player that played the card
+     * @param card card to be checked
+     * @return True if the card is in the deck, false otherwise
+     */
     public boolean checkCardPresence(Player p, Card card){
         return p.getMyDeck().getLeftCards().contains(card);
     }
@@ -70,6 +73,9 @@ public class TurnController {
 
     }
 
+    /**
+     * Called when the game is over
+     */
     public void endGame(){
         gameHandler.setIsStarted(-1);
         //notifyAll per gamehandler che chiama endgame

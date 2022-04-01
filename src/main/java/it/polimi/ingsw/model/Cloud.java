@@ -35,8 +35,8 @@ public class Cloud {
     }
     
     /**
-     * at the beginning of each turn adds a student in the cloud
-     * @param toAdd
+     * Called at the beginning of each turn to add students to the cloud
+     * @param toAdd array that contains that students that needs to be added to the cloud
      */
     public void addStudents(int[] toAdd) {
         for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
@@ -46,7 +46,7 @@ public class Cloud {
     }
 
     /**
-     * when a cloud is chosen it removes all the students from it
+     * When a cloud is chosen it removes all the students from it
      */
     public void removeStudents() {
         for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {

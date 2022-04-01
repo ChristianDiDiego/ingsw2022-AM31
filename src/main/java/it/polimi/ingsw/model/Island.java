@@ -28,9 +28,9 @@ public class Island {
     }
 
     /**
-     * returns the number of student of the selected color present on the island
-     * @param studColor
-     * @return integer
+     * Calculate the number of the students of a color present on the island
+     * @param studColor color of the students to be counted
+     * @return integer number of the students of studColor on the island
      */
     public int getStudentsByColor(StudsAndProfsColor studColor) {
         return studentOnIsland[studColor.ordinal()];
@@ -38,7 +38,7 @@ public class Island {
 
     /**
      * increments the counter of che received student's color in the island
-     * @param studColor
+     * @param studColor color of the student to be added
      */
     public void addStudent(StudsAndProfsColor studColor) {
         studentOnIsland[studColor.ordinal()] += 1;

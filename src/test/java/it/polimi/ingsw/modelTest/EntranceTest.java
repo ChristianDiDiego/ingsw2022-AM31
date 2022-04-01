@@ -10,7 +10,9 @@ public class EntranceTest {
     private Entrance entrance = new Entrance();
     int[] i = {0,1,1,1,4};
 
-
+    /**
+     * Test that the students are properly added to the Entrance
+     */
     @Test
     public void addAndGetTest(){
         assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.RED));
@@ -26,7 +28,9 @@ public class EntranceTest {
         assertEquals(4, entrance.getStudentsByColor(StudsAndProfsColor.BLUE));
     }
 
-
+    /**
+     * Test that the students are properly removed from the entrance
+     */
     @Test
     public void removeAndGetTest(){
         assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.RED));

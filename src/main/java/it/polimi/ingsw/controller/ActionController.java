@@ -1,18 +1,24 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.client.ActionParser;
 import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.model.*;
 
 import static it.polimi.ingsw.model.ColorOfTower.BLACK;
 
+//TODO: Checks need to be finished checking that the actions are correct
+// (enough players in entrance to be moved etc.)
+
 public class ActionController {
     private Phase phase;
     private Game game;
     private int isFinished;
+    private ActionParser actionParser;
 
     public ActionController(Game game){
         this.game = game;
         isFinished = 0;
+        actionParser = new ActionParser(this);
     }
 
     public Phase getPhase() {
@@ -56,6 +62,11 @@ public class ActionController {
         }
     }
 
+    /**
+     * Check if
+     * @param player
+     * @param cloudId
+     */
     public void checkActionCloud(Player player,int cloudId){
         if(game.getPhase()== Phase.CLOUD_SELECTION && player == game.getCurrentPlayer()){
             //check che l'azione sia valida, in caso modifico il model
@@ -74,6 +85,11 @@ public class ActionController {
     }
     //questa chiama quella sopra
 
+    /**
+     * Calculate the influence on the archipelago where MN is present
+     * Menage the tower situation of an archipelago and of the players after that
+     * Call checkUnification to check if the archipelago needs to be unified to another one
+     */
     public void calculateInfluence(){
         for(Archipelago a: game.getListOfArchipelagos()){
             if(a.getIsMNPresent()){
@@ -130,9 +146,9 @@ public class ActionController {
     }
 
     /**
-     * check if the archipelago received has to be unified with previous or next,
+     * Check if an archipelago has to be unified with previous or next,
      * if yes, it calls game.unifyArchipelagos()
-     * @param a
+     * @param a archipelago to be checked
      */
     public void checkUnification(Archipelago a){
         int index = game.getListOfArchipelagos().indexOf(a);
@@ -154,8 +170,10 @@ public class ActionController {
 
     }
 
+    /**
+     * Called if a player, adding the tower to an archipelago, run out of them
+     */
     public void endGameImmediately(){
         isFinished = 1;
-        //chiamata se cambia l'influenza e quindi posiziono nuove torri, finisce istantaneamente la partita
     }
 }

@@ -10,6 +10,9 @@ import static org.junit.Assert.assertThrows;
 public class DiningRoomTest {
     private DiningRoom diningRoom = new DiningRoom();
 
+    /**
+     * Test that the students are properly added to the dining room
+     */
     @Test
     public void addAndGetTest(){
         assertEquals(0, diningRoom.getStudentsByColor(StudsAndProfsColor.RED));

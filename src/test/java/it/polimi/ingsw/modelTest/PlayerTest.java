@@ -10,12 +10,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
 
+    /**
+     * Check that the nickname of a player is properly set
+     */
     @Test
     void getNickname() {
         Player player = new Player("PAOLO", ColorOfTower.GREY);
         assertEquals("PAOLO", player.getNickname());
     }
 
+    /**
+     * Check that the last used card of a player is properly set
+     */
     @Test
     void getLastUsedCardAndChooseCardTuUse() {
         Player player = new Player("PAOLO", ColorOfTower.GREY);

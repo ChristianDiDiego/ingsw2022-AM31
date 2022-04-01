@@ -31,6 +31,10 @@ public class GameHandler {
         return controller;
     }
 
+
+    /**
+     * Comunicate to the server that the game is over
+     */
     public void endGame(){
         //while isStarted != -1  o isFinished != 0 wait
         //comunica al server partita finita
@@ -44,6 +48,11 @@ public class GameHandler {
         return isStarted;
     }
 
+    /**
+     * Add a new player (since the second one) to the game
+     * @param nickname name chosen by the player
+     * @param colorOfTower color chosen by the player
+     */
     public void addNewPlayer(String nickname, ColorOfTower colorOfTower){
         Player newPlayer = new Player(nickname, colorOfTower);
         if(checkColorTower(colorOfTower)) {
@@ -59,6 +68,11 @@ public class GameHandler {
 
     }
 
+    /**
+     * Check if the chosed color is already been taken
+     * @param colorOfTower color of the tower to check
+     * @return True if the color is still available, false if it is already been taken
+     */
     public boolean checkColorTower(ColorOfTower colorOfTower){
         for(Player p : game.getOrderOfPlayers()){
             if(p.getColorOfTowers() == colorOfTower){
@@ -68,9 +82,12 @@ public class GameHandler {
         return true;
     }
 
-    //Set isStarted true
-    //pick n students from bag and place to the players' board
-    //Controller.turnController.startTurn
+    /**
+     *  Start the game:
+     *  Set isStarted to 1
+     * Pick n students from the bag and place them to the players' board
+     * Start the turn
+     */
     public void startGame(){
 
             for(Player p : game.getOrderOfPlayers()){
@@ -83,6 +100,11 @@ public class GameHandler {
 
     }
 
+    /**
+     * Set the value of the game parameters according to the number of players and if it is expert mode
+     * @param numberOfPlayers number of the players that are playing the game
+     * @param expertMode 1 if the expert mode has been choosed, 0 otherwise
+     */
     private void parametersSwitch(int numberOfPlayers, boolean expertMode){
 
         switch (numberOfPlayers){

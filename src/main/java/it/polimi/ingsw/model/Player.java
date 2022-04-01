@@ -27,7 +27,7 @@ public class Player {
 
     /**
      * receives the card chosen by player and removes it from deck
-     * @param toUse
+     * @param toUse card chosen
      */
     public boolean chooseCardToUse(Card toUse) {
        if(myDeck.useCard(toUse)) {

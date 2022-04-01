@@ -16,6 +16,9 @@ public class Bag {
         }
     }
 
+    /**
+     * @return the number of students remained in the bag
+     */
     public int getNumberOfLeftStudents(){
         int temp = 0;
         for(int i=0; i<Constants.NUMBEROFKINGDOMS; i++){
@@ -25,8 +28,7 @@ public class Bag {
     }
 
     /**
-     * Return a random generated array of students that will be moved from bag to clouds
-     * @return
+     * @return a random generated array of students that will be picked from the bag
      */
     public int[] pickStudent(int studToPick){
         int[] studentsToPick = new int[Constants.NUMBEROFKINGDOMS];

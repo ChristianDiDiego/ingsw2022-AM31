@@ -17,7 +17,9 @@ class GameTest {
     Player pl2 = new Player("chri", ColorOfTower.BLACK);
     Player pl3 = new Player("fede", ColorOfTower.GREY);
 
-
+    /**
+     * Test that the players order is properly calculated
+     */
     @Test
     void findPlayerOrder() {
         pl1.chooseCardToUse(pl1.getMyDeck().getLeftCards().get(9));
@@ -31,6 +33,10 @@ class GameTest {
         assertEquals( lista, game.getOrderOfPlayers());
 
     }
+
+    /**
+     * Test that MN is moved properly
+     */
     @Test
     void moveMotherNature(){
         game.moveMotherNature(2);
@@ -41,6 +47,9 @@ class GameTest {
 
     }
 
+    /**
+     * Check that the current player is properly identified
+     */
     @Test
     void calculateCurrentPlayer(){
         game.addPlayer(pl2);
@@ -52,6 +61,9 @@ class GameTest {
 
     }
 
+    /**
+     * Assert
+     */
     @Test
     void gameConstructorTest() {
         for(Archipelago a : game.getListOfArchipelagos()) {

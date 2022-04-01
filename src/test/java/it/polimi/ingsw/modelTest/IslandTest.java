@@ -11,6 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class IslandTest {
     Island island = new Island(2);
 
+    /**
+     * Check that the students are properly added to an island
+     */
     @Test
     void addStudent() {
         assertEquals(0, island.getStudentsByColor(StudsAndProfsColor.RED));

@@ -13,6 +13,9 @@ class ArchipelagoTest {
     private Archipelago archi = new Archipelago(2);
     private Archipelago archiMN = new Archipelago(0);
 
+    /**
+     * Check if an island is properly added to an archipelago
+     */
     @Test
     void addIsland() {
         assertEquals(1, archi.getBelongingIslands().size());
@@ -20,12 +23,18 @@ class ArchipelagoTest {
         assertEquals(2, archi.getBelongingIslands().size());
     }
 
+    /**
+     * Check if the presence of MN is correctly checked
+     */
     @Test
     void changeMNPresence() {
         assertEquals(true, archiMN.getIsMNPresent());
         assertEquals(false, archi.getIsMNPresent());
     }
 
+    /**
+     * Check if the ownership of an archipelago is properly changed
+     */
     @Test
     void changeOwner() {
         Player player = new Player("Pippo", ColorOfTower.BLACK);

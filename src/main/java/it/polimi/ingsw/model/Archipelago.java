@@ -33,6 +33,11 @@ public class Archipelago {
         return belongingIsland;
     }
 
+    /**
+     * Find who is the owner of an archipelago
+     * @return the player who is the owner of the archipelago
+     * @throws NullPointerException if the owner is null
+     */
     public Player getOwner() throws NullPointerException {
         if(owner != null) {
             return owner;
@@ -43,7 +48,7 @@ public class Archipelago {
 
     /**
      * If we merge 2 Archipelagos, add the second Archipelago's islands to this one
-     * @param island
+     * @param island to be added to the archipelago
      */
     public void addIsland(Island island) {
         belongingIsland.add(island);

@@ -7,6 +7,9 @@ import static org.junit.Assert.assertEquals;
 public class TowersOnBoardTest {
     private TowersOnBoard towersOnBoard = new TowersOnBoard();
 
+    /**
+     * Check that a tower is properly added to the board
+     */
     @Test
     public void addAndGetTest(){
         assertEquals(0, towersOnBoard.getNumberOfTowers());
@@ -17,6 +20,9 @@ public class TowersOnBoardTest {
 
     }
 
+    /**
+     * Check that a tower is properly removed from the board
+     */
     @Test
     public void removeTowers(){
         assertEquals(0, towersOnBoard.getNumberOfTowers());

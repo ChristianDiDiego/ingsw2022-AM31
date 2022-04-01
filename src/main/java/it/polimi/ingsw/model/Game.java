@@ -39,6 +39,7 @@ public class Game {
         }
 
         int[] studentsForIslands = new int[Constants.NUMBEROFKINGDOMS];
+        //Place randomly two students of each color on the islands (one student per island)
         for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
             studentsForIslands[i] = 2;
         }
@@ -59,7 +60,10 @@ public class Game {
 
     }
 
-
+    /**
+     * Add a new player to the list of players
+     * @param player to be added to the game
+     */
     public void addPlayer(Player player){
         listOfPlayers.add(player);
         orderOfPlayers.add(player);
@@ -90,6 +94,10 @@ public class Game {
         return orderOfPlayers;
     }
 
+    /**
+     * Move Mother Nature from the current archipelago to another one
+     * @param steps number of steps that MN needs to do
+     */
     public void moveMotherNature(int steps){
         int index = 0;
         for(Archipelago arci : listOfArchipelagos){
@@ -110,6 +118,9 @@ public class Game {
         return listOfArchipelagos;
     }
 
+    /**
+     * Calculate who is the current player according to the ordered list of players
+     */
     public void calculateCurrentPlayer(){
         int index = 0;
         for( Player p : orderOfPlayers){
@@ -122,6 +133,10 @@ public class Game {
         currentPlayer = orderOfPlayers.get(index);
     }
 
+    /**
+     * Check if a professor needs to be assigned to a player and do it
+     * @param color of the professor to check
+     */
     public void assignProfessor(StudsAndProfsColor color){
         Player player = currentPlayer;
         int max = 0;
@@ -142,6 +157,11 @@ public class Game {
         }
     }
 
+    /**
+     * Unify two archipelagos adding the islands of the archToBeUnified to the one of the actualArchipelago
+     * @param actualArchipelago Archipelago where MN is present
+     * @param archToBeUnified Archipelago to be unified to the actual one
+     */
     public void unifyArchipelagos(Archipelago actualArchipelago, Archipelago archToBeUnified){
         for(Island island: archToBeUnified.getBelongingIslands()){
             actualArchipelago.addIsland(island);
@@ -154,6 +174,9 @@ public class Game {
         return phase;
     }
 
+    /**
+     * Decide the nextPhase of the match
+     */
     public void nextPhase(){
         switch (phase){
             case CARD_SELECTION:
@@ -179,6 +202,11 @@ public class Game {
         return bag;
     }
 
+    /**
+     * Move a student from the entrance of a player to the dining room or to an archipelago
+     * @param colorToMove color of the student to be picked from the entrance
+     * @param destination of the student (0 for dining room, [1...12] for an archipelago
+     */
     public void moveStudents(StudsAndProfsColor colorToMove, int destination){
         if(destination == Constants.DININGROOMDESTINATION){
                 currentPlayer.getMyBoard().getEntrance().removeStudent(colorToMove);
@@ -201,40 +229,6 @@ public class Game {
         return numberOfPlayers;
     }
 
-    /*
-    For each color counts the number of students of that color in the arch
-    and get the dominantColor
-    for every player, check which player has that prof
-
-    ToDo: if another player already have influence, count also the tower
-          if the influence is the same for two players, the towers are not going to anyone
-     */
-    public void calculateInfluence(Archipelago arch){
-        int highestNumberOfStuds = 0;
-        StudsAndProfsColor dominantColor = StudsAndProfsColor.RED;
-
-        for(StudsAndProfsColor color : StudsAndProfsColor.values()){
-            int tempNOfStuds = 0;
-            for(Island island : arch.getBelongingIslands()){
-                tempNOfStuds = island.getStudentsByColor(color);
-            }
-            if(tempNOfStuds > highestNumberOfStuds){
-                highestNumberOfStuds = tempNOfStuds;
-                dominantColor = color;
-            }
-
-        }
-        for(Player player : listOfPlayers){
-            if(player.getMyBoard().getProfessorsTable().getHasProf(dominantColor)){
-                //if the ownership of arch is of another player, add towers to his table and remove from the other
-                //if the same player remains, do not change the number of towers on his board
-                //change ownership of arch
-            }
-        }
-
-
-    }
-
     public void getCoinFromBank(int coins) {
         bank -= coins;
     }
@@ -243,6 +237,10 @@ public class Game {
         return bank;
     }
 
+    /**
+     * Add an amount of coins to the bank of the game
+     * @param coins to be added
+     */
     public void addCoinInBank(int coins) {
         bank += coins;
     }

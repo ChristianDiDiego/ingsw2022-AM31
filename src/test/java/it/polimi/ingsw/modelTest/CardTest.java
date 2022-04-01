@@ -9,7 +9,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CardTest {
-
+    /**
+     * Check if the maxSteps of a card is properly read
+     */
     @Test
     void getMaxSteps() {
         Deck deck = new Deck();
@@ -21,6 +23,9 @@ class CardTest {
 
     }
 
+    /**
+     * Check if the power of a card is properly read
+     */
     @Test
     void getPower() {
         Deck deck = new Deck();
@@ -31,6 +36,9 @@ class CardTest {
         }
     }
 
+    /**
+     * Check that two cards are properly compared
+     */
     @Test
     void compareTo() {
         Deck deck = new Deck();

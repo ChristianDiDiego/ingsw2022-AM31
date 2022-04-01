@@ -10,6 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameHandlerTest {
     private GameHandler gameHandler;
 
+    /**
+     * Check if players are correctly added to the game
+     */
     @Test
     void addNewPlayer() {
         Player pl1 = new Player("carmine", ColorOfTower.WHITE);
@@ -26,6 +29,9 @@ class GameHandlerTest {
         assertEquals(0, gameHandler.getIsStarted());
     }
 
+    /**
+     * Check that if a color of a tower is already taken cannot be chosen again
+     */
     @Test
     void checkColorTower() {
         Player pl1 = new Player("carmine", ColorOfTower.WHITE);
@@ -36,6 +42,10 @@ class GameHandlerTest {
 
     }
 
+    /**
+     * Check if the game is properly started when the number of players decided by the
+     * first player is reached
+     */
     @Test
     void startGame() {
 

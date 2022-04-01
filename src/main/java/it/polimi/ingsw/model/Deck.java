@@ -22,8 +22,7 @@ public class Deck {
     }
 
     /**
-     * return the list of left cards in deck
-     * @return
+     * @return the list of left cards in deck
      */
     public List<Card> getLeftCards() {
         return playerCards;
@@ -31,8 +30,8 @@ public class Deck {
 
     /**
      * removes the chosen card from deck
-     * @param cardToUse
-     * @return true or false if the card has been correctly removed or not
+     * @param cardToUse card to be picked from the deck
+     * @return true if the card has been correctly removed, false otherwise
      */
     public boolean useCard(Card cardToUse){
         for(Card c: this.getLeftCards()){

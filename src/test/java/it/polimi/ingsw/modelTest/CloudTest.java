@@ -8,6 +8,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class CloudTest {
     Cloud cloud = new Cloud(3);
 
+    /**
+     * Check if the students are properly added to a cloud
+     */
     @Test
     void addStudents() {
         assertEquals(true, cloud.getIsTaken());
@@ -16,6 +19,9 @@ class CloudTest {
         assertEquals(false, cloud.getIsTaken());
     }
 
+    /**
+     * Check if the students are properly removed from a cloud
+     */
     @Test
     void removeStudents() {
         int[] toAdd = new int[]{2, 1, 3, 1, 2};
