@@ -25,6 +25,10 @@ public class Player {
         return lastUsedCard;
     }
 
+    public void setLastUsedCard(Card card){
+        this.lastUsedCard = card;
+    }
+
     /**
      * receives the card chosen by player and removes it from deck
      * @param toUse card chosen
