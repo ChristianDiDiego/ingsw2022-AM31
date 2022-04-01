@@ -1,7 +1,34 @@
 package it.polimi.ingsw.client;
 
-public class ActionParser {
+import it.polimi.ingsw.controller.ActionController;
 
+import java.util.Locale;
+
+/**
+ * Parse a string and call actionController of that phase
+ */
+public class ActionParser {
+    private ActionController actionController;
+
+    public ActionParser(ActionController actionController){
+        this.actionController = actionController;
+    }
+
+    public boolean actionSerializer(String message){
+        String[] input = message.split(" ");
+        String phase = input[0];
+
+        switch(phase.toUpperCase(Locale.ROOT)){
+            case "CARD":
+
+                break;
+            case "MOVE":
+               // actionController.checkActionMoveMN();
+                break;
+        }
+        //just a placeholder to not sign the function in red:
+        return true;
+    }
     /**
      * riceve tutti i messaggi della CLI
      * converte la stringa in FASE : AZIONE
