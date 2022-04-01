@@ -38,7 +38,7 @@ public class Bag {
         Random random = new Random();
         int i = 0;
             while (i < studToPick) {
-                int value = random.nextInt(5 + 0);
+                int value = random.nextInt(Constants.NUMBEROFKINGDOMS);
                 if(studentsInBag[value] > 0) {
                     studentsToPick[value]++;
                     studentsInBag[value]--;
