@@ -8,6 +8,7 @@ public class Constants {
     public static final int NUMBEROFSTUDENTSOFEACHCOLOR = 26;
     public static final int NUMBEROFCARDSINDECK = 10;
     public static final int DININGROOMDESTINATION = 0;
+    public static final int MAXSTUDENTSINDINING = 10;
 
     private static String ipServer;
     private static int port;
