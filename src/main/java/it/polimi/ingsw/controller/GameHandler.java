@@ -50,6 +50,7 @@ public class GameHandler {
 
     /**
      * Add a new player (since the second one) to the game
+     * Set isStarted = 1 when the numberOfPlaers required is reached and call startGame
      * @param nickname name chosen by the player
      * @param colorOfTower color chosen by the player
      */
@@ -84,8 +85,8 @@ public class GameHandler {
 
     /**
      *  Start the game:
-     *  Set isStarted to 1
      * Pick n students from the bag and place them to the players' board
+     * Add m towers to each player
      * Start the turn
      */
     public void startGame(){
