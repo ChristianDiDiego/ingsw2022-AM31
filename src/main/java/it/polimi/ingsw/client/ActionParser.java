@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.ActionController;
 import java.util.Locale;
 
 /**
- * Parse a string and call actionController of that phase
+ * Parse a string and call actionController of that phase or turnController if is card phase
  */
 public class ActionParser {
     private ActionController actionController;
@@ -20,7 +20,7 @@ public class ActionParser {
 
         switch(phase.toUpperCase(Locale.ROOT)){
             case "CARD":
-
+            //    actionController.checkActionCard();
                 break;
             case "MOVE":
                // actionController.checkActionMoveMN();

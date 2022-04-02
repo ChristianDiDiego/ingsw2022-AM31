@@ -42,32 +42,68 @@ public class ActionController {
 
     }
 
-    public void checkActionCard(Player player, int power){
-        if(game.getPhase()== Phase.CARD_SELECTION && player == game.getCurrentPlayer()){
-            turnController.manageReceivedCard(player, power);
-
-        }else if(game.getPhase()== Phase.CARD_SELECTION || player != game.getCurrentPlayer()){
-            System.out.println("non è il tuo turno!!");
-        }else if(game.getPhase()!= Phase.CARD_SELECTION && player == game.getCurrentPlayer()){
-            System.out.println("hai inviato un'azione non valida, riprova");
-        }
-    }
-
+    //TODO: leave here only the controller part of the movement?
+    /**
+     * Check if a movement of a student from the entrance of the player's board is allowed
+     * Call assignProfessor to check if a prof needs to be added
+     * (TODO: add a listener that does it when the dining room change?)
+     * @param player that do the movement
+     * @param colors of the students that the player wants to move
+     * @param destinations of the students (0 = dining room, [1..12] number of the archipelago
+     */
 //TODO: check if the destination is valid
    public void checkActionMoveStudent(Player player,StudsAndProfsColor[] colors, int[] destinations){
-        if(game.getPhase()== Phase.MOVE_STUDENTS && player == game.getCurrentPlayer()){
-            //check che l'azione sia valida, in caso aggiorno Model
+       StudsAndProfsColor color;
+       int destination;
+       for(int i = 0 ; i < destinations.length ; i++ ){
+          color = colors[i];
+          destination = destinations[i];
+           if(game.getPhase()== Phase.MOVE_STUDENTS && player == game.getCurrentPlayer()){
+               if(player.getMyBoard().getEntrance().getStudentsByColor(color) == 0){
+                   System.out.println("You do not have a student of color " + color.toString());
+               }else{
+                   if(destination == 0){
+                       if(player.getMyBoard().getDiningRoom().getStudentsByColor(color) == Constants.MAXSTUDENTSINDINING){
+                           System.out.println("Your dining room of the color " + color.toString() + " is full");
+                       }else{
+                           player.getMyBoard().getEntrance().removeStudent(color);
+                           player.getMyBoard().getDiningRoom().addStudent(color);
+                           game.assignProfessor(color);
+                       }
+                   }else{
+                       player.getMyBoard().getEntrance().removeStudent(color);
+                       for (Archipelago arc : game.getListOfArchipelagos()){
+                           for (Island island : arc.getBelongingIslands()){
+                               if(island.getIdIsland() == destination){
+                                   island.addStudent(color);
+                               }
+                           }
+                       }
+                   }
+               }
 
-        }else if(game.getPhase()== Phase.MOVE_STUDENTS || player != game.getCurrentPlayer()){
-            System.out.println("non è il tuo turno!!");
-       }else if(game.getPhase()!= Phase.MOVE_STUDENTS && player == game.getCurrentPlayer()){
-            System.out.println("hai inviato un'azione non valida, riprova");
-        }
+           }else if(game.getPhase()== Phase.MOVE_STUDENTS || player != game.getCurrentPlayer()){
+               System.out.println("non è il tuo turno!!");
+           }else if(game.getPhase()!= Phase.MOVE_STUDENTS && player == game.getCurrentPlayer()){
+               System.out.println("hai inviato un'azione non valida, riprova");
+           }
+       }
    }
 
-    public void checkActionMoveMN(Player player,int destination){
+    //TODO: add an observer that when MN change the position calculate the influence
+    /**
+     * Check if a player can move MN of the steps that he sent
+     * @param player that want to move MN
+     * @param steps that ask to MN to do
+     */
+    public void checkActionMoveMN(Player player,int steps){
         if(game.getPhase()== Phase.MOVE_MN && player == game.getCurrentPlayer()){
-            //check che l'azione sia valida, in caso modifico il model
+                if(steps <= player.getLastUsedCard().getMaxSteps()){
+                    game.moveMotherNature(steps);
+                }else {
+                    System.out.println("The card that you played does not allow you to do these steps!" +
+                            "(you can do max " + player.getLastUsedCard().getMaxSteps() + " steps)");
+                }
 
         }else if(game.getPhase()== Phase.MOVE_MN || player != game.getCurrentPlayer()){
             System.out.println("non è il tuo turno!!");
@@ -98,31 +134,6 @@ public class ActionController {
         return game.getCurrentPlayer();
     }
     //questa chiama quella sopra
-
-    /**
-     * Check if an archipelago has to be unified with previous or next,
-     * if yes, it calls game.unifyArchipelagos()
-     * @param a archipelago to be checked
-     */
-    public void checkUnification(Archipelago a){
-        int index = game.getListOfArchipelagos().indexOf(a);
-        int previous = index - 1;
-        int next = index + 1;
-        if(index == 0) {
-            previous = game.getListOfArchipelagos().size() - 1;
-        }
-        if(index == game.getListOfArchipelagos().size() - 1) {
-            next = 0;
-        }
-
-        if(a.getOwner() == game.getListOfArchipelagos().get(previous).getOwner()) {
-            game.unifyArchipelagos(a, game.getListOfArchipelagos().get(previous));
-        }
-        if(a.getOwner() == game.getListOfArchipelagos().get(next).getOwner()) {
-            game.unifyArchipelagos(a, game.getListOfArchipelagos().get(next));
-        }
-
-    }
 
     /**
      * Called if a player, adding the tower to an archipelago, run out of them

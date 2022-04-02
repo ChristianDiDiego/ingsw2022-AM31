@@ -1,10 +1,9 @@
 package it.polimi.ingsw.controller;
-
-import com.sun.org.apache.bcel.internal.Const;
 import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.model.*;
 
 //TODO: ADDTESTS!!!!!!
+// and add cloud choice
 public class TurnController {
     private Controller controller;
     private ActionController actionController;
@@ -46,14 +45,17 @@ public class TurnController {
             endGame();
         }
     }
-//TODO: listner of orderOfPlayer instead of calling it directly?
+
+    //TODO: listener of orderOfPlayer instead of calling it directly?
+    // add check that the followed order is the clockwise order since the player that played the less value card in the match before
     /**
      * Receive a card and add it to lastUsedCard of the player
      * if the player is the last player find the new player order
      * @param player player that play the card
      * @param power power of the card that the player wants to use
      */
-    public void manageReceivedCard(Player player, int power){
+    public void checkActionCard(Player player, int power){
+        if(game.getPhase()== Phase.CARD_SELECTION && player == game.getCurrentPlayer()){
             //If the card is in the deck, remove it and place as last used card
             if(checkCardPresence(player, power) ){
                 if(checkCardUsage(player, power)){
@@ -74,6 +76,11 @@ public class TurnController {
                 System.out.println("Card not present in the deck!");
             }
 
+        }else if(game.getPhase()== Phase.CARD_SELECTION || player != game.getCurrentPlayer()){
+            System.out.println("non è il tuo turno!!");
+        }else if(game.getPhase()!= Phase.CARD_SELECTION && player == game.getCurrentPlayer()){
+            System.out.println("hai inviato un'azione non valida, riprova");
+        }
     }
 
     //TODO: addTest
@@ -114,35 +121,7 @@ public class TurnController {
 
     }
 
-    /**
-     * Check if a movement of a student from the entrance of the player's board is allowed
-     * @param player that do the movement
-     * @param color of the student that the player wants to move
-     * @param destination of the student (0 = dining room, [1..12] number of the archipelago
-     */
-    public void manageStudentMovement(Player player, StudsAndProfsColor color, int destination){
-        if(player.getMyBoard().getEntrance().getStudentsByColor(color) == 0){
-            System.out.println("You do not have a student of color " + color.toString());
-        }else{
-            if(destination == 0){
-                if(player.getMyBoard().getDiningRoom().getStudentsByColor(color) == Constants.MAXSTUDENTSINDINING){
-                    System.out.println("Your dining room of the color " + color.toString() + " is full");
-                }else{
-                    player.getMyBoard().getEntrance().removeStudent(color);
-                    player.getMyBoard().getDiningRoom().addStudent(color);
-                }
-            }else{
-                player.getMyBoard().getEntrance().removeStudent(color);
-                for (Archipelago arc : game.getListOfArchipelagos()){
-                    for (Island island : arc.getBelongingIslands()){
-                        if(island.getIdIsland() == destination){
-                            island.addStudent(color);
-                        }
-                    }
-                }
-            }
-        }
-    }
+
 
     /**
      * Called when the game is over

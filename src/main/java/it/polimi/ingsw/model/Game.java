@@ -95,6 +95,7 @@ public class Game {
         return orderOfPlayers;
     }
 
+    //TODO: add an observer that when MN change the position calculate the influence
     /**
      * Move Mother Nature from the current archipelago to another one
      * @param steps number of steps that MN needs to do
@@ -113,7 +114,7 @@ public class Game {
                 arci.changeMNPresence();
             }
         }
-
+        calculateInfluence();
     }
     public List<Archipelago> getListOfArchipelagos(){
         return listOfArchipelagos;
@@ -203,6 +204,7 @@ public class Game {
         return bag;
     }
 
+    //TODO: decide if move it to turn controller
     /**
      * Move a student from the entrance of a player to the dining room or to an archipelago
      * @param colorToMove color of the student to be picked from the entrance
