@@ -66,7 +66,7 @@ public class Cli implements View {
             }
 
             StringBuilder board = new StringBuilder();
-            board.append(ColorsCli.BLACK).append("\n Board of player: "+ p + "\n").append(ColorsCli.BLACK);
+            board.append(ColorsCli.RESET).append("\n Board of player: "+ p + "\n").append(ColorsCli.RESET);
             for(int j = 0 ; j < Constants.NUMBEROFKINGDOMS ; j++){
                 for(int k = 0; k < nSDN[j]; k++){
                     board.append(ColorsCli.getColorByNumber(j)).append(" ●").append(ColorsCli.getColorByNumber(j));
@@ -82,19 +82,18 @@ public class Cli implements View {
                 board.append(ColorsCli.BLACK).append("\n").append(ColorsCli.BLACK);
             }
 
-            board.append(ColorsCli.BLACK).append("Students in entrance: \n").append(ColorsCli.BLACK);
+            board.append(ColorsCli.RESET).append("Students in entrance: \n").append(ColorsCli.RESET);
             for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
                 for(int k = 0; k < nSE[i]; k++){
                     board.append(ColorsCli.getColorByNumber(i)).append("● ").append(ColorsCli.getColorByNumber(i));
                 }
                 board.append(ColorsCli.BLACK).append("\n").append(ColorsCli.BLACK);
             }
-            board.append(ColorsCli.BLACK).append("Towers on board: \n").append(ColorsCli.BLACK);
+            board.append(ColorsCli.RESET).append("Towers on board: \n").append(ColorsCli.RESET);
             for(int i = 0; i < nT; i++){
                 board.append(ColorsCli.BLACK).append("♜ ").append(ColorsCli.BLACK).append(ColorsCli.RESET);
             }
             System.out.println(board.toString());
-
         }
     }
 
