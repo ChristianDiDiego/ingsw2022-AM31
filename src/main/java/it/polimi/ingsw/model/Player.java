@@ -2,14 +2,17 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.Board;
 
+import java.util.Optional;
+
 public class Player {
     private String nickname;
     private Deck myDeck;
     private ColorOfTower colorOfTowers;
     private Card lastUsedCard;
     private Board myBoard;
-    private int wallet;
+    private Optional<Integer> wallet;
 
+    //TODO: characterUsed and wallet are optionals
     public Player(String nickname, ColorOfTower colorOfTowers){
         this.nickname = nickname;
         this.colorOfTowers = colorOfTowers;
