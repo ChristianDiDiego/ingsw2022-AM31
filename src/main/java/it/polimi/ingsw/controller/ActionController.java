@@ -42,6 +42,90 @@ public class ActionController {
 
     }
 
+    /**
+     * Calculate the influence on the archipelago where MN is present
+     * Menage the tower situation of an archipelago and of the players after that
+     * Call checkUnification to check if the archipelago needs to be unified to another one
+     */
+    public void calculateInfluence(){
+        for(Archipelago a: game.getListOfArchipelagos()){
+            if(a.getIsMNPresent()){
+                Player newOwner;
+                Player oldOwner;
+                int maxInfluence =0;
+                if(a.getOwner() == null){
+                    oldOwner = null;
+                    newOwner = getCurrentPlayer();
+
+                }else {
+                    oldOwner = a.getOwner();
+                    newOwner = a.getOwner();
+                    maxInfluence = a.getBelongingIslands().size();
+                }
+
+                for(int c=0; c< Constants.NUMBEROFKINGDOMS; c++){
+                    for(Island i: a.getBelongingIslands()){
+                        if(i.getAllStudents()[c] > 0 && a.getOwner().getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
+                            maxInfluence += i.getAllStudents()[c];
+                        }
+                    }
+                }
+                for(Player p : game.getOrderOfPlayers()){
+                    if(p != newOwner){
+                        int newInfluence = 0;
+                        for(int c=0; c< Constants.NUMBEROFKINGDOMS; c++){
+                            for(Island i: a.getBelongingIslands()){
+                                if(i.getAllStudents()[c] > 0 && p.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
+                                    newInfluence += i.getAllStudents()[c];
+                                }
+                            }
+
+                        }
+                        if(newInfluence > maxInfluence){
+                            newOwner = p;
+                            maxInfluence = newInfluence;
+                        }
+                    }
+                }
+
+                if(maxInfluence > 0){
+                    a.changeOwner(newOwner);
+                    for(int i = 0; i < a.getBelongingIslands().size(); i++) {
+                        if(oldOwner != null){
+                            oldOwner.getMyBoard().getTowersOnBoard().removeTower();
+                        }
+                        newOwner.getMyBoard().getTowersOnBoard().removeTower();
+                    }
+                      checkUnification(a);
+                }
+            }
+        }
+    }
+    /**
+     * Check if an archipelago has to be unified with previous or next,
+     * if yes, it calls game.unifyArchipelagos()
+     * @param a archipelago to be checked
+     */
+    public void checkUnification(Archipelago a){
+        int index = game.getListOfArchipelagos().indexOf(a);
+        int previous = index - 1;
+        int next = index + 1;
+        if(index == 0) {
+            previous = game.getListOfArchipelagos().size() - 1;
+        }
+        if(index == game.getListOfArchipelagos().size() - 1) {
+            next = 0;
+        }
+
+        if(a.getOwner() == game.getListOfArchipelagos().get(previous).getOwner()) {
+            game.unifyArchipelagos(a, game.getListOfArchipelagos().get(previous));
+        }
+        if(a.getOwner() == game.getListOfArchipelagos().get(next).getOwner()) {
+            game.unifyArchipelagos(a, game.getListOfArchipelagos().get(next));
+        }
+
+    }
+
     //TODO: leave here only the controller part of the movement?
     /**
      * Check if a movement of a student from the entrance of the player's board is allowed
@@ -100,6 +184,7 @@ public class ActionController {
         if(game.getPhase()== Phase.MOVE_MN && player == game.getCurrentPlayer()){
                 if(steps <= player.getLastUsedCard().getMaxSteps()){
                     game.moveMotherNature(steps);
+                    calculateInfluence();
                 }else {
                     System.out.println("The card that you played does not allow you to do these steps!" +
                             "(you can do max " + player.getLastUsedCard().getMaxSteps() + " steps)");

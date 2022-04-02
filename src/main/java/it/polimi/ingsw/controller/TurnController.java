@@ -121,8 +121,6 @@ public class TurnController {
 
     }
 
-
-
     /**
      * Called when the game is over
      */

@@ -114,7 +114,6 @@ public class Game {
                 arci.changeMNPresence();
             }
         }
-        calculateInfluence();
     }
     public List<Archipelago> getListOfArchipelagos(){
         return listOfArchipelagos;
@@ -252,63 +251,4 @@ public class Game {
         bank = bank;
     }
 
-    /**
-     * Calculate the influence on the archipelago where MN is present
-     * Menage the tower situation of an archipelago and of the players after that
-     * Call checkUnification to check if the archipelago needs to be unified to another one
-     */
-    public void calculateInfluence(){
-        for(Archipelago a: getListOfArchipelagos()){
-            if(a.getIsMNPresent()){
-                Player newOwner;
-                Player oldOwner;
-                int maxInfluence =0;
-                if(a.getOwner() == null){
-                    oldOwner = null;
-                    newOwner = getCurrentPlayer();
-
-                }else {
-                    oldOwner = a.getOwner();
-                    newOwner = a.getOwner();
-                    maxInfluence = a.getBelongingIslands().size();
-                }
-
-                for(int c=0; c< Constants.NUMBEROFKINGDOMS; c++){
-                    for(Island i: a.getBelongingIslands()){
-                        if(i.getAllStudents()[c] > 0 && a.getOwner().getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
-                            maxInfluence += i.getAllStudents()[c];
-                        }
-                    }
-                }
-                for(Player p : getOrderOfPlayers()){
-                    if(p != newOwner){
-                        int newInfluence = 0;
-                        for(int c=0; c< Constants.NUMBEROFKINGDOMS; c++){
-                            for(Island i: a.getBelongingIslands()){
-                                if(i.getAllStudents()[c] > 0 && p.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
-                                    newInfluence += i.getAllStudents()[c];
-                                }
-                            }
-
-                        }
-                        if(newInfluence > maxInfluence){
-                            newOwner = p;
-                            maxInfluence = newInfluence;
-                        }
-                    }
-                }
-
-                if(maxInfluence > 0){
-                    a.changeOwner(newOwner);
-                    for(int i = 0; i < a.getBelongingIslands().size(); i++) {
-                        if(oldOwner != null){
-                            oldOwner.getMyBoard().getTowersOnBoard().removeTower();
-                        }
-                        newOwner.getMyBoard().getTowersOnBoard().removeTower();
-                    }
-                  //  checkUnification(a);
-                }
-            }
-        }
-    }
 }
