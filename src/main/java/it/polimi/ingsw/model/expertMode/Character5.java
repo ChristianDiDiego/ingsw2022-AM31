@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.expertMode;
 
+import it.polimi.ingsw.model.Game;
+
 /**
  * image 8 in image folder ;
  * card 9 in list of cards ( in game tutorial)
@@ -7,8 +9,8 @@ package it.polimi.ingsw.model.expertMode;
  */
 public class Character5 extends Characters{
 
-    public Character5() {
-        super(3);
+    public Character5(Game game) {
+        super(3, game);
     }
 
     @Override
