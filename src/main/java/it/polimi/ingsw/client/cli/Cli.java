@@ -67,11 +67,11 @@ public class Cli implements View {
 
             StringBuilder board = new StringBuilder();
             board.append(ColorsCli.BLACK).append("\n Board of player: "+ p + "\n").append(ColorsCli.BLACK);
-            for(int j=0 ; j<5 ; j++){
+            for(int j = 0 ; j < Constants.NUMBEROFKINGDOMS ; j++){
                 for(int k = 0; k < nSDN[j]; k++){
                     board.append(ColorsCli.getColorByNumber(j)).append(" ●").append(ColorsCli.getColorByNumber(j));
                 }
-                for(int k = nSDN[j]; k < 10; k++){
+                for(int k = nSDN[j]; k < Constants.MAXSTUDENTSINDINING; k++){
                     board.append(ColorsCli.getColorByNumber(j)).append(" ◯").append(ColorsCli.getColorByNumber(j));
                 }
                 if(hasProf[j]){
@@ -84,7 +84,7 @@ public class Cli implements View {
 
             board.append(ColorsCli.BLACK).append("Students in entrance: \n").append(ColorsCli.BLACK);
             for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
-                for(int k=0; k<nSE[i]; k++){
+                for(int k = 0; k < nSE[i]; k++){
                     board.append(ColorsCli.getColorByNumber(i)).append("● ").append(ColorsCli.getColorByNumber(i));
                 }
                 board.append(ColorsCli.BLACK).append("\n").append(ColorsCli.BLACK);
