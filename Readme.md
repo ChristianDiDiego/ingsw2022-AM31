@@ -7,16 +7,16 @@ Professor : Alessandro Margara
 
 ## Implemented functions: 
 
-| Functionality | Status |
-|:-----------------------|:------------------------------------:|
-| Basic rules | W.I.P. |
-| Complete rules | W.I.P. |
+| Functionality |     Status     |
+|:-----------------------|:--------------:|
+| Basic rules |     W.I.P.     |
+| Complete rules |     W.I.P.     |
 | Socket | Coming soon... |
-| GUI |Coming soon... |
-| CLI |Coming soon... |
-| Multiple games |Coming soon... |
-| 4 players |Coming soon... |
-| Persistence |Coming soon... |
+| GUI | Coming soon... |
+| CLI |     W.I.P.     |
+| Multiple games | Coming soon... |
+| 4 players | Coming soon... |
+| Persistence | Coming soon... |
 
 ## Team:
 * [Federica Di Filippo](https://github.com/FedericaDiFilippo)
