@@ -87,11 +87,10 @@ public class Cli implements View {
                 for(int k = 0; k < nSE[i]; k++){
                     board.append(ColorsCli.getColorByNumber(i)).append("● ").append(ColorsCli.getColorByNumber(i));
                 }
-                board.append(ColorsCli.BLACK).append("\n").append(ColorsCli.BLACK);
             }
-            board.append(ColorsCli.RESET).append("Towers on board: \n").append(ColorsCli.RESET);
+            board.append(ColorsCli.RESET).append("\nTowers on board: \n").append(ColorsCli.RESET);
             for(int i = 0; i < nT; i++){
-                board.append(ColorsCli.BLACK).append("♜ ").append(ColorsCli.BLACK).append(ColorsCli.RESET);
+                board.append(ColorsCli.RESET).append("♜ ").append(ColorsCli.BLACK).append(ColorsCli.RESET);
             }
             System.out.println(board.toString());
         }
