@@ -11,6 +11,7 @@ public class Character6 extends Characters{
 
     public Character6(Game game) {
         super(1, game);
+        this.descriptionOfPower = "The player can switch max 2 students between entrance and dining room";
     }
 
     @Override

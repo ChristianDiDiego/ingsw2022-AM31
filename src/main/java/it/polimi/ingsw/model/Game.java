@@ -69,6 +69,11 @@ public class Game {
         listOfPlayers.add(player);
         orderOfPlayers.add(player);
     }
+
+    public List<Player> getListOfPlayer(){
+        return this.listOfPlayers;
+    }
+
     public List<Cloud> getListOfClouds(){
         return this.listOfClouds;
     }
