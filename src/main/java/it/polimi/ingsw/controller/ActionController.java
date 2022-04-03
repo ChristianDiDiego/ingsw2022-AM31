@@ -136,42 +136,56 @@ public class ActionController {
      * @param destinations of the students (0 = dining room, [1..12] number of the archipelago
      */
 //TODO: check if the destination is valid
-   public void checkActionMoveStudent(Player player,StudsAndProfsColor[] colors, int[] destinations){
+   public boolean checkActionMoveStudent(Player player,StudsAndProfsColor[] colors, int[] destinations){
        StudsAndProfsColor color;
        int destination;
-       for(int i = 0 ; i < destinations.length ; i++ ){
-          color = colors[i];
-          destination = destinations[i];
-           if(game.getPhase()== Phase.MOVE_STUDENTS && player == game.getCurrentPlayer()){
-               if(player.getMyBoard().getEntrance().getStudentsByColor(color) == 0){
-                   System.out.println("You do not have a student of color " + color.toString());
-               }else{
-                   if(destination == 0){
-                       if(player.getMyBoard().getDiningRoom().getStudentsByColor(color) == Constants.MAXSTUDENTSINDINING){
-                           System.out.println("Your dining room of the color " + color.toString() + " is full");
-                       }else{
+       if(game.getPhase()== Phase.MOVE_STUDENTS && player == game.getCurrentPlayer()) {
+           if (colors.length == turnController.getGameHandler().getNumberOfMovements()) {
+               for (int i = 0; i < destinations.length; i++) {
+                   color = colors[i];
+                   destination = destinations[i];
+
+                   if (player.getMyBoard().getEntrance().getStudentsByColor(color) == 0) {
+                       System.out.println("You do not have a student of color " + color.toString());
+                       return false;
+                   } else {
+                       if (destination == 0) {
+                           if (player.getMyBoard().getDiningRoom().getStudentsByColor(color) == Constants.MAXSTUDENTSINDINING) {
+                               System.out.println("Your dining room of the color " + color.toString() + " is full");
+                               return false;
+                           } else {
+                               player.getMyBoard().getEntrance().removeStudent(color);
+                               player.getMyBoard().getDiningRoom().addStudent(color);
+                               game.assignProfessor(color);
+                               return true;
+                           }
+                       } else {
                            player.getMyBoard().getEntrance().removeStudent(color);
-                           player.getMyBoard().getDiningRoom().addStudent(color);
-                           game.assignProfessor(color);
-                       }
-                   }else{
-                       player.getMyBoard().getEntrance().removeStudent(color);
-                       for (Archipelago arc : game.getListOfArchipelagos()){
-                           for (Island island : arc.getBelongingIslands()){
-                               if(island.getIdIsland() == destination){
-                                   island.addStudent(color);
+                           for (Archipelago arc : game.getListOfArchipelagos()) {
+                               for (Island island : arc.getBelongingIslands()) {
+                                   if (island.getIdIsland() == destination) {
+                                       island.addStudent(color);
+                                       return true;
+                                   }
                                }
                            }
+                           System.out.println("Destination not valid");
+                           return false;
                        }
                    }
                }
-
-           }else if(game.getPhase()== Phase.MOVE_STUDENTS || player != game.getCurrentPlayer()){
-               System.out.println("non è il tuo turno!!");
-           }else if(game.getPhase()!= Phase.MOVE_STUDENTS && player == game.getCurrentPlayer()){
-               System.out.println("hai inviato un'azione non valida, riprova");
+           }else {
+               System.out.println("You can move only " + turnController.getGameHandler().getNumberOfMovements() + " students");
+               return false;
            }
-       }
+       }else if(game.getPhase()== Phase.MOVE_STUDENTS || player != game.getCurrentPlayer()){
+               System.out.println("non è il tuo turno!!");
+               return false;
+           }else {
+               System.out.println("hai inviato un'azione non valida, riprova");
+               return false;
+           }
+       return false;
    }
 
     //TODO: add an observer that when MN change the position calculate the influence
@@ -179,38 +193,59 @@ public class ActionController {
      * Check if a player can move MN of the steps that he sent
      * @param player that want to move MN
      * @param steps that ask to MN to do
+     * @return true if the player can do the steps, false otherwise
      */
-    public void checkActionMoveMN(Player player,int steps){
+    public boolean checkActionMoveMN(Player player,int steps){
         if(game.getPhase()== Phase.MOVE_MN && player == game.getCurrentPlayer()){
                 if(steps <= player.getLastUsedCard().getMaxSteps()){
                     game.moveMotherNature(steps);
                     calculateInfluence();
+                    return true;
                 }else {
                     System.out.println("The card that you played does not allow you to do these steps!" +
                             "(you can do max " + player.getLastUsedCard().getMaxSteps() + " steps)");
+                    return false;
                 }
 
         }else if(game.getPhase()== Phase.MOVE_MN || player != game.getCurrentPlayer()){
             System.out.println("non è il tuo turno!!");
-        }else if(game.getPhase()!= Phase.MOVE_MN && player == game.getCurrentPlayer()){
+            return false;
+        }else{
             System.out.println("hai inviato un'azione non valida, riprova");
+            return false;
         }
     }
 
     /**
-     * Check if
-     * @param player
-     * @param cloudId
+     * Check if a cloud can be picked and do it
+     * @param player that wants to pick a cloud
+     * @param cloudId id of the cloud to pick
      */
-    public void checkActionCloud(Player player,int cloudId){
+    public boolean checkActionCloud(Player player,int cloudId){
         if(game.getPhase()== Phase.CLOUD_SELECTION && player == game.getCurrentPlayer()){
-            //check che l'azione sia valida, in caso modifico il model
+            for(Cloud cloud : game.getListOfClouds()){
+                if (cloud.getIdCloud() == cloudId){
+                    if(!cloud.getIsTaken()){
+                        player.getMyBoard().getEntrance().addStudent(cloud.getStudents());
+                        return true;
+                    }else{
+                        System.out.println("Cloud already taken");
+                        return false;
+                    }
+                }else{
+                    System.out.println("Number of the cloud not valid");
+                    return false;
+                }
+            }
 
         }else if(game.getPhase()== Phase.CLOUD_SELECTION || player != game.getCurrentPlayer()){
             System.out.println("non è il tuo turno!!");
-        }else if(game.getPhase()!= Phase.CLOUD_SELECTION && player == game.getCurrentPlayer()){
+            return false;
+        }else {
             System.out.println("hai inviato un'azione non valida, riprova");
+            return false;
         }
+        return false;
     }
 
    public void sendActionToGame(){}
@@ -225,5 +260,9 @@ public class ActionController {
      */
     public void endGameImmediately(){
         isFinished = 1;
+    }
+
+    public TurnController getTurnController() {
+        return turnController;
     }
 }

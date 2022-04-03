@@ -53,8 +53,9 @@ public class TurnController {
      * if the player is the last player find the new player order
      * @param player player that play the card
      * @param power power of the card that the player wants to use
+     * @return true if the player can use the card, false otherwise
      */
-    public void checkActionCard(Player player, int power){
+    public boolean checkActionCard(Player player, int power){
         if(game.getPhase()== Phase.CARD_SELECTION && player == game.getCurrentPlayer()){
             //If the card is in the deck, remove it and place as last used card
             if(checkCardPresence(player, power) ){
@@ -69,17 +70,22 @@ public class TurnController {
                             }
                         }
                     }
+                    return true;
                 }else{
                     System.out.println("Card already played in this turn");
+                    return false;
                 }
             }else{
                 System.out.println("Card not present in the deck!");
+                return false;
             }
 
         }else if(game.getPhase()== Phase.CARD_SELECTION || player != game.getCurrentPlayer()){
             System.out.println("non è il tuo turno!!");
-        }else if(game.getPhase()!= Phase.CARD_SELECTION && player == game.getCurrentPlayer()){
+            return false;
+        }else {
             System.out.println("hai inviato un'azione non valida, riprova");
+            return false;
         }
     }
 
@@ -90,7 +96,7 @@ public class TurnController {
      * @param power of the card to be checked
      * @return True if the card has not been used before in the same turn, false otherwise
      */
-    public boolean checkCardUsage(Player p, int power){
+    private boolean checkCardUsage(Player p, int power){
         if(p.getMyDeck().getLeftCards().size() >1 ){
             for(int i = 0; i< game.getOrderOfPlayers().indexOf(p); i++){
                 if(game.getOrderOfPlayers().get(i).getLastUsedCard().getPower() == power){
@@ -110,7 +116,7 @@ public class TurnController {
      * @param power power of the card to be checked
      * @return True if the card is in the deck, false otherwise
      */
-    public boolean checkCardPresence(Player p, int power){
+    private boolean checkCardPresence(Player p, int power){
         for(Card c : p.getMyDeck().getLeftCards()){
             if(c.getPower() == power) return true;
         }

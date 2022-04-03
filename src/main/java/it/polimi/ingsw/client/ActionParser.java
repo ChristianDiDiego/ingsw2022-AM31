@@ -1,11 +1,18 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.controller.ActionController;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.StudsAndProfsColor;
 
 import java.util.Locale;
 
 /**
  * Parse a string and call actionController of that phase or turnController if is card phase
+ * Message structure:
+ * CARD CARDPOWER
+ * MOVEST [COLOR][DESTINATION],[COLOR][DESTINATION].. (R-0,B-2,R-3)
+ * MOVEMN STEPSOFMN
+ * CLOUD NOFCLOUDTOPICK
  */
 public class ActionParser {
     private ActionController actionController;
@@ -14,20 +21,77 @@ public class ActionParser {
         this.actionController = actionController;
     }
 
-    public boolean actionSerializer(String message){
+    /**
+     * Serialize the message arrived from the player recognising him and sending the action to the proper method
+     * @param nickname nick of the player that sent the action
+     * @param message received from the player
+     * @return 1 se action valid, 0 if some error occurs
+     */
+    public boolean actionSerializer(String nickname, String message){
         String[] input = message.split(" ");
         String phase = input[0];
+        Player player = recognisePlayer(nickname);
+        if( player != null){
+            switch(phase.toUpperCase(Locale.ROOT)){
+                case "CARD":
+                    int cardPower = Integer.parseInt(input[1]);
+                    return actionController.getTurnController().checkActionCard(player, cardPower);
 
-        switch(phase.toUpperCase(Locale.ROOT)){
-            case "CARD":
-            //    actionController.checkActionCard();
-                break;
-            case "MOVE":
-               // actionController.checkActionMoveMN();
-                break;
+                case "MOVEST":
+                    String[] colorDestination = message.split(",");
+                    StudsAndProfsColor[] colors = new StudsAndProfsColor[actionController.getTurnController().getGameHandler().getNumberOfMovements()];
+                    int[] destinations = new int[actionController.getTurnController().getGameHandler().getNumberOfMovements()];
+                    for(int i = 0; i< colorDestination.length; i++){
+                        colors[i] = charToColorEnum(colorDestination[i].split("-")[0].charAt(0));
+                        destinations[i] = Integer.parseInt(colorDestination[i].split("-")[1]);
+                    }
+                     return actionController.checkActionMoveStudent(player, colors, destinations);
+
+                case "MOVEMN":
+                    int mnSteps = Integer.parseInt(input[1]);
+                    return actionController.checkActionMoveMN(player, mnSteps);
+
+                case "CLOUD":
+                    int nOfCloud = Integer.parseInt(input[1]);
+                    return actionController.checkActionCloud(player, nOfCloud);
+
+                default:
+                    System.out.println("Action not recognised");
+                    return false;
+
+            }
+        }else{
+            System.out.println("Player not recognised");
+            return false;
         }
-        //just a placeholder to not sign the function in red:
-        return true;
+
+
+    }
+
+    private Player recognisePlayer(String nickname){
+        for(Player player :actionController.getGame().getOrderOfPlayers()){
+            if(player.getNickname().equals(nickname)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    private StudsAndProfsColor charToColorEnum(char color){
+        switch (Character.toUpperCase(color)){
+            case 'R':
+                return StudsAndProfsColor.RED;
+            case 'G':
+                return StudsAndProfsColor.GREEN;
+            case 'Y':
+                return StudsAndProfsColor.YELLOW;
+            case 'P':
+                return StudsAndProfsColor.PINK;
+            case 'B':
+                return StudsAndProfsColor.BLUE;
+           
+        }
+        return null;
     }
     /**
      * riceve tutti i messaggi della CLI
