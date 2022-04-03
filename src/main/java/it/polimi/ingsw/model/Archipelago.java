@@ -8,12 +8,14 @@ public class Archipelago {
     private List<Island> belongingIsland;
     private boolean isMNPresent;
     private Player owner;
+    private boolean isForbidden;
 
     public Archipelago(int idArchipelago) {
         this.idArchipelago = idArchipelago;
         Island temp = new Island(idArchipelago);
         this.belongingIsland = new ArrayList<>();
         belongingIsland.add(temp);
+        isForbidden = false;
         if(idArchipelago == 0){
             isMNPresent = true;
         }else{
@@ -71,5 +73,13 @@ public class Archipelago {
      */
     public void changeOwner(Player newOwner) {
         this.owner = newOwner;
+    }
+
+    public boolean getIsForbidden() {
+        return isForbidden;
+    }
+
+    public void setIsForbidden(boolean forbidden) {
+        isForbidden = forbidden;
     }
 }

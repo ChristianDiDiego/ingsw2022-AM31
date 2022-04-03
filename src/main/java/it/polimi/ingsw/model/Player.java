@@ -10,7 +10,8 @@ public class Player {
     private ColorOfTower colorOfTowers;
     private Card lastUsedCard;
     private Board myBoard;
-    private Optional<Integer> wallet;
+    private int wallet;
+    private int usedCharacter;
 
     //TODO: characterUsed and wallet are optionals
     public Player(String nickname, ColorOfTower colorOfTowers){
@@ -18,6 +19,8 @@ public class Player {
         this.colorOfTowers = colorOfTowers;
         this.myBoard = new Board();
         myDeck = new Deck();
+        wallet = 0;
+        usedCharacter = 0;
     }
 
     public String getNickname() {
@@ -65,7 +68,16 @@ public class Player {
     public void addCoinsToWallet(int coins) {
         this.wallet += coins;
     }
+
     public void removeCoinsFromWallet(int coins) {
         this.wallet -= coins;
+    }
+
+    public int getUsedCharacter() {
+        return usedCharacter;
+    }
+
+    public void setUsedCharacter(int usedCaracter) {
+        this.usedCharacter = usedCaracter;
     }
 }

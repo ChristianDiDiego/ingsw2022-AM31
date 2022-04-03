@@ -49,7 +49,7 @@ public class ActionController {
      */
     public void calculateInfluence(){
         for(Archipelago a: game.getListOfArchipelagos()){
-            if(a.getIsMNPresent()){
+            if(a.getIsMNPresent() && a.getIsForbidden() == false){
                 Player newOwner;
                 Player oldOwner;
                 int maxInfluence =0;
@@ -98,6 +98,8 @@ public class ActionController {
                     }
                       checkUnification(a);
                 }
+            }else if (a.getIsMNPresent() && a.getIsForbidden() == true){
+                a.setIsForbidden(false);
             }
         }
     }
@@ -197,7 +199,8 @@ public class ActionController {
      */
     public boolean checkActionMoveMN(Player player,int steps){
         if(game.getPhase()== Phase.MOVE_MN && player == game.getCurrentPlayer()){
-                if(steps <= player.getLastUsedCard().getMaxSteps()){
+
+                if(player.getUsedCharacter() == 1? steps <= player.getLastUsedCard().getMaxSteps() : steps <= player.getLastUsedCard().getMaxSteps()+2 ){
                     game.moveMotherNature(steps);
                     calculateInfluence();
                     return true;
@@ -248,7 +251,6 @@ public class ActionController {
         return false;
     }
 
-   public void sendActionToGame(){}
 
     public Player getCurrentPlayer(){
         return game.getCurrentPlayer();

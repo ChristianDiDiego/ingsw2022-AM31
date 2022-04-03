@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.expertMode;
 
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Phase;
 
 /**
  * image 3 in image folder ;
@@ -12,11 +13,20 @@ public class Character1 extends Characters{
 
     public Character1(Game game) {
         super(1, game);
+        descriptionOfPower = "Allow to move MN of 2 steps more than the used card";
     }
 
+    /**
+     * sets usedCharacter in player
+     * @param value not used
+     */
     @Override
-    public void usePower() {
-
+    public void usePower(int value) {
+        if(payForUse()){
+            if(game.getPhase() == Phase.MOVE_STUDENTS){
+                game.getCurrentPlayer().setUsedCharacter(1);
+            }
+        }
     }
 
 }

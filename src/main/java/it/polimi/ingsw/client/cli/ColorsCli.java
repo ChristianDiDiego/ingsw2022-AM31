@@ -11,6 +11,7 @@ public enum ColorsCli {
     public static final String BLUE = "\033[0;34m";    // BLUE
     public static final String PINK = "\033[1;35m";  // PINK
     public static final String CYAN = "\033[0;36m";    // CYAN
+    public static final String WHITE = "\u001B[37m"; //WHITE
 
     private final String toPrint;
 

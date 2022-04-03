@@ -14,7 +14,7 @@ public class Character4 extends Characters{
     }
 
     @Override
-    public void usePower() {
+    public void usePower(int value) {
 
     }
 
