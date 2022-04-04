@@ -1,5 +1,4 @@
 package it.polimi.ingsw.controller;
-import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.model.*;
 
 //TODO: ADDTESTS!!!!!!
@@ -37,13 +36,17 @@ public class TurnController {
      * Call endGame if the number of the students in the bag is finished
      */
     public void startTurn(){
-        //Add the students to the clouds
-        for(Cloud cloud : game.getListOfClouds()){
-            cloud.addStudents( game.getBag().pickStudent(gameHandler.getNumberOfStudentsOnCloud()) );
+        if(game.getBag().getNumberOfLeftStudents() == 0) {
+            gameHandler.endGame();
+        }else{
+            //Add the students to the clouds
+            for(Cloud cloud : game.getListOfClouds()){
+                cloud.addStudents( game.getBag().pickStudent(gameHandler.getNumberOfStudentsOnCloud()) );
+            }
         }
-        if(game.getBag().getNumberOfLeftStudents() == 0){
-            endGame();
-        }
+
+        //Message to be sent to the current player
+        System.out.println(game.getCurrentPlayer() + " is your turn!");
     }
 
     //TODO: listener of orderOfPlayer instead of calling it directly?
@@ -65,8 +68,13 @@ public class TurnController {
                             player.getMyDeck().useCard(c);
                             player.setLastUsedCard(c);
 
-                            if(player == game.getOrderOfPlayers().get(game.getOrderOfPlayers().size()-1)){
+                            if(player == game.getListOfPlayer().get(game.getListOfPlayer().size()-1)){
+                                //Send a message to all saying that the card selection phase is finished
+                                game.nextPhase();
                                 game.findPlayerOrder();
+
+                            }else{
+                                game.calculateNextPlayerPianification();
                             }
                         }
                     }
@@ -123,20 +131,6 @@ public class TurnController {
         return false;
     }
 
-    /**
-     * End the turn of a player
-     */
-    public void endTurn(){
-
-    }
-
-    /**
-     * Called when the game is over
-     */
-    public void endGame(){
-        gameHandler.setIsStarted(-1);
-        //notifyAll per gamehandler che chiama endgame
-    }
 }
 
 

@@ -4,7 +4,6 @@ import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,7 +55,7 @@ class GameTest {
         game.addPlayer(pl3);
         assertEquals(game.getCurrentPlayer(), pl1);
 
-        game.calculateCurrentPlayer();
+        game.calculateNextPlayerAction();
         assertEquals(game.getCurrentPlayer(), pl2);
 
     }

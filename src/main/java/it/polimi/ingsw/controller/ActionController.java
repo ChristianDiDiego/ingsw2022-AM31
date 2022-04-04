@@ -190,6 +190,7 @@ public class ActionController {
                        }
                    }
                }
+               game.nextPhase();
            }else {
                System.out.println("You can move only " + turnController.getGameHandler().getNumberOfMovements() + " students");
                return false;
@@ -217,6 +218,7 @@ public class ActionController {
                 if(player.getUsedCharacter() == 2? steps <= player.getLastUsedCard().getMaxSteps() : steps <= player.getLastUsedCard().getMaxSteps()+2 ){
                     game.moveMotherNature(steps);
                     calculateInfluence();
+                    game.nextPhase();
                     return true;
                 }else {
                     System.out.println("The card that you played does not allow you to do these steps!" +
@@ -244,6 +246,7 @@ public class ActionController {
                 if (cloud.getIdCloud() == cloudId){
                     if(!cloud.getIsTaken()){
                         player.getMyBoard().getEntrance().addStudent(cloud.getStudents());
+                        game.nextPhase();
                         return true;
                     }else{
                         System.out.println("Cloud already taken");
@@ -338,7 +341,6 @@ public class ActionController {
                             character8.usePower();
                             return true;
                     }
-
 
                 }
             }

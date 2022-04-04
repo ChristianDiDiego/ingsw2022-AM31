@@ -3,6 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.model.expertMode.Character8;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 public class Game {
@@ -18,8 +20,11 @@ public class Game {
     private int bank;
     private int[] playableCharacters;
 
+    private PropertyChangeSupport support;
+
     //Aggiungi expertMode come parametro
     public Game(int numberOfPlayers, Player player){
+        this.support = new PropertyChangeSupport(this);
         this.listOfPlayers = new ArrayList<>();
         this.listOfArchipelagos = new ArrayList<>();
         this.listOfClouds = new ArrayList<>();
@@ -29,6 +34,7 @@ public class Game {
         orderOfPlayers.add(player);
         this.bag = new Bag(numberOfPlayers);
         this.currentPlayer = player;
+        phase = Phase.CARD_SELECTION;
 
         for(int i = 0; i< Constants.NUMBEROFISLANDS; i++){
             Archipelago arc = new Archipelago(i);
@@ -83,13 +89,18 @@ public class Game {
 
     }
 
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
     /**
      * Add a new player to the list of players
      * @param player to be added to the game
      */
     public void addPlayer(Player player){
+        int oldSize = listOfPlayers.size();
         listOfPlayers.add(player);
         orderOfPlayers.add(player);
+        support.firePropertyChange("listOfPlayers", oldSize, listOfPlayers.size());
     }
 
     public List<Player> getListOfPlayer(){
@@ -115,7 +126,7 @@ public class Game {
                 return o1.getLastUsedCard().compareTo(o2.getLastUsedCard());
             }
         });
-
+        this.currentPlayer = orderOfPlayers.get(0);
     }
 
     public List<Player> getOrderOfPlayers(){
@@ -147,9 +158,9 @@ public class Game {
     }
 
     /**
-     * Calculate who is the current player according to the ordered list of players
+     * Calculate who is the current player according to the ordered list of players for the action phase
      */
-    public void calculateCurrentPlayer(){
+    public void calculateNextPlayerAction(){
         int index = 0;
         for( Player p : orderOfPlayers){
             if(p.getNickname().equals(currentPlayer.getNickname())){
@@ -159,6 +170,20 @@ public class Game {
         }
         index = index + 1;
         currentPlayer = orderOfPlayers.get(index);
+    }
+    /**
+     * Calculate who is the current player according to the  list of players for the pianification phase
+     */
+    public void calculateNextPlayerPianification(){
+        int index = 0;
+        for( Player p : listOfPlayers){
+            if(p.getNickname().equals(currentPlayer.getNickname())){
+                break;
+            }
+            index ++;
+        }
+        index = index + 1;
+        currentPlayer = listOfPlayers.get(index);
     }
 
     /**
@@ -211,6 +236,8 @@ public class Game {
     /**
      * Decide the nextPhase of the match
      */
+    //every time that the phase of a player change send a message to everyone
+    //saying what should he do
     public void nextPhase(){
         switch (phase){
             case CARD_SELECTION:
@@ -225,7 +252,10 @@ public class Game {
             case CLOUD_SELECTION:
                 if(getCurrentPlayer()==orderOfPlayers.get(orderOfPlayers.size()-1)){
                     phase = Phase.CARD_SELECTION;
+                    support.firePropertyChange("lastTurnPlayer", currentPlayer, orderOfPlayers.get(0));
+                    currentPlayer = orderOfPlayers.get(0);
                 }else{
+                    calculateNextPlayerAction();
                     phase = Phase.MOVE_STUDENTS;
                 }
                 break;

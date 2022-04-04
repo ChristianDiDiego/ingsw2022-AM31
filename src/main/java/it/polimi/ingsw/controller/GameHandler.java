@@ -97,6 +97,7 @@ public class GameHandler {
                     p.getMyBoard().getTowersOnBoard().addTower();
                 }
             }
+            controller.getTurnController().startTurn();
 
 
     }
@@ -151,5 +152,9 @@ public class GameHandler {
 
     public int getMaxNumberOfTowers() {
         return maxNumberOfTowers;
+    }
+
+    public int getPlayersNumber() {
+        return playersNumber;
     }
 }
