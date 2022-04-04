@@ -11,16 +11,14 @@ import it.polimi.ingsw.model.StudsAndProfsColor;
  * also if the number of students in the dining rooms of the two players is the same
  */
 public class Character8 extends Characters{
-    private StudsAndProfsColor color;
 
     public Character8(Game game) {
         super(2, game);
         this.descriptionOfPower = "When this card is used, assignProfessor assign the professor to the player who use the card also if the number of students in the dining rooms of the two players is the same";
     }
 
-    public void usePower(int value, StudsAndProfsColor color) {
+    public void usePower() {
         if(payForUse()) {
-            this.color = color;
             game.getCurrentPlayer().setUsedCharacter(8);
         }
     }
@@ -28,7 +26,7 @@ public class Character8 extends Characters{
     /**
      *Assign the professor even if the students are equal in number
      */
-    public void assignProfessor() {
+    public void assignProfessor(StudsAndProfsColor color) {
         Player player = game.getCurrentPlayer();
         int max = 0;
         for(Player p : game.getListOfPlayer()){

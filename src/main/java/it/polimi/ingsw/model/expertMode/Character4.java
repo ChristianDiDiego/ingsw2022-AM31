@@ -18,9 +18,8 @@ public class Character4 extends Characters {
 
     /**
      * sets usedCharacter in current player
-     * @param value is not used
      */
-    public void usePower(int value) {
+    public void usePower() {
         if(payForUse()){
             game.getCurrentPlayer().setUsedCharacter(4);
         }

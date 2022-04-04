@@ -18,9 +18,8 @@ public class Character2 extends Characters{
 
     /**
      * sets usedCharacter in player
-     * @param value not used
      */
-    public void usePower(int value) {
+    public void usePower() {
         if(payForUse()){
             if(game.getPhase() == Phase.MOVE_STUDENTS){
                 game.getCurrentPlayer().setUsedCharacter(2);
