@@ -200,7 +200,7 @@ public class ActionController {
     public boolean checkActionMoveMN(Player player,int steps){
         if(game.getPhase()== Phase.MOVE_MN && player == game.getCurrentPlayer()){
 
-                if(player.getUsedCharacter() == 1? steps <= player.getLastUsedCard().getMaxSteps() : steps <= player.getLastUsedCard().getMaxSteps()+2 ){
+                if(player.getUsedCharacter() == 2? steps <= player.getLastUsedCard().getMaxSteps() : steps <= player.getLastUsedCard().getMaxSteps()+2 ){
                     game.moveMotherNature(steps);
                     calculateInfluence();
                     return true;
