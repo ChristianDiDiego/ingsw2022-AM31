@@ -18,6 +18,14 @@ public class DiningRoom {
         studentsInDR[studColor.ordinal()]++;
     }
 
+    /**
+     * Remove a student from the dining room
+     * @param studColor color of the student that needs to be removed
+     */
+    public void removeStudent(StudsAndProfsColor studColor) {
+        studentsInDR[studColor.ordinal()]--;
+    }
+
 
     /**
      * Return the number of students of a color in the dining room

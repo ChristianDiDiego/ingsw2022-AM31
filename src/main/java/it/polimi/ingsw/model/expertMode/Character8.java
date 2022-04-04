@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.StudsAndProfsColor;
  * also if the number of students in the dining rooms of the two players is the same
  */
 public class Character8 extends Characters{
+    private StudsAndProfsColor color;
 
     public Character8(Game game) {
         super(2, game);
@@ -20,26 +21,28 @@ public class Character8 extends Characters{
     @Override
     public void usePower(int value, StudsAndProfsColor color) {
         if(payForUse()) {
-            Player player = game.getCurrentPlayer();
-            int max = 0;
-            for(Player p : game.getListOfPlayer()){
-                if(p != game.getCurrentPlayer()){
-                    if(p.getMyBoard().getDiningRoom().getStudentsByColor(color) > max){
-                        player = p;
-                        max = p.getMyBoard().getDiningRoom().getStudentsByColor(color);
-                    }
-                }
-            }
-
-            if(game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color) >= player.getMyBoard().getDiningRoom().getStudentsByColor(color)){
-                player.getMyBoard().getProfessorsTable().removeProfessor(color);
-                game.getCurrentPlayer().getMyBoard().getProfessorsTable().addProfessor(color);
-            }
+            this.color = color;
         }
     }
 
-    @Override
-    public int getPrice() {
-        return 0;
+    /**
+     *Assign the professor even if the students are equal in number
+     */
+    public void assignProfessor() {
+        Player player = game.getCurrentPlayer();
+        int max = 0;
+        for(Player p : game.getListOfPlayer()){
+            if(p != game.getCurrentPlayer()){
+                if(p.getMyBoard().getDiningRoom().getStudentsByColor(color) > max){
+                    player = p;
+                    max = p.getMyBoard().getDiningRoom().getStudentsByColor(color);
+                }
+            }
+        }
+
+        if(game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color) >= player.getMyBoard().getDiningRoom().getStudentsByColor(color)){
+            player.getMyBoard().getProfessorsTable().removeProfessor(color);
+            game.getCurrentPlayer().getMyBoard().getProfessorsTable().addProfessor(color);
+        }
     }
 }

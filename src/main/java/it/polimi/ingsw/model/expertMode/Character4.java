@@ -23,7 +23,7 @@ public class Character4 extends Characters {
     @Override
     public void usePower(int value) {
         if(payForUse()){
-            game.getCurrentPlayer().setUsedCharacter(3);
+            game.getCurrentPlayer().setUsedCharacter(4);
         }
     }
 
