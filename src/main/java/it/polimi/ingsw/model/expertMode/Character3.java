@@ -28,7 +28,7 @@ public class Character3 extends Characters{
     @Override
     public void usePower(int idArchipelago) {
         if(payForUse()){
-            if(forbiddenSigns>0){
+            if(forbiddenSigns > 0){
                 forbiddenSigns--;
                 for(Archipelago a : game.getListOfArchipelagos()){
                     if(a.getIdArchipelago() == idArchipelago){

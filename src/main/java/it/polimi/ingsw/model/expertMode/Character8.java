@@ -22,6 +22,7 @@ public class Character8 extends Characters{
     public void usePower(int value, StudsAndProfsColor color) {
         if(payForUse()) {
             this.color = color;
+            game.getCurrentPlayer().setUsedCharacter(8);
         }
     }
 
