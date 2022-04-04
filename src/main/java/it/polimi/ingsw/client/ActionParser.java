@@ -13,7 +13,9 @@ import java.util.Locale;
  * MOVEST [COLOR][DESTINATION],[COLOR][DESTINATION].. (R-0,B-2,R-3)
  * MOVEMN STEPSOFMN
  * CLOUD NOFCLOUDTOPICK
+ * CHARACTER [IDCHARACTER] [IDARCHIPELAGO]/ FOR CHARACTER7 : ([COLOR TO ADD],[COLOR TO ADD],[COLOR TO REMOVE],[COLOR TO REMOVE]
  */
+
 public class ActionParser {
     private ActionController actionController;
 
@@ -54,6 +56,13 @@ public class ActionParser {
                 case "CLOUD":
                     int nOfCloud = Integer.parseInt(input[1]);
                     return actionController.checkActionCloud(player, nOfCloud);
+
+                case "CHARACTER":
+                    int idOfCharacter = Integer.parseInt(input[1]);
+                    String action = input[2];
+                    //TODO: set in action controller to check
+                    return actionController.checkActionCharacter(player, idOfCharacter, action);
+
 
                 default:
                     System.out.println("Action not recognised");

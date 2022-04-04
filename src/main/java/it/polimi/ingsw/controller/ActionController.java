@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.client.ActionParser;
 import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.expertMode.*;
 
 import static it.polimi.ingsw.model.ColorOfTower.BLACK;
 
@@ -48,58 +49,71 @@ public class ActionController {
      * Call checkUnification to check if the archipelago needs to be unified to another one
      */
     public void calculateInfluence(){
-        for(Archipelago a: game.getListOfArchipelagos()){
-            if(a.getIsMNPresent() && a.getIsForbidden() == false){
-                Player newOwner;
-                Player oldOwner;
-                int maxInfluence =0;
-                if(a.getOwner() == null){
-                    oldOwner = null;
-                    newOwner = getCurrentPlayer();
+        if(getCurrentPlayer().getUsedCharacter() == 4){
+            Character4 character4= new Character4(game);
+            character4.calculateInfluence();
+        }else if(getCurrentPlayer().getUsedCharacter() == 5){
+            Character5 character5= new Character5(game);
+            character5.calculateInfluence();
+        }else if(getCurrentPlayer().getUsedCharacter() == 6){
+            Character6 character6= new Character6(game);
+            character6.calculateInfluence();
+        }
 
-                }else {
-                    oldOwner = a.getOwner();
-                    newOwner = a.getOwner();
-                    maxInfluence = a.getBelongingIslands().size();
-                }
+        else{
+            for(Archipelago a: game.getListOfArchipelagos()){
+                if(a.getIsMNPresent() && a.getIsForbidden() == false){
+                    Player newOwner;
+                    Player oldOwner;
+                    int maxInfluence =0;
+                    if(a.getOwner() == null){
+                        oldOwner = null;
+                        newOwner = getCurrentPlayer();
 
-                for(int c=0; c< Constants.NUMBEROFKINGDOMS; c++){
-                    for(Island i: a.getBelongingIslands()){
-                        if(i.getAllStudents()[c] > 0 && a.getOwner().getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
-                            maxInfluence += i.getAllStudents()[c];
-                        }
+                    }else {
+                        oldOwner = a.getOwner();
+                        newOwner = a.getOwner();
+                        maxInfluence = a.getBelongingIslands().size();
                     }
-                }
-                for(Player p : game.getOrderOfPlayers()){
-                    if(p != newOwner){
-                        int newInfluence = 0;
-                        for(int c=0; c< Constants.NUMBEROFKINGDOMS; c++){
-                            for(Island i: a.getBelongingIslands()){
-                                if(i.getAllStudents()[c] > 0 && p.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
-                                    newInfluence += i.getAllStudents()[c];
-                                }
+
+                    for(int c=0; c< Constants.NUMBEROFKINGDOMS; c++){
+                        for(Island i: a.getBelongingIslands()){
+                            if(i.getAllStudents()[c] > 0 && a.getOwner().getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
+                                maxInfluence += i.getAllStudents()[c];
                             }
-
-                        }
-                        if(newInfluence > maxInfluence){
-                            newOwner = p;
-                            maxInfluence = newInfluence;
                         }
                     }
-                }
+                    for(Player p : game.getOrderOfPlayers()){
+                        if(p != newOwner){
+                            int newInfluence = 0;
+                            for(int c=0; c< Constants.NUMBEROFKINGDOMS; c++){
+                                for(Island i: a.getBelongingIslands()){
+                                    if(i.getAllStudents()[c] > 0 && p.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
+                                        newInfluence += i.getAllStudents()[c];
+                                    }
+                                }
 
-                if(maxInfluence > 0){
-                    a.changeOwner(newOwner);
-                    for(int i = 0; i < a.getBelongingIslands().size(); i++) {
-                        if(oldOwner != null){
-                            oldOwner.getMyBoard().getTowersOnBoard().removeTower();
+                            }
+                            if(newInfluence > maxInfluence){
+                                newOwner = p;
+                                maxInfluence = newInfluence;
+                            }
                         }
-                        newOwner.getMyBoard().getTowersOnBoard().removeTower();
                     }
-                      checkUnification(a);
+
+                    if(maxInfluence > 0){
+                        a.changeOwner(newOwner);
+                        for(int i = 0; i < a.getBelongingIslands().size(); i++) {
+                            if(oldOwner != null){
+                                oldOwner.getMyBoard().getTowersOnBoard().removeTower();
+                            }
+                            newOwner.getMyBoard().getTowersOnBoard().removeTower();
+                        }
+                        checkUnification(a);
+                    }
+                }else if (a.getIsMNPresent() && a.getIsForbidden() == true){
+                    a.setIsForbidden(false);
                 }
-            }else if (a.getIsMNPresent() && a.getIsForbidden() == true){
-                a.setIsForbidden(false);
             }
         }
     }
@@ -252,10 +266,11 @@ public class ActionController {
     }
 
 
+
+
     public Player getCurrentPlayer(){
         return game.getCurrentPlayer();
     }
-    //questa chiama quella sopra
 
     /**
      * Called if a player, adding the tower to an archipelago, run out of them
@@ -266,5 +281,69 @@ public class ActionController {
 
     public TurnController getTurnController() {
         return turnController;
+    }
+
+    /**
+     * Check that a player can use a character and use it
+     * @param player of the player that is playing the character
+     * @param idOfCharacter that the player want to use
+     * @param action action associated with the character (e.g. number of the archipelago)
+     * @return false if there is some error
+     */
+    public boolean checkActionCharacter(Player player, int idOfCharacter, String action) {
+        if(player == game.getCurrentPlayer()){
+            for(int charId :game.getPlayableCharacters()){
+                if(charId == idOfCharacter){
+                    switch (idOfCharacter){
+                        case 1:
+                            for(Archipelago arc : game.getListOfArchipelagos()){
+                                if(arc.getIdArchipelago() == Integer.parseInt(action)){
+                                    Character1 character1 = new Character1(game);
+                                    character1.usePower(Integer.parseInt(action));
+                                    return true;
+                                }
+                            }
+                            return false;
+                        case 2:
+                            Character2 character2 = new Character2(game);
+                            character2.usePower();
+                            return true;
+                        case 3:
+                            for(Archipelago arc : game.getListOfArchipelagos()){
+                                if(arc.getIdArchipelago() == Integer.parseInt(action)){
+                                    Character3 character3 = new Character3(game);
+                                    character3.usePower(Integer.parseInt(action));
+                                    return true;
+                                }
+                            }
+                           return false;
+                        case 4:
+                            Character4 character4 = new Character4(game);
+                            character4.usePower();
+                            return true;
+                        case 5:
+                            Character5 character5 = new Character5(game);
+                            character5.usePower();
+                            return true;
+                        case 6:
+                            Character6 character6 = new Character6(game);
+                            character6.usePower(StudsAndProfsColor.valueOf(action));
+                            return true;
+                        case 7:
+                            Character7 character7 = new Character7(game);
+                            String[] colorDestination = action.split(",");
+                            return character7.usePower(StudsAndProfsColor.valueOf(colorDestination[0]),StudsAndProfsColor.valueOf(colorDestination[1]),StudsAndProfsColor.valueOf(colorDestination[2]),StudsAndProfsColor.valueOf(colorDestination[3]));
+                        case 8:
+                            Character8 character8 = new Character8(game);
+                            character8.usePower();
+                            return true;
+                    }
+
+
+                }
+            }
+        }
+        return false;
+
     }
 }

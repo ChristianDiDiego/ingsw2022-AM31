@@ -123,6 +123,9 @@ public class TurnController {
         return false;
     }
 
+    /**
+     * End the turn of a player
+     */
     public void endTurn(){
 
     }

@@ -1,11 +1,11 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.constants.Constants;
+import it.polimi.ingsw.model.expertMode.Character8;
 
 import java.util.*;
 
 public class Game {
-    public static final int MAXPLAYERS = 4;
     private List<Player> listOfPlayers ;
     private List<Archipelago> listOfArchipelagos;
     private List<Cloud> listOfClouds;
@@ -16,6 +16,7 @@ public class Game {
     private Phase phase;
     private boolean endTurn;
     private int bank;
+    private int[] playableCharacters;
 
     //Aggiungi expertMode come parametro
     public Game(int numberOfPlayers, Player player){
@@ -55,6 +56,27 @@ public class Game {
                     i.addStudent(StudsAndProfsColor.values()[value]);
                     studentsForIslands[value]--;
                 }
+            }
+        }
+
+        //EXPERT MODE:
+
+        //Extract 3 characters that will be available for the game
+        this.playableCharacters = new int[Constants.NUMBEROFPLAYABLECHARACTERS];
+        int i = 0;
+        while (i < Constants.NUMBEROFPLAYABLECHARACTERS) {
+            int value = random.nextInt(Constants.NUMBEROFCHARACTERS);
+            boolean found = false;
+
+            for (int playableCharacter : playableCharacters) {
+                if (playableCharacter == value) {
+                    found = true;
+                    break;
+                }
+            }
+            if(!found){
+                playableCharacters[i]=value;
+                i++;
             }
         }
 
@@ -144,22 +166,28 @@ public class Game {
      * @param color of the professor to check
      */
     public void assignProfessor(StudsAndProfsColor color){
-        Player player = currentPlayer;
-        int max = 0;
-        for(Player p : listOfPlayers){
-            if(p != currentPlayer){
-                if(p.getMyBoard().getDiningRoom().getStudentsByColor(color) > max){
-                    player = p;
-                    max = p.getMyBoard().getDiningRoom().getStudentsByColor(color);
+        if(currentPlayer.getUsedCharacter() == 8){
+            Character8 character8 = new Character8(this);
+            character8.assignProfessor(color);
+        }
+        else{
+            Player player = currentPlayer;
+            int max = 0;
+            for(Player p : listOfPlayers){
+                if(p != currentPlayer){
+                    if(p.getMyBoard().getDiningRoom().getStudentsByColor(color) > max){
+                        player = p;
+                        max = p.getMyBoard().getDiningRoom().getStudentsByColor(color);
+                    }
                 }
             }
-        }
-        if(currentPlayer.getMyBoard().getDiningRoom().getStudentsByColor(color) == player.getMyBoard().getDiningRoom().getStudentsByColor(color)){
-            player.getMyBoard().getProfessorsTable().removeProfessor(color);
-        }
-        if(currentPlayer.getMyBoard().getDiningRoom().getStudentsByColor(color) > player.getMyBoard().getDiningRoom().getStudentsByColor(color)){
-            player.getMyBoard().getProfessorsTable().removeProfessor(color);
-            currentPlayer.getMyBoard().getProfessorsTable().addProfessor(color);
+            if(currentPlayer.getMyBoard().getDiningRoom().getStudentsByColor(color) == player.getMyBoard().getDiningRoom().getStudentsByColor(color)){
+                player.getMyBoard().getProfessorsTable().removeProfessor(color);
+            }
+            if(currentPlayer.getMyBoard().getDiningRoom().getStudentsByColor(color) > player.getMyBoard().getDiningRoom().getStudentsByColor(color)){
+                player.getMyBoard().getProfessorsTable().removeProfessor(color);
+                currentPlayer.getMyBoard().getProfessorsTable().addProfessor(color);
+            }
         }
     }
 
@@ -256,4 +284,7 @@ public class Game {
         bank = bank;
     }
 
+    public int[] getPlayableCharacters() {
+        return playableCharacters;
+    }
 }

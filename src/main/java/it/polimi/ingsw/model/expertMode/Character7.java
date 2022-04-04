@@ -27,7 +27,7 @@ public class Character7 extends Characters{
      * @param color1ToRemove student in the dining room
      * @param color2ToRemove student in the dining room
      */
-    public void usePower(StudsAndProfsColor color1ToAdd, StudsAndProfsColor color2ToAdd, StudsAndProfsColor color1ToRemove, StudsAndProfsColor color2ToRemove) {
+    public boolean usePower(StudsAndProfsColor color1ToAdd, StudsAndProfsColor color2ToAdd, StudsAndProfsColor color1ToRemove, StudsAndProfsColor color2ToRemove) {
         Entrance entrance = game.getCurrentPlayer().getMyBoard().getEntrance();
         DiningRoom diningRoom = game.getCurrentPlayer().getMyBoard().getDiningRoom();
         if(entrance.getStudentsByColor(color1ToAdd) > 0 && entrance.getStudentsByColor(color2ToAdd) > 0 && diningRoom.getStudentsByColor(color1ToRemove) > 0 && diningRoom.getStudentsByColor(color2ToRemove) > 0) {
@@ -43,9 +43,12 @@ public class Character7 extends Characters{
                 diningRoom.removeStudent(color1ToRemove);
                 diningRoom.removeStudent(color2ToRemove);
                 entrance.addStudent(toAdd);
+                return true;
             }
         } else {
             System.out.println("You don't have these students");
+            return false;
         }
+        return false;
     }
 }
