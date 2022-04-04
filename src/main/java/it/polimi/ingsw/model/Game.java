@@ -153,6 +153,7 @@ public class Game {
             }
         }
     }
+
     public List<Archipelago> getListOfArchipelagos(){
         return listOfArchipelagos;
     }
@@ -171,6 +172,7 @@ public class Game {
         index = index + 1;
         currentPlayer = orderOfPlayers.get(index);
     }
+
     /**
      * Calculate who is the current player according to the  list of players for the pianification phase
      */

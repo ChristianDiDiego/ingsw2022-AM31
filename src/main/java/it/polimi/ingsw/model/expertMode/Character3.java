@@ -29,18 +29,19 @@ public class Character3 extends Characters{
         if(payForUse()){
             if(forbiddenSigns > 0){
                 forbiddenSigns--;
-                for(Archipelago a : game.getListOfArchipelagos()){
-                    if(a.getIdArchipelago() == idArchipelago){
+                for(Archipelago a : game.getListOfArchipelagos()) {
+                    if (a.getIdArchipelago() == idArchipelago) {
                         a.setIsForbidden(true);
                         return;
-                    }else{
-                        System.out.println("this archipelago doesn't exist");
                     }
                 }
+                System.out.println("this archipelago doesn't exist");
+                return;
             }else{
                 System.out.println("there are not forbidden signs left");
+                return;
             }
-            return;
+
         }
 
     }
