@@ -1,41 +1,22 @@
 package it.polimi.ingsw.model.expertMode;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.StudsAndProfsColor;
 
 /**
- * image 12 in image folder ;
- * card 2 in list of cards ( in game tutorial)
- * When this card is used, assignProfessor assign the professor to the player who use the card
- * also if the number of students in the dining rooms of the two players is the same
+ * image 9 in image folder ;
+ * card 10 in list of cards ( in game tutorial)
+ * The player can switch max 2 students between entrance and dining room
  */
 public class Character7 extends Characters{
 
     public Character7(Game game) {
-        super(2, game);
-        this.descriptionOfPower = "When this card is used, assignProfessor assign the professor to the player who use the card also if the number of students in the dining rooms of the two players is the same";
+        super(1, game);
+        this.descriptionOfPower = "The player can switch max 2 students between entrance and dining room";
     }
 
     @Override
-    public void usePower(int value, StudsAndProfsColor color) {
-        if(payForUse()) {
-            Player player = game.getCurrentPlayer();
-            int max = 0;
-            for(Player p : game.getListOfPlayer()){
-                if(p != game.getCurrentPlayer()){
-                    if(p.getMyBoard().getDiningRoom().getStudentsByColor(color) > max){
-                        player = p;
-                        max = p.getMyBoard().getDiningRoom().getStudentsByColor(color);
-                    }
-                }
-            }
+    public void usePower(int value) {
 
-            if(game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color) >= player.getMyBoard().getDiningRoom().getStudentsByColor(color)){
-                player.getMyBoard().getProfessorsTable().removeProfessor(color);
-                game.getCurrentPlayer().getMyBoard().getProfessorsTable().addProfessor(color);
-            }
-        }
     }
 
     @Override

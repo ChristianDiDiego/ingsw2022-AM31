@@ -4,25 +4,25 @@ import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.model.*;
 
 /**
- * image 8 in image folder ;
- * card 9 in list of cards ( in game tutorial)
- * Choose a color of students that will not be counted for the influence
+ * image 7 in image folder ;
+ * card 8 in list of cards ( in game tutorial)
+ * When you calculate the influence, the player who play this card has 2 additional points
  */
 public class Character5 extends Characters{
 
     public Character5(Game game) {
-        super(3, game);
-        this.descriptionOfPower = "Choose a color of students that will not be counted for the influence";
+        super(2, game);
+        this.descriptionOfPower = "When you calculate the influence, the player who play this card has 2 additional points";
     }
 
     @Override
     public void usePower(int value) {
         if(payForUse()) {
-            for(Archipelago a: game.getListOfArchipelagos()){
+            for(Archipelago a : game.getListOfArchipelagos()){
                 if(a.getIsMNPresent() && a.getIsForbidden() == false){
                     Player newOwner;
                     Player oldOwner;
-                    int maxInfluence =0;
+                    int maxInfluence = 0;
                     if(a.getOwner() == null){
                         oldOwner = null;
                         newOwner = game.getCurrentPlayer();
@@ -31,11 +31,14 @@ public class Character5 extends Characters{
                         oldOwner = a.getOwner();
                         newOwner = a.getOwner();
                         maxInfluence = a.getBelongingIslands().size();
+                        if(a.getOwner().getUsedCharacter() == 5) {
+                            maxInfluence += 2;
+                        }
                     }
 
-                    for(int c = 0; c< Constants.NUMBEROFKINGDOMS; c++){
-                        for(Island i: a.getBelongingIslands()){
-                            if(i.getAllStudents()[c] > 0 && a.getOwner().getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c]) && c != value) {
+                    for(int c = 0; c < Constants.NUMBEROFKINGDOMS; c++){
+                        for(Island i : a.getBelongingIslands()){
+                            if(i.getAllStudents()[c] > 0 && a.getOwner().getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
                                 maxInfluence += i.getAllStudents()[c];
                             }
                         }
@@ -43,13 +46,16 @@ public class Character5 extends Characters{
                     for(Player p : game.getOrderOfPlayers()){
                         if(p != newOwner){
                             int newInfluence = 0;
-                            for(int c=0; c< Constants.NUMBEROFKINGDOMS; c++){
+                            for(int c = 0; c < Constants.NUMBEROFKINGDOMS; c++){
                                 for(Island i: a.getBelongingIslands()){
-                                    if(i.getAllStudents()[c] > 0 && p.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c]) && c != value) {
+                                    if(i.getAllStudents()[c] > 0 && p.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
                                         newInfluence += i.getAllStudents()[c];
                                     }
                                 }
 
+                            }
+                            if(p.getUsedCharacter() == 5) {
+                                newInfluence += 2;
                             }
                             if(newInfluence > maxInfluence){
                                 newOwner = p;

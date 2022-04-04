@@ -1,50 +1,32 @@
 package it.polimi.ingsw.model.expertMode;
 
 
-import it.polimi.ingsw.model.Archipelago;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Phase;
 
 /**
- * image 4 in image folder ;
- * card 5 in list of cards ( in game tutorial)
- * Set a forbidden sign to an archipelago to do not allow the calculate of the influence on that island
- * when MN visit the archipelago, the forbidden flag go away
- * Can be usedonly 4 times in the same moment ( only 4 forbidden signs)
+ * image 3 in image folder ;
+ * card 4 in list of cards ( in game tutorial)
+ * Allow to move MN of 2 steps more than the used card
  */
 public class Character2 extends Characters{
-    private int forbiddenSigns;
 
     public Character2(Game game) {
-
-        super(2, game);
-        descriptionOfPower = "Set a forbidden sign to an archipelago to do not allow the calculate of the influence on that island";
-        forbiddenSigns = 4;
+        super(1, game);
+        descriptionOfPower = "Allow to move MN of 2 steps more than the used card";
     }
 
     /**
-     * uses the forbiddenSign on the chosen archipelago
-     * @param idArchipelago
+     * sets usedCharacter in player
+     * @param value not used
      */
     @Override
-    public void usePower(int idArchipelago) {
+    public void usePower(int value) {
         if(payForUse()){
-            alreadyUsed = true;
-            if(forbiddenSigns>0){
-                forbiddenSigns--;
-                for(Archipelago a : game.getListOfArchipelagos()){
-                    if(a.getIdArchipelago() == idArchipelago){
-                        a.setIsForbidden(true);
-                        return;
-                    }else{
-                        System.out.println("this archipelago doesn't exist");
-                    }
-                }
-            }else{
-                System.out.println("there are not forbidden signs left");
+            if(game.getPhase() == Phase.MOVE_STUDENTS){
+                game.getCurrentPlayer().setUsedCharacter(1);
             }
-            return;
         }
-
     }
 
 }

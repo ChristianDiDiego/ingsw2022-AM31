@@ -1,90 +1,49 @@
 package it.polimi.ingsw.model.expertMode;
 
-import it.polimi.ingsw.constants.Constants;
-import it.polimi.ingsw.model.*;
+
+import it.polimi.ingsw.model.Archipelago;
+import it.polimi.ingsw.model.Game;
 
 /**
- * image 5 in image folder ;
- * card 6 in list of cards ( in game tutorial)
- * When calculate the influence does not count the towers
+ * image 4 in image folder ;
+ * card 5 in list of cards ( in game tutorial)
+ * Set a forbidden sign to an archipelago to do not allow the calculate of the influence on that island
+ * when MN visit the archipelago, the forbidden flag go away
+ * Can be usedonly 4 times in the same moment ( only 4 forbidden signs)
  */
-public class Character3 extends Characters {
+public class Character3 extends Characters{
+    private int forbiddenSigns;
 
     public Character3(Game game) {
-        super(3, game);
-        descriptionOfPower = " When calculate the influence does not count the towers";
+
+        super(2, game);
+        descriptionOfPower = "Set a forbidden sign to an archipelago to do not allow the calculate of the influence on that island";
+        forbiddenSigns = 4;
     }
 
-
     /**
-     * sets usedCharacter in current player
-     * @param value is not used
+     * uses the forbiddenSign on the chosen archipelago
+     * @param idArchipelago
      */
     @Override
-    public void usePower(int value) {
+    public void usePower(int idArchipelago) {
         if(payForUse()){
-            game.getCurrentPlayer().setUsedCharacter(3);
-        }
-    }
-
-    /**
-     * calculates influence without counting towers
-     */
-    public void calculateInfluence(){
-        for(Archipelago a: game.getListOfArchipelagos()){
-            if(a.getIsMNPresent() && a.getIsForbidden() == false){
-                Player newOwner;
-                Player oldOwner;
-                int maxInfluence =0;
-                if(a.getOwner() == null){
-                    oldOwner = null;
-                    newOwner = game.getCurrentPlayer();
-
-                }else {
-                    oldOwner = a.getOwner();
-                    newOwner = a.getOwner();
-                    maxInfluence = 0;
-                }
-
-                for(int c=0; c< Constants.NUMBEROFKINGDOMS; c++){
-                    for(Island i: a.getBelongingIslands()){
-                        if(i.getAllStudents()[c] > 0 && a.getOwner().getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
-                            maxInfluence += i.getAllStudents()[c];
-                        }
+            if(forbiddenSigns>0){
+                forbiddenSigns--;
+                for(Archipelago a : game.getListOfArchipelagos()){
+                    if(a.getIdArchipelago() == idArchipelago){
+                        a.setIsForbidden(true);
+                        return;
+                    }else{
+                        System.out.println("this archipelago doesn't exist");
                     }
                 }
-                for(Player p : game.getOrderOfPlayers()){
-                    if(p != newOwner){
-                        int newInfluence = 0;
-                        for(int c=0; c< Constants.NUMBEROFKINGDOMS; c++){
-                            for(Island i: a.getBelongingIslands()){
-                                if(i.getAllStudents()[c] > 0 && p.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
-                                    newInfluence += i.getAllStudents()[c];
-                                }
-                            }
-
-                        }
-                        if(newInfluence > maxInfluence){
-                            newOwner = p;
-                            maxInfluence = newInfluence;
-                        }
-                    }
-                }
-
-                if(maxInfluence > 0){
-                    a.changeOwner(newOwner);
-                    for(int i = 0; i < a.getBelongingIslands().size(); i++) {
-                        if(oldOwner != null){
-                            oldOwner.getMyBoard().getTowersOnBoard().removeTower();
-                        }
-                        newOwner.getMyBoard().getTowersOnBoard().removeTower();
-                    }
-                    checkUnification(a);
-                }
-            }else if (a.getIsMNPresent() && a.getIsForbidden() == true){
-                a.setIsForbidden(false);
+            }else{
+                System.out.println("there are not forbidden signs left");
             }
+            return;
         }
-    }
-}
 
+    }
+
+}
