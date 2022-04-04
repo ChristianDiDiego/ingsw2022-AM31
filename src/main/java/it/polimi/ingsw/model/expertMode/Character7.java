@@ -27,7 +27,6 @@ public class Character7 extends Characters{
      * @param color1ToRemove student in the dining room
      * @param color2ToRemove student in the dining room
      */
-    @Override
     public void usePower(StudsAndProfsColor color1ToAdd, StudsAndProfsColor color2ToAdd, StudsAndProfsColor color1ToRemove, StudsAndProfsColor color2ToRemove) {
         Entrance entrance = game.getCurrentPlayer().getMyBoard().getEntrance();
         DiningRoom diningRoom = game.getCurrentPlayer().getMyBoard().getDiningRoom();

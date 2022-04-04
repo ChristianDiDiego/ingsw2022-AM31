@@ -18,7 +18,6 @@ public class Character8 extends Characters{
         this.descriptionOfPower = "When this card is used, assignProfessor assign the professor to the player who use the card also if the number of students in the dining rooms of the two players is the same";
     }
 
-    @Override
     public void usePower(int value, StudsAndProfsColor color) {
         if(payForUse()) {
             this.color = color;

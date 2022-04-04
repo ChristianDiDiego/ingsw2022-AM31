@@ -6,8 +6,7 @@ import it.polimi.ingsw.model.Game;
 /**
  * Every character has the function usePower which is called by the actionController
  * ActionController check if a player played a character when a player use a card
- * TODO:add charactersUsed to the player ; add game parameter to all characters
- * turnController set characterUsed of the player to null at the beginning of the turn
+ * TODO: turnController set characterUsed of the player to null at the beginning of the turn
  */
 public abstract class Characters {
     Game game;
@@ -36,7 +35,7 @@ public abstract class Characters {
                 return false;
             }
         } else {
-            if(game.getCurrentPlayer().getWallet() >= price+1) {
+            if(game.getCurrentPlayer().getWallet() >= price + 1) {
                 game.getCurrentPlayer().removeCoinsFromWallet(price + 1);
             }else {
                 System.out.println("you don't have enough money to use this power");
@@ -49,8 +48,6 @@ public abstract class Characters {
     public String getDescriptionOfPower() {
         return descriptionOfPower;
     }
-
-    public abstract void usePower(int value);
 
     public int getPrice(){
         return this.price;

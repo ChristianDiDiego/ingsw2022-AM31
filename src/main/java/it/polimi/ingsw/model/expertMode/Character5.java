@@ -15,8 +15,7 @@ public class Character5 extends Characters{
         this.descriptionOfPower = "When you calculate the influence, the player who play this card has 2 additional points";
     }
 
-    @Override
-    public void usePower(int value) {
+    public void usePower() {
         if(payForUse()) {
             game.getCurrentPlayer().setUsedCharacter(5);
         }

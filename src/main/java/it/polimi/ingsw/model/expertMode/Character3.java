@@ -25,7 +25,6 @@ public class Character3 extends Characters{
      * uses the forbiddenSign on the chosen archipelago
      * @param idArchipelago
      */
-    @Override
     public void usePower(int idArchipelago) {
         if(payForUse()){
             if(forbiddenSigns > 0){

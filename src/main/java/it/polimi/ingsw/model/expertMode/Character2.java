@@ -20,7 +20,6 @@ public class Character2 extends Characters{
      * sets usedCharacter in player
      * @param value not used
      */
-    @Override
     public void usePower(int value) {
         if(payForUse()){
             if(game.getPhase() == Phase.MOVE_STUDENTS){

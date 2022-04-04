@@ -22,7 +22,6 @@ public class Character1 extends Characters {
      * calculates asynch influence in the chosen archipelago
      * @param idArchipelago
      */
-    @Override
     public void usePower(int idArchipelago) {
         if (payForUse()) {
             Player newOwner;

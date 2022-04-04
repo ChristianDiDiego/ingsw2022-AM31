@@ -16,7 +16,6 @@ public class Character6 extends Characters{
         this.descriptionOfPower = "Choose a color of students that will not be counted for the influence";
     }
 
-    @Override
     public void usePower(StudsAndProfsColor color) {
         if(payForUse()) {
             game.getCurrentPlayer().setUsedCharacter(6);
