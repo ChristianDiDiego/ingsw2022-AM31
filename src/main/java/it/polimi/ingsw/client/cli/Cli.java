@@ -75,7 +75,7 @@ public class Cli implements View {
                     board.append(ColorsCli.getColorByNumber(j)).append(" ●").append(ColorsCli.getColorByNumber(j));
                 }
                 for(int k = nSDN[j]; k < Constants.MAXSTUDENTSINDINING; k++){
-                    if(k % 3 == 0){
+                    if((k + 1) % 3 == 0){
                         board.append(ColorsCli.getColorByNumber(j)).append(" ©").append(ColorsCli.getColorByNumber(j));
                     }else {
                         board.append(ColorsCli.getColorByNumber(j)).append(" ◯").append(ColorsCli.getColorByNumber(j));

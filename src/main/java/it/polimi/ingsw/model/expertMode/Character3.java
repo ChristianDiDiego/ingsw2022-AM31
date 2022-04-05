@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.Game;
  * card 5 in list of cards ( in game tutorial)
  * Set a forbidden sign to an archipelago to do not allow the calculate of the influence on that island
  * when MN visit the archipelago, the forbidden flag go away
- * Can be usedonly 4 times in the same moment ( only 4 forbidden signs)
+ * Can be used only 4 times in the same moment ( only 4 forbidden signs)
  */
 public class Character3 extends Characters{
     private int forbiddenSigns;
