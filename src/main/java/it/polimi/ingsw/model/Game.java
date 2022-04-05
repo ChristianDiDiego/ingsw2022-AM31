@@ -36,7 +36,7 @@ public class Game {
         this.currentPlayer = player;
         phase = Phase.CARD_SELECTION;
 
-        for(int i = 0; i< Constants.NUMBEROFISLANDS; i++){
+        for(int i = 0; i < Constants.NUMBEROFISLANDS; i++){
             Archipelago arc = new Archipelago(i);
             listOfArchipelagos.add(arc);
         }
@@ -81,7 +81,7 @@ public class Game {
                 }
             }
             if(!found){
-                playableCharacters[i]=value;
+                playableCharacters[i] = value;
                 i++;
             }
         }
@@ -167,7 +167,7 @@ public class Game {
             if(p.getNickname().equals(currentPlayer.getNickname())){
                 break;
             }
-            index ++;
+            index++;
         }
         index = index + 1;
         currentPlayer = orderOfPlayers.get(index);
@@ -182,7 +182,7 @@ public class Game {
             if(p.getNickname().equals(currentPlayer.getNickname())){
                 break;
             }
-            index ++;
+            index++;
         }
         index = index + 1;
         currentPlayer = listOfPlayers.get(index);
@@ -227,8 +227,10 @@ public class Game {
         for(Island island: archToBeUnified.getBelongingIslands()){
             actualArchipelago.addIsland(island);
         }
+        if(archToBeUnified.getIsForbidden() == true) {
+            actualArchipelago.setIsForbidden(true);
+        }
         listOfArchipelagos.remove(archToBeUnified);
-
     }
 
     public Phase getPhase(){
@@ -279,16 +281,15 @@ public class Game {
                 currentPlayer.getMyBoard().getEntrance().removeStudent(colorToMove);
                 currentPlayer.getMyBoard().getDiningRoom().addStudent(colorToMove);
 
-        }
-        else{
-                currentPlayer.getMyBoard().getEntrance().removeStudent(colorToMove);
-                for(Archipelago arch : listOfArchipelagos){
-                    for(Island island : arch.getBelongingIslands()){
-                        if(island.getIdIsland() == destination){
-                            island.addStudent(colorToMove);
-                        }
+        } else {
+            currentPlayer.getMyBoard().getEntrance().removeStudent(colorToMove);
+            for(Archipelago arch : listOfArchipelagos){
+                for(Island island : arch.getBelongingIslands()){
+                    if(island.getIdIsland() == destination){
+                        island.addStudent(colorToMove);
                     }
                 }
+            }
         }
     }
 

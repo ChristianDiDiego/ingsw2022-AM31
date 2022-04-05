@@ -21,7 +21,7 @@ public class Bag {
      */
     public int getNumberOfLeftStudents(){
         int temp = 0;
-        for(int i=0; i<Constants.NUMBEROFKINGDOMS; i++){
+        for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
             temp = temp + studentsInBag[i];
         }
         return temp;
@@ -32,8 +32,8 @@ public class Bag {
      */
     public int[] pickStudent(int studToPick){
         int[] studentsToPick = new int[Constants.NUMBEROFKINGDOMS];
-        for(int i=0; i<Constants.NUMBEROFKINGDOMS;i++){
-            studentsToPick[i]=0;
+        for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
+            studentsToPick[i] = 0;
         }
         Random random = new Random();
         int i = 0;

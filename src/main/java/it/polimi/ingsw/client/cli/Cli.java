@@ -10,6 +10,7 @@ import java.util.List;
 public class Cli implements View {
 
     /**
+     * TODO: add link to full rules
      * ha un metodo run che chiama il setup del nuovo player, poi chiama riceviInput
      * ha un metodo riceviInput che è sempre in ascolto e ogni volta
      * invia tutti i messaggi che riceve al parser
@@ -25,6 +26,8 @@ public class Cli implements View {
                 "███████╗██║  ██║   ██║   ██║  ██║██║ ╚████║   ██║   ██║███████║\n" +
                 "╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚══════╝\n" +
                 "                                                               \n");
+
+        System.out.println("\nCreators: Carmine Faino, Christian Di Diego, Federica Di Filippo");
     }
 
     @Override
@@ -72,7 +75,11 @@ public class Cli implements View {
                     board.append(ColorsCli.getColorByNumber(j)).append(" ●").append(ColorsCli.getColorByNumber(j));
                 }
                 for(int k = nSDN[j]; k < Constants.MAXSTUDENTSINDINING; k++){
-                    board.append(ColorsCli.getColorByNumber(j)).append(" ◯").append(ColorsCli.getColorByNumber(j));
+                    if(k % 3 == 0){
+                        board.append(ColorsCli.getColorByNumber(j)).append(" ©").append(ColorsCli.getColorByNumber(j));
+                    }else {
+                        board.append(ColorsCli.getColorByNumber(j)).append(" ◯").append(ColorsCli.getColorByNumber(j));
+                    }
                 }
                 if(hasProf[j]){
                     board.append(ColorsCli.getColorByNumber(j)).append(" | ⬢  ").append(ColorsCli.getColorByNumber(j));

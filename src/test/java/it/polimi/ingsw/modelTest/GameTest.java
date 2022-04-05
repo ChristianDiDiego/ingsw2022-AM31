@@ -65,16 +65,23 @@ class GameTest {
      */
     @Test
     void gameConstructorTest() {
+        int[] testArray = {0,0,0,0,0};
         for(Archipelago a : game.getListOfArchipelagos()) {
             for(Island i : a.getBelongingIslands()) {
                 if(a.getIdArchipelago() != 0 && a.getIdArchipelago() != 5) {
                     int sum = 0;
                     for(int s = 0; s < Constants.NUMBEROFKINGDOMS; s++) {
                         sum += i.getStudentsByColor(StudsAndProfsColor.values()[s]);
+                        if(i.getStudentsByColor(StudsAndProfsColor.values()[s]) == 1) {
+                            testArray[s]++;
+                        }
                     }
                     assertEquals(1, sum);
                 }
             }
+        }
+        for(int s = 0; s < Constants.NUMBEROFKINGDOMS; s++) {
+            assertEquals(2, testArray[s]);
         }
     }
 }

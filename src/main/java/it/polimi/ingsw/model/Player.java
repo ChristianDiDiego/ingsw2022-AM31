@@ -77,7 +77,7 @@ public class Player {
         return usedCharacter;
     }
 
-    public void setUsedCharacter(int usedCaracter) {
-        this.usedCharacter = usedCaracter;
+    public void setUsedCharacter(int usedCharacter) {
+        this.usedCharacter = usedCharacter;
     }
 }
