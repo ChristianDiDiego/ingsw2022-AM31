@@ -12,8 +12,8 @@ public class Character5 extends Characters{
 
     public Character5(Game game) {
         super(2, game);
-        this.descriptionOfPower = "When you calculate the influence, the player who play this card has 2 additional points";
         id = 5;
+        this.descriptionOfPower = "When you calculate the influence, the player who play this card has 2 additional points";
         bonusInfluence = 2;
     }
 

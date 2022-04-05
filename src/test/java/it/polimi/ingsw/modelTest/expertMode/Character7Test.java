@@ -17,10 +17,7 @@ class Character7Test {
     Player player1 = new Player("player1", ColorOfTower.BLACK);
     Player player2 = new Player("player2", ColorOfTower.WHITE);
     Game game = new Game(2, player1);
-    Character3 character3 = new Character3(game);
     Character7 character7 = new Character7(game);
-    Character5 character5 = new Character5(game);
-    Character8 character8 = new Character8(game);
     GameHandler gameHandler = new GameHandler(player1, 2);
 
     /**
