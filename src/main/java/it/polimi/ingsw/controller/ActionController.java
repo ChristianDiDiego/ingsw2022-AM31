@@ -76,9 +76,9 @@ public class ActionController {
                         maxInfluence = a.getBelongingIslands().size();
                     }
 
-                    for(int c=0; c< Constants.NUMBEROFKINGDOMS; c++){
+                    for(int c = 0; c < Constants.NUMBEROFKINGDOMS; c++){
                         for(Island i: a.getBelongingIslands()){
-                            if(i.getAllStudents()[c] > 0 && a.getOwner().getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
+                            if(i.getAllStudents()[c] > 0 && newOwner.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
                                 maxInfluence += i.getAllStudents()[c];
                             }
                         }
@@ -214,7 +214,7 @@ public class ActionController {
     public boolean checkActionMoveMN(Player player,int steps){
         if(game.getPhase()== Phase.MOVE_MN && player == game.getCurrentPlayer()){
 
-                if(player.getUsedCharacter() == 2? steps <= player.getLastUsedCard().getMaxSteps() : steps <= player.getLastUsedCard().getMaxSteps()+2 ){
+                if(player.getUsedCharacter() != 2? steps <= player.getLastUsedCard().getMaxSteps() : steps <= player.getLastUsedCard().getMaxSteps()+2 ){
                     game.moveMotherNature(steps);
                     calculateInfluence();
                     game.nextPhase();
@@ -241,6 +241,8 @@ public class ActionController {
      */
     public boolean checkActionCloud(Player player,int cloudId){
         if(game.getPhase()== Phase.CLOUD_SELECTION && player == game.getCurrentPlayer()){
+            if(cloudId >=0 && cloudId < game.getListOfClouds().size()){
+
             for(Cloud cloud : game.getListOfClouds()){
                 if (cloud.getIdCloud() == cloudId){
                     if(!cloud.getIsTaken()){
@@ -253,10 +255,11 @@ public class ActionController {
                         System.out.println("Cloud already taken");
                         return false;
                     }
-                }else{
-                    System.out.println("Number of the cloud not valid");
-                    return false;
                 }
+                }
+            }else {
+                System.out.println("Number of the cloud not valid");
+                return false;
             }
 
         }else if(game.getPhase()== Phase.CLOUD_SELECTION || player != game.getCurrentPlayer()){

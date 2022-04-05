@@ -110,7 +110,7 @@ public class Cli implements View {
         System.out.println(archipelago.toString());
         for(int i = 0; i < archipelagos.size(); i++) {
                 archipelago = new StringBuilder();
-                archipelago.append(ColorsCli.RESET).append("Id archipelago: " + archipelagos.get(i).getIdArchipelago() + " owner: " + archipelagos.get(i).getOwner().getNickname() + "\n").append(ColorsCli.RESET);
+                archipelago.append(ColorsCli.RESET).append("Id archipelago: " + archipelagos.get(i).getIdArchipelago() + " owner: " + (archipelagos.get(i).getOwner()==null ? "" : archipelagos.get(i).getOwner().getNickname()) + "\n").append(ColorsCli.RESET);
                 for(Island is : archipelagos.get(i).getBelongingIslands()) {
                     for(int j = 0; j < Constants.NUMBEROFKINGDOMS; j++){
                         for(int k = 0; k < is.getStudentsByColor(StudsAndProfsColor.values()[j]); k++){

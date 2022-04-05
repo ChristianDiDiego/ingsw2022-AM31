@@ -20,6 +20,8 @@ public class EntranceTest {
         assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.YELLOW));
         assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.PINK));
         assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.BLUE));
+        assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.BLUE));
+
         entrance.addStudent(i);
         assertEquals(0, entrance.getStudentsByColor(StudsAndProfsColor.RED));
         assertEquals(1, entrance.getStudentsByColor(StudsAndProfsColor.GREEN));
