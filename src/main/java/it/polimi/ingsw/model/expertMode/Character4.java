@@ -47,7 +47,7 @@ public class Character4 extends Characters {
 
                 for(int c = 0; c < Constants.NUMBEROFKINGDOMS; c++){
                     for(Island i: a.getBelongingIslands()){
-                        if(i.getAllStudents()[c] > 0 && a.getOwner().getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
+                        if(i.getAllStudents()[c] > 0 && newOwner.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
                             maxInfluence += i.getAllStudents()[c];
                         }
                     }

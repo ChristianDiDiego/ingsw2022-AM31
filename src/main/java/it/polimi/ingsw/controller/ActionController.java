@@ -50,22 +50,22 @@ public class ActionController {
      */
     public void calculateInfluence(){
         if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER4.ordinal()){
-            Character4 character4= new Character4(game);
+            Character4 character4 = new Character4(game);
             character4.calculateInfluence();
         }else if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER5.ordinal()){
-            Character5 character5= new Character5(game);
+            Character5 character5 = new Character5(game);
             character5.calculateInfluence();
         }else if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER6.ordinal()){
-            Character6 character6= new Character6(game);
+            Character6 character6 = new Character6(game);
             character6.calculateInfluence();
         }
 
         else{
-            for(Archipelago a: game.getListOfArchipelagos()){
+            for(Archipelago a : game.getListOfArchipelagos()){
                 if(a.getIsMNPresent() && a.getIsForbidden() == false){
                     Player newOwner;
                     Player oldOwner;
-                    int maxInfluence =0;
+                    int maxInfluence = 0;
                     if(a.getOwner() == null){
                         oldOwner = null;
                         newOwner = getCurrentPlayer();
@@ -77,7 +77,7 @@ public class ActionController {
                     }
 
                     for(int c = 0; c < Constants.NUMBEROFKINGDOMS; c++){
-                        for(Island i: a.getBelongingIslands()){
+                        for(Island i : a.getBelongingIslands()){
                             if(i.getAllStudents()[c] > 0 && newOwner.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
                                 maxInfluence += i.getAllStudents()[c];
                             }
@@ -111,7 +111,7 @@ public class ActionController {
                         }
                         checkUnification(a);
                     }
-                }else if (a.getIsMNPresent() && a.getIsForbidden() == true){
+                } else if (a.getIsMNPresent() && a.getIsForbidden() == true){
                     a.setIsForbidden(false);
                 }
             }
@@ -241,7 +241,7 @@ public class ActionController {
      */
     public boolean checkActionCloud(Player player,int cloudId){
         if(game.getPhase()== Phase.CLOUD_SELECTION && player == game.getCurrentPlayer()){
-            if(cloudId >=0 && cloudId < game.getListOfClouds().size()){
+            if(cloudId >= 0 && cloudId < game.getListOfClouds().size()){
 
             for(Cloud cloud : game.getListOfClouds()){
                 if (cloud.getIdCloud() == cloudId){

@@ -1,5 +1,6 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controllerTest;
 
+import it.polimi.ingsw.controller.GameHandler;
 import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
