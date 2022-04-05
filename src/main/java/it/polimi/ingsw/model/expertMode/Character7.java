@@ -16,6 +16,7 @@ public class Character7 extends Characters{
 
     public Character7(Game game) {
         super(1, game);
+        id = 7;
         this.descriptionOfPower = "The player can switch max 2 students between entrance and dining room";
     }
 

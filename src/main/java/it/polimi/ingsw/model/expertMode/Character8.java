@@ -14,6 +14,7 @@ public class Character8 extends Characters{
 
     public Character8(Game game) {
         super(2, game);
+        id = 8;
         this.descriptionOfPower = "When this card is used, assignProfessor assign the professor to the player who use the card also if the number of students in the dining rooms of the two players is the same";
     }
 

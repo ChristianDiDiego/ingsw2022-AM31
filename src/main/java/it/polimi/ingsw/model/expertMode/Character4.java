@@ -12,6 +12,7 @@ public class Character4 extends Characters {
 
     public Character4(Game game) {
         super(3, game);
+        id = 4;
         descriptionOfPower = " When calculate the influence does not count the towers";
     }
 

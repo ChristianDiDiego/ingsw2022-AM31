@@ -13,7 +13,8 @@ public class Character5 extends Characters{
     public Character5(Game game) {
         super(2, game);
         this.descriptionOfPower = "When you calculate the influence, the player who play this card has 2 additional points";
-        bonus = 2;
+        id = 5;
+        bonusInfluence = 2;
     }
 
     public void usePower() {
@@ -40,7 +41,7 @@ public class Character5 extends Characters{
                     newOwner = a.getOwner();
                     maxInfluence = a.getBelongingIslands().size();
                     if(a.getOwner().getUsedCharacter() == this) {
-                        maxInfluence += bonus;
+                        maxInfluence += bonusInfluence;
                     }
                 }
 
@@ -63,7 +64,7 @@ public class Character5 extends Characters{
 
                         }
                         if(p.getUsedCharacter() == this) {
-                            newInfluence += bonus;
+                            newInfluence += bonusInfluence;
                         }
                         if(newInfluence > maxInfluence){
                             newOwner = p;

@@ -11,9 +11,11 @@ import it.polimi.ingsw.model.Game;
 public abstract class Characters {
     Game game;
     int price;
+    int id;
     boolean alreadyUsed;
     String descriptionOfPower;
-    int bonus;
+    int bonusSteps = 0;
+    int bonusInfluence = 0;
 
     public Characters(int price, Game game){
         alreadyUsed = false;
@@ -54,7 +56,8 @@ public abstract class Characters {
         return this.price;
     }
 
-    public int getBonus(){ return bonus; }
+    public int getBonusSteps(){ return bonusSteps; }
+    public int getBonusInfluence(){ return bonusInfluence; }
 
     /**
      * check if the character has already been used
@@ -63,6 +66,10 @@ public abstract class Characters {
      */
     public boolean getAlreadyUsed() {
         return this.alreadyUsed;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void checkUnification(Archipelago a){

@@ -49,13 +49,13 @@ public class ActionController {
      * Call checkUnification to check if the archipelago needs to be unified to another one
      */
     public void calculateInfluence(){
-        if(getCurrentPlayer().getUsedCharacter() == 4){
+        if(getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER4.ordinal()){
             Character4 character4= new Character4(game);
             character4.calculateInfluence();
-        }else if(getCurrentPlayer().getUsedCharacter() == 5){
+        }else if(getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER5.ordinal()){
             Character5 character5= new Character5(game);
             character5.calculateInfluence();
-        }else if(getCurrentPlayer().getUsedCharacter() == 6){
+        }else if(getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER6.ordinal()){
             Character6 character6= new Character6(game);
             character6.calculateInfluence();
         }
@@ -213,7 +213,7 @@ public class ActionController {
     public boolean checkActionMoveMN(Player player,int steps){
         if(game.getPhase()== Phase.MOVE_MN && player == game.getCurrentPlayer()){
 
-                if(player.getUsedCharacter() != 2? steps <= player.getLastUsedCard().getMaxSteps() + player.getUsedCharacter() : steps <= player.getLastUsedCard().getMaxSteps()+2 ){
+                if(steps <= player.getLastUsedCard().getMaxSteps() + (player.getUsedCharacter() != null ? player.getUsedCharacter().getBonusSteps() : 0 )){
                     game.moveMotherNature(steps);
                     calculateInfluence();
                     game.nextPhase();
@@ -247,7 +247,7 @@ public class ActionController {
                     if(!cloud.getIsTaken()){
                         player.getMyBoard().getEntrance().addStudent(cloud.getStudents());
                         cloud.removeStudents();
-                        game.getCurrentPlayer().setUsedCharacter(0);
+                        game.getCurrentPlayer().setUsedCharacter(null);
                         game.nextPhase();
                         return true;
                     }else{

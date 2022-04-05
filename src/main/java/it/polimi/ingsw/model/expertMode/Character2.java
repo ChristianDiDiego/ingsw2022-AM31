@@ -14,7 +14,8 @@ public class Character2 extends Characters{
     public Character2(Game game) {
         super(1, game);
         descriptionOfPower = "Allow to move MN of 2 steps more than the used card";
-        bonus = 2;
+        bonusSteps = 2;
+        id = 2;
     }
 
     /**
@@ -28,8 +29,5 @@ public class Character2 extends Characters{
         }
     }
 
-    public int getBonus(){
-        return bonus;
-    }
 
 }

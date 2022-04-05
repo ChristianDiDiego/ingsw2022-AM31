@@ -14,6 +14,7 @@ public class Character1 extends Characters {
 
     public Character1(Game game) {
         super(3, game);
+        id = 1;
         descriptionOfPower = "Choose an island and calculate the influence as if MN is on that island";
     }
 
