@@ -13,14 +13,13 @@ public class TowersOnBoard {
      */
     public void addTower() {
         numberOfTowers++;
-
     }
 
     /**
      * Remove a tower from the table of the player
      */
     public void removeTower() {
-            numberOfTowers--;
+        numberOfTowers--;
     }
 
     /**

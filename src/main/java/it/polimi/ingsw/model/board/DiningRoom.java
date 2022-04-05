@@ -11,6 +11,7 @@ public class DiningRoom {
     }
 
     /**
+     * TODO: listener that add a coin if number of student is multiple of 3
      * Add a student in the dining room
      * @param studColor color of the student that needs to be added
      */
@@ -26,14 +27,12 @@ public class DiningRoom {
         studentsInDR[studColor.ordinal()]--;
     }
 
-
     /**
      * Return the number of students of a color in the dining room
      * @param studColor color of the students to be counted
      * @return number of the students of color studColor in the dining room
      */
     public int getStudentsByColor(StudsAndProfsColor studColor){
-
         return studentsInDR[studColor.ordinal()];
     }
 }

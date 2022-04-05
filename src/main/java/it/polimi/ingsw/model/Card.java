@@ -6,7 +6,7 @@ public class Card implements Comparable<Card> {
 
     public Card(int power, int maxSteps) {
         this.power = power;
-        this.maxSteps =maxSteps;
+        this.maxSteps = maxSteps;
     }
 
     public int getMaxSteps() {

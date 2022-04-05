@@ -14,7 +14,7 @@ public class Deck {
             for (int power = 1; power <= Constants.NUMBEROFCARDSINDECK; power++) {
                 Card temp = new Card(power, maxSteps);
                 playerCards.add(temp);
-                power=power+1;
+                power = power + 1;
                 temp = new Card(power, maxSteps);
                 playerCards.add(temp);
                 maxSteps++;
@@ -34,7 +34,7 @@ public class Deck {
      * @return true if the card has been correctly removed, false otherwise
      */
     public boolean useCard(Card cardToUse){
-        for(Card c: this.getLeftCards()){
+        for(Card c : this.getLeftCards()){
             if(c.getPower() == cardToUse.getPower()){
                 playerCards.remove(c);
                 return true;
