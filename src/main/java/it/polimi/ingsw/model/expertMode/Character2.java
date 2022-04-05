@@ -14,6 +14,7 @@ public class Character2 extends Characters{
     public Character2(Game game) {
         super(1, game);
         descriptionOfPower = "Allow to move MN of 2 steps more than the used card";
+        bonus = 2;
     }
 
     /**
@@ -25,6 +26,10 @@ public class Character2 extends Characters{
                 game.getCurrentPlayer().setUsedCharacter(2);
             }
         }
+    }
+
+    public int getBonus(){
+        return bonus;
     }
 
 }

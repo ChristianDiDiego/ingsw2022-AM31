@@ -13,6 +13,7 @@ public abstract class Characters {
     int price;
     boolean alreadyUsed;
     String descriptionOfPower;
+    int bonus;
 
     public Characters(int price, Game game){
         alreadyUsed = false;
@@ -52,6 +53,8 @@ public abstract class Characters {
     public int getPrice(){
         return this.price;
     }
+
+    public int getBonus(){ return bonus; }
 
     /**
      * check if the character has already been used
