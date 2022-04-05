@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
@@ -9,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ActionControllerTest {
     private ActionController actionController;
-
+GameHandler gameHandler;
     @Test
     void calculateInfluence() {
         /*
@@ -26,4 +27,65 @@ class ActionControllerTest {
     @Test
     void checkUnification() {
     }
+
+    @Test
+    void checkActionMoveStudent(){
+        Cli cli = new Cli();
+        Player pl1 = new Player("carmine", ColorOfTower.WHITE);
+        gameHandler = new GameHandler(pl1, 3);
+        //other players login
+        gameHandler.addNewPlayer("chri", ColorOfTower.BLACK);
+        assertEquals(0, gameHandler.getIsStarted());
+        //gameHandler.addNewPlayer("fede", ColorOfTower.GREY);
+        gameHandler.getGame().nextPhase();
+        System.out.println(gameHandler.getGame().getCurrentPlayer().getNickname());
+        System.out.println(gameHandler.getGame().getPhase());
+        assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE));
+        assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.RED));
+        assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.GREEN));
+        assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.YELLOW));
+        assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK));
+
+        int[] studentsToAdd = {1,1,1,1,1};
+        gameHandler.getGame().getCurrentPlayer().getMyBoard().getEntrance().addStudent(studentsToAdd);
+        assertEquals(1, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.BLUE));
+        assertEquals(1, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.RED));
+        assertEquals(1, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.GREEN));
+        assertEquals(1, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.YELLOW));
+        assertEquals(1, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.PINK));
+
+        // cli.printBoards(gameHandler.getGame().getListOfPlayer());
+        StudsAndProfsColor[] colorToMove = {StudsAndProfsColor.BLUE, StudsAndProfsColor.RED, StudsAndProfsColor.GREEN, StudsAndProfsColor.YELLOW};
+        int[] destinations = {0,0,0,0};
+        gameHandler.getController().getTurnController().getActionController().checkActionMoveStudent(recognisePlayer("carmine"), colorToMove, destinations );
+        assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE));
+        assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.RED));
+        assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.GREEN));
+        assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.YELLOW));
+        assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK));
+
+        assertEquals(0, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.BLUE));
+        assertEquals(0, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.RED));
+        assertEquals(0, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.GREEN));
+        assertEquals(0, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.YELLOW));
+        assertEquals(1, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.PINK));
+
+
+
+
+        cli.printBoards(gameHandler.getGame().getListOfPlayer());
+    }
+
+
+    private Player recognisePlayer(String nickname){
+        for(Player player :gameHandler.getController().getTurnController().getActionController().getGame().getOrderOfPlayers()){
+            if(player.getNickname().equals(nickname)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+
+
 }

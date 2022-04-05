@@ -40,10 +40,11 @@ public class ActionParser {
                     return actionController.getTurnController().checkActionCard(player, cardPower);
 
                 case "MOVEST":
-                    String[] colorDestination = message.split(",");
-                    StudsAndProfsColor[] colors = new StudsAndProfsColor[actionController.getTurnController().getGameHandler().getNumberOfMovements()];
-                    int[] destinations = new int[actionController.getTurnController().getGameHandler().getNumberOfMovements()];
+                    String[] colorDestination = input[1].split(",");
+                    StudsAndProfsColor[] colors = new StudsAndProfsColor[colorDestination.length];
+                    int[] destinations = new int[colorDestination.length];
                     for(int i = 0; i< colorDestination.length; i++){
+
                         colors[i] = charToColorEnum(colorDestination[i].split("-")[0].charAt(0));
                         destinations[i] = Integer.parseInt(colorDestination[i].split("-")[1]);
                     }

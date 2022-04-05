@@ -159,6 +159,7 @@ public class ActionController {
            if (colors.length == turnController.getGameHandler().getNumberOfMovements()) {
                for (int i = 0; i < destinations.length; i++) {
                    color = colors[i];
+                   System.out.println(color.toString());
                    destination = destinations[i];
 
                    if (player.getMyBoard().getEntrance().getStudentsByColor(color) == 0) {
@@ -173,7 +174,6 @@ public class ActionController {
                                player.getMyBoard().getEntrance().removeStudent(color);
                                player.getMyBoard().getDiningRoom().addStudent(color);
                                game.assignProfessor(color);
-                               return true;
                            }
                        } else {
                            player.getMyBoard().getEntrance().removeStudent(color);
@@ -181,7 +181,6 @@ public class ActionController {
                                for (Island island : arc.getBelongingIslands()) {
                                    if (island.getIdIsland() == destination) {
                                        island.addStudent(color);
-                                       return true;
                                    }
                                }
                            }
@@ -191,6 +190,7 @@ public class ActionController {
                    }
                }
                game.nextPhase();
+               return true;
            }else {
                System.out.println("You can move only " + turnController.getGameHandler().getNumberOfMovements() + " students");
                return false;
@@ -202,7 +202,6 @@ public class ActionController {
                System.out.println("hai inviato un'azione non valida, riprova");
                return false;
            }
-       return false;
    }
 
     //TODO: add an observer that when MN change the position calculate the influence
