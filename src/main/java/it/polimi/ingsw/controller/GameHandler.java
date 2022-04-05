@@ -60,7 +60,6 @@ public class GameHandler {
             game.addPlayer(newPlayer);
             if (game.getOrderOfPlayers().size() == game.getNumberOfPlayers()) {
                 setIsStarted(1);
-              //  this.notifyAll();
                 startGame();
             }
         }else{

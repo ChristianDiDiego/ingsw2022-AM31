@@ -46,7 +46,7 @@ public class TurnController {
         }
 
         //Message to be sent to the current player
-        System.out.println(game.getCurrentPlayer() + " is your turn!");
+        System.out.println(game.getCurrentPlayer().getNickname() + " is your turn!");
     }
 
     //TODO: listener of orderOfPlayer instead of calling it directly?
@@ -63,9 +63,10 @@ public class TurnController {
             //If the card is in the deck, remove it and place as last used card
             if(checkCardPresence(player, power) ){
                 if(checkCardUsage(player, power)){
+                    Card cardToUse = null;
                     for(Card c : player.getMyDeck().getLeftCards()){
                         if(c.getPower() == power){
-                            player.getMyDeck().useCard(c);
+                            cardToUse = c;
                             player.setLastUsedCard(c);
 
                             if(player == game.getListOfPlayer().get(game.getListOfPlayer().size()-1)){
@@ -78,6 +79,8 @@ public class TurnController {
                             }
                         }
                     }
+                    //Outside the for to avoid ConcurrentModificationException
+                    player.getMyDeck().useCard(cardToUse);
                     return true;
                 }else{
                     System.out.println("Card already played in this turn");
