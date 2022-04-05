@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.expertMode.Characters;
 
 import java.util.Optional;
 
@@ -11,7 +12,7 @@ public class Player {
     private Card lastUsedCard;
     private Board myBoard;
     private int wallet;
-    private int usedCharacter;
+    private Characters usedCharacter;
 
     //TODO: characterUsed and wallet are optionals
     public Player(String nickname, ColorOfTower colorOfTowers){
@@ -20,7 +21,7 @@ public class Player {
         this.myBoard = new Board();
         myDeck = new Deck();
         wallet = 0;
-        usedCharacter = 0;
+        usedCharacter = null;
     }
 
     public String getNickname() {
@@ -73,11 +74,11 @@ public class Player {
         this.wallet -= coins;
     }
 
-    public int getUsedCharacter() {
+    public Characters getUsedCharacter() {
         return usedCharacter;
     }
 
-    public void setUsedCharacter(int usedCharacter) {
+    public void setUsedCharacter(Characters usedCharacter) {
         this.usedCharacter = usedCharacter;
     }
 }

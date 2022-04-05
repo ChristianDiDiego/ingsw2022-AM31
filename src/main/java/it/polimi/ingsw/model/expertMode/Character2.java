@@ -23,7 +23,7 @@ public class Character2 extends Characters{
     public void usePower() {
         if(payForUse()){
             if(game.getPhase() == Phase.MOVE_STUDENTS){
-                game.getCurrentPlayer().setUsedCharacter(2);
+                game.getCurrentPlayer().setUsedCharacter(this);
             }
         }
     }

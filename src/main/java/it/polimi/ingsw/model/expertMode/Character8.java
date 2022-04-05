@@ -19,7 +19,7 @@ public class Character8 extends Characters{
 
     public void usePower() {
         if(payForUse()) {
-            game.getCurrentPlayer().setUsedCharacter(8);
+            game.getCurrentPlayer().setUsedCharacter(this);
         }
     }
 

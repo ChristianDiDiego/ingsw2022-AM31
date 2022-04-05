@@ -18,7 +18,7 @@ public class Character6 extends Characters{
 
     public void usePower(StudsAndProfsColor color) {
         if(payForUse()) {
-            game.getCurrentPlayer().setUsedCharacter(6);
+            game.getCurrentPlayer().setUsedCharacter(this);
             this.color = color;
         }
     }
@@ -32,7 +32,7 @@ public class Character6 extends Characters{
             if(a.getIsMNPresent() && a.getIsForbidden() == false){
                 Player newOwner;
                 Player oldOwner;
-                int maxInfluence =0;
+                int maxInfluence = 0;
                 if(a.getOwner() == null){
                     oldOwner = null;
                     newOwner = game.getCurrentPlayer();
