@@ -35,10 +35,10 @@ class CharactersTest {
     void payForUse() {
         game.addPlayer(player2);
         character5.usePower();
-        assertEquals(0, player1.getUsedCharacter());
+        assertEquals(null, player1.getUsedCharacter());
         player1.addCoinsToWallet(5);
         character5.usePower();
-        assertEquals(5, player1.getUsedCharacter());
+        assertEquals(5, player1.getUsedCharacter().getId());
     }
 
     /**

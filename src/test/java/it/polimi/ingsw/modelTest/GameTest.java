@@ -84,4 +84,5 @@ class GameTest {
             assertEquals(2, testArray[s]);
         }
     }
+
 }

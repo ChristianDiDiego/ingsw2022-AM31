@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.model.expertMode.Character8;
+import it.polimi.ingsw.model.expertMode.CharactersEnum;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -19,6 +20,7 @@ public class Game {
     private boolean endTurn;
     private int bank;
     private int[] playableCharacters;
+    private boolean expertModeOn;
 
     private PropertyChangeSupport support;
 
@@ -196,7 +198,7 @@ public class Game {
      * @param color of the professor to check
      */
     public void assignProfessor(StudsAndProfsColor color){
-        if(currentPlayer.getUsedCharacter() == 8){
+        if(currentPlayer.getUsedCharacter() != null && currentPlayer.getUsedCharacter().getId() == CharactersEnum.CHARACTER8.ordinal()){
             Character8 character8 = new Character8(this);
             character8.assignProfessor(color);
         }
@@ -273,29 +275,6 @@ public class Game {
         return bag;
     }
 
-    //TODO: decide if move it to turn controller
-    /**
-     * Move a student from the entrance of a player to the dining room or to an archipelago
-     * @param colorToMove color of the student to be picked from the entrance
-     * @param destination of the student (0 for dining room, [1...12] for an archipelago
-     */
-    public void moveStudents(StudsAndProfsColor colorToMove, int destination){
-        if(destination == Constants.DININGROOMDESTINATION){
-                currentPlayer.getMyBoard().getEntrance().removeStudent(colorToMove);
-                currentPlayer.getMyBoard().getDiningRoom().addStudent(colorToMove);
-
-        } else {
-            currentPlayer.getMyBoard().getEntrance().removeStudent(colorToMove);
-            for(Archipelago arch : listOfArchipelagos){
-                for(Island island : arch.getBelongingIslands()){
-                    if(island.getIdIsland() == destination){
-                        island.addStudent(colorToMove);
-                    }
-                }
-            }
-        }
-    }
-
     public int getNumberOfPlayers() {
         return numberOfPlayers;
     }
@@ -316,9 +295,6 @@ public class Game {
         bank += coins;
     }
 
-    public void setBank(int bank) {
-        bank = bank;
-    }
 
     public int[] getPlayableCharacters() {
         return playableCharacters;

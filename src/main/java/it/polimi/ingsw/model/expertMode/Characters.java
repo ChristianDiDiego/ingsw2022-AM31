@@ -31,6 +31,7 @@ public abstract class Characters {
         if (!alreadyUsed) {
             if(game.getCurrentPlayer().getWallet() >= price) {
                 game.getCurrentPlayer().removeCoinsFromWallet(price);
+                game.addCoinInBank(price);
                 alreadyUsed = true;
             }
             else {
@@ -40,6 +41,7 @@ public abstract class Characters {
         } else {
             if(game.getCurrentPlayer().getWallet() >= price + 1) {
                 game.getCurrentPlayer().removeCoinsFromWallet(price + 1);
+                game.addCoinInBank(price+1);
             }else {
                 System.out.println("you don't have enough money to use this power");
                 return false;

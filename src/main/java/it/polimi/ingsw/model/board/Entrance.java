@@ -44,16 +44,20 @@ public class Entrance {
         return studentsInEntrance[studColor.ordinal()];
     }
 
+
     /**
      * Calculate the total number of students in the entrance
      * @return Total number of students in entrance
      */
-    private int getNumberOfStudentsInEntrance(){
+    /*
+    public int getNumberOfStudentsInEntrance(){
         int tot = 0;
         for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
             tot += studentsInEntrance[i];
         }
         return tot;
     }
+
+    */
 
 }

@@ -49,13 +49,13 @@ public class ActionController {
      * Call checkUnification to check if the archipelago needs to be unified to another one
      */
     public void calculateInfluence(){
-        if(getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER4.ordinal()){
+        if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER4.ordinal()){
             Character4 character4= new Character4(game);
             character4.calculateInfluence();
-        }else if(getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER5.ordinal()){
+        }else if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER5.ordinal()){
             Character5 character5= new Character5(game);
             character5.calculateInfluence();
-        }else if(getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER6.ordinal()){
+        }else if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER6.ordinal()){
             Character6 character6= new Character6(game);
             character6.calculateInfluence();
         }
@@ -170,6 +170,7 @@ public class ActionController {
                                System.out.println("Your dining room of the color " + color.toString() + " is full");
                                return false;
                            } else {
+                               //TODO: add coin every 3 students (only in expert)
                                player.getMyBoard().getEntrance().removeStudent(color);
                                player.getMyBoard().getDiningRoom().addStudent(color);
                                game.assignProfessor(color);
