@@ -245,6 +245,7 @@ public class ActionController {
                 if (cloud.getIdCloud() == cloudId){
                     if(!cloud.getIsTaken()){
                         player.getMyBoard().getEntrance().addStudent(cloud.getStudents());
+                        cloud.removeStudents();
                         game.getCurrentPlayer().setUsedCharacter(0);
                         game.nextPhase();
                         return true;
