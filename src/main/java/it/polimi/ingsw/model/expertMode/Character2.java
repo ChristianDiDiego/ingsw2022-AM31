@@ -25,6 +25,8 @@ public class Character2 extends Characters{
         if(payForUse()){
             if(game.getPhase() == Phase.MOVE_STUDENTS){
                 game.getCurrentPlayer().setUsedCharacter(this);
+            }else{
+                System.out.println("you can't use this power anymore");
             }
         }
     }

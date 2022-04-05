@@ -18,16 +18,19 @@ class Character5Test {
     GameHandler gameHandler = new GameHandler(player1, 2);
 
     /**
-     * Even if the two players have the same number of blue students,
+     * Even if the two players have the same influence,
      * player2 conquers the archipelago because he played character5
      */
     @Test
     void calculateInfluence() {
         player1.addCoinsToWallet(20);
-        player1.getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.BLUE);
+        player1.getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.RED);
         player2.getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.BLUE);
+        game.getListOfArchipelagos().get(1).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.RED);
+        game.getListOfArchipelagos().get(1).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.BLUE);
         character5.usePower();
-        game.getCurrentPlayer().getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.BLUE);
+        player1.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.RED);
+        player2.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.BLUE);
         game.moveMotherNature(1);
         character5.calculateInfluence();
         assertEquals(player1, game.getListOfArchipelagos().get(1).getOwner());

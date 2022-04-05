@@ -25,6 +25,7 @@ public class Character1 extends Characters {
      */
     public void usePower(int idArchipelago) {
         if (payForUse()) {
+            game.getCurrentPlayer().setUsedCharacter(this);
             Player newOwner;
             Player oldOwner;
             int maxInfluence = 0;

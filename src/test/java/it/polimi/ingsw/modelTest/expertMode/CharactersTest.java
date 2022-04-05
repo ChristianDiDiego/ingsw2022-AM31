@@ -1,17 +1,10 @@
 package it.polimi.ingsw.modelTest.expertMode;
 
-import it.polimi.ingsw.controller.ActionController;
-import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.GameHandler;
-import it.polimi.ingsw.controller.TurnController;
 import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.StudsAndProfsColor;
-import it.polimi.ingsw.model.expertMode.Character3;
-import it.polimi.ingsw.model.expertMode.Character5;
-import it.polimi.ingsw.model.expertMode.Character7;
-import it.polimi.ingsw.model.expertMode.Character8;
+import it.polimi.ingsw.model.expertMode.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,6 +13,7 @@ class CharactersTest {
     Player player1 = new Player("player1", ColorOfTower.BLACK);
     Player player2 = new Player("player2", ColorOfTower.WHITE);
     Game game = new Game(2, player1);
+    Character2 character2 = new Character2(game);
     Character3 character3 = new Character3(game);
     Character7 character7 = new Character7(game);
     Character5 character5 = new Character5(game);
@@ -54,7 +48,7 @@ class CharactersTest {
      * check if the parameter alreadyUsed of character becomes true after the first use
      */
     @Test
-    void getAlreadyUsed() {
+    void getAlreadyUsedTest() {
         game.addPlayer(player2);
         player1.addCoinsToWallet(5);
         character5.usePower();
@@ -62,4 +56,27 @@ class CharactersTest {
         character5.usePower();
         assertEquals(0, player1.getWallet());
     }
+
+    @Test
+    void getPrice(){
+        assertEquals(2,character5.getPrice());
+    }
+
+    @Test
+    void getBonusStepsTest(){
+        assertEquals(2, character2.getBonusSteps());
+        assertEquals(0,character5.getBonusSteps());
+    }
+
+    @Test
+    void getBonusInfluence(){
+        assertEquals(0, character2.getBonusInfluence());
+        assertEquals(2,character5.getBonusInfluence());
+    }
+
+    @Test
+    void getIdTest() {
+        assertEquals(2,character2.getId());
+    }
+
 }
