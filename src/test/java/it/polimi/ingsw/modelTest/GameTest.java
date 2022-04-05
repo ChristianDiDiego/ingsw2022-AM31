@@ -61,7 +61,7 @@ class GameTest {
     }
 
     /**
-     * Assert
+     * Tests if the game has correctly been created
      */
     @Test
     void gameConstructorTest() {

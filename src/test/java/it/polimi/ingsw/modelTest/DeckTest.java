@@ -8,6 +8,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DeckTest {
 
+    /**
+     * Check if in the deck there are the correct cards
+     */
     @Test
     void getLeftCardsTest() {
         Deck deck = new Deck();
@@ -19,6 +22,9 @@ class DeckTest {
 
     }
 
+    /**
+     * Check if when a player uses cards they are removed from deck
+     */
     @Test
     void useCardTest() {
         Deck deck = new Deck();
