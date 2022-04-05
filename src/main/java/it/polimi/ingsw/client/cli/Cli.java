@@ -69,7 +69,7 @@ public class Cli implements View {
             }
 
             StringBuilder board = new StringBuilder();
-            board.append(ColorsCli.RESET).append("\n Board of player: "+ p + "\n").append(ColorsCli.RESET);
+            board.append(ColorsCli.RESET).append("\n Board of player: "+ p.getNickname() + "\n").append(ColorsCli.RESET);
             for(int j = 0 ; j < Constants.NUMBEROFKINGDOMS ; j++){
                 for(int k = 0; k < nSDN[j]; k++){
                     board.append(ColorsCli.getColorByNumber(j)).append(" ●").append(ColorsCli.getColorByNumber(j));

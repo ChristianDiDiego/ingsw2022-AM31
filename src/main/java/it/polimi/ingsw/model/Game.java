@@ -127,6 +127,7 @@ public class Game {
             }
         });
         this.currentPlayer = orderOfPlayers.get(0);
+        System.out.println(currentPlayer.getNickname() + " is your turn!");
     }
 
     public List<Player> getOrderOfPlayers(){
@@ -171,6 +172,7 @@ public class Game {
         }
         index = index + 1;
         currentPlayer = orderOfPlayers.get(index);
+        System.out.println(currentPlayer.getNickname() + " is your turn!");
     }
 
     /**
@@ -186,6 +188,7 @@ public class Game {
         }
         index = index + 1;
         currentPlayer = listOfPlayers.get(index);
+        System.out.println(currentPlayer.getNickname() + " is your turn!");
     }
 
     /**
