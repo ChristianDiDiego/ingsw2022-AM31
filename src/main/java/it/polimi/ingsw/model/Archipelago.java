@@ -40,12 +40,8 @@ public class Archipelago {
      * @return the player who is the owner of the archipelago
      * @throws NullPointerException if the owner is null
      */
-    public Player getOwner() throws NullPointerException {
-        if(owner != null) {
-            return owner;
-        } else {
-            throw new NullPointerException();
-        }
+    public Player getOwner()  {
+        return owner;
     }
 
     /**

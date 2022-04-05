@@ -38,6 +38,7 @@ class ArchipelagoTest {
     @Test
     void changeOwner() {
         Player player = new Player("Pippo", ColorOfTower.BLACK);
+        assertEquals(null, archi.getOwner());
         archi.changeOwner(player);
         assertEquals(player, archi.getOwner());
     }
