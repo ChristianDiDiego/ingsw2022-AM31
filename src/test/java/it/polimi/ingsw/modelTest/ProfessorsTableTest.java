@@ -1,6 +1,7 @@
-package it.polimi.ingsw.model.board;
+package it.polimi.ingsw.modelTest;
 
 import it.polimi.ingsw.model.StudsAndProfsColor;
+import it.polimi.ingsw.model.board.ProfessorsTable;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

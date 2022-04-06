@@ -19,7 +19,7 @@ class Character5Test {
 
     /**
      * Even if the two players have the same influence,
-     * player2 conquers the archipelago because he played character5
+     * player1 conquers the archipelago because he played character5
      */
     @Test
     void calculateInfluence() {
