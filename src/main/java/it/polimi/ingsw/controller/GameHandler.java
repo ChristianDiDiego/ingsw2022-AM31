@@ -14,9 +14,9 @@ public class GameHandler {
     private int numberOfStudentsOnCloud;
     private int numberOfMovements;
 
-    public GameHandler(Player firstPlayer, int playersNumber){
+    public GameHandler(Player firstPlayer, int playersNumber, boolean expertMode){
         this.playersNumber = playersNumber;
-        this.game = new Game(playersNumber, firstPlayer);
+        this.game = new Game(playersNumber, firstPlayer, expertMode);
         this.controller = new Controller(this.game, this);
         //TODO: parse expertMode
         parametersSwitch(playersNumber, false);
@@ -94,6 +94,11 @@ public class GameHandler {
                 p.getMyBoard().getEntrance().addStudent(game.getBag().pickStudent(maxStudentsInEntrance));
                 for(int i = 0; i< maxNumberOfTowers; i++){
                     p.getMyBoard().getTowersOnBoard().addTower();
+                }
+                if(game.isExpertModeOn()){
+                    if(game.getCoinFromBank(1)){
+                        p.addCoinsToWallet(1);
+                    }
                 }
             }
             controller.getTurnController().startTurn();

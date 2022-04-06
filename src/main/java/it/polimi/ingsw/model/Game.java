@@ -25,7 +25,7 @@ public class Game {
     private PropertyChangeSupport support;
 
     //Aggiungi expertMode come parametro
-    public Game(int numberOfPlayers, Player player){
+    public Game(int numberOfPlayers, Player player, boolean expertModeOn){
         this.support = new PropertyChangeSupport(this);
         this.listOfPlayers = new ArrayList<>();
         this.listOfArchipelagos = new ArrayList<>();
@@ -37,6 +37,7 @@ public class Game {
         this.bag = new Bag(numberOfPlayers);
         this.currentPlayer = player;
         phase = Phase.CARD_SELECTION;
+        this.expertModeOn = expertModeOn;
 
         for(int i = 0; i < Constants.NUMBEROFISLANDS; i++){
             Archipelago arc = new Archipelago(i);
@@ -68,23 +69,25 @@ public class Game {
         }
 
         //EXPERT MODE:
+        if(expertModeOn){
+            this.bank = 20;
+            //Extract 3 characters that will be available for the game
+            this.playableCharacters = new int[Constants.NUMBEROFPLAYABLECHARACTERS];
+            int i = 0;
+            while (i < Constants.NUMBEROFPLAYABLECHARACTERS) {
+                int value = random.nextInt(Constants.NUMBEROFCHARACTERS);
+                boolean found = false;
 
-        //Extract 3 characters that will be available for the game
-        this.playableCharacters = new int[Constants.NUMBEROFPLAYABLECHARACTERS];
-        int i = 0;
-        while (i < Constants.NUMBEROFPLAYABLECHARACTERS) {
-            int value = random.nextInt(Constants.NUMBEROFCHARACTERS);
-            boolean found = false;
-
-            for (int playableCharacter : playableCharacters) {
-                if (playableCharacter == value) {
-                    found = true;
-                    break;
+                for (int playableCharacter : playableCharacters) {
+                    if (playableCharacter == value) {
+                        found = true;
+                        break;
+                    }
                 }
-            }
-            if(!found){
-                playableCharacters[i] = value;
-                i++;
+                if(!found){
+                    playableCharacters[i] = value;
+                    i++;
+                }
             }
         }
 
@@ -279,8 +282,16 @@ public class Game {
         return numberOfPlayers;
     }
 
-    public void getCoinFromBank(int coins) {
-        bank -= coins;
+    public boolean getCoinFromBank(int coins) {
+        if(bank>=coins){
+            bank -= coins;
+            return true;
+        }else{
+            System.out.println("No coins in bank");
+            return false;
+        }
+
+
     }
 
     public int getBank() {
@@ -298,5 +309,9 @@ public class Game {
 
     public int[] getPlayableCharacters() {
         return playableCharacters;
+    }
+
+    public boolean isExpertModeOn() {
+        return expertModeOn;
     }
 }

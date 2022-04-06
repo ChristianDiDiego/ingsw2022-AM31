@@ -49,18 +49,18 @@ public class ActionController {
      * Call checkUnification to check if the archipelago needs to be unified to another one
      */
     public void calculateInfluence(){
-        if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER4.ordinal()){
-            Character4 character4 = new Character4(game);
-            character4.calculateInfluence();
-        }else if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER5.ordinal()){
-            Character5 character5 = new Character5(game);
-            character5.calculateInfluence();
-        }else if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER6.ordinal()){
-            Character6 character6 = new Character6(game);
-            character6.calculateInfluence();
-        }
-
-        else{
+        if(game.isExpertModeOn()){
+            if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER4.ordinal()){
+                Character4 character4 = new Character4(game);
+                character4.calculateInfluence();
+            }else if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER5.ordinal()){
+                Character5 character5 = new Character5(game);
+                character5.calculateInfluence();
+            }else if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER6.ordinal()){
+                Character6 character6 = new Character6(game);
+                character6.calculateInfluence();
+            }
+        }else{
             for(Archipelago a : game.getListOfArchipelagos()){
                 if(a.getIsMNPresent() && a.getIsForbidden() == false){
                     Player newOwner;
@@ -173,6 +173,15 @@ public class ActionController {
                                //TODO: add coin every 3 students (only in expert)
                                player.getMyBoard().getEntrance().removeStudent(color);
                                player.getMyBoard().getDiningRoom().addStudent(color);
+                               if(game.isExpertModeOn()){
+                                   if(player.getMyBoard().getDiningRoom().getStudentsByColor(color) % 3 == 0){
+                                       if(game.getCoinFromBank(1)){
+                                           player.addCoinsToWallet(1);
+                                       }else{
+                                           System.out.println("Sorry, there are not enough money in the box :(");
+                                       }
+                                   }
+                               }
                                game.assignProfessor(color);
                            }
                        } else {
@@ -295,58 +304,79 @@ public class ActionController {
      * @return false if there is some error
      */
     public boolean checkActionCharacter(Player player, int idOfCharacter, String action) {
-        if(player == game.getCurrentPlayer()){
-            for(int charId :game.getPlayableCharacters()){
-                if(charId == idOfCharacter){
-                    switch (idOfCharacter){
-                        case 1:
-                            for(Archipelago arc : game.getListOfArchipelagos()){
-                                if(arc.getIdArchipelago() == Integer.parseInt(action)){
-                                    Character1 character1 = new Character1(game);
-                                    character1.usePower(Integer.parseInt(action));
-                                    return true;
+        if(game.isExpertModeOn()){
+            if(player == game.getCurrentPlayer()){
+                for(int charId :game.getPlayableCharacters()){
+                    if(charId == idOfCharacter){
+                        switch (idOfCharacter) {
+                            case 1 -> {
+                                for (Archipelago arc : game.getListOfArchipelagos()) {
+                                    if (arc.getIdArchipelago() == Integer.parseInt(action)) {
+                                        Character1 character1 = new Character1(game);
+                                        character1.usePower(Integer.parseInt(action));
+                                        return true;
+                                    }
                                 }
+                                return false;
                             }
-                            return false;
-                        case 2:
-                            Character2 character2 = new Character2(game);
-                            character2.usePower();
-                            return true;
-                        case 3:
-                            for(Archipelago arc : game.getListOfArchipelagos()){
-                                if(arc.getIdArchipelago() == Integer.parseInt(action)){
-                                    Character3 character3 = new Character3(game);
-                                    character3.usePower(Integer.parseInt(action));
-                                    return true;
+                            case 2 -> {
+                                Character2 character2 = new Character2(game);
+                                character2.usePower();
+                                return true;
+                            }
+                            case 3 -> {
+                                for (Archipelago arc : game.getListOfArchipelagos()) {
+                                    if (arc.getIdArchipelago() == Integer.parseInt(action)) {
+                                        Character3 character3 = new Character3(game);
+                                        character3.usePower(Integer.parseInt(action));
+                                        return true;
+                                    }
                                 }
+                                return false;
                             }
-                           return false;
-                        case 4:
-                            Character4 character4 = new Character4(game);
-                            character4.usePower();
-                            return true;
-                        case 5:
-                            Character5 character5 = new Character5(game);
-                            character5.usePower();
-                            return true;
-                        case 6:
-                            Character6 character6 = new Character6(game);
-                            character6.usePower(StudsAndProfsColor.valueOf(action));
-                            return true;
-                        case 7:
-                            Character7 character7 = new Character7(game);
-                            String[] colorDestination = action.split(",");
-                            return character7.usePower(StudsAndProfsColor.valueOf(colorDestination[0]),StudsAndProfsColor.valueOf(colorDestination[1]),StudsAndProfsColor.valueOf(colorDestination[2]),StudsAndProfsColor.valueOf(colorDestination[3]));
-                        case 8:
-                            Character8 character8 = new Character8(game);
-                            character8.usePower();
-                            return true;
-                    }
+                            case 4 -> {
+                                Character4 character4 = new Character4(game);
+                                character4.usePower();
+                                return true;
+                            }
+                            case 5 -> {
+                                Character5 character5 = new Character5(game);
+                                character5.usePower();
+                                return true;
+                            }
+                            case 6 -> {
+                                Character6 character6 = new Character6(game);
+                                character6.usePower(StudsAndProfsColor.valueOf(action));
+                                return true;
+                            }
+                            case 7 -> {
+                                Character7 character7 = new Character7(game);
+                                String[] colorDestination = action.split(",");
+                                return character7.usePower(StudsAndProfsColor.valueOf(colorDestination[0]), StudsAndProfsColor.valueOf(colorDestination[1]), StudsAndProfsColor.valueOf(colorDestination[2]), StudsAndProfsColor.valueOf(colorDestination[3]));
+                            }
+                            case 8 -> {
+                                Character8 character8 = new Character8(game);
+                                character8.usePower();
+                                return true;
+                            }
+                            default -> {
+                                System.out.println("Character not recognised");
+                                return false;
+                            }
+                        }
 
+                    }
                 }
+                System.out.println("The selected character is not available for this game");
+                return false;
+            }else{
+                System.out.println("Is not your turn");
+                return false;
             }
+        }else{
+            System.out.println("You are not playing in expert mode");
+            return false;
         }
-        return false;
 
     }
 
