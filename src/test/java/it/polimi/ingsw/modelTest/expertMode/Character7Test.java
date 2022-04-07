@@ -16,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class Character7Test {
     Player player1 = new Player("player1", ColorOfTower.BLACK);
     Player player2 = new Player("player2", ColorOfTower.WHITE);
-    Game game = new Game(2, player1);
+    Game game = new Game(2, player1,false);
     Character7 character7 = new Character7(game);
-    GameHandler gameHandler = new GameHandler(player1, 2);
+    GameHandler gameHandler = new GameHandler(player1, 2,false);
 
     /**
      * check if 2 entrance's students have correctly been switched with 2 coming from dining room

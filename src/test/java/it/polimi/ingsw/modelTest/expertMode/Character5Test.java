@@ -13,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class Character5Test {
     Player player1 = new Player("player1", ColorOfTower.BLACK);
     Player player2 = new Player("player2", ColorOfTower.WHITE);
-    Game game = new Game(2, player1);
+    Game game = new Game(2, player1,false);
     Character5 character5 = new Character5(game);
-    GameHandler gameHandler = new GameHandler(player1, 2);
+    GameHandler gameHandler = new GameHandler(player1, 2,false);
 
     /**
      * Even if the two players have the same influence,

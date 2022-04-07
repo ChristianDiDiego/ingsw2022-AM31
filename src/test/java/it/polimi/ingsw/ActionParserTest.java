@@ -17,7 +17,7 @@ public class ActionParserTest {
     public void actionParserTest(){
         Cli cli = new Cli();
         Player pl1 = new Player("carmine", ColorOfTower.WHITE);
-        gameHandler = new GameHandler(pl1, 3);
+        gameHandler = new GameHandler(pl1, 3, false);
         //other players login
         gameHandler.addNewPlayer("chri", ColorOfTower.BLACK);
         assertEquals(0, gameHandler.getIsStarted());

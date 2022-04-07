@@ -17,7 +17,7 @@ class TurnControllerTest {
     @Test
     void checkActionCard() {
         Player pl1 = new Player("carmine", ColorOfTower.WHITE);
-        gameHandler = new GameHandler(pl1, 3);
+        gameHandler = new GameHandler(pl1, 3,false);
         gameHandler.addNewPlayer("chri", ColorOfTower.BLACK);
         assertEquals(0, gameHandler.getIsStarted());
         gameHandler.addNewPlayer("fede", ColorOfTower.GREY);

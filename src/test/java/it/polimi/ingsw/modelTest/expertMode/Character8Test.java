@@ -16,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class Character8Test {
     Player player1 = new Player("player1", ColorOfTower.BLACK);
     Player player2 = new Player("player2", ColorOfTower.WHITE);
-    Game game = new Game(2, player1);
+    Game game = new Game(2, player1,false);
     Character8 character8 = new Character8(game);
-    GameHandler gameHandler = new GameHandler(player1, 2);
+    GameHandler gameHandler = new GameHandler(player1, 2,false);
 
     /**
      * check if the professor is correctly assigned even if the number of players' students are the same

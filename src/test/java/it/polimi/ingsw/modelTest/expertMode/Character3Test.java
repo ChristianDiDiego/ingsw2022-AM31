@@ -15,9 +15,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class Character3Test {
     Player player1 = new Player("player1", ColorOfTower.BLACK);
     Player player2 = new Player("player2", ColorOfTower.WHITE);
-    Game game = new Game(2, player1);
+    Game game = new Game(2, player1,false);
     Character3 character3 = new Character3(game);
-    GameHandler gameHandler = new GameHandler(player1, 2);
+    GameHandler gameHandler = new GameHandler(player1, 2,false);
 
     /**
      * check if usePower correclty sets the forbidden parameter in chosen archipelago

@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class Character4Test {
     Player player1 = new Player("player1", ColorOfTower.BLACK);
     Player player2 = new Player("player2", ColorOfTower.WHITE);
-    GameHandler gameHandler = new GameHandler(player1, 2);
+    GameHandler gameHandler = new GameHandler(player1, 2,false);
     Character4 character4 = new Character4(gameHandler.getGame());
 
     /**

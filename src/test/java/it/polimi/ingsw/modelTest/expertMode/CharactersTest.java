@@ -12,13 +12,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class CharactersTest {
     Player player1 = new Player("player1", ColorOfTower.BLACK);
     Player player2 = new Player("player2", ColorOfTower.WHITE);
-    Game game = new Game(2, player1);
+    Game game = new Game(2, player1,false);
     Character2 character2 = new Character2(game);
     Character3 character3 = new Character3(game);
     Character7 character7 = new Character7(game);
     Character5 character5 = new Character5(game);
     Character8 character8 = new Character8(game);
-    GameHandler gameHandler = new GameHandler(player1, 2);
+    GameHandler gameHandler = new GameHandler(player1, 2,false);
 
     /**
      * check if correctly removes coins from player's wallet
