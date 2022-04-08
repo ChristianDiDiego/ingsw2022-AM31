@@ -9,14 +9,19 @@ Professor : Alessandro Margara
 
 | Functionality |     Status     |
 |:-----------------------|:--------------:|
-| Basic rules |     W.I.P.     |
-| Complete rules |     W.I.P.     |
-| Socket | Coming soon... |
-| GUI | Coming soon... |
-| CLI |     W.I.P.     |
-| Multiple games | Coming soon... |
-| 4 players | Coming soon... |
-| Persistence | Coming soon... |
+| Basic rules |     🟢     |
+| Complete rules |     🟢      |
+| Socket | 🔴 |
+| GUI | 🔴 |
+| CLI |     🟡     |
+| Multiple games | 🔴 |
+| 4 players | 🔴 |
+| Persistence | 🔴 |
+
+key :   
+🟢 Completed     
+🟡 Work in progress  
+🔴 Not implemented
 
 ## Team:
 * [Federica Di Filippo](https://github.com/FedericaDiFilippo)
