@@ -11,7 +11,7 @@ Professor : Alessandro Margara
 |:-----------------------|:--------------:|
 | Basic rules |     🟢     |
 | Complete rules |     🟢      |
-| Socket | 🔴 |
+| Socket | 🟡 |
 | GUI | 🔴 |
 | CLI |     🟡     |
 | Multiple games | 🔴 |
