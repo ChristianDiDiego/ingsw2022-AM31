@@ -22,9 +22,9 @@ public enum ColorsCli {
     static String getColorByNumber(int n){
         switch (n){
             case 0:
-                return GREEN;
-            case 1:
                 return RED;
+            case 1:
+                return GREEN;
             case 2:
                 return YELLOW;
             case 3:
