@@ -26,6 +26,10 @@ public class Cloud {
         return idCloud;
     }
 
+    /**
+     * get the array containing the students on the cloud
+     * @return the array of students on the cloud
+     */
     public int[] getStudents() {
         return studentsOnCloud;
     }
