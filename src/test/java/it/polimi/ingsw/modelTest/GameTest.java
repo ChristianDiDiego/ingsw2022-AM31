@@ -85,4 +85,17 @@ class GameTest {
         }
     }
 
+    /**
+     * Test if the game in expert mode is properly created
+     */
+    @Test
+    public void expertModeTest(){
+        Game game = new Game(3,pl1,true);
+
+        assertEquals(20, game.getBank());
+        assertEquals(3, game.getPlayableCharacters().length);
+        game.getCoinFromBank(2);
+        assertEquals(18, game.getBank());
+    }
+
 }

@@ -94,9 +94,11 @@ public class Game {
 
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+   /* public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
+    */
+
     /**
      * Add a new player to the list of players
      * @param player to be added to the game

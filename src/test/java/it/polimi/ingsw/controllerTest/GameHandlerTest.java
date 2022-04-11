@@ -52,6 +52,8 @@ class GameHandlerTest {
 
         Player pl1 = new Player("carmine", ColorOfTower.WHITE);
         gameHandler = new GameHandler(pl1, 3,false);
+        assertEquals(gameHandler, gameHandler.getController().getGameHandler());
+        assertEquals(gameHandler.getGame(), gameHandler.getController().getGame());
         assertEquals(0, gameHandler.getIsStarted());
         for(Player p: gameHandler.getGame().getOrderOfPlayers()){
            assertEquals(0, p.getMyBoard().getTowersOnBoard().getNumberOfTowers());
