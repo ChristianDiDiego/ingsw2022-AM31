@@ -54,25 +54,28 @@ public class MatchTest {
         //start the game with current player setted as rules say
         String colorToAdd = "MOVEST ";
         int i = 0;
+        loop:
         for(StudsAndProfsColor color : StudsAndProfsColor.values()){
             if(i<4){
-                if (gameHandler.getGame().getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color)>0){
-                    if(i== 3){
+                System.out.println(color.toString() + gameHandler.getGame().getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color));
+                for(int j=0; j< gameHandler.getGame().getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color) ; j++){
+                    if(i ==3){
                         colorToAdd = colorToAdd + color.toString().charAt(0) + "-0";
+                        break loop;
                     }else{
                         colorToAdd = colorToAdd + color.toString().charAt(0) + "-0,";
                     }
                     i++;
                 }
             }
-
         }
+        System.out.println(colorToAdd);
 
         assertFalse(gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("chri", "MOVEST R-0,B-2,Y-1"));
         assertFalse(gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("carmine", "MOVEST G-0,B-0,Y-0"));
         assertTrue(gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("carmine", colorToAdd));
         cli.printBoards(gameHandler.getGame().getListOfPlayer());
-        //Not working when island without owner
+
         assertEquals(Phase.MOVE_MN, gameHandler.getGame().getPhase());
         assertTrue(gameHandler.getGame().getListOfArchipelagos().get(0).getIsMNPresent());
         assertFalse(gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("carmine", "MOVEMN 3"));
@@ -81,7 +84,6 @@ public class MatchTest {
         assertTrue(gameHandler.getGame().getListOfArchipelagos().get(1).getIsMNPresent());
 
 
-        //gameHandler.getGame().nextPhase();
         assertEquals(Phase.CLOUD_SELECTION, gameHandler.getGame().getPhase());
         cli.printClouds(gameHandler.getGame().getListOfClouds());
         assertFalse(gameHandler.getGame().getListOfClouds().get(1).getIsTaken());
