@@ -49,6 +49,7 @@ public class GameHandler {
     }
 
     /**
+     * TODO: check nickname
      * Add a new player (since the second one) to the game
      * Set isStarted = 1 when the numberOfPlaers required is reached and call startGame
      * @param nickname name chosen by the player

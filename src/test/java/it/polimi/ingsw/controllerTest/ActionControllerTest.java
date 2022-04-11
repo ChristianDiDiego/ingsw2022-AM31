@@ -32,7 +32,7 @@ GameHandler gameHandler;
 
     @Test
     void checkActionMoveStudent(){
-        Cli cli = new Cli();
+        Cli cli = new Cli("127.0.0.1", 5000);
         Player pl1 = new Player("carmine", ColorOfTower.WHITE);
         gameHandler = new GameHandler(pl1, 3,false);
         //other players login

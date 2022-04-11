@@ -4,10 +4,124 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.model.*;
+//import it.polimi.ingsw.server.SocketClientConnection;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
-public class Cli implements View {
+//public class Cli implements View, Runnable{
+public class Cli implements View{
+    private final PrintStream output;
+    private final Scanner input;
+    private String ip;
+    private int port;
+
+
+    public Cli(String ip, int port) {
+        input = new Scanner(System.in);
+        output = new PrintStream(System.out);
+    }
+
+    /*public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(">Insert the server IP address");
+        System.out.print(">");
+        String ip = scanner.nextLine();
+        System.out.println(">Insert the server port");
+        System.out.print(">");
+        int port = scanner.nextInt();
+
+        Cli cli = new Cli(ip, port);
+        try {
+            cli.run();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    /*public Thread asyncReadFromSocket(final ObjectInputStream socketIn){
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (isActive()) {
+                        //leggo un oggetto
+                        Object inputObject = socketIn.readObject();
+                        //controllo se ho ricevuto una stringa
+                        if(inputObject instanceof String){
+                            System.out.println((String)inputObject);
+                            //o se ho ricevuto una board
+                        } else if (inputObject instanceof Board){
+                            ((Board)inputObject).print();
+                        } else {
+                            throw new IllegalArgumentException();
+                        }
+                    }
+                } catch (Exception e){
+                    setActive(false);
+                    //termino
+                }
+            }
+        });
+        t.start();
+        return t;
+    }
+
+    /**
+     * in modo asincono mando la mia scelta
+     * @param stdin
+     * @param socketOut
+     * @return
+     */
+    /*public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut){
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (isActive()) {
+                        //mando sia board che la stringa
+                        String inputLine = stdin.nextLine();
+                        //in inputline salvo quello che leggo da tastiera
+                        socketOut.println(inputLine);
+                        socketOut.flush();
+                    }
+                }catch(Exception e){
+                    setActive(false);
+                }
+            }
+        });
+        t.start();
+        return t;
+    }
+
+    @Override
+    public void run() throws IOException{
+        Socket socket = new Socket(ip, port);
+        System.out.println("Connection established");
+        ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
+        PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
+        Scanner stdin = new Scanner(System.in);
+
+        try{
+            Thread t0 = asyncReadFromSocket(socketIn);
+            Thread t1 = asyncWriteToSocket(stdin, socketOut);
+            t0.join();
+            t1.join();
+        } catch(InterruptedException | NoSuchElementException e){
+            System.out.println("Connection closed from the client side");
+        } finally {
+            stdin.close();
+            socketIn.close();
+            socketOut.close();
+            socket.close();
+        }
+    }*/
 
     /**
      * TODO: add link to full rules

@@ -17,7 +17,7 @@ public class MatchTest {
 
     @Test
     public void matchTest(){
-        Cli cli = new Cli();
+        Cli cli = new Cli("127.0.0.1", 5000);
         //First player login
         cli.printLogo();
         Player pl1 = new Player("carmine", ColorOfTower.WHITE);
