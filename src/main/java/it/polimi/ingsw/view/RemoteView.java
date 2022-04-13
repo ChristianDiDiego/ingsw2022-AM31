@@ -8,10 +8,25 @@ import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.server.SocketClientConnection;
 import it.polimi.ingsw.utilities.MessageForParser;
 
-public class RemoteView extends Observable<MessageForParser> implements Observer<Game> {
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+//Observer: osserva qualcosa e quando c'è una notify
+// dell'oggetto osservato lancia l'update
+
+//Observable: un metodo della classe lancerà una notify del
+//tipo detto nell'observable
+public class RemoteView extends Observable<MessageForParser> implements Observer<Game>, PropertyChangeListener {
 
     private SocketClientConnection clientConnection;
     private Player player;
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if(evt.getPropertyName().equals("currentPlayerChangement")){
+            showMessage(evt.getNewValue() + " is your turn!");
+        }
+    }
 
     private class MessageReceiver extends Observable<MessageForParser> implements Observer<String>{
 

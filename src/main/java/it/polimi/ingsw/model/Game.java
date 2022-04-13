@@ -37,6 +37,7 @@ public class Game extends Observable<Game> implements Cloneable {
         orderOfPlayers.add(player);
         this.bag = new Bag(numberOfPlayers);
         this.currentPlayer = player;
+        System.out.println(player.getNickname());
         phase = Phase.CARD_SELECTION;
         this.expertModeOn = expertModeOn;
 
@@ -128,7 +129,7 @@ public class Game extends Observable<Game> implements Cloneable {
      */
     public void findPlayerOrder(){
 
-        Collections.sort(orderOfPlayers, new Comparator<Player>() {
+        orderOfPlayers.sort(new Comparator<Player>() {
             @Override
             public int compare(Player o1, Player o2) {
                 return o1.getLastUsedCard().compareTo(o2.getLastUsedCard());
@@ -136,7 +137,7 @@ public class Game extends Observable<Game> implements Cloneable {
         });
         this.currentPlayer = orderOfPlayers.get(0);
         notify(this.clone());
-        System.out.println(currentPlayer.getNickname() + " is your turn!");
+       // System.out.println(currentPlayer.getNickname() + " is your turn!");
     }
 
     @Override
@@ -193,7 +194,7 @@ public class Game extends Observable<Game> implements Cloneable {
         }
         index = index + 1;
         currentPlayer = orderOfPlayers.get(index);
-        System.out.println(currentPlayer.getNickname() + " is your turn!");
+    //    System.out.println(currentPlayer.getNickname() + " is your turn!");
     }
 
     /**
@@ -209,7 +210,7 @@ public class Game extends Observable<Game> implements Cloneable {
         }
         index = index + 1;
         currentPlayer = listOfPlayers.get(index);
-        System.out.println(currentPlayer.getNickname() + " is your turn!");
+     //   System.out.println(currentPlayer.getNickname() + " is your turn!");
     }
 
     /**

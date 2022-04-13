@@ -38,6 +38,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
             out.reset();
             out.writeObject(message);
             out.flush();
+            System.out.println("sent");
         } catch(IOException e){
             System.err.println(e.getMessage());
         }
@@ -49,7 +50,6 @@ public class SocketClientConnection extends Observable<String> implements Runnab
         String number;
         try {
             in = new Scanner(socket.getInputStream());
-            out = new ObjectOutputStream(socket.getOutputStream());
             send("How many players?"); //manda al client
             String read = in.nextLine(); // legge dal client il nome
             number = read;
@@ -62,13 +62,10 @@ public class SocketClientConnection extends Observable<String> implements Runnab
 
     public String askNickname() {
         Scanner in;
-        String number;
         try {
             in = new Scanner(socket.getInputStream());
-            out = new ObjectOutputStream(socket.getOutputStream());
-            send("How many players?"); //manda al client
-            String read = in.nextLine(); // legge dal client il nome
-            return read;
+            send("WHat is your nick?"); //manda al client
+            return in.nextLine();
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
             return "wrong";
@@ -78,11 +75,9 @@ public class SocketClientConnection extends Observable<String> implements Runnab
     //TODO: rivedere la return
     public boolean askMode() {
         Scanner in;
-        String number;
         try {
             in = new Scanner(socket.getInputStream());
-            out = new ObjectOutputStream(socket.getOutputStream());
-            send("Typer 0 for normal mode or 1 for expert mode"); //manda al client
+            send("Type 0 for normal mode or 1 for expert mode"); //manda al client
             String read = in.nextLine(); // legge dal client il nome
             return Boolean.parseBoolean(read);
         } catch (IOException | NoSuchElementException e) {
@@ -96,8 +91,8 @@ public class SocketClientConnection extends Observable<String> implements Runnab
         int number;
         try {
             in = new Scanner(socket.getInputStream());
-            out = new ObjectOutputStream(socket.getOutputStream());
-            send("Typer 0 for normal mode or 1 for expert mode"); //manda al client
+            //TODO: ask grey only if expertMode
+            send("Choose a color - write 0 for black, 1 for white"); //manda al client
             String read = in.nextLine(); // legge dal client il nome
             number = Integer.parseInt(read);
             return ColorOfTower.values()[number];

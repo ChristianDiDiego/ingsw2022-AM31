@@ -40,14 +40,14 @@ public class Server {
     public synchronized void lobby(SocketClientConnection c){
         List<Player> keys = new ArrayList<>(waitingConnection.keySet());
         ColorOfTower color;
-        String nickname;
+        //I moved nickname here so when other player connect the others receive his name
+        String nickname ;
+        while(!checkNickname(nickname = c.askNickname()));
         for(int i = 0; i < keys.size(); i++){
             SocketClientConnection connection = waitingConnection.get(keys.get(i));
-            connection.asyncSend("Connected User: " + keys.get(i));
+            connection.asyncSend("Connected User: " + nickname);
         }
-
         if(waitingConnection.size() == 0) {
-            nickname = c.askNickname();
             numberOfPlayers = c.askHowManyPlayers();
             while (numberOfPlayers < 0 || numberOfPlayers > Constants.MAXPLAYERS){
                numberOfPlayers = c.askHowManyPlayers();
@@ -61,16 +61,17 @@ public class Server {
             waitingConnection.put(player1, c);
             gameHandler = new GameHandler(player1, numberOfPlayers, mode);
         } else {
-            while(!checkNickname(nickname = c.askNickname()));
-            while(!checkColorTower(color = c.askColor()));
+            //while(!checkColorTower(color = c.askColor()));
+            color = c.askColor();
             Player player = new Player(nickname, color);
             gameHandler.addNewPlayer(nickname, color);
             waitingConnection.put(player, c);
-            c.asyncSend("Waiting for other players");
         }
 
         keys = new ArrayList<>(waitingConnection.keySet());
-
+        if(waitingConnection.size() < numberOfPlayers){
+            c.asyncSend("Waiting for other players");
+        }
         if (waitingConnection.size() == numberOfPlayers) {
             List<SocketClientConnection> temp = new ArrayList<>();
             int i = 0;

@@ -46,7 +46,7 @@ public class TurnController {
         }
 
         //Message to be sent to the current player
-        System.out.println(game.getCurrentPlayer().getNickname() + " is your turn!");
+      //  System.out.println(game.getCurrentPlayer().getNickname() + " is your turn!");
     }
 
     //TODO: listener of orderOfPlayer instead of calling it directly?
