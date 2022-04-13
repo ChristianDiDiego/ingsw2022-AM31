@@ -26,7 +26,16 @@ public class Server {
 
     //Deregister connection
     public synchronized void deregisterConnection(SocketClientConnection c) {
-
+        for(List<SocketClientConnection> l : listOfGames){
+            for(SocketClientConnection s : l){
+                if(s == c){
+                    for(SocketClientConnection toRemove : l){
+                        toRemove.closeConnection();
+                    }
+                    listOfGames.remove(l);
+                }
+            }
+        }
     }
 
     //Wait for another player
