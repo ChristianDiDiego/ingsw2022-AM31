@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.GameHandler;
 import it.polimi.ingsw.model.ColorOfTower;
@@ -73,7 +74,7 @@ public class Server {
         }
     }
 
-    public Server() throws IOException {
+    public Server(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
     }
 
@@ -93,4 +94,12 @@ public class Server {
         }
     }
 
+    public boolean checkNickname(String nameToCheck){
+        for(Player key : waitingConnection.keySet()){
+            if(key.getNickname().toUpperCase().equals(nameToCheck.toUpperCase())){
+                return false;
+            }
+        }
+        return true;
+    }
 }
