@@ -79,7 +79,7 @@ public class Server {
                 temp.add(waitingConnection.get(p));
                 i++;
                 gameHandler.getGame().addObserver(rw);
-                rw.addObserver(gameHandler);
+                rw.addObserver(gameHandler.getController().getTurnController().getActionController().getActionParser());
                 listOfGames.add(temp);
 
             }
