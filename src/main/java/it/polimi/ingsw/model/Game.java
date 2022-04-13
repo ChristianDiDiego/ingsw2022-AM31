@@ -141,8 +141,14 @@ public class Game extends Observable<Game> implements Cloneable {
 
     @Override
     protected final Game clone() {
-        final Game result = this.clone();
-        return result;
+        Game game;
+        try{
+            game = (Game) super.clone();
+        }catch (CloneNotSupportedException e)
+        {
+            throw new Error();
+        }
+        return game;
     }
 
     public List<Player> getOrderOfPlayers(){
