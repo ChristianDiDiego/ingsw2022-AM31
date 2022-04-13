@@ -12,9 +12,9 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/*public class Server {
-    private static final int port = 12345;
-    private int numberOfPlayes;
+public class Server {
+    private int port;
+    private int numberOfPlayers;
     private ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(128);
     private Map<Player, SocketClientConnection> waitingConnection = new HashMap<>();
@@ -36,15 +36,20 @@ import java.util.concurrent.Executors;
         }
 
         if(waitingConnection.size() == 0) {
-            numberOfPlayes = c.askHowManyPlayers();
-            nickname = c.askNickname();
+
+            while(!checkNickname(nickname = c.askNickname()));
+            numberOfPlayers = c.askHowManyPlayers();
+            while (numberOfPlayers < 0 || numberOfPlayers > Constants.MAXPLAYERS){
+               numberOfPlayers = c.askHowManyPlayers();
+            };
+            //TODO: add check if the inserted mode is fine
             boolean mode = c.askMode();
             color = c.askColor();
             c.asyncSend("Waiting for other players");
             Player player1 = new Player(nickname, color);
             waitingConnection.put(player1, c);
-            gameHandler = new GameHandler(player1, numberOfPlayes, mode);
-        } else if(waitingConnection.size() < numberOfPlayes - 1) {
+            gameHandler = new GameHandler(player1, numberOfPlayers, mode);
+        } else if(waitingConnection.size() < numberOfPlayers - 1) {
             nickname = c.askNickname();
             color = c.askColor();
             Player player = new Player(nickname, color);
@@ -58,7 +63,7 @@ import java.util.concurrent.Executors;
         //TODO: check numero di giocatori valido
 
 
-        if (waitingConnection.size() == numberOfPlayes) {
+        if (waitingConnection.size() == numberOfPlayers) {
 
             //TODO: vedere con i listener
 
@@ -89,4 +94,3 @@ import java.util.concurrent.Executors;
     }
 
 }
-*/

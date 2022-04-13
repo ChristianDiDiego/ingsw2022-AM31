@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-/*public class SocketClientConnection implements Runnable{
+public class SocketClientConnection implements Runnable{
     private Socket socket;
     private ObjectOutputStream out;
     private Server server;
@@ -30,7 +30,7 @@ import java.util.Scanner;
      * questa send manda il messaggio così com'è senza metterlo in stringa
      * @param message
      */
-    /*public synchronized void send(Object message) {
+    public synchronized void send(Object message) {
         try {
             out.reset();
             out.writeObject(message);
@@ -127,7 +127,7 @@ import java.util.Scanner;
      * elo manda al client che è in ascolto con readfromsocket
      *qualsiasi cosa il client riceva la stampa a video
      */
-    /*public void asyncSend(final Object message){
+    public void asyncSend(final Object message){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -157,4 +157,3 @@ import java.util.Scanner;
         }
     }
 }
-*/
