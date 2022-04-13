@@ -27,7 +27,7 @@ public class ActionParser {
      * Serialize the message arrived from the player recognising him and sending the action to the proper method
      * @param nickname nick of the player that sent the action
      * @param message received from the player
-     * @return 1 se action valid, 0 if some error occurs
+     * @return 1 if action valid, 0 if some error occurs
      */
     public boolean actionSerializer(String nickname, String message){
         String[] input = message.split(" ");

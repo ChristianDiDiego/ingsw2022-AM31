@@ -94,9 +94,14 @@ public class Server {
         }
     }
 
+    /**
+     * Check if the nickname chosen has already been taken
+     * @param nameToCheck nickname to check
+     * @return true if the nickname is available, false otherwise
+     */
     public boolean checkNickname(String nameToCheck){
-        for(Player key : waitingConnection.keySet()){
-            if(key.getNickname().toUpperCase().equals(nameToCheck.toUpperCase())){
+        for(Player p : waitingConnection.keySet()){
+            if(p.getNickname().toUpperCase().equals(nameToCheck.toUpperCase())){
                 return false;
             }
         }
