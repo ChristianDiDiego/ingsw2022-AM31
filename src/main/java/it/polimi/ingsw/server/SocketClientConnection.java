@@ -3,6 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
+import it.polimi.ingsw.observer.Observable;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -12,7 +13,7 @@ import java.util.Scanner;
 
 //Interagisce con il client
 //Connessione lato server
-public class SocketClientConnection implements Runnable{
+public class SocketClientConnection extends Observable<String> implements Runnable{
     private Socket socket;
     private ObjectOutputStream out;
     private Server server;

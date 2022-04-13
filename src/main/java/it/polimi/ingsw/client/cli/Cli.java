@@ -2,17 +2,12 @@ package it.polimi.ingsw.client.cli;
 
 //import com.sun.tools.javac.code.Attribute;
 import it.polimi.ingsw.client.View;
-import it.polimi.ingsw.constants.Constants;
+import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.*;
 //import it.polimi.ingsw.server.SocketClientConnection;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 //public class Cli implements View, Runnable{

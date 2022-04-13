@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.constants.Constants;
+import it.polimi.ingsw.utilities.constants.Constants;
 
 public class Island {
     private int idIsland;

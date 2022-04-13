@@ -1,4 +1,4 @@
-package it.polimi.ingsw.constants;
+package it.polimi.ingsw.utilities.constants;
 
 //This class contains the parameters that do not change according to the number of players
 

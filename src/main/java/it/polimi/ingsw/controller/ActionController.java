@@ -1,11 +1,8 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.client.ActionParser;
-import it.polimi.ingsw.constants.Constants;
+import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.expertMode.*;
-
-import static it.polimi.ingsw.model.ColorOfTower.BLACK;
 
 //TODO: Checks need to be finished checking that the actions are correct
 // (enough players in entrance to be moved etc.)

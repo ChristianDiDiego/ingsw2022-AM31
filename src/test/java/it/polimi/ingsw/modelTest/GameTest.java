@@ -1,6 +1,6 @@
 package it.polimi.ingsw.modelTest;
 
-import it.polimi.ingsw.constants.Constants;
+import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 

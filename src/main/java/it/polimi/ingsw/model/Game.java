@@ -1,14 +1,14 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.constants.Constants;
+import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.expertMode.Character8;
 import it.polimi.ingsw.model.expertMode.CharactersEnum;
 
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
 
-public class Game {
+public class Game extends Observable<Game> implements Cloneable {
     private List<Player> listOfPlayers ;
     private List<Archipelago> listOfArchipelagos;
     private List<Cloud> listOfClouds;
@@ -134,6 +134,7 @@ public class Game {
             }
         });
         this.currentPlayer = orderOfPlayers.get(0);
+        notify(this.clone());
         System.out.println(currentPlayer.getNickname() + " is your turn!");
     }
 

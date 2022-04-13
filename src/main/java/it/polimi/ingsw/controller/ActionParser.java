@@ -1,8 +1,11 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.ActionController;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
+import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.utilities.MessageForParser;
+import it.polimi.ingsw.view.RemoteView;
 
 import java.util.Locale;
 
@@ -16,7 +19,7 @@ import java.util.Locale;
  * CHARACTER [IDCHARACTER] [IDARCHIPELAGO]/ FOR CHARACTER7 : ([COLOR TO ADD],[COLOR TO ADD],[COLOR TO REMOVE],[COLOR TO REMOVE]
  */
 
-public class ActionParser {
+public class ActionParser implements Observer<MessageForParser> {
     private ActionController actionController;
 
     public ActionParser(ActionController actionController){
@@ -102,6 +105,11 @@ public class ActionParser {
            
         }
         return null;
+    }
+
+    @Override
+    public void update(MessageForParser message) {
+
     }
     /**
      * riceve tutti i messaggi della CLI

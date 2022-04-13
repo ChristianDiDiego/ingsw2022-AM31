@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.constants.Constants;
-import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.controller.GameHandler;
 import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Player;
@@ -10,7 +9,6 @@ import it.polimi.ingsw.view.RemoteView;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.rmi.Remote;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

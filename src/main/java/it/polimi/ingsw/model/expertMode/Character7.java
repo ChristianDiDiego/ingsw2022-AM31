@@ -1,9 +1,8 @@
 package it.polimi.ingsw.model.expertMode;
 
-import it.polimi.ingsw.constants.Constants;
+import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.StudsAndProfsColor;
-import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.DiningRoom;
 import it.polimi.ingsw.model.board.Entrance;
 
