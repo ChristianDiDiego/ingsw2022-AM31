@@ -4,6 +4,7 @@ import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.expertMode.Character8;
 import it.polimi.ingsw.model.expertMode.CharactersEnum;
+import it.polimi.ingsw.view.RemoteView;
 
 import java.beans.PropertyChangeSupport;
 import java.util.*;
@@ -136,6 +137,12 @@ public class Game extends Observable<Game> implements Cloneable {
         this.currentPlayer = orderOfPlayers.get(0);
         notify(this.clone());
         System.out.println(currentPlayer.getNickname() + " is your turn!");
+    }
+
+    @Override
+    protected final Game clone() {
+        final Game result = this.clone();
+        return result;
     }
 
     public List<Player> getOrderOfPlayers(){

@@ -72,10 +72,10 @@ public class Server {
         keys = new ArrayList<>(waitingConnection.keySet());
 
         if (waitingConnection.size() == numberOfPlayers) {
-            List<SocketClientConnection> temp= new ArrayList<>();
+            List<SocketClientConnection> temp = new ArrayList<>();
             int i = 0;
             for(Player p : waitingConnection.keySet()) {
-                RemoteView rw = new RemoteView(p, keys.get(i), waitingConnection.get(p));
+                RemoteView rw = new RemoteView(p, waitingConnection.get(p));
                 temp.add(waitingConnection.get(p));
                 i++;
                 gameHandler.getGame().addObserver(rw);
