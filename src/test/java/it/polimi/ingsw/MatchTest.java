@@ -47,7 +47,7 @@ public class MatchTest {
         gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("fede", "CARD 3");
 
         assertEquals(Phase.MOVE_STUDENTS, gameHandler.getGame().getPhase());
-      //  cli.printMyDeck(gameHandler.getGame().getCurrentPlayer().getMyDeck());
+        //  cli.printMyDeck(gameHandler.getGame().getCurrentPlayer().getMyDeck());
 
         assertEquals("carmine", gameHandler.getGame().getCurrentPlayer().getNickname());
         cli.printBoards(gameHandler.getGame().getListOfPlayer());

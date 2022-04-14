@@ -23,8 +23,15 @@ public class RemoteView extends Observable<MessageForParser> implements Observer
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if(evt.getPropertyName().equals("currentPlayerChangement")){
-            showMessage(evt.getNewValue() + " is your turn!");
+        if(evt.getPropertyName().equals("playerOrderChanged")){
+            if(player.getNickname().equals(evt.getNewValue())){
+                System.out.println("I'm notified and is my turn");
+                showMessage(evt.getNewValue() + " is your turn!");
+            }else{
+                System.out.println("I'm notified");
+                showMessage("is the turn of " + evt.getNewValue());
+
+            }
         }
     }
 

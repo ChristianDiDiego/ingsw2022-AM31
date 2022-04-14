@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.expertMode.Character8;
 import it.polimi.ingsw.model.expertMode.CharactersEnum;
 import it.polimi.ingsw.view.RemoteView;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
 
@@ -96,10 +97,10 @@ public class Game extends Observable<Game> implements Cloneable {
 
     }
 
-   /* public void addPropertyChangeListener(PropertyChangeListener pcl) {
+   public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
-    */
+
 
     /**
      * Add a new player to the list of players
@@ -128,15 +129,22 @@ public class Game extends Observable<Game> implements Cloneable {
      * For each player, according to the power of the card used, calculate his order in the next turn
      */
     public void findPlayerOrder(){
-
+        this.currentPlayer = orderOfPlayers.get(1);
+        System.out.println("old cplayer " + currentPlayer.getNickname());
         orderOfPlayers.sort(new Comparator<Player>() {
             @Override
             public int compare(Player o1, Player o2) {
-                return o1.getLastUsedCard().compareTo(o2.getLastUsedCard());
+                if(o1.getLastUsedCard() == null && o2.getLastUsedCard() == null){
+                    return 0;
+                }else{
+                    return o1.getLastUsedCard().compareTo(o2.getLastUsedCard());
+                }
             }
         });
         this.currentPlayer = orderOfPlayers.get(0);
-        notify(this.clone());
+        System.out.println("I should notify the curent player with "+ currentPlayer.getNickname());
+        support.firePropertyChange("playerOrderChanged", "aaaa", currentPlayer.getNickname());
+       // notify(this.clone());
        // System.out.println(currentPlayer.getNickname() + " is your turn!");
     }
 

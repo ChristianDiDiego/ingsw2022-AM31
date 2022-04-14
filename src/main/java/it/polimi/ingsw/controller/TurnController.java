@@ -44,7 +44,8 @@ public class TurnController {
                 cloud.addStudents( game.getBag().pickStudent(gameHandler.getNumberOfStudentsOnCloud()) );
             }
         }
-
+        System.out.println("Turn started");
+        game.findPlayerOrder();
         //Message to be sent to the current player
       //  System.out.println(game.getCurrentPlayer().getNickname() + " is your turn!");
     }

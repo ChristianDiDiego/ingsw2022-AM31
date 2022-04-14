@@ -20,6 +20,8 @@ public class Server {
     private ExecutorService executor = Executors.newFixedThreadPool(128);
     private Map<Player, SocketClientConnection> waitingConnection = new HashMap<>();
     GameHandler gameHandler;
+    private Player pl1;
+    private Player pl2;
     private List<List<SocketClientConnection>> listOfGames = new ArrayList<>();
 
     //Deregister connection
@@ -56,16 +58,23 @@ public class Server {
 
             boolean mode = c.askMode();
             color = c.askColor();
-            c.asyncSend("Waiting for other players");
             Player player1 = new Player(nickname, color);
+            pl1 = player1;
             waitingConnection.put(player1, c);
             gameHandler = new GameHandler(player1, numberOfPlayers, mode);
+            RemoteView remV1 = new RemoteView(player1, c);
+            gameHandler.getGame().addPropertyChangeListener(remV1);
+
         } else {
             //while(!checkColorTower(color = c.askColor()));
             color = c.askColor();
             Player player = new Player(nickname, color);
-            gameHandler.addNewPlayer(nickname, color);
+            pl2 = player;
             waitingConnection.put(player, c);
+            gameHandler.addNewPlayer(nickname, color);
+            RemoteView remV = new RemoteView(player, c);
+            gameHandler.getGame().addPropertyChangeListener(remV);
+
         }
 
         keys = new ArrayList<>(waitingConnection.keySet());
@@ -73,17 +82,25 @@ public class Server {
             c.asyncSend("Waiting for other players");
         }
         if (waitingConnection.size() == numberOfPlayers) {
+            for(int i = 0; i < waitingConnection.size(); i++){
+                SocketClientConnection connection = waitingConnection.get(keys.get(i));
+                connection.asyncSend("Number of player reached! Starting the game... ");
+            }
             List<SocketClientConnection> temp = new ArrayList<>();
+
+            /*
             int i = 0;
             for(Player p : waitingConnection.keySet()) {
                 RemoteView rw = new RemoteView(p, waitingConnection.get(p));
                 temp.add(waitingConnection.get(p));
                 i++;
                 gameHandler.getGame().addObserver(rw);
+                gameHandler.getGame().addPropertyChangeListener(rw);
                 rw.addObserver(gameHandler.getController().getTurnController().getActionController().getActionParser());
                 listOfGames.add(temp);
-
             }
+
+             */
             waitingConnection.clear();
         }
     }

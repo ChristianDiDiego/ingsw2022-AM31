@@ -21,15 +21,20 @@ class GameTest {
      */
     @Test
     void findPlayerOrder() {
+        game.addPlayer(pl2);
+        game.addPlayer(pl3);
+        List<Player> lista1 = Arrays.asList(pl1, pl2, pl3);
+        game.findPlayerOrder();
+        //First we test if the player have not played the card yet if
+        //the findplayerorder preserve the order of null objects
+        assertEquals(lista1, game.getOrderOfPlayers());
+
         pl1.chooseCardToUse(pl1.getMyDeck().getLeftCards().get(9));
         pl2.chooseCardToUse(pl2.getMyDeck().getLeftCards().get(1));
         pl3.chooseCardToUse(pl3.getMyDeck().getLeftCards().get(5));
-        List<Player> lista = Arrays.asList(pl2, pl3, pl1);
-
-        game.addPlayer(pl2);
-        game.addPlayer(pl3);
+        List<Player> lista2 = Arrays.asList(pl2, pl3, pl1);
         game.findPlayerOrder();
-        assertEquals( lista, game.getOrderOfPlayers());
+        assertEquals( lista2, game.getOrderOfPlayers());
 
     }
 
