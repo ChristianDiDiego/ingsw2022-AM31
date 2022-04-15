@@ -13,7 +13,8 @@ import java.util.Scanner;
 
 //Interagisce con il client
 //Connessione lato server
-public class SocketClientConnection extends Observable<String> implements Runnable{
+//public class SocketClientConnection extends Observable<String> implements Runnable
+public class SocketClientConnection implements Runnable{
     private Socket socket;
     private ObjectOutputStream out;
     private Server server;
@@ -146,7 +147,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
             server.lobby(this);
             while(isActive()){        //legge dal client tutti imessaggi e notifica l'observer della view
                 read = in.nextLine();
-                notify(read);
+                //notify(read);
             }
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.controller.GameHandler;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Phase;
 import it.polimi.ingsw.model.Player;
@@ -16,8 +17,8 @@ import java.beans.PropertyChangeListener;
 
 //Observable: un metodo della classe lancerà una notify del
 //tipo detto nell'observable
-public class RemoteView extends Observable<MessageForParser> implements Observer<Game>, PropertyChangeListener {
-
+//public class RemoteView extends Observable<MessageForParser> implements Observer<Game>, PropertyChangeListener {
+public class RemoteView implements PropertyChangeListener{
     private SocketClientConnection clientConnection;
     private Player player;
 
@@ -30,11 +31,35 @@ public class RemoteView extends Observable<MessageForParser> implements Observer
             }else{
                 System.out.println("I'm notified");
                 showMessage("is the turn of " + evt.getNewValue());
-
             }
+        }
+        if(evt.getPropertyName().equals("MNmove") || evt.getPropertyName().equals("ArchUnified")){
+            showMessage(currentGame.getListOfArchipelagos());
+        }else if(evt.getPropertyName().equals("PhaseChanged")){
+            if(currentGame.getCurrentPlayer() == player){
+                switch (currentGame.getPhase()){
+                    case CARD_SELECTION ->
+                            showMessage("choose a card\n");
+                    case MOVE_STUDENTS ->
+                            showMessage("move your students\n");
+                    case MOVE_MN ->
+                            showMessage("move mother nature\n");
+                    case CLOUD_SELECTION ->
+                            showMessage("choose a cloud\n");
+                }
+            }
+        }else if(evt.getPropertyName().equals("UsedCard")){
+            if(currentGame.getCurrentPlayer() == player){
+                showMessage(player.getMyDeck());
+            }
+            showMessage(currentGame.getListOfPlayer());
+        }else if (evt.getPropertyName().equals("RemovedStudentFromEntrance")){
+            showMessage(currentGame.getListOfArchipelagos());
+            showMessage(currentGame.getCurrentPlayer());
         }
     }
 
+    /**
     private class MessageReceiver extends Observable<MessageForParser> implements Observer<String>{
 
         @Override
@@ -49,25 +74,18 @@ public class RemoteView extends Observable<MessageForParser> implements Observer
             }
         }
     }
-
-    public RemoteView(Player player, SocketClientConnection c) {
-        this.player = player;
-        this.clientConnection = c;
-        c.addObserver(new MessageReceiver());
-       // c.asyncSend("Your opponent is: " + opponent);
-
-    }
+    */
 
     protected void showMessage(Object message) {
         clientConnection.asyncSend(message);
     }
 
-    @Override
+   //@Override
     /**
      * questo riceve l'intero game clonato dal model
      * in ogni caso manda il messaggio con la board aggiornata alla socketClietConnection
      * chiamando asynchSend
-     */
+
     public void update(Game game){
         showMessage(game);
         //TODO: mettere che stampa ogni singola cosa senza passare tutto il game
@@ -75,19 +93,20 @@ public class RemoteView extends Observable<MessageForParser> implements Observer
         if(game.getCurrentPlayer() == player){
             switch (game.getPhase()){
                 case CARD_SELECTION ->
-                    showMessage("Choose a card\n");
+                    showMessage("choose a card\n");
                 case MOVE_STUDENTS ->
                     showMessage("move your students\n");
                 case MOVE_MN ->
                     showMessage("move mother nature\n");
                 case CLOUD_SELECTION ->
-                    showMessage("Choose a cloud\n");
+                    showMessage("choose a cloud\n");
 
             }
 
         }
 
     }
+     */
 
 
 }

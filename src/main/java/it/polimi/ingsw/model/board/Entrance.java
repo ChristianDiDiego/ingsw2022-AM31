@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.board;
 import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 public class Entrance {
     /*This array contains the number of students for each color depending on the position.
       0 - RED
@@ -12,6 +15,8 @@ public class Entrance {
       4 - BLUE
      */
     private int[] studentsInEntrance;
+    private PropertyChangeSupport support;
+
     public Entrance(){
         studentsInEntrance = new int[Constants.NUMBEROFKINGDOMS];
     }
@@ -21,8 +26,13 @@ public class Entrance {
      * @param studColor color of the student to be removed
      */
 
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
+
     public void removeStudent(StudsAndProfsColor studColor) {
             studentsInEntrance[studColor.ordinal()]--;
+            support.firePropertyChange("RemovedStudentFromEntrance", null, null);
     }
 
     /**
@@ -33,6 +43,7 @@ public class Entrance {
         for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
            studentsInEntrance[i] += toAdd[i];
         }
+
     }
 
     /**

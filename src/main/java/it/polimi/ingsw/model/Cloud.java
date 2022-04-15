@@ -2,6 +2,9 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.utilities.constants.Constants;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 public class Cloud {
     private int idCloud;
     private int[] studentsOnCloud = new int[Constants.NUMBEROFKINGDOMS];
@@ -13,6 +16,7 @@ public class Cloud {
       4 - BLUE
      */
     private boolean isTaken;
+    private PropertyChangeSupport support;
 
     public Cloud(int idCloud) {
         this.idCloud = idCloud;
@@ -49,6 +53,10 @@ public class Cloud {
         changeStatus();
     }
 
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
+
     /**
      * When a cloud is chosen it removes all the students from it
      */
@@ -68,5 +76,6 @@ public class Cloud {
         } else {
             this.isTaken = false;
         }
+        support.firePropertyChange("ChangedCloudStatus", null, null);
     }
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.expertMode.Character8;
@@ -49,6 +50,7 @@ public class Game extends Observable<Game> implements Cloneable {
         for(int i = 0; i < numberOfPlayers; i++){
             Cloud cloud = new Cloud(i);
             listOfClouds.add(cloud);
+
         }
 
         int[] studentsForIslands = new int[Constants.NUMBEROFKINGDOMS];
@@ -97,7 +99,7 @@ public class Game extends Observable<Game> implements Cloneable {
 
     }
 
-   public void addPropertyChangeListener(PropertyChangeListener pcl) {
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
 
@@ -183,6 +185,7 @@ public class Game extends Observable<Game> implements Cloneable {
                 arci.changeMNPresence();
             }
         }
+        support.firePropertyChange("MNmove", null, null);
     }
 
     public List<Archipelago> getListOfArchipelagos(){
@@ -249,6 +252,8 @@ public class Game extends Observable<Game> implements Cloneable {
                 currentPlayer.getMyBoard().getProfessorsTable().addProfessor(color);
             }
         }
+        support.firePropertyChange("MNmove", null, null);
+
     }
 
     /**
@@ -264,6 +269,8 @@ public class Game extends Observable<Game> implements Cloneable {
             actualArchipelago.setIsForbidden(true);
         }
         listOfArchipelagos.remove(archToBeUnified);
+
+        support.firePropertyChange("ArchUnified", null, null);
     }
 
     public Phase getPhase(){
@@ -297,6 +304,7 @@ public class Game extends Observable<Game> implements Cloneable {
                 }
                 break;
         }
+        support.firePropertyChange("PhaseChanged", null , null);
     }
 
     public Bag getBag(){
@@ -315,8 +323,6 @@ public class Game extends Observable<Game> implements Cloneable {
             System.out.println("No coins in bank");
             return false;
         }
-
-
     }
 
     public int getBank() {
@@ -339,4 +345,5 @@ public class Game extends Observable<Game> implements Cloneable {
     public boolean isExpertModeOn() {
         return expertModeOn;
     }
+
 }

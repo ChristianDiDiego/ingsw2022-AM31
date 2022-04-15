@@ -2,44 +2,43 @@ package it.polimi.ingsw.client.cli;
 
 //import com.sun.tools.javac.code.Attribute;
 import it.polimi.ingsw.client.View;
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.*;
 //import it.polimi.ingsw.server.SocketClientConnection;
 
-import java.io.PrintStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.PrintWriter;
+import java.io.Serializable;
+import java.net.Socket;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 import java.util.List;
 import java.util.Scanner;
 
-//public class Cli implements View, Runnable{
-public class Cli implements View{
-    private final PrintStream output;
-    private final Scanner input;
-    private String ip;
-    private int port;
-
+public class Cli implements Runnable{
+    //private final PrintStream output;
+    //private final Scanner input;
+    private final String ip;
+    private final int port;
+    private boolean active = true;
 
     public Cli(String ip, int port) {
-        input = new Scanner(System.in);
-        output = new PrintStream(System.out);
+        this.ip = ip;
+        this.port = port;
     }
 
-    /*public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println(">Insert the server IP address");
-        System.out.print(">");
-        String ip = scanner.nextLine();
-        System.out.println(">Insert the server port");
-        System.out.print(">");
-        int port = scanner.nextInt();
-
-        Cli cli = new Cli(ip, port);
-        try {
-            cli.run();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public synchronized boolean isActive() {
+        return active;
     }
-    /*public Thread asyncReadFromSocket(final ObjectInputStream socketIn){
+
+    public synchronized void setActive(boolean active) {
+        this.active = active;
+    }
+
+
+    public Thread asyncReadFromSocket(final ObjectInputStream socketIn) {
 
         Thread t = new Thread(new Runnable() {
             @Override
@@ -49,16 +48,19 @@ public class Cli implements View{
                         //leggo un oggetto
                         Object inputObject = socketIn.readObject();
                         //controllo se ho ricevuto una stringa
-                        if(inputObject instanceof String){
-                            System.out.println((String)inputObject);
-                            //o se ho ricevuto una board
-                        } else if (inputObject instanceof Board){
-                            ((Board)inputObject).print();
+                        if (inputObject instanceof String) {
+                            System.out.println((String) inputObject);
+                        } else if (inputObject instanceof Board) {
+                            printBoard((Board) inputObject);
+                        }else if (inputObject instanceof Deck) {
+                            printMyDeck((Deck) inputObject);
+                        }else if(inputObject instanceof Archipelago){
+                            printArchipelago((Archipelago) inputObject);
                         } else {
                             throw new IllegalArgumentException();
                         }
                     }
-                } catch (Exception e){
+                } catch (Exception e) {
                     setActive(false);
                     //termino
                 }
@@ -68,8 +70,10 @@ public class Cli implements View{
         return t;
     }
 
+
     /**
      * in modo asincono mando la mia scelta
+     *
      * @param stdin
      * @param socketOut
      * @return
@@ -86,7 +90,7 @@ public class Cli implements View{
                         socketOut.println(inputLine);
                         socketOut.flush();
                     }
-                }catch(Exception e){
+                } catch (Exception e) {
                     setActive(false);
                 }
             }
@@ -95,164 +99,178 @@ public class Cli implements View{
         return t;
     }
 
+        /**
+         * TODO: add link to full rules
+         * ha un metodo run che chiama il setup del nuovo player, poi chiama riceviInput
+         * ha un metodo riceviInput che è sempre in ascolto e ogni volta
+         * invia tutti i messaggi che riceve al parser
+         */
+
+        public void printLogo () {
+            System.out.println("\n" +
+                    "███████╗██████╗ ██╗   ██╗ █████╗ ███╗   ██╗████████╗██╗███████╗\n" +
+                    "██╔════╝██╔══██╗╚██╗ ██╔╝██╔══██╗████╗  ██║╚══██╔══╝██║██╔════╝\n" +
+                    "█████╗  ██████╔╝ ╚████╔╝ ███████║██╔██╗ ██║   ██║   ██║███████╗\n" +
+                    "██╔══╝  ██╔══██╗  ╚██╔╝  ██╔══██║██║╚██╗██║   ██║   ██║╚════██║\n" +
+                    "███████╗██║  ██║   ██║   ██║  ██║██║ ╚████║   ██║   ██║███████║\n" +
+                    "╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚══════╝\n" +
+                    "                                                               \n");
+
+            System.out.println("\nCreators: Carmine Faino, Christian Di Diego, Federica Di Filippo");
+        }
+
+        public void printMyDeck (Deck deck){
+            for (Card c : deck.getLeftCards()) {
+                System.out.println("Power: " + c.getPower() + " Steps: " + c.getMaxSteps() + "\n");
+            }
+        }
+
+        public void printLastUsedCards (List <Player> players) {
+            int min = 10;
+            int i;
+            for (i = 0; i < players.size(); i++) {
+                if (players.get(i).getMyDeck().getLeftCards().size() < min) {
+                    min = players.get(i).getMyDeck().getLeftCards().size();
+                }
+            }
+            for (i = 0; i < players.size(); i++) {
+                if (players.get(i).getMyDeck().getLeftCards().size() == min) {
+                    System.out.println("Player " + players.get(i).getNickname() + " choose the card:" + "\n");
+                    System.out.println("Power: " + players.get(i).getLastUsedCard().getPower() + " Steps: " + players.get(i).getLastUsedCard().getMaxSteps());
+                }
+            }
+        }
+
+        public void printBoard(Board board) {
+                String green, red, yellow, pink, blue;
+                int[] nSDN = new int[]{0, 0, 0, 0, 0};
+                int[] nSE = new int[]{0, 0, 0, 0, 0};
+                int nT = board.getTowersOnBoard().getNumberOfTowers();
+                boolean[] hasProf = new boolean[]{false, false, false, false, false};
+                for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
+                    nSDN[i] = board.getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]);
+                    nSE[i] = board.getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]);
+                    hasProf[i] = board.getProfessorsTable().getHasProf(StudsAndProfsColor.values()[i]);
+                }
+
+                StringBuilder boardString = new StringBuilder();
+                boardString.append(ColorsCli.RESET).append("\n Board of player: " + board.getNickname() + "\n").append(ColorsCli.RESET);
+                for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
+                    for (int k = 0; k < nSDN[j]; k++) {
+                        boardString.append(ColorsCli.getColorByNumber(j)).append(" ●").append(ColorsCli.getColorByNumber(j));
+                    }
+                    for (int k = nSDN[j]; k < Constants.MAXSTUDENTSINDINING; k++) {
+                        if ((k + 1) % 3 == 0) {
+                            boardString.append(ColorsCli.getColorByNumber(j)).append(" ©").append(ColorsCli.getColorByNumber(j));
+                        } else {
+                            boardString.append(ColorsCli.getColorByNumber(j)).append(" ◯").append(ColorsCli.getColorByNumber(j));
+                        }
+                    }
+                    if (hasProf[j]) {
+                        boardString.append(ColorsCli.getColorByNumber(j)).append(" | ⬢  ").append(ColorsCli.getColorByNumber(j));
+                    } else {
+                        boardString.append(ColorsCli.getColorByNumber(j)).append(" | ⬡  ").append(ColorsCli.getColorByNumber(j));
+                    }
+                    boardString.append(ColorsCli.BLACK).append("\n").append(ColorsCli.BLACK);
+                }
+
+                boardString.append(ColorsCli.RESET).append("Students in entrance: \n").append(ColorsCli.RESET);
+                for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
+                    for (int k = 0; k < nSE[i]; k++) {
+                        boardString.append(ColorsCli.getColorByNumber(i)).append("● ").append(ColorsCli.getColorByNumber(i));
+                    }
+                }
+                boardString.append(ColorsCli.RESET).append("\nTowers on board: \n").append(ColorsCli.RESET);
+                for (int i = 0; i < nT; i++) {
+                    boardString.append(ColorsCli.RESET).append("♜ ").append(ColorsCli.BLACK).append(ColorsCli.RESET);
+                }
+                System.out.println(boardString.toString());
+        }
+
+        public void printArchipelago(Archipelago a) {
+            StringBuilder archipelago = new StringBuilder();
+            archipelago.append(ColorsCli.RESET).append("ARCHIPELAGO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
+            System.out.println(archipelago.toString());
+                //archipelago = new StringBuilder();
+            archipelago.append(ColorsCli.RESET).append("Id archipelago: " + a.getIdArchipelago() + " owner: " + (a.getOwner() == null ? "" : a.getOwner().getNickname()) + "\n").append(ColorsCli.RESET);
+            for (Island is : a.getBelongingIslands()) {
+                for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
+                    for (int k = 0; k < is.getStudentsByColor(StudsAndProfsColor.values()[j]); k++) {
+                        archipelago.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.getColorByNumber(j));
+                    }
+                }
+                System.out.println(archipelago.toString());
+            }
+            //archipelago = new StringBuilder();
+            //archipelago.append(ColorsCli.RESET).append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
+            //System.out.println(archipelago.toString());
+        }
+
+        public void printClouds (List < Cloud > clouds) {
+            StringBuilder cloud = new StringBuilder();
+            cloud.append(ColorsCli.RESET).append("CLOUDS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
+            System.out.println(cloud.toString());
+            for (int i = 0; i < clouds.size(); i++) {
+                if (clouds.get(i).getIsTaken() == false) {
+                    cloud = new StringBuilder();
+                    cloud.append(ColorsCli.RESET).append("Id cloud: " + clouds.get(i).getIdCloud() + "\n").append(ColorsCli.RESET);
+                    for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
+                        for (int k = 0; k < clouds.get(i).getStudents()[j]; k++) {
+                            cloud.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.getColorByNumber(j));
+                        }
+                    }
+                    System.out.println(cloud.toString());
+                }
+            }
+            cloud = new StringBuilder();
+            cloud.append(ColorsCli.RESET).append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
+            System.out.println(cloud.toString());
+        }
+
     @Override
-    public void run() throws IOException{
-        Socket socket = new Socket(ip, port);
+    public void run() {
+        printLogo();
+        Socket socket = null;
+        try {
+            socket = new Socket(ip, port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println("Connection established");
-        ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
-        PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
+        ObjectInputStream socketIn = null;
+        try {
+            socketIn = new ObjectInputStream(socket.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        PrintWriter socketOut = null;
+        try {
+            socketOut = new PrintWriter(socket.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Scanner stdin = new Scanner(System.in);
 
-        try{
+        try {
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(stdin, socketOut);
             t0.join();
             t1.join();
-        } catch(InterruptedException | NoSuchElementException e){
+        } catch (InterruptedException | NoSuchElementException e) {
             System.out.println("Connection closed from the client side");
         } finally {
             stdin.close();
-            socketIn.close();
+            try {
+                socketIn.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             socketOut.close();
-            socket.close();
-        }
-    }*/
-
-    /**
-     * TODO: add link to full rules
-     * ha un metodo run che chiama il setup del nuovo player, poi chiama riceviInput
-     * ha un metodo riceviInput che è sempre in ascolto e ogni volta
-     * invia tutti i messaggi che riceve al parser
-     */
-
-    @Override
-    public void printLogo() {
-        System.out.println("\n" +
-                "███████╗██████╗ ██╗   ██╗ █████╗ ███╗   ██╗████████╗██╗███████╗\n" +
-                "██╔════╝██╔══██╗╚██╗ ██╔╝██╔══██╗████╗  ██║╚══██╔══╝██║██╔════╝\n" +
-                "█████╗  ██████╔╝ ╚████╔╝ ███████║██╔██╗ ██║   ██║   ██║███████╗\n" +
-                "██╔══╝  ██╔══██╗  ╚██╔╝  ██╔══██║██║╚██╗██║   ██║   ██║╚════██║\n" +
-                "███████╗██║  ██║   ██║   ██║  ██║██║ ╚████║   ██║   ██║███████║\n" +
-                "╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚══════╝\n" +
-                "                                                               \n");
-
-        System.out.println("\nCreators: Carmine Faino, Christian Di Diego, Federica Di Filippo");
-    }
-
-    @Override
-    public void printMyDeck(Deck deck) {
-        for(Card c : deck.getLeftCards()) {
-            System.out.println("Power: " + c.getPower() + " Steps: " + c.getMaxSteps() + "\n");
-        }
-    }
-
-    @Override
-    public void printLastUsedCards(List<Player> players) {
-        int min = 10;
-        int i;
-        for (i = 0; i < players.size(); i++) {
-            if (players.get(i).getMyDeck().getLeftCards().size() < min) {
-                min = players.get(i).getMyDeck().getLeftCards().size();
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-        for (i = 0; i < players.size(); i++) {
-            if(players.get(i).getMyDeck().getLeftCards().size() == min) {
-                System.out.println("Player " + players.get(i).getNickname() + " choose the card:" + "\n");
-                System.out.println("Power: " + players.get(i).getLastUsedCard().getPower() + " Steps: " + players.get(i).getLastUsedCard().getMaxSteps());
-            }
-        }
-    }
-
-    @Override
-    public void printBoards(List<Player> players) {
-        for(Player p : players){
-            String green, red, yellow, pink, blue;
-            int[] nSDN = new int[]{0,0,0,0,0};
-            int[] nSE = new int[]{0,0,0,0,0};
-            int nT = p.getMyBoard().getTowersOnBoard().getNumberOfTowers();
-            boolean[] hasProf =  new boolean[]{false, false, false, false, false};
-            for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
-                nSDN[i] = p.getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]);
-                nSE[i] = p.getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]);
-                hasProf[i] = p.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[i]);
-            }
-
-            StringBuilder board = new StringBuilder();
-            board.append(ColorsCli.RESET).append("\n Board of player: "+ p.getNickname() + "\n").append(ColorsCli.RESET);
-            for(int j = 0 ; j < Constants.NUMBEROFKINGDOMS ; j++){
-                for(int k = 0; k < nSDN[j]; k++){
-                    board.append(ColorsCli.getColorByNumber(j)).append(" ●").append(ColorsCli.getColorByNumber(j));
-                }
-                for(int k = nSDN[j]; k < Constants.MAXSTUDENTSINDINING; k++){
-                    if((k + 1) % 3 == 0){
-                        board.append(ColorsCli.getColorByNumber(j)).append(" ©").append(ColorsCli.getColorByNumber(j));
-                    }else {
-                        board.append(ColorsCli.getColorByNumber(j)).append(" ◯").append(ColorsCli.getColorByNumber(j));
-                    }
-                }
-                if(hasProf[j]){
-                    board.append(ColorsCli.getColorByNumber(j)).append(" | ⬢  ").append(ColorsCli.getColorByNumber(j));
-                }else{
-                    board.append(ColorsCli.getColorByNumber(j)).append(" | ⬡  ").append(ColorsCli.getColorByNumber(j));
-                }
-                board.append(ColorsCli.BLACK).append("\n").append(ColorsCli.BLACK);
-            }
-
-            board.append(ColorsCli.RESET).append("Students in entrance: \n").append(ColorsCli.RESET);
-            for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
-                for(int k = 0; k < nSE[i]; k++){
-                    board.append(ColorsCli.getColorByNumber(i)).append("● ").append(ColorsCli.getColorByNumber(i));
-                }
-            }
-            board.append(ColorsCli.RESET).append("\nTowers on board: \n").append(ColorsCli.RESET);
-            for(int i = 0; i < nT; i++){
-                board.append(ColorsCli.RESET).append("♜ ").append(ColorsCli.BLACK).append(ColorsCli.RESET);
-            }
-            System.out.println(board.toString());
-        }
-    }
-
-    @Override
-    public void printArchipelagos(List<Archipelago> archipelagos) {
-        StringBuilder archipelago = new StringBuilder();
-        archipelago.append(ColorsCli.RESET).append("ARCHIPELAGOS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
-        System.out.println(archipelago.toString());
-        for(int i = 0; i < archipelagos.size(); i++) {
-                archipelago = new StringBuilder();
-                archipelago.append(ColorsCli.RESET).append("Id archipelago: " + archipelagos.get(i).getIdArchipelago() + " owner: " + (archipelagos.get(i).getOwner()==null ? "" : archipelagos.get(i).getOwner().getNickname()) + "\n").append(ColorsCli.RESET);
-                for(Island is : archipelagos.get(i).getBelongingIslands()) {
-                    for(int j = 0; j < Constants.NUMBEROFKINGDOMS; j++){
-                        for(int k = 0; k < is.getStudentsByColor(StudsAndProfsColor.values()[j]); k++){
-                            archipelago.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.getColorByNumber(j));
-                        }
-                    }
-                    System.out.println(archipelago.toString());
-                }
-        }
-        archipelago = new StringBuilder();
-        archipelago.append(ColorsCli.RESET).append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
-        System.out.println(archipelago.toString());
-    }
-
-    @Override
-    public void printClouds(List<Cloud> clouds) {
-        StringBuilder cloud = new StringBuilder();
-        cloud.append(ColorsCli.RESET).append("CLOUDS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
-        System.out.println(cloud.toString());
-        for(int i = 0; i < clouds.size(); i++) {
-            if(clouds.get(i).getIsTaken() == false) {
-                cloud = new StringBuilder();
-                cloud.append(ColorsCli.RESET).append("Id cloud: " + clouds.get(i).getIdCloud() + "\n").append(ColorsCli.RESET);
-                for(int j = 0; j < Constants.NUMBEROFKINGDOMS; j++){
-                    for(int k = 0; k < clouds.get(i).getStudents()[j]; k++){
-                        cloud.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.getColorByNumber(j));
-                    }
-                }
-                System.out.println(cloud.toString());
-            }
-        }
-        cloud = new StringBuilder();
-        cloud.append(ColorsCli.RESET).append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
-        System.out.println(cloud.toString());
     }
 }
