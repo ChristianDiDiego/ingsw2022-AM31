@@ -54,7 +54,7 @@ public class ActionParserTest {
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.YELLOW));
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.PINK));
 
-        cli.printBoards(gameHandler.getGame().getListOfPlayer());
+       // cli.printBoards(gameHandler.getGame().getListOfPlayer());
 
 
     }
