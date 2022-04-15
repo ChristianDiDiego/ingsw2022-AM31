@@ -71,9 +71,9 @@ public class Server {
             Player player = new Player(nickname, color);
             pl2 = player;
             waitingConnection.put(player, c);
-            gameHandler.addNewPlayer(nickname, color);
             RemoteView remV = new RemoteView(player, c);
             gameHandler.getGame().addPropertyChangeListener(remV);
+            gameHandler.addNewPlayer(nickname, color);
 
         }
 
