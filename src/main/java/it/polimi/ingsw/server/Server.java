@@ -62,7 +62,7 @@ public class Server {
             pl1 = player1;
             waitingConnection.put(player1, c);
             gameHandler = new GameHandler(player1, numberOfPlayers, mode);
-            RemoteView remV1 = new RemoteView(player1, c);
+            RemoteView remV1 = new RemoteView(player1, c, gameHandler.getGame());
             gameHandler.getGame().addPropertyChangeListener(remV1);
 
         } else {
@@ -71,7 +71,7 @@ public class Server {
             Player player = new Player(nickname, color);
             pl2 = player;
             waitingConnection.put(player, c);
-            RemoteView remV = new RemoteView(player, c);
+            RemoteView remV = new RemoteView(player, c, gameHandler.getGame());
             gameHandler.getGame().addPropertyChangeListener(remV);
             gameHandler.addNewPlayer(nickname, color);
 

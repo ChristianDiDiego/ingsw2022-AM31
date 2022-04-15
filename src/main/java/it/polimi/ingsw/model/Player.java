@@ -18,7 +18,7 @@ public class Player {
     public Player(String nickname, ColorOfTower colorOfTowers){
         this.nickname = nickname;
         this.colorOfTowers = colorOfTowers;
-        this.myBoard = new Board();
+        this.myBoard = new Board(nickname);
         myDeck = new Deck();
         wallet = 0;
         usedCharacter = null;

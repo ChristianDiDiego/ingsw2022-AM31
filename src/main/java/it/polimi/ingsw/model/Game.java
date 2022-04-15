@@ -95,12 +95,17 @@ public class Game extends Observable<Game> implements Cloneable {
                 }
             }
         }
-
-
     }
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
+        for(Cloud c : getListOfClouds()) {
+            c.addPropertyChangeListener(pcl);
+        }
+        for(Player p : getListOfPlayer()) {
+            p.getMyDeck().addPropertyChangeListener(pcl);
+            p.getMyBoard().getEntrance().addPropertyChangeListener(pcl);
+        }
     }
 
 

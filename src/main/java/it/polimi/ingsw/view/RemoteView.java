@@ -21,6 +21,16 @@ import java.beans.PropertyChangeListener;
 public class RemoteView implements PropertyChangeListener{
     private SocketClientConnection clientConnection;
     private Player player;
+    private Game currentGame;
+
+    public RemoteView(Player player, SocketClientConnection c, Game currentGame) {
+        this.player = player;
+        this.clientConnection = c;
+        this.currentGame = currentGame;
+        //c.addObserver(new MessageReceiver());
+        // c.asyncSend("Your opponent is: " + opponent);
+
+    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

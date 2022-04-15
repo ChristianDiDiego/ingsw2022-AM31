@@ -6,13 +6,19 @@ public class Board {
     private DiningRoom diningRoom;
     private ProfessorsTable professorsTable;
     private TowersOnBoard towersOnBoard;
+    private String nickname;
 
 
-    public Board() {
+    public Board(String nickname) {
         this.entrance = new Entrance();
         this.diningRoom = new DiningRoom();
         this.professorsTable = new ProfessorsTable();
         this.towersOnBoard = new TowersOnBoard();
+        this.nickname = nickname;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     public Entrance getEntrance() {

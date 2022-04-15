@@ -5,7 +5,7 @@ import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.*;
-//import it.polimi.ingsw.server.SocketClientConnection;
+import it.polimi.ingsw.server.SocketClientConnection;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,7 +15,6 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.List;
-import java.util.Scanner;
 
 public class Cli implements Runnable{
     //private final PrintStream output;
@@ -78,7 +77,7 @@ public class Cli implements Runnable{
      * @param socketOut
      * @return
      */
-    /*public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut){
+    public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut) {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
