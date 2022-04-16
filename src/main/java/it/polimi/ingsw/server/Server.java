@@ -64,6 +64,7 @@ public class Server {
             gameHandler = new GameHandler(player1, numberOfPlayers, mode);
             RemoteView remV1 = new RemoteView(player1, c, gameHandler.getGame());
             gameHandler.getGame().addPropertyChangeListener(remV1);
+            c.addPropertyChangeListener(remV1);
 
         } else {
             //while(!checkColorTower(color = c.askColor()));
@@ -73,6 +74,7 @@ public class Server {
             waitingConnection.put(player, c);
             RemoteView remV = new RemoteView(player, c, gameHandler.getGame());
             gameHandler.getGame().addPropertyChangeListener(remV);
+            c.addPropertyChangeListener(remV);
             gameHandler.addNewPlayer(nickname, color);
 
         }

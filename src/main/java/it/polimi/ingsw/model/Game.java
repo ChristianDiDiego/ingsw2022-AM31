@@ -117,7 +117,7 @@ public class Game extends Observable<Game> implements Cloneable {
         int oldSize = listOfPlayers.size();
         listOfPlayers.add(player);
         orderOfPlayers.add(player);
-        //support.firePropertyChange("listOfPlayers", oldSize, listOfPlayers.size());
+        support.firePropertyChange("listOfPlayers", oldSize, listOfPlayers.size());
     }
 
     public List<Player> getListOfPlayer(){
@@ -190,7 +190,7 @@ public class Game extends Observable<Game> implements Cloneable {
                 arci.changeMNPresence();
             }
         }
-        support.firePropertyChange("MNmove", null, null);
+        support.firePropertyChange("MNmove", 0, 1);
     }
 
     public List<Archipelago> getListOfArchipelagos(){
@@ -275,7 +275,7 @@ public class Game extends Observable<Game> implements Cloneable {
         }
         listOfArchipelagos.remove(archToBeUnified);
 
-        support.firePropertyChange("ArchUnified", null, null);
+        support.firePropertyChange("ArchUnified", 0, 1);
     }
 
     public Phase getPhase(){
@@ -309,7 +309,7 @@ public class Game extends Observable<Game> implements Cloneable {
                 }
                 break;
         }
-        support.firePropertyChange("PhaseChanged", null , null);
+        support.firePropertyChange("PhaseChanged", 0 , 1);
     }
 
     public Bag getBag(){

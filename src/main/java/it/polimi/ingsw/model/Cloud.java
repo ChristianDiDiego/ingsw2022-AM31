@@ -76,6 +76,6 @@ public class Cloud {
         } else {
             this.isTaken = false;
         }
-        support.firePropertyChange("ChangedCloudStatus", null, null);
+        support.firePropertyChange("ChangedCloudStatus", 0, 1);
     }
 }

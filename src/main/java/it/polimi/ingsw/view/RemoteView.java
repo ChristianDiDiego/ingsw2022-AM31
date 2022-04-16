@@ -1,9 +1,11 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.GameHandler;
+import it.polimi.ingsw.model.Archipelago;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Phase;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.server.SocketClientConnection;
@@ -45,6 +47,7 @@ public class RemoteView implements PropertyChangeListener{
         }
         if(evt.getPropertyName().equals("MNmove") || evt.getPropertyName().equals("ArchUnified")){
             showMessage(currentGame.getListOfArchipelagos());
+
         }else if(evt.getPropertyName().equals("PhaseChanged")){
             if(currentGame.getCurrentPlayer() == player){
                 switch (currentGame.getPhase()){
@@ -62,10 +65,22 @@ public class RemoteView implements PropertyChangeListener{
             if(currentGame.getCurrentPlayer() == player){
                 showMessage(player.getMyDeck());
             }
-            showMessage(currentGame.getListOfPlayer());
+            for(Player p : currentGame.getOrderOfPlayers()){
+                showMessage(p.getLastUsedCard());
+            }
         }else if (evt.getPropertyName().equals("RemovedStudentFromEntrance")){
-            showMessage(currentGame.getListOfArchipelagos());
-            showMessage(currentGame.getCurrentPlayer());
+            for(Archipelago a : currentGame.getListOfArchipelagos()){
+                showMessage(a);
+            }
+            for(Player p : currentGame.getListOfPlayer()) {
+                showMessage(p.getMyBoard());
+            }
+        }else if(evt.getPropertyName().equals("ChangedProfessor")){
+            for(Player p : currentGame.getListOfPlayer()) {
+                showMessage(p.getMyBoard());
+            }
+        }else if(evt.getPropertyName().equals("MessageForParser")){
+
         }
     }
 
@@ -90,33 +105,7 @@ public class RemoteView implements PropertyChangeListener{
         clientConnection.asyncSend(message);
     }
 
-   //@Override
-    /**
-     * questo riceve l'intero game clonato dal model
-     * in ogni caso manda il messaggio con la board aggiornata alla socketClietConnection
-     * chiamando asynchSend
 
-    public void update(Game game){
-        showMessage(game);
-        //TODO: mettere che stampa ogni singola cosa senza passare tutto il game
-
-        if(game.getCurrentPlayer() == player){
-            switch (game.getPhase()){
-                case CARD_SELECTION ->
-                    showMessage("choose a card\n");
-                case MOVE_STUDENTS ->
-                    showMessage("move your students\n");
-                case MOVE_MN ->
-                    showMessage("move mother nature\n");
-                case CLOUD_SELECTION ->
-                    showMessage("choose a cloud\n");
-
-            }
-
-        }
-
-    }
-     */
 
 
 }

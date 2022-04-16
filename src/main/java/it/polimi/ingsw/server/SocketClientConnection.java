@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.observer.Observable;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -18,8 +20,12 @@ public class SocketClientConnection implements Runnable{
     private Socket socket;
     private ObjectOutputStream out;
     private Server server;
+    private PropertyChangeSupport support;
 
     private boolean active = true;
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
 
     public SocketClientConnection(Socket socket, Server server) {
         this.socket = socket;
@@ -145,9 +151,9 @@ public class SocketClientConnection implements Runnable{
             out = new ObjectOutputStream(socket.getOutputStream());
             send("Welcome!");
             server.lobby(this);
-            while(isActive()){        //legge dal client tutti imessaggi e notifica l'observer della view
+            while(true){        //legge dal client tutti i messaggi e notifica il listener della view
                 read = in.nextLine();
-                //notify(read);
+                support.firePropertyChange("MessageForParser","aaa", read);
             }
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());

@@ -12,11 +12,12 @@ import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.List;
 
-public class Cli implements Runnable{
+public class Cli{
     //private final PrintStream output;
     //private final Scanner input;
     private final String ip;
@@ -46,16 +47,22 @@ public class Cli implements Runnable{
                     while (isActive()) {
                         //leggo un oggetto
                         Object inputObject = socketIn.readObject();
+                        Archipelago a = new Archipelago(2);
+                        /**
+                         * inputObject.getClass().equals(Player.class)
+                         */
                         //controllo se ho ricevuto una stringa
-                        if (inputObject instanceof String) {
+                        if(inputObject instanceof String) {
                             System.out.println((String) inputObject);
-                        } else if (inputObject instanceof Board) {
+                        } else if(inputObject instanceof Board) {
                             printBoard((Board) inputObject);
-                        }else if (inputObject instanceof Deck) {
+                        }else if(inputObject instanceof Deck) {
                             printMyDeck((Deck) inputObject);
-                        }else if(inputObject instanceof Archipelago){
+                        }else if(inputObject instanceof Archipelago) {
                             printArchipelago((Archipelago) inputObject);
-                        } else {
+                        }else if(inputObject instanceof Cloud) {
+                            printCloud((Cloud) inputObject);
+                        }else {
                             throw new IllegalArgumentException();
                         }
                     }
@@ -205,29 +212,28 @@ public class Cli implements Runnable{
             //System.out.println(archipelago.toString());
         }
 
-        public void printClouds (List < Cloud > clouds) {
+        public void printCloud (Cloud c) {
             StringBuilder cloud = new StringBuilder();
             cloud.append(ColorsCli.RESET).append("CLOUDS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
             System.out.println(cloud.toString());
-            for (int i = 0; i < clouds.size(); i++) {
-                if (clouds.get(i).getIsTaken() == false) {
+                if (c.getIsTaken() == false) {
                     cloud = new StringBuilder();
-                    cloud.append(ColorsCli.RESET).append("Id cloud: " + clouds.get(i).getIdCloud() + "\n").append(ColorsCli.RESET);
+                    cloud.append(ColorsCli.RESET).append("Id cloud: " + c.getIdCloud() + "\n").append(ColorsCli.RESET);
                     for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
-                        for (int k = 0; k < clouds.get(i).getStudents()[j]; k++) {
+                        for (int k = 0; k < c.getStudents()[j]; k++) {
                             cloud.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.getColorByNumber(j));
                         }
                     }
                     System.out.println(cloud.toString());
                 }
-            }
-            cloud = new StringBuilder();
-            cloud.append(ColorsCli.RESET).append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
-            System.out.println(cloud.toString());
+
+            //cloud = new StringBuilder();
+            //cloud.append(ColorsCli.RESET).append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
+            //System.out.println(cloud.toString());
         }
 
-    @Override
-    public void run() {
+
+    public void run() throws IOException {
         printLogo();
         Socket socket = null;
         try {

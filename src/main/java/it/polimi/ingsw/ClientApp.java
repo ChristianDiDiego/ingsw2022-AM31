@@ -1,6 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.server.Server;
 
@@ -44,7 +43,8 @@ public class ClientApp {
                 try {
                     client.run();
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    //throw new RuntimeException(e);
+                    System.err.println(e.getMessage());
                 }
             }
             case 2 -> {

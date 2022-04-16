@@ -32,7 +32,7 @@ public class Entrance {
 
     public void removeStudent(StudsAndProfsColor studColor) {
             studentsInEntrance[studColor.ordinal()]--;
-            support.firePropertyChange("RemovedStudentFromEntrance", null, null);
+            support.firePropertyChange("RemovedStudentFromEntrance", 0, 1);
     }
 
     /**

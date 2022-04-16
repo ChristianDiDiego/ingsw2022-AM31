@@ -73,9 +73,10 @@ GameHandler gameHandler;
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.PINK));
 
 
+        for(Player p : gameHandler.getGame().getListOfPlayer()){
+            cli.printBoard(p.getMyBoard());
+        }
 
-
-        cli.printBoards(gameHandler.getGame().getListOfPlayer());
     }
 
 
@@ -87,7 +88,6 @@ GameHandler gameHandler;
         }
         return null;
     }
-
 
 
 }

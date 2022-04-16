@@ -2,10 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.controller.GameHandler;
-import it.polimi.ingsw.model.ColorOfTower;
-import it.polimi.ingsw.model.Phase;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.StudsAndProfsColor;
+import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -85,7 +82,9 @@ public class MatchTest {
 
 
         assertEquals(Phase.CLOUD_SELECTION, gameHandler.getGame().getPhase());
-        cli.printClouds(gameHandler.getGame().getListOfClouds());
+        for(Cloud c: gameHandler.getGame().getListOfClouds()){
+            cli.printCloud(c);
+        }
         assertFalse(gameHandler.getGame().getListOfClouds().get(1).getIsTaken());
         assertTrue(gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("carmine", "CLOUD 1"));
         System.out.println(gameHandler.getGame().getListOfClouds().get(1).getIsTaken());

@@ -40,7 +40,7 @@ public class Deck {
         for(Card c : this.getLeftCards()){
             if(c.getPower() == cardToUse.getPower()){
                 playerCards.remove(c);
-                support.firePropertyChange("usedCard", null, null);
+                support.firePropertyChange("usedCard", 0, 1);
                 return true;
             }
         }
