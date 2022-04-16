@@ -2,10 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.ActionParser;
 import it.polimi.ingsw.controller.GameHandler;
-import it.polimi.ingsw.model.Archipelago;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Phase;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
@@ -82,7 +79,11 @@ public class RemoteView implements PropertyChangeListener{
                 showMessage(p.getMyBoard());
             }
         }else if(evt.getPropertyName().equals("MessageForParser")){
-
+            actionParser.actionSerializer(player.getNickname(),(String)evt.getNewValue());
+        }else if(evt.getPropertyName().equals("ChangedCloudStatus")){
+            for(Cloud c : currentGame.getListOfClouds()){
+                showMessage(c);
+            }
         }
     }
 

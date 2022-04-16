@@ -153,14 +153,14 @@ public class SocketClientConnection implements Runnable{
             out = new ObjectOutputStream(socket.getOutputStream());
             send("Welcome!");
             server.lobby(this);
-            while(true){        //legge dal client tutti i messaggi e notifica il listener della view
+            while(isActive()){        //legge dal client tutti i messaggi e notifica il listener della view
                 read = in.nextLine();
                 support.firePropertyChange("MessageForParser","aaa", read);
             }
-        } catch (IOException | NoSuchElementException e) {
+        } catch(IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
-        }finally{
-            close();
+        } finally {
+           close();
         }
     }
 

@@ -64,6 +64,7 @@ public class Server {
             gameHandler = new GameHandler(player1, numberOfPlayers, mode);
             RemoteView remV1 = new RemoteView(player1, c, gameHandler.getGame(), gameHandler.getController().getTurnController().getActionController().getActionParser());
             c.addPropertyChangeListener(remV1);
+            gameHandler.getGame().addPropertyChangeListener(remV1);
 
         } else {
             //while(!checkColorTower(color = c.askColor()));
