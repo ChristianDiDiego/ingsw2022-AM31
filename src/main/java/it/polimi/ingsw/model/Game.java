@@ -257,7 +257,8 @@ public class Game extends Observable<Game> implements Cloneable {
                 currentPlayer.getMyBoard().getProfessorsTable().addProfessor(color);
             }
         }
-        support.firePropertyChange("MNmove", null, null);
+        support.firePropertyChange("ChangeProfessor", 0, 1
+        );
 
     }
 

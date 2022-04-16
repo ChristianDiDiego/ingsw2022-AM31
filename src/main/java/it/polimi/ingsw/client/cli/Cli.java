@@ -235,47 +235,24 @@ public class Cli{
 
     public void run() throws IOException {
         printLogo();
-        Socket socket = null;
-        try {
-            socket = new Socket(ip, port);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Socket socket = new Socket(ip, port);
         System.out.println("Connection established");
-        ObjectInputStream socketIn = null;
-        try {
-            socketIn = new ObjectInputStream(socket.getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        PrintWriter socketOut = null;
-        try {
-            socketOut = new PrintWriter(socket.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
+        PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
         Scanner stdin = new Scanner(System.in);
 
-        try {
+        try{
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(stdin, socketOut);
             t0.join();
             t1.join();
-        } catch (InterruptedException | NoSuchElementException e) {
+        } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
             stdin.close();
-            try {
-                socketIn.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            socketIn.close();
             socketOut.close();
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            socket.close();
         }
     }
 }
