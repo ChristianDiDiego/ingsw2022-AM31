@@ -19,6 +19,7 @@ public class Entrance {
 
     public Entrance(){
         studentsInEntrance = new int[Constants.NUMBEROFKINGDOMS];
+        this.support = new PropertyChangeSupport(this);
     }
 
     /**

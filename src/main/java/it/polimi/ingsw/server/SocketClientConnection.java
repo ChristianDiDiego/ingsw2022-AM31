@@ -23,13 +23,15 @@ public class SocketClientConnection implements Runnable{
     private PropertyChangeSupport support;
 
     private boolean active = true;
-    public void addPropertyChangeListener(PropertyChangeListener pcl) {
-        support.addPropertyChangeListener(pcl);
-    }
 
     public SocketClientConnection(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
+        this.support = new PropertyChangeSupport(this);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
     }
 
     private synchronized boolean isActive(){

@@ -62,8 +62,7 @@ public class Server {
             pl1 = player1;
             waitingConnection.put(player1, c);
             gameHandler = new GameHandler(player1, numberOfPlayers, mode);
-            RemoteView remV1 = new RemoteView(player1, c, gameHandler.getGame());
-            gameHandler.getGame().addPropertyChangeListener(remV1);
+            RemoteView remV1 = new RemoteView(player1, c, gameHandler.getGame(), gameHandler.getController().getTurnController().getActionController().getActionParser());
             c.addPropertyChangeListener(remV1);
 
         } else {
@@ -72,9 +71,9 @@ public class Server {
             Player player = new Player(nickname, color);
             pl2 = player;
             waitingConnection.put(player, c);
-            RemoteView remV = new RemoteView(player, c, gameHandler.getGame());
-            gameHandler.getGame().addPropertyChangeListener(remV);
+            RemoteView remV = new RemoteView(player, c, gameHandler.getGame(), gameHandler.getController().getTurnController().getActionController().getActionParser());
             c.addPropertyChangeListener(remV);
+            gameHandler.getGame().addPropertyChangeListener(remV);
             gameHandler.addNewPlayer(nickname, color);
 
         }
@@ -111,22 +110,6 @@ public class Server {
         this.serverSocket = new ServerSocket(port);
     }
 
-    public void run(){
-        int connections = 0;
-        System.out.println("Server is running");
-        while(true){
-            try {
-                Socket newSocket = serverSocket.accept();
-                connections++;
-                System.out.println("Ready for the new connection - " + connections);
-                SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
-                executor.submit(socketConnection);
-            } catch (IOException e) {
-                System.out.println("Connection Error!");
-            }
-        }
-    }
-
     /**
      * Check if the nickname chosen has already been taken
      * @param nameToCheck nickname to check
@@ -153,5 +136,22 @@ public class Server {
             }
         }
         return true;
+    }
+
+    public void run(){
+        int connections = 0;
+        System.out.println("Server is running");
+        while(true){
+            try {
+                Socket newSocket = serverSocket.accept();
+                connections++;
+                System.out.println("Ready for the new connection - " + connections);
+                SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
+                executor.submit(socketConnection);
+                //socketConnection.run();
+            } catch (IOException e) {
+                System.out.println("Connection Error!");
+            }
+        }
     }
 }

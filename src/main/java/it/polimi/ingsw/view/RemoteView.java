@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.controller.ActionParser;
 import it.polimi.ingsw.controller.GameHandler;
 import it.polimi.ingsw.model.Archipelago;
 import it.polimi.ingsw.model.Game;
@@ -24,11 +25,13 @@ public class RemoteView implements PropertyChangeListener{
     private SocketClientConnection clientConnection;
     private Player player;
     private Game currentGame;
+    private ActionParser actionParser;
 
-    public RemoteView(Player player, SocketClientConnection c, Game currentGame) {
+    public RemoteView(Player player, SocketClientConnection c, Game currentGame, ActionParser actionParser) {
         this.player = player;
         this.clientConnection = c;
         this.currentGame = currentGame;
+        this.actionParser = actionParser;
         //c.addObserver(new MessageReceiver());
         // c.asyncSend("Your opponent is: " + opponent);
 
@@ -47,8 +50,7 @@ public class RemoteView implements PropertyChangeListener{
         }
         if(evt.getPropertyName().equals("MNmove") || evt.getPropertyName().equals("ArchUnified")){
             showMessage(currentGame.getListOfArchipelagos());
-
-        }else if(evt.getPropertyName().equals("PhaseChanged")){
+        } else if(evt.getPropertyName().equals("PhaseChanged")){
             if(currentGame.getCurrentPlayer() == player){
                 switch (currentGame.getPhase()){
                     case CARD_SELECTION ->
@@ -104,8 +106,4 @@ public class RemoteView implements PropertyChangeListener{
     protected void showMessage(Object message) {
         clientConnection.asyncSend(message);
     }
-
-
-
-
 }

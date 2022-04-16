@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.board;
 
+import java.beans.PropertyChangeSupport;
+
 public class Board {
 
     private Entrance entrance;

@@ -14,14 +14,15 @@ public class Deck {
     public Deck(){
         this.playerCards = new ArrayList<>();
         int maxSteps = 1;
-            for (int power = 1; power <= Constants.NUMBEROFCARDSINDECK; power++) {
-                Card temp = new Card(power, maxSteps);
-                playerCards.add(temp);
-                power = power + 1;
-                temp = new Card(power, maxSteps);
-                playerCards.add(temp);
-                maxSteps++;
-            }
+        for (int power = 1; power <= Constants.NUMBEROFCARDSINDECK; power++) {
+            Card temp = new Card(power, maxSteps);
+            playerCards.add(temp);
+            power = power + 1;
+            temp = new Card(power, maxSteps);
+            playerCards.add(temp);
+            maxSteps++;
+        }
+        this.support = new PropertyChangeSupport(this);
     }
 
     /**

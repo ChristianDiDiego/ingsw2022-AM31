@@ -24,6 +24,7 @@ public class Cloud {
         for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
             studentsOnCloud[i] = 0;
         }
+        this.support = new PropertyChangeSupport(this);
     }
 
     public int getIdCloud() {
