@@ -36,7 +36,8 @@ GameHandler gameHandler;
         Player pl1 = new Player("carmine", ColorOfTower.WHITE);
         gameHandler = new GameHandler(pl1, 3,false);
         //other players login
-        gameHandler.addNewPlayer("chri", ColorOfTower.BLACK);
+        Player pl2 = new Player("chri", ColorOfTower.BLACK);
+        gameHandler.addNewPlayer(pl2);
         assertEquals(0, gameHandler.getIsStarted());
         //gameHandler.addNewPlayer("fede", ColorOfTower.GREY);
         gameHandler.getGame().nextPhase();

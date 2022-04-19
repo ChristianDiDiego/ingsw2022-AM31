@@ -20,8 +20,6 @@ public class Server {
     private ExecutorService executor = Executors.newFixedThreadPool(128);
     private Map<Player, SocketClientConnection> waitingConnection = new HashMap<>();
     GameHandler gameHandler;
-    private Player pl1;
-    private Player pl2;
     private List<List<SocketClientConnection>> listOfGames = new ArrayList<>();
 
     //Deregister connection
@@ -41,7 +39,7 @@ public class Server {
     //Wait for another player
     public synchronized void lobby(SocketClientConnection c){
         List<Player> keys = new ArrayList<>(waitingConnection.keySet());
-        ColorOfTower color;
+        ColorOfTower color = null;
         //I moved nickname here so when other player connect the others receive his name
         String nickname ;
         while(!checkNickname(nickname = c.askNickname()));
@@ -56,27 +54,34 @@ public class Server {
             };
             //TODO: add check if the inserted mode is fine
 
-            boolean mode = c.askMode();
+            int mode = -1;
+            while(mode == -1){
+                mode = c.askMode();
+            }
             color = c.askColor();
+            while(color == null ){
+                color = c.askColor();
+            }
             Player player1 = new Player(nickname, color);
-            pl1 = player1;
             waitingConnection.put(player1, c);
-            gameHandler = new GameHandler(player1, numberOfPlayers, mode);
+            gameHandler = new GameHandler(player1, numberOfPlayers, Boolean.parseBoolean(String.valueOf(mode)));
             RemoteView remV1 = new RemoteView(player1, c, gameHandler.getGame(), gameHandler.getController().getTurnController().getActionController().getActionParser());
             c.addPropertyChangeListener(remV1);
+            //remV1.addPropertyChangeListener(gameHandler.getGame());
             gameHandler.getGame().addPropertyChangeListener(remV1);
+            //gameHandler.getGame().addEventListener(remV1);
+            //controllerListener.addPropertyChangeListener(controller);
 
         } else {
-            //while(!checkColorTower(color = c.askColor()));
-            color = c.askColor();
+            while (color == null || !checkColorTower(color)){
+                color = c.askColor();
+            }
             Player player = new Player(nickname, color);
-            pl2 = player;
             waitingConnection.put(player, c);
             RemoteView remV = new RemoteView(player, c, gameHandler.getGame(), gameHandler.getController().getTurnController().getActionController().getActionParser());
             c.addPropertyChangeListener(remV);
             gameHandler.getGame().addPropertyChangeListener(remV);
-            gameHandler.addNewPlayer(nickname, color);
-
+            gameHandler.addNewPlayer(player);
         }
 
         keys = new ArrayList<>(waitingConnection.keySet());
@@ -87,10 +92,10 @@ public class Server {
             for(int i = 0; i < waitingConnection.size(); i++){
                 SocketClientConnection connection = waitingConnection.get(keys.get(i));
                 connection.asyncSend("Number of player reached! Starting the game... ");
-            }
-            List<SocketClientConnection> temp = new ArrayList<>();
+            }System.out.println("Number of player reached! Starting the game... ");
 
             /*
+            List<SocketClientConnection> temp = new ArrayList<>();
             int i = 0;
             for(Player p : waitingConnection.keySet()) {
                 RemoteView rw = new RemoteView(p, waitingConnection.get(p));

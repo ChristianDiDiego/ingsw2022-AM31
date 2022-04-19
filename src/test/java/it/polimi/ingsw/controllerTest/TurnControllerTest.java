@@ -18,9 +18,11 @@ class TurnControllerTest {
     void checkActionCard() {
         Player pl1 = new Player("carmine", ColorOfTower.WHITE);
         gameHandler = new GameHandler(pl1, 3,false);
-        gameHandler.addNewPlayer("chri", ColorOfTower.BLACK);
+        Player pl2 = new Player("chri", ColorOfTower.BLACK);
+        gameHandler.addNewPlayer(pl2);
         assertEquals(0, gameHandler.getIsStarted());
-        gameHandler.addNewPlayer("fede", ColorOfTower.GREY);
+        Player pl3 = new Player("fede", ColorOfTower.GREY);
+        gameHandler.addNewPlayer(pl3);
 
         gameHandler.getController().getTurnController().checkActionCard(recognisePlayer("carmine"), 2);
 

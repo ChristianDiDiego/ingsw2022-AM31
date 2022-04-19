@@ -6,7 +6,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class Cloud {
-    private int idCloud;
+    private final int idCloud;
     private int[] studentsOnCloud = new int[Constants.NUMBEROFKINGDOMS];
     /*This array contains the number of students for each color depending on the position.
       0 - RED
@@ -16,15 +16,15 @@ public class Cloud {
       4 - BLUE
      */
     private boolean isTaken;
-    private PropertyChangeSupport support;
+    private final PropertyChangeSupport support;
 
     public Cloud(int idCloud) {
+        this.support = new PropertyChangeSupport(this);
         this.idCloud = idCloud;
         isTaken = true;
         for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
             studentsOnCloud[i] = 0;
         }
-        this.support = new PropertyChangeSupport(this);
     }
 
     public int getIdCloud() {

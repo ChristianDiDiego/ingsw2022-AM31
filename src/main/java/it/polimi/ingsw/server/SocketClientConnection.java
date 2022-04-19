@@ -73,7 +73,7 @@ public class SocketClientConnection implements Runnable{
         Scanner in;
         try {
             in = new Scanner(socket.getInputStream());
-            send("WHat is your nick?"); //manda al client
+            send("What is your nickname?"); //manda al client
             return in.nextLine();
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
@@ -82,16 +82,16 @@ public class SocketClientConnection implements Runnable{
     }
 
     //TODO: rivedere la return
-    public boolean askMode() {
+    public int askMode() {
         Scanner in;
         try {
             in = new Scanner(socket.getInputStream());
             send("Type 0 for normal mode or 1 for expert mode"); //manda al client
             String read = in.nextLine(); // legge dal client il nome
-            return Boolean.parseBoolean(read);
+            return Integer.parseInt(read);
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
-            return false;
+            return -1;
         }
     }
 
@@ -107,7 +107,7 @@ public class SocketClientConnection implements Runnable{
             return ColorOfTower.values()[number];
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
-            return ColorOfTower.BLACK;
+            return null;
         }
     }
 

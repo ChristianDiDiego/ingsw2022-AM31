@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.expertMode.Character8;
 import it.polimi.ingsw.model.expertMode.CharactersEnum;
 import it.polimi.ingsw.view.RemoteView;
 
+import javax.swing.event.EventListenerList;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
@@ -24,6 +25,7 @@ public class Game extends Observable<Game> implements Cloneable {
     private int bank;
     private int[] playableCharacters;
     private boolean expertModeOn;
+    //protected EventListenerList listenerList = new EventListenerList();
 
     private PropertyChangeSupport support;
 
@@ -47,10 +49,10 @@ public class Game extends Observable<Game> implements Cloneable {
             Archipelago arc = new Archipelago(i);
             listOfArchipelagos.add(arc);
         }
+
         for(int i = 0; i < numberOfPlayers; i++){
             Cloud cloud = new Cloud(i);
             listOfClouds.add(cloud);
-
         }
 
         int[] studentsForIslands = new int[Constants.NUMBEROFKINGDOMS];
@@ -96,6 +98,22 @@ public class Game extends Observable<Game> implements Cloneable {
             }
         }
     }
+
+    /*
+    public void addEventListener(EventListener listener) {
+        listenerList.add(EventListener.class, listener);
+    }
+
+    public void removesEventListener(EventListener listener) {
+        listenerList.remove(EventListener.class, listener);
+    }
+
+    void fireMyEvent(EventObject evt) {
+        for(RemoteView event : listenerList.getListeners(RemoteView.class)){
+            event.eventPerformed(evt);
+        }
+    }
+
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
@@ -147,12 +165,14 @@ public class Game extends Observable<Game> implements Cloneable {
                     return o1.getLastUsedCard().compareTo(o2.getLastUsedCard());
                 }
             }
+
         });
         this.currentPlayer = orderOfPlayers.get(0);
         System.out.println("I should notify the curent player with "+ currentPlayer.getNickname());
         support.firePropertyChange("playerOrderChanged", "aaaa", currentPlayer.getNickname());
        // notify(this.clone());
        // System.out.println(currentPlayer.getNickname() + " is your turn!");
+        //this.fireMyEvent(new EventObject("siamo riusciti"));
     }
 
     @Override

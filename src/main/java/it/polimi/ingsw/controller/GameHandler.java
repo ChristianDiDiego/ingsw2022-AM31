@@ -52,36 +52,18 @@ public class GameHandler {
      * TODO: check nickname
      * Add a new player (since the second one) to the game
      * Set isStarted = 1 when the numberOfPlaers required is reached and call startGame
-     * @param nickname name chosen by the player
-     * @param colorOfTower color chosen by the player
+     * @param //nickname name chosen by the player
+     * @param //colorOfTower color chosen by the player
      */
-    public void addNewPlayer(String nickname, ColorOfTower colorOfTower){
-        Player newPlayer = new Player(nickname, colorOfTower);
-        if(checkColorTower(colorOfTower)) {
-            game.addPlayer(newPlayer);
-            if (game.getOrderOfPlayers().size() == game.getNumberOfPlayers()) {
-                setIsStarted(1);
-                startGame();
-            }
-        }else{
-            System.out.println("colore già scelto, scegline un altro");
+    public void addNewPlayer(Player player){
+        //Player newPlayer = new Player(nickname, colorOfTower);
+        game.addPlayer(player);
+        if (game.getOrderOfPlayers().size() == game.getNumberOfPlayers()) {
+            setIsStarted(1);
+            startGame();
         }
-
     }
 
-    /**
-     * Check if the chosed color is already been taken
-     * @param colorOfTower color of the tower to check
-     * @return True if the color is still available, false if it is already been taken
-     */
-    public boolean checkColorTower(ColorOfTower colorOfTower){
-        for(Player p : game.getOrderOfPlayers()){
-            if(p.getColorOfTowers() == colorOfTower){
-                return false;
-            }
-        }
-        return true;
-    }
 
     /**
      *  Start the game:

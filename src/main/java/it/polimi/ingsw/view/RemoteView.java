@@ -11,6 +11,8 @@ import it.polimi.ingsw.utilities.MessageForParser;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.EventListener;
+import java.util.EventObject;
 
 //Observer: osserva qualcosa e quando c'è una notify
 // dell'oggetto osservato lancia l'update
@@ -19,10 +21,10 @@ import java.beans.PropertyChangeListener;
 //tipo detto nell'observable
 //public class RemoteView extends Observable<MessageForParser> implements Observer<Game>, PropertyChangeListener {
 public class RemoteView implements PropertyChangeListener{
-    private SocketClientConnection clientConnection;
-    private Player player;
-    private Game currentGame;
-    private ActionParser actionParser;
+    private final SocketClientConnection clientConnection;
+    private final Player player;
+    private final Game currentGame;
+    private final ActionParser actionParser;
 
     public RemoteView(Player player, SocketClientConnection c, Game currentGame, ActionParser actionParser) {
         this.player = player;
@@ -50,9 +52,10 @@ public class RemoteView implements PropertyChangeListener{
         } else if(evt.getPropertyName().equals("PhaseChanged")){
             if(currentGame.getCurrentPlayer() == player){
                 switch (currentGame.getPhase()){
-                    case CARD_SELECTION ->
-                            showMessage("choose a card\n");
-                    case MOVE_STUDENTS ->
+                    case CARD_SELECTION -> {
+                        System.out.println("card selection");
+                        showMessage("choose a card\n");
+                    }case MOVE_STUDENTS ->
                             showMessage("move your students\n");
                     case MOVE_MN ->
                             showMessage("move mother nature\n");
@@ -80,6 +83,7 @@ public class RemoteView implements PropertyChangeListener{
             }
         }else if(evt.getPropertyName().equals("MessageForParser")){
             actionParser.actionSerializer(player.getNickname(),(String)evt.getNewValue());
+
         }else if(evt.getPropertyName().equals("ChangedCloudStatus")){
             for(Cloud c : currentGame.getListOfClouds()){
                 showMessage(c);

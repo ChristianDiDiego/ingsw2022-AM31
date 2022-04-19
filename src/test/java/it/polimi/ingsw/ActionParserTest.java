@@ -19,9 +19,11 @@ public class ActionParserTest {
         Player pl1 = new Player("carmine", ColorOfTower.WHITE);
         gameHandler = new GameHandler(pl1, 3, false);
         //other players login
-        gameHandler.addNewPlayer("chri", ColorOfTower.BLACK);
+        Player pl2 = new Player("chri", ColorOfTower.BLACK);
+        gameHandler.addNewPlayer(pl2);
         assertEquals(0, gameHandler.getIsStarted());
-        //gameHandler.addNewPlayer("fede", ColorOfTower.GREY);
+        Player pl3 = new Player("fede", ColorOfTower.GREY);
+        gameHandler.addNewPlayer(pl3);
         gameHandler.getGame().nextPhase();
         System.out.println(gameHandler.getGame().getCurrentPlayer().getNickname());
         System.out.println(gameHandler.getGame().getPhase());
@@ -55,8 +57,7 @@ public class ActionParserTest {
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.PINK));
 
        // cli.printBoards(gameHandler.getGame().getListOfPlayer());
-
-
+        */
     }
 
     private Player recognisePlayer(String nickname){

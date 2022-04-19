@@ -20,9 +20,11 @@ public class MatchTest {
         Player pl1 = new Player("carmine", ColorOfTower.WHITE);
         gameHandler = new GameHandler(pl1, 3,false);
         //other players login
-        gameHandler.addNewPlayer("chri", ColorOfTower.BLACK);
+        Player pl2 = new Player("fede", ColorOfTower.GREY);
+        Player pl3 = new Player("chri", ColorOfTower.BLACK);
+        gameHandler.addNewPlayer(pl3);
         assertEquals(0, gameHandler.getIsStarted());
-        gameHandler.addNewPlayer("fede", ColorOfTower.GREY);
+        gameHandler.addNewPlayer(pl2);
         assertEquals(3, gameHandler.getGame().getOrderOfPlayers().size());
         assertEquals(1, gameHandler.getIsStarted());
         assertEquals("carmine", gameHandler.getGame().getCurrentPlayer().getNickname());
