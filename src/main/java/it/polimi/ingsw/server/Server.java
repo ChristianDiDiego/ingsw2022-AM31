@@ -88,7 +88,7 @@ public class Server {
         if(waitingConnection.size() < numberOfPlayers){
             c.asyncSend("Waiting for other players");
         }
-        if (waitingConnection.size() == numberOfPlayers) {
+        else if (waitingConnection.size() == numberOfPlayers) {
             for(int i = 0; i < waitingConnection.size(); i++){
                 SocketClientConnection connection = waitingConnection.get(keys.get(i));
                 connection.asyncSend("Number of player reached! Starting the game... ");

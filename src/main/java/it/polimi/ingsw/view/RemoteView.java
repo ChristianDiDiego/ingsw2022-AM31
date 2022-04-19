@@ -36,6 +36,16 @@ public class RemoteView implements PropertyChangeListener{
 
     }
 
+    protected void showMessage(Object message) {
+        clientConnection.asyncSend(message);
+    }
+/**
+    public void eventPerformed(EventObject evt){
+        System.out.println("Fired: " + ((Integer)evt.getSource()).toString());
+        showMessage(evt);
+    }
+ */
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if(evt.getPropertyName().equals("playerOrderChanged")){
@@ -107,8 +117,4 @@ public class RemoteView implements PropertyChangeListener{
         }
     }
     */
-
-    protected void showMessage(Object message) {
-        clientConnection.asyncSend(message);
-    }
 }

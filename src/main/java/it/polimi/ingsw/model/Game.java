@@ -115,6 +115,7 @@ public class Game extends Observable<Game> implements Cloneable {
     }
 
 
+     */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
         for(Cloud c : getListOfClouds()) {
@@ -135,7 +136,7 @@ public class Game extends Observable<Game> implements Cloneable {
         int oldSize = listOfPlayers.size();
         listOfPlayers.add(player);
         orderOfPlayers.add(player);
-        support.firePropertyChange("listOfPlayers", oldSize, listOfPlayers.size());
+        //support.firePropertyChange("listOfPlayers", oldSize, listOfPlayers.size());
     }
 
     public List<Player> getListOfPlayer(){
