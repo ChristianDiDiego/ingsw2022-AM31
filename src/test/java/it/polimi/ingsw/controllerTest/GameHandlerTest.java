@@ -62,7 +62,7 @@ class GameHandlerTest {
         assertEquals(gameHandler.getGame(), gameHandler.getController().getGame());
         assertEquals(0, gameHandler.getIsStarted());
         for(Player p: gameHandler.getGame().getOrderOfPlayers()){
-           assertEquals(0, p.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+            assertEquals(0, p.getMyBoard().getTowersOnBoard().getNumberOfTowers());
         }
         Player pl2 = new Player("chri", ColorOfTower.BLACK);
         gameHandler.addNewPlayer(pl2);

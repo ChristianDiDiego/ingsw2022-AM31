@@ -19,7 +19,7 @@ import java.util.Locale;
  * CHARACTER [IDCHARACTER] [IDARCHIPELAGO]/ FOR CHARACTER7 : ([COLOR TO ADD],[COLOR TO ADD],[COLOR TO REMOVE],[COLOR TO REMOVE]
  */
 
-public class ActionParser implements Observer<MessageForParser> {
+public class ActionParser {
     private ActionController actionController;
 
     public ActionParser(ActionController actionController){
@@ -37,41 +37,41 @@ public class ActionParser implements Observer<MessageForParser> {
         String phase = input[0];
         Player player = recognisePlayer(nickname);
         if( player != null){
-            switch(phase.toUpperCase(Locale.ROOT)){
-                case "CARD":
+            switch (phase.toUpperCase(Locale.ROOT)) {
+                case "CARD" -> {
                     int cardPower = Integer.parseInt(input[1]);
+                    System.out.println("Card " + cardPower + " received");
                     return actionController.getTurnController().checkActionCard(player, cardPower);
-
-                case "MOVEST":
+                }
+                case "MOVEST" -> {
                     String[] colorDestination = input[1].split(",");
                     StudsAndProfsColor[] colors = new StudsAndProfsColor[colorDestination.length];
                     int[] destinations = new int[colorDestination.length];
-                    for(int i = 0; i< colorDestination.length; i++){
+                    for (int i = 0; i < colorDestination.length; i++) {
 
                         colors[i] = charToColorEnum(colorDestination[i].split("-")[0].charAt(0));
                         destinations[i] = Integer.parseInt(colorDestination[i].split("-")[1]);
                     }
-                     return actionController.checkActionMoveStudent(player, colors, destinations);
-
-                case "MOVEMN":
+                    return actionController.checkActionMoveStudent(player, colors, destinations);
+                }
+                case "MOVEMN" -> {
                     int mnSteps = Integer.parseInt(input[1]);
                     return actionController.checkActionMoveMN(player, mnSteps);
-
-                case "CLOUD":
+                }
+                case "CLOUD" -> {
                     int nOfCloud = Integer.parseInt(input[1]);
                     return actionController.checkActionCloud(player, nOfCloud);
-
-                case "CHARACTER":
+                }
+                case "CHARACTER" -> {
                     int idOfCharacter = Integer.parseInt(input[1]);
                     String action = input[2];
                     //TODO: set in action controller to check
                     return actionController.checkActionCharacter(player, idOfCharacter, action);
-
-
-                default:
+                }
+                default -> {
                     System.out.println("Action not recognised");
                     return false;
-
+                }
             }
         }else{
             System.out.println("Player not recognised");
@@ -107,10 +107,7 @@ public class ActionParser implements Observer<MessageForParser> {
         return null;
     }
 
-    @Override
-    public void update(MessageForParser message) {
 
-    }
     /**
      * riceve tutti i messaggi della CLI
      * converte la stringa in FASE : AZIONE

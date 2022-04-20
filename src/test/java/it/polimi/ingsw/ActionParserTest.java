@@ -44,7 +44,7 @@ public class ActionParserTest {
 
         gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("carmine", "MOVEST B-0,R-0,G-0,Y-0");
 
-       // gameHandler.getController().getTurnController().getActionController().checkActionMoveStudent(recognisePlayer("carmine"), colorToMove, destinations );
+        // gameHandler.getController().getTurnController().getActionController().checkActionMoveStudent(recognisePlayer("carmine"), colorToMove, destinations );
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE));
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.RED));
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.GREEN));
@@ -57,9 +57,11 @@ public class ActionParserTest {
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.YELLOW));
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.PINK));
 
-       // cli.printBoards(gameHandler.getGame().getListOfPlayer());
-        */
+        // cli.printBoards(gameHandler.getGame().getListOfPlayer());
+ */
     }
+
+
 
     private Player recognisePlayer(String nickname){
         for(Player player :gameHandler.getController().getTurnController().getActionController().getGame().getOrderOfPlayers()){

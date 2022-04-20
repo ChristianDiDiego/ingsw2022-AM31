@@ -50,7 +50,7 @@ public class Server {
         if(waitingConnection.size() == 0) {
             numberOfPlayers = c.askHowManyPlayers();
             while (numberOfPlayers < 0 || numberOfPlayers > Constants.MAXPLAYERS){
-               numberOfPlayers = c.askHowManyPlayers();
+                numberOfPlayers = c.askHowManyPlayers();
             };
             //TODO: add check if the inserted mode is fine
 
@@ -90,8 +90,8 @@ public class Server {
         }
         else if (waitingConnection.size() == numberOfPlayers) {
             for(int i = 0; i < waitingConnection.size(); i++){
-                SocketClientConnection connection = waitingConnection.get(keys.get(i));
-                connection.asyncSend("Number of player reached! Starting the game... ");
+              //  SocketClientConnection connection = waitingConnection.get(keys.get(i));
+              //  connection.asyncSend("Number of player reached! Starting the game... ");
             }System.out.println("Number of player reached! Starting the game... ");
 
             /*
@@ -106,7 +106,6 @@ public class Server {
                 rw.addObserver(gameHandler.getController().getTurnController().getActionController().getActionParser());
                 listOfGames.add(temp);
             }
-
              */
             waitingConnection.clear();
         }

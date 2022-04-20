@@ -9,10 +9,11 @@ import java.util.Scanner;
 
 public class ClientApp {
     public static void main(String[] args) {
-        System.out.println("Eryantis Server | Welcome!");
+        System.out.println("Eryantis Client | Welcome!");
         String ip = "127.0.0.1";
-        int port = 0;
-
+        int port = 5000;
+        int input = 1;
+/*
         Scanner scanner = new Scanner(System.in);
         System.out.println("Insert ip server");
         System.out.print(">");
@@ -36,6 +37,9 @@ public class ClientApp {
             System.err.println("Numeric format requested, application will now close...");
             System.exit(-1);
         }
+
+
+ */
 
         switch (input) {
             case 1 -> {

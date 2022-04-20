@@ -42,7 +42,7 @@ public class Cloud {
     public boolean getIsTaken() {
         return isTaken;
     }
-    
+
     /**
      * Called at the beginning of each turn to add students to the cloud
      * @param toAdd array that contains that students that needs to be added to the cloud
@@ -77,6 +77,6 @@ public class Cloud {
         } else {
             this.isTaken = false;
         }
-        support.firePropertyChange("ChangedCloudStatus", 0, 1);
+      //  support.firePropertyChange("ChangedCloudStatus", 0, 1);
     }
 }

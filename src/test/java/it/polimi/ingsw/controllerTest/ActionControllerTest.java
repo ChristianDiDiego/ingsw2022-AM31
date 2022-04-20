@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ActionControllerTest {
     private ActionController actionController;
-GameHandler gameHandler;
+    GameHandler gameHandler;
     @Test
     void calculateInfluence() {
         /*
@@ -21,7 +21,6 @@ GameHandler gameHandler;
         gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.RED);
         gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.RED);
         gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.BLUE);
-
         gameHandler.getController().getGame().;
         */
     }

@@ -73,18 +73,19 @@ public class GameHandler {
      */
     public void startGame(){
 
-            for(Player p : game.getOrderOfPlayers()){
-                p.getMyBoard().getEntrance().addStudent(game.getBag().pickStudent(maxStudentsInEntrance));
-                for(int i = 0; i< maxNumberOfTowers; i++){
-                    p.getMyBoard().getTowersOnBoard().addTower();
-                }
-                if(game.isExpertModeOn()){
-                    if(game.getCoinFromBank(1)){
-                        p.addCoinsToWallet(1);
-                    }
+        for(Player p : game.getOrderOfPlayers()){
+            p.getMyBoard().getEntrance().addStudent(game.getBag().pickStudent(maxStudentsInEntrance));
+            for(int i = 0; i< maxNumberOfTowers; i++){
+                p.getMyBoard().getTowersOnBoard().addTower();
+            }
+            if(game.isExpertModeOn()){
+                if(game.getCoinFromBank(1)){
+                    p.addCoinsToWallet(1);
                 }
             }
-            controller.getTurnController().startTurn();
+        }
+
+        controller.getTurnController().startTurn();
 
 
     }

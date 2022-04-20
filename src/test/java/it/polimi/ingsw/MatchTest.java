@@ -29,8 +29,8 @@ public class MatchTest {
         assertEquals(1, gameHandler.getIsStarted());
         assertEquals("carmine", gameHandler.getGame().getCurrentPlayer().getNickname());
         //The game is on: receive the cards from the players
-      //  cli.printBoards(gameHandler.getGame().getListOfPlayer());
-      //  cli.printArchipelagos(gameHandler.getGame().getListOfArchipelagos());
+        //  cli.printBoards(gameHandler.getGame().getListOfPlayer());
+        //  cli.printArchipelagos(gameHandler.getGame().getListOfArchipelagos());
         assertEquals(Phase.CARD_SELECTION, gameHandler.getGame().getPhase());
         cli.printMyDeck(gameHandler.getGame().getCurrentPlayer().getMyDeck());
         gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("carmine", "CARD 1");
@@ -49,7 +49,7 @@ public class MatchTest {
         //  cli.printMyDeck(gameHandler.getGame().getCurrentPlayer().getMyDeck());
 
         assertEquals("carmine", gameHandler.getGame().getCurrentPlayer().getNickname());
-     //   cli.printBoards(gameHandler.getGame().getListOfPlayer());
+        //   cli.printBoards(gameHandler.getGame().getListOfPlayer());
         //start the game with current player setted as rules say
         String colorToAdd = "MOVEST ";
         int i = 0;
@@ -73,7 +73,7 @@ public class MatchTest {
         assertFalse(gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("chri", "MOVEST R-0,B-2,Y-1"));
         assertFalse(gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("carmine", "MOVEST G-0,B-0,Y-0"));
         assertTrue(gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("carmine", colorToAdd));
-       // cli.printBoards(gameHandler.getGame().getListOfPlayer());
+        // cli.printBoards(gameHandler.getGame().getListOfPlayer());
 
         assertEquals(Phase.MOVE_MN, gameHandler.getGame().getPhase());
         assertTrue(gameHandler.getGame().getListOfArchipelagos().get(0).getIsMNPresent());

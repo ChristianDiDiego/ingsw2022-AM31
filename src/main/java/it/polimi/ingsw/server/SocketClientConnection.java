@@ -49,6 +49,7 @@ public class SocketClientConnection implements Runnable{
             out.flush();
             System.out.println("sent");
         } catch(IOException e){
+            System.out.println("error when sending " + message.toString());
             System.err.println(e.getMessage());
         }
 
@@ -135,6 +136,7 @@ public class SocketClientConnection implements Runnable{
      *qualsiasi cosa il client riceva la stampa a video
      */
     public void asyncSend(final Object message){
+        System.out.println("Async sent");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -160,7 +162,7 @@ public class SocketClientConnection implements Runnable{
         } catch(IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
         } finally {
-           close();
+            close();
         }
     }
 

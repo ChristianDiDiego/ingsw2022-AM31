@@ -103,18 +103,14 @@ public class Game extends Observable<Game> implements Cloneable {
     public void addEventListener(EventListener listener) {
         listenerList.add(EventListener.class, listener);
     }
-
     public void removesEventListener(EventListener listener) {
         listenerList.remove(EventListener.class, listener);
     }
-
     void fireMyEvent(EventObject evt) {
         for(RemoteView event : listenerList.getListeners(RemoteView.class)){
             event.eventPerformed(evt);
         }
     }
-
-
      */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
@@ -170,10 +166,9 @@ public class Game extends Observable<Game> implements Cloneable {
         });
         this.currentPlayer = orderOfPlayers.get(0);
         System.out.println("I should notify the curent player with "+ currentPlayer.getNickname());
-        support.firePropertyChange("playerOrderChanged", "aaaa", currentPlayer.getNickname());
-       // notify(this.clone());
-       // System.out.println(currentPlayer.getNickname() + " is your turn!");
-        //this.fireMyEvent(new EventObject("siamo riusciti"));
+        support.firePropertyChange("currentPlayerChanged", "aaaa", currentPlayer.getNickname());
+        // notify(this.clone());
+        // System.out.println(currentPlayer.getNickname() + " is your turn!");
     }
 
     @Override
@@ -231,7 +226,8 @@ public class Game extends Observable<Game> implements Cloneable {
         }
         index = index + 1;
         currentPlayer = orderOfPlayers.get(index);
-    //    System.out.println(currentPlayer.getNickname() + " is your turn!");
+        support.firePropertyChange("currentPlayerChanged", "aaaa", currentPlayer.getNickname());
+        //    System.out.println(currentPlayer.getNickname() + " is your turn!");
     }
 
     /**
@@ -247,7 +243,8 @@ public class Game extends Observable<Game> implements Cloneable {
         }
         index = index + 1;
         currentPlayer = listOfPlayers.get(index);
-     //   System.out.println(currentPlayer.getNickname() + " is your turn!");
+        support.firePropertyChange("currentPlayerChanged", "aaaa", currentPlayer.getNickname());
+        //   System.out.println(currentPlayer.getNickname() + " is your turn!");
     }
 
     /**
@@ -278,8 +275,7 @@ public class Game extends Observable<Game> implements Cloneable {
                 currentPlayer.getMyBoard().getProfessorsTable().addProfessor(color);
             }
         }
-        support.firePropertyChange("ChangeProfessor", 0, 1
-        );
+        support.firePropertyChange("ChangeProfessor", 0, 1);
 
     }
 

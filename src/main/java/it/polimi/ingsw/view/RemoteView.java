@@ -8,6 +8,8 @@ import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.server.SocketClientConnection;
 import it.polimi.ingsw.utilities.MessageForParser;
+import it.polimi.ingsw.utilities.gameMessage;
+import jdk.swing.interop.SwingInterOpUtils;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -39,19 +41,22 @@ public class RemoteView implements PropertyChangeListener{
     protected void showMessage(Object message) {
         clientConnection.asyncSend(message);
     }
-/**
-    public void eventPerformed(EventObject evt){
-        System.out.println("Fired: " + ((Integer)evt.getSource()).toString());
-        showMessage(evt);
-    }
- */
+    /**
+     public void eventPerformed(EventObject evt){
+     System.out.println("Fired: " + ((Integer)evt.getSource()).toString());
+     showMessage(evt);
+     }
+     */
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if(evt.getPropertyName().equals("playerOrderChanged")){
+        if(evt.getPropertyName().equals("currentPlayerChanged")){
             if(player.getNickname().equals(evt.getNewValue())){
                 System.out.println("I'm notified and is my turn");
                 showMessage(evt.getNewValue() + " is your turn!");
+                if(currentGame.getPhase().equals(Phase.CARD_SELECTION)){
+                    showMessage(gameMessage.cardSelectionMessage);
+                }
             }else{
                 System.out.println("I'm notified");
                 showMessage("is the turn of " + evt.getNewValue());
@@ -64,7 +69,7 @@ public class RemoteView implements PropertyChangeListener{
                 switch (currentGame.getPhase()){
                     case CARD_SELECTION -> {
                         System.out.println("card selection");
-                        showMessage("choose a card\n");
+                        showMessage(gameMessage.cardSelectionMessage);
                     }case MOVE_STUDENTS ->
                             showMessage("move your students\n");
                     case MOVE_MN ->
@@ -92,6 +97,7 @@ public class RemoteView implements PropertyChangeListener{
                 showMessage(p.getMyBoard());
             }
         }else if(evt.getPropertyName().equals("MessageForParser")){
+            System.out.println("Action to send to parser ");
             actionParser.actionSerializer(player.getNickname(),(String)evt.getNewValue());
 
         }else if(evt.getPropertyName().equals("ChangedCloudStatus")){
@@ -102,19 +108,18 @@ public class RemoteView implements PropertyChangeListener{
     }
 
     /**
-    private class MessageReceiver extends Observable<MessageForParser> implements Observer<String>{
-
-        @Override
-        public void update(String message) {
-            // riceve il messaggio da socketClientConnection (input del client) e lo manda al parser
-            System.out.println("Received: " + message);
-            try{
-                MessageForParser m = new MessageForParser(player, message);
-                notify(m);
-            }catch(IllegalArgumentException | ArrayIndexOutOfBoundsException e){
-                clientConnection.asyncSend("Error!");
-            }
-        }
+     private class MessageReceiver extends Observable<MessageForParser> implements Observer<String>{
+    @Override
+    public void update(String message) {
+    // riceve il messaggio da socketClientConnection (input del client) e lo manda al parser
+    System.out.println("Received: " + message);
+    try{
+    MessageForParser m = new MessageForParser(player, message);
+    notify(m);
+    }catch(IllegalArgumentException | ArrayIndexOutOfBoundsException e){
+    clientConnection.asyncSend("Error!");
     }
-    */
+    }
+    }
+     */
 }
