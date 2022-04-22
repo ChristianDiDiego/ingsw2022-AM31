@@ -4,8 +4,12 @@ import it.polimi.ingsw.utilities.constants.Constants;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serial;
+import java.io.Serializable;
 
-public class Cloud {
+public class Cloud implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 11L;
     private final int idCloud;
     private int[] studentsOnCloud = new int[Constants.NUMBEROFKINGDOMS];
     /*This array contains the number of students for each color depending on the position.

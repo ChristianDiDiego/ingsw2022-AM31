@@ -1,8 +1,17 @@
 package it.polimi.ingsw.model.board;
 
-import java.beans.PropertyChangeSupport;
+import it.polimi.ingsw.model.Game;
 
-public class Board {
+import java.beans.PropertyChangeSupport;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Board implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private Entrance entrance;
     private DiningRoom diningRoom;
@@ -38,4 +47,11 @@ public class Board {
     public TowersOnBoard getTowersOnBoard() {
         return towersOnBoard;
     }
+
+    @Serial
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+    }
+
+
 }

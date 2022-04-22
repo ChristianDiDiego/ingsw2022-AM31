@@ -2,7 +2,13 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.utilities.constants.Constants;
 
-public class Island {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Island implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 8L;
     private int idIsland;
     private int[] studentOnIsland = new int[Constants.NUMBEROFKINGDOMS];
     /*This array contains the number of students for each color depending on the position.

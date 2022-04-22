@@ -7,7 +7,9 @@ import it.polimi.ingsw.observer.Observable;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
@@ -19,6 +21,8 @@ import java.util.Scanner;
 public class SocketClientConnection implements Runnable{
     private Socket socket;
     private ObjectOutputStream out;
+
+   // private ByteArrayOutputStream baos;
     private Server server;
     private PropertyChangeSupport support;
 
@@ -44,6 +48,7 @@ public class SocketClientConnection implements Runnable{
      */
     public synchronized void send(Object message) {
         try {
+
             out.reset();
             out.writeObject(message);
             out.flush();
@@ -135,7 +140,7 @@ public class SocketClientConnection implements Runnable{
      * elo manda al client che è in ascolto con readfromsocket
      *qualsiasi cosa il client riceva la stampa a video
      */
-    public void asyncSend(final Object message){
+    public void asyncSend( Object message){
         System.out.println("Async sent");
         new Thread(new Runnable() {
             @Override
@@ -152,6 +157,7 @@ public class SocketClientConnection implements Runnable{
         Player player;
         try{
             in = new Scanner(socket.getInputStream());
+           // baos = new ByteArrayOutputStream();
             out = new ObjectOutputStream(socket.getOutputStream());
             send("Welcome!");
             server.lobby(this);

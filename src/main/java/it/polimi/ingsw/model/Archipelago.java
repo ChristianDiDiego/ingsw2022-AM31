@@ -1,9 +1,14 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Archipelago {
+public class Archipelago implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 7L;
+
     private int idArchipelago;
     private List<Island> belongingIsland;
     private boolean isMNPresent;

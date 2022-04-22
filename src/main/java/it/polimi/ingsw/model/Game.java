@@ -261,7 +261,7 @@ public class Game extends Observable<Game> implements Cloneable {
             int max = 0;
             for(Player p : listOfPlayers){
                 if(p != currentPlayer){
-                    if(p.getMyBoard().getDiningRoom().getStudentsByColor(color) > max){
+                    if(p.getMyBoard().getDiningRoom().getStudentsByColor(color) >= max){
                         player = p;
                         max = p.getMyBoard().getDiningRoom().getStudentsByColor(color);
                     }
@@ -273,6 +273,7 @@ public class Game extends Observable<Game> implements Cloneable {
             if(currentPlayer.getMyBoard().getDiningRoom().getStudentsByColor(color) > player.getMyBoard().getDiningRoom().getStudentsByColor(color)){
                 player.getMyBoard().getProfessorsTable().removeProfessor(color);
                 currentPlayer.getMyBoard().getProfessorsTable().addProfessor(color);
+                System.out.println("Ho aggiunto un prof di color " +  color);
             }
         }
         support.firePropertyChange("ChangeProfessor", 0, 1);

@@ -1,6 +1,11 @@
 package it.polimi.ingsw.model.board;
 
-public class TowersOnBoard {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class TowersOnBoard implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 6L;
 
     private int numberOfTowers;
 

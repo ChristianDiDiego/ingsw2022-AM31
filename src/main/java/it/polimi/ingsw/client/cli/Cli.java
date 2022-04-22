@@ -1,18 +1,14 @@
 package it.polimi.ingsw.client.cli;
 
 //import com.sun.tools.javac.code.Attribute;
-import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.server.SocketClientConnection;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.List;
@@ -62,7 +58,8 @@ public class Cli{
                             printArchipelago((Archipelago) inputObject);
                         }else if(inputObject instanceof Cloud) {
                             printCloud((Cloud) inputObject);
-                        }else {
+                        }
+                        else {
                             throw new IllegalArgumentException();
                         }
                     }
@@ -195,14 +192,14 @@ public class Cli{
 
         public void printArchipelago(Archipelago a) {
             StringBuilder archipelago = new StringBuilder();
-            archipelago.append(ColorsCli.RESET).append("ARCHIPELAGO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
-            System.out.println(archipelago.toString());
+            //archipelago.append(ColorsCli.RESET).append("ARCHIPELAGO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
+            //System.out.println(archipelago.toString());
                 //archipelago = new StringBuilder();
-            archipelago.append(ColorsCli.RESET).append("Id archipelago: " + a.getIdArchipelago() + " owner: " + (a.getOwner() == null ? "" : a.getOwner().getNickname()) + "\n").append(ColorsCli.RESET);
+            archipelago.append(ColorsCli.RESET).append("Id archipelago: " + a.getIdArchipelago() + " owner: " + (a.getOwner() == null ? "" : a.getOwner().getNickname()) + "MN: " + a.getIsMNPresent() + "\n").append(ColorsCli.RESET);
             for (Island is : a.getBelongingIslands()) {
                 for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
                     for (int k = 0; k < is.getStudentsByColor(StudsAndProfsColor.values()[j]); k++) {
-                        archipelago.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.getColorByNumber(j));
+                        archipelago.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.RESET);
                     }
                 }
                 System.out.println(archipelago.toString());
@@ -214,14 +211,14 @@ public class Cli{
 
         public void printCloud (Cloud c) {
             StringBuilder cloud = new StringBuilder();
-            cloud.append(ColorsCli.RESET).append("CLOUDS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
-            System.out.println(cloud.toString());
+            //cloud.append(ColorsCli.RESET).append("CLOUDS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
+            //System.out.println(cloud.toString());
                 if (c.getIsTaken() == false) {
-                    cloud = new StringBuilder();
+                    //cloud = new StringBuilder();
                     cloud.append(ColorsCli.RESET).append("Id cloud: " + c.getIdCloud() + "\n").append(ColorsCli.RESET);
                     for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
                         for (int k = 0; k < c.getStudents()[j]; k++) {
-                            cloud.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.getColorByNumber(j));
+                            cloud.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.RESET);
                         }
                     }
                     System.out.println(cloud.toString());

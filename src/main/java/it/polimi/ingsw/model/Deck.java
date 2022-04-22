@@ -4,10 +4,14 @@ import it.polimi.ingsw.utilities.constants.Constants;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Deck {
+public class Deck implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 9L;
     private List<Card> playerCards;
     private PropertyChangeSupport support;
 

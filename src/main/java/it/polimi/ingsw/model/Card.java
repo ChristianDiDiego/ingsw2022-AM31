@@ -1,6 +1,11 @@
 package it.polimi.ingsw.model;
 
-public class Card implements Comparable<Card> {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Card implements Comparable<Card>, Serializable {
+    @Serial
+    private static final long serialVersionUID = 10L;
     private final int power;
     private final int maxSteps;
 

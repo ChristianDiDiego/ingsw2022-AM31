@@ -5,8 +5,10 @@ import it.polimi.ingsw.model.StudsAndProfsColor;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serial;
+import java.io.Serializable;
 
-public class Entrance {
+public class Entrance implements Serializable {
     /*This array contains the number of students for each color depending on the position.
       0 - RED
       1 - GREEN
@@ -14,6 +16,9 @@ public class Entrance {
       3 - PINK
       4 - BLUE
      */
+
+    @Serial
+    private static final long serialVersionUID = 4L;
     private int[] studentsInEntrance;
     private PropertyChangeSupport support;
 

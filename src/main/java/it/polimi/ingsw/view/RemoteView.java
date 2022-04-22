@@ -1,20 +1,13 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.controller.ActionParser;
-import it.polimi.ingsw.controller.GameHandler;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.server.SocketClientConnection;
-import it.polimi.ingsw.utilities.MessageForParser;
 import it.polimi.ingsw.utilities.gameMessage;
-import jdk.swing.interop.SwingInterOpUtils;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.EventListener;
-import java.util.EventObject;
 
 //Observer: osserva qualcosa e quando c'è una notify
 // dell'oggetto osservato lancia l'update
@@ -51,6 +44,19 @@ public class RemoteView implements PropertyChangeListener{
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if(evt.getPropertyName().equals("currentPlayerChanged")){
+            for(Archipelago a : currentGame.getListOfArchipelagos()){
+                showMessage(a);
+            }
+            for(Player p : currentGame.getListOfPlayer()) {
+                showMessage(p.getMyBoard());
+            }
+            for(Cloud c : currentGame.getListOfClouds()){
+                showMessage(c);
+            }
+
+            if(currentGame.getCurrentPlayer() == player){
+                showMessage(player.getMyDeck());
+            }
             if(player.getNickname().equals(evt.getNewValue())){
                 System.out.println("I'm notified and is my turn");
                 showMessage(evt.getNewValue() + " is your turn!");
@@ -63,7 +69,9 @@ public class RemoteView implements PropertyChangeListener{
             }
         }
         if(evt.getPropertyName().equals("MNmove") || evt.getPropertyName().equals("ArchUnified")){
-            showMessage(currentGame.getListOfArchipelagos());
+            for(Archipelago a : currentGame.getListOfArchipelagos()){
+                showMessage(a);
+            }
         } else if(evt.getPropertyName().equals("PhaseChanged")){
             if(currentGame.getCurrentPlayer() == player){
                 switch (currentGame.getPhase()){

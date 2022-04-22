@@ -3,7 +3,10 @@ package it.polimi.ingsw.model.board;
 import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 
-public class ProfessorsTable {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class ProfessorsTable implements Serializable {
     /*This array contains the status of the prof for each color depending on the position.
   0 - RED
   1 - GREEN
@@ -11,6 +14,8 @@ public class ProfessorsTable {
   3 - PINK
   4 - BLUE
  */
+    @Serial
+    private static final long serialVersionUID = 5L;
     private boolean[] hasProfessor;
 
     public ProfessorsTable(){

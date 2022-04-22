@@ -3,7 +3,12 @@ package it.polimi.ingsw.model.board;
 import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 
-public class DiningRoom {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class DiningRoom implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 3L;
     private int[] studentsInDR;
 
     public DiningRoom(){
