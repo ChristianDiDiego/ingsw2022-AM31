@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class Board implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 30L;
 
     private Entrance entrance;
     private DiningRoom diningRoom;
