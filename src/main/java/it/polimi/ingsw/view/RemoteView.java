@@ -27,13 +27,14 @@ public class RemoteView implements PropertyChangeListener{
         this.currentGame = currentGame;
         this.actionParser = actionParser;
         //c.addObserver(new MessageReceiver());
-        // c.asyncSend("Your opponent is: " + opponent);
+        //c.asyncSend("Your opponent is: " + opponent);
 
     }
 
     protected void showMessage(Object message) {
         clientConnection.asyncSend(message);
     }
+
     /**
      public void eventPerformed(EventObject evt){
      System.out.println("Fired: " + ((Integer)evt.getSource()).toString());
@@ -79,11 +80,11 @@ public class RemoteView implements PropertyChangeListener{
                         System.out.println("card selection");
                         showMessage(gameMessage.cardSelectionMessage);
                     }case MOVE_STUDENTS ->
-                            showMessage("move your students\n");
+                            showMessage(gameMessage.studentMovementMessage);
                     case MOVE_MN ->
-                            showMessage("move mother nature\n");
+                            showMessage(gameMessage.moveMotherNatureMessage);
                     case CLOUD_SELECTION ->
-                            showMessage("choose a cloud\n");
+                            showMessage(gameMessage.chooseCloudMessage);
                 }
             }
         }else if(evt.getPropertyName().equals("UsedCard")){
