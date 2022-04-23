@@ -140,7 +140,7 @@ public class SocketClientConnection implements Runnable{
      * elo manda al client che è in ascolto con readfromsocket
      *qualsiasi cosa il client riceva la stampa a video
      */
-    public void asyncSend( Object message){
+    public synchronized void asyncSend( Object message){
         System.out.println("Async sent");
         new Thread(new Runnable() {
             @Override

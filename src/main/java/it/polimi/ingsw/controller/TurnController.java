@@ -73,10 +73,9 @@ public class TurnController {
 
                             if(player == game.getListOfPlayer().get(game.getListOfPlayer().size()-1)){
                                 //Send a message to all saying that the card selection phase is finished
+                                game.findPlayerOrder();
                                 game.nextPhase();
                                 System.out.println("Passo alla fase " + game.getPhase());
-                                game.findPlayerOrder();
-
                             }else{
                                 game.calculateNextPlayerPianification();
                             }

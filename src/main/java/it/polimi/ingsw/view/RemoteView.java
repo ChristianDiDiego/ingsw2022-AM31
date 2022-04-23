@@ -27,11 +27,11 @@ public class RemoteView implements PropertyChangeListener{
         this.currentGame = currentGame;
         this.actionParser = actionParser;
         //c.addObserver(new MessageReceiver());
-        //c.asyncSend("Your opponent is: " + opponent);
+        // c.asyncSend("Your opponent is: " + opponent);
 
     }
 
-    protected void showMessage(Object message) {
+    protected synchronized void showMessage(Object message) {
         clientConnection.asyncSend(message);
     }
 
@@ -45,28 +45,42 @@ public class RemoteView implements PropertyChangeListener{
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if(evt.getPropertyName().equals("currentPlayerChanged")){
-            for(Archipelago a : currentGame.getListOfArchipelagos()){
-                showMessage(a);
-            }
-            for(Player p : currentGame.getListOfPlayer()) {
-                showMessage(p.getMyBoard());
-            }
-            for(Cloud c : currentGame.getListOfClouds()){
-                showMessage(c);
-            }
-
-            if(currentGame.getCurrentPlayer() == player){
-                showMessage(player.getMyDeck());
-            }
-            if(player.getNickname().equals(evt.getNewValue())){
-                System.out.println("I'm notified and is my turn");
-                showMessage(evt.getNewValue() + " is your turn!");
-                if(currentGame.getPhase().equals(Phase.CARD_SELECTION)){
-                    showMessage(gameMessage.cardSelectionMessage);
+            synchronized (this){
+                for (Archipelago a : currentGame.getListOfArchipelagos()) {
+                        showMessage(a);
                 }
-            }else{
-                System.out.println("I'm notified");
-                showMessage("is the turn of " + evt.getNewValue());
+            }
+            synchronized (this){
+                for(Player p : currentGame.getListOfPlayer()) {
+                    System.out.println("board for"  + player.getNickname());
+                    showMessage(p.getMyBoard());
+
+                }
+            }
+          synchronized (this){
+              for (Cloud c : currentGame.getListOfClouds()) {
+                  System.out.println("cloud for"  + player.getNickname());
+                  showMessage(c);
+              }
+          }
+
+            synchronized (this){
+                if(currentGame.getCurrentPlayer() == player){
+                    System.out.println("deck for"  + player.getNickname());
+                    showMessage(player.getMyDeck());
+                }
+            }
+            synchronized (this){
+                if(player.getNickname().equals(evt.getNewValue())){
+                    System.out.println("I'm notified and is my turn");
+                    showMessage(evt.getNewValue() + " is your turn!");
+                    if(currentGame.getPhase().equals(Phase.CARD_SELECTION)){
+                        showMessage(gameMessage.cardSelectionMessage);
+                    }
+                }else{
+                    System.out.println("I'm notified");
+                    showMessage("is the turn of " + evt.getNewValue());
+                }
             }
         }
         if(evt.getPropertyName().equals("MNmove") || evt.getPropertyName().equals("ArchUnified")){
