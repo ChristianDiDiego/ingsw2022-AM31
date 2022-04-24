@@ -7,6 +7,9 @@ import it.polimi.ingsw.model.Player;
 
 import java.util.List;
 
+/**
+ * Interface for the view
+ */
 public interface View {
     public void printLogo();
 

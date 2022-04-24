@@ -2,6 +2,11 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
 
+/**
+ * Menage the game status ;
+ * starts the game if the number of player is reached and
+ * set the value of the game parameters
+ */
 public class GameHandler {
     private Controller controller;
     private Game game;

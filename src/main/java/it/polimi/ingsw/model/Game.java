@@ -45,7 +45,8 @@ public class Game extends Observable<Game> implements Cloneable {
         phase = Phase.START_GAME;
         this.expertModeOn = expertModeOn;
 
-        for(int i = 1; i <= Constants.NUMBEROFISLANDS; i++){
+        for(int i = Constants.IDSTARTINGARCMN; i <= Constants.NUMBEROFISLANDS; i++){
+
             Archipelago arc = new Archipelago(i);
             listOfArchipelagos.add(arc);
         }
@@ -64,14 +65,18 @@ public class Game extends Observable<Game> implements Cloneable {
         Random random = new Random();
         for(Archipelago a : this.listOfArchipelagos){
             for(Island i : a.getBelongingIslands()) {
-                if(a.getIdArchipelago() != 0 && a.getIdArchipelago() !=5) {
+                if(a.getIdArchipelago() != Constants.IDSTARTINGARCMN && a.getIdArchipelago() !=Constants.IDSTARTINGOPPOSITEARC) {
                     int value = random.nextInt(Constants.NUMBEROFKINGDOMS);
                     while (studentsForIslands[value] <= 0) {
                         value = random.nextInt(Constants.NUMBEROFKINGDOMS);
                     }
                     i.addStudent(StudsAndProfsColor.values()[value]);
+
                     studentsForIslands[value]--;
+                    for(int j = 0; j < Constants.NUMBEROFKINGDOMS; j++){
+                    }
                 }
+
             }
         }
 

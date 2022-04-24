@@ -3,6 +3,10 @@ package it.polimi.ingsw.utilities.constants;
 //This class contains the parameters that do not change according to the number of players
 
 public class Constants {
+
+    public static final int IDSTARTINGARCMN = 1;
+    public static final int IDSTARTINGOPPOSITEARC = 5;
+    public static final int IDLASTARC = 12;
     public static final int NUMBEROFKINGDOMS = 5;
     public static final int NUMBEROFISLANDS = 12;
     public static final int NUMBEROFSTUDENTSOFEACHCOLOR = 26;

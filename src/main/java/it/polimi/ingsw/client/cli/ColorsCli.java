@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.cli;
 
+/**
+ * Enums of the colors to be used in cli
+ */
 public enum ColorsCli {
     CLEAR("\033[H\033[2J"),
     RESET("\033[0m"); //Color end string, color reset

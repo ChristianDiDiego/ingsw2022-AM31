@@ -3,6 +3,10 @@ import it.polimi.ingsw.model.*;
 
 //TODO: ADDTESTS!!!!!!
 // and add cloud choice
+
+/**
+ * Menage the turn changements and the pianification phase
+ */
 public class TurnController {
     private Controller controller;
     private ActionController actionController;

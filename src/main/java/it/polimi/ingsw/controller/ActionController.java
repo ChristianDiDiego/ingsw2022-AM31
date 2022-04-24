@@ -4,10 +4,13 @@ import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.expertMode.*;
 
-//TODO: Checks need to be finished checking that the actions are correct
-// (enough players in entrance to be moved etc.)
+
 // Add tests!!!!!!
 
+/**
+ * Contains the methods to check that the action received from the Client via ActionParser
+ * are allowed for that client; if yes, perform the action
+ */
 public class ActionController {
     private Phase phase;
     private Game game;
@@ -123,11 +126,11 @@ public class ActionController {
         int index = game.getListOfArchipelagos().indexOf(a);
         int previous = index - 1;
         int next = index + 1;
-        if(index == 0) {
-            previous = game.getListOfArchipelagos().size() - 1;
+        if(index == Constants.IDSTARTINGARCMN) {
+            previous = Constants.IDLASTARC;
         }
-        if(index == game.getListOfArchipelagos().size() - 1) {
-            next = 0;
+        if(index == Constants.IDLASTARC) {
+            next = Constants.IDSTARTINGARCMN;
         }
 
         if(a.getOwner() == game.getListOfArchipelagos().get(previous).getOwner()) {

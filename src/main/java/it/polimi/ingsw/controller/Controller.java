@@ -3,6 +3,9 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 
+/**
+ * Container of the different controllers and for the game
+ */
 public class Controller {
     private Game game;
     private GameHandler gameHandler;

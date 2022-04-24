@@ -13,6 +13,9 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.List;
 
+/**
+ * This class contains the methods that allow the client to read messages/object from the server and print them
+ */
 public class Cli{
     //private final PrintStream output;
     //private final Scanner input;

@@ -8,6 +8,9 @@ import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * Board of a player (container of Entrance, Dining Room, Profs table and towers)
+ */
 public class Board implements Serializable {
 
     @Serial
