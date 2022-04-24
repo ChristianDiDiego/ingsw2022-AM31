@@ -42,10 +42,10 @@ public class Game extends Observable<Game> implements Cloneable {
         this.bag = new Bag(numberOfPlayers);
         this.currentPlayer = player;
         System.out.println(player.getNickname());
-        phase = Phase.CARD_SELECTION;
+        phase = Phase.START_GAME;
         this.expertModeOn = expertModeOn;
 
-        for(int i = 0; i < Constants.NUMBEROFISLANDS; i++){
+        for(int i = 1; i <= Constants.NUMBEROFISLANDS; i++){
             Archipelago arc = new Archipelago(i);
             listOfArchipelagos.add(arc);
         }
@@ -308,6 +308,9 @@ public class Game extends Observable<Game> implements Cloneable {
     //saying what should he do
     public void nextPhase(){
         switch (phase){
+            case START_GAME:
+                phase = Phase.CARD_SELECTION;
+                break;
             case CARD_SELECTION:
                 phase = Phase.MOVE_STUDENTS;
                 break;

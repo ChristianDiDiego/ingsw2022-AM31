@@ -46,6 +46,7 @@ public class TurnController {
         }
         System.out.println("Turn started");
         game.findPlayerOrder();
+        game.nextPhase();
         //Message to be sent to the current player
       //  System.out.println(game.getCurrentPlayer().getNickname() + " is your turn!");
     }

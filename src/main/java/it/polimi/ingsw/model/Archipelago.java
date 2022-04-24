@@ -21,7 +21,7 @@ public class Archipelago implements Serializable {
         this.belongingIsland = new ArrayList<>();
         belongingIsland.add(temp);
         isForbidden = false;
-        if(idArchipelago == 0){
+        if(idArchipelago == 1){
             isMNPresent = true;
         }else{
             isMNPresent = false;

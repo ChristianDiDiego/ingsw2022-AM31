@@ -74,9 +74,7 @@ public class RemoteView implements PropertyChangeListener{
                 if(player.getNickname().equals(evt.getNewValue())){
                     System.out.println("I'm notified and is my turn");
                     showMessage(evt.getNewValue() + " is your turn!");
-                    if(currentGame.getPhase().equals(Phase.CARD_SELECTION)){
-                        showMessage(gameMessage.cardSelectionMessage);
-                    }
+
                 }else{
                     System.out.println("I'm notified");
                     showMessage("is the turn of " + evt.getNewValue());
@@ -88,6 +86,7 @@ public class RemoteView implements PropertyChangeListener{
                 showMessage(a);
             }
         } else if(evt.getPropertyName().equals("PhaseChanged")){
+
             if(currentGame.getCurrentPlayer() == player){
                 switch (currentGame.getPhase()){
                     case CARD_SELECTION -> {
