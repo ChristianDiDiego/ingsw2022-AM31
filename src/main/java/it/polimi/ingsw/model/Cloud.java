@@ -7,6 +7,9 @@ import java.beans.PropertyChangeSupport;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * Cloud from where the player can pick the students at the end of his turn
+ */
 public class Cloud implements Serializable {
     @Serial
     private static final long serialVersionUID = 11L;

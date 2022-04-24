@@ -5,6 +5,9 @@ import it.polimi.ingsw.utilities.constants.Constants;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * Island of an archipelago; contains the students that are on it
+ */
 public class Island implements Serializable {
 
     @Serial

@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.StudsAndProfsColor;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * Represents the dining room of a player; menage the adding of a student
+ */
 public class DiningRoom implements Serializable {
     @Serial
     private static final long serialVersionUID = 3L;
