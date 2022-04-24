@@ -27,8 +27,9 @@ class Character3Test {
     void usePower() {
         game.addPlayer(player2);
         player1.addCoinsToWallet(20);
+        //get 2 and not 3 because the id of the arc starts from 1
         assertEquals(false,game.getListOfArchipelagos().get(2).getIsForbidden());
-        character3.usePower(2);
+        character3.usePower(3);
         assertEquals(true, game.getListOfArchipelagos().get(2).getIsForbidden());
         character3.usePower(3);
         character3.usePower(1);

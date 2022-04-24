@@ -20,13 +20,13 @@ class Character1Test {
     void usePower() {
         gameHandler.getGame().addPlayer(player2);
         player1.addCoinsToWallet(20);
-        gameHandler.getGame().getListOfArchipelagos().get(1).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.BLUE);
-        gameHandler.getGame().getListOfArchipelagos().get(1).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.BLUE);
-        gameHandler.getGame().getListOfArchipelagos().get(1).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.BLUE);
+        gameHandler.getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.BLUE);
+        gameHandler.getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.BLUE);
+        gameHandler.getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.BLUE);
         gameHandler.getGame().getCurrentPlayer().getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.BLUE);
         character1.usePower(1);
         assertEquals(character1, gameHandler.getGame().getCurrentPlayer().getUsedCharacter());
-        assertEquals(player1, gameHandler.getGame().getListOfArchipelagos().get(1).getOwner());
+        assertEquals(player1, gameHandler.getGame().getListOfArchipelagos().get(0).getOwner());
 
     }
 }

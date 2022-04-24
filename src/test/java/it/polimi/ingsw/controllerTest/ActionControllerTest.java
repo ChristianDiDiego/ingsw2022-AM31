@@ -45,6 +45,7 @@ class ActionControllerTest {
         assertEquals(0, gameHandler.getIsStarted());
         //gameHandler.addNewPlayer("fede", ColorOfTower.GREY);
         gameHandler.getGame().nextPhase();
+        gameHandler.getGame().nextPhase();
         System.out.println(gameHandler.getGame().getCurrentPlayer().getNickname());
         System.out.println(gameHandler.getGame().getPhase());
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE));

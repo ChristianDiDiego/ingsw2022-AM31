@@ -73,7 +73,7 @@ class GameTest {
         int[] testArray = {0,0,0,0,0};
         for(Archipelago a : game.getListOfArchipelagos()) {
             for(Island i : a.getBelongingIslands()) {
-                if(a.getIdArchipelago() != 0 && a.getIdArchipelago() != 5) {
+                if(a.getIdArchipelago() != Constants.IDSTARTINGARCMN && a.getIdArchipelago() != Constants.IDSTARTINGOPPOSITEARC) {
                     int sum = 0;
                     for(int s = 0; s < Constants.NUMBEROFKINGDOMS; s++) {
                         sum += i.getStudentsByColor(StudsAndProfsColor.values()[s]);

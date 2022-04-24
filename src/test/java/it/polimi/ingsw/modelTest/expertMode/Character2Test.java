@@ -28,6 +28,7 @@ class Character2Test {
         character2.usePower();
         assertNotEquals(character2, gameHandler.getGame().getCurrentPlayer().getUsedCharacter());
         gameHandler.getGame().nextPhase();
+        gameHandler.getGame().nextPhase();
         character2.usePower();
         assertEquals(character2, gameHandler.getGame().getCurrentPlayer().getUsedCharacter());
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Archipelago;
 import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Island;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.utilities.constants.Constants;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ArchipelagoTest {
 
     private Archipelago archi = new Archipelago(2);
-    private Archipelago archiMN = new Archipelago(0);
+    private Archipelago archiMN = new Archipelago(Constants.IDSTARTINGARCMN);
 
     /**
      * Check if an island is properly added to an archipelago

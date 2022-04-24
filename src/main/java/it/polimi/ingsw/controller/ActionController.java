@@ -207,7 +207,10 @@ public class ActionController {
        }else if(game.getPhase()== Phase.MOVE_STUDENTS || player != game.getCurrentPlayer()){
                System.out.println("non è il tuo turno!!");
                return false;
-           }else {
+           }else if (game.getPhase()!= Phase.MOVE_STUDENTS){
+            System.out.println("You are not in the phase " + Phase.MOVE_STUDENTS);
+             return false;
+       } else {
                System.out.println("hai inviato un'azione non valida, riprova");
                return false;
            }
