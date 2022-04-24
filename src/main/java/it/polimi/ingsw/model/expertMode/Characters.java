@@ -3,12 +3,14 @@ package it.polimi.ingsw.model.expertMode;
 import it.polimi.ingsw.model.Archipelago;
 import it.polimi.ingsw.model.Game;
 
+import java.io.Serializable;
+
 /**
  * Every character has the function usePower which is called by the actionController
  * ActionController check if a player played a character when a player use a card
  * TODO: turnController set characterUsed of the player to null at the beginning of the turn
  */
-public abstract class Characters {
+public abstract class Characters implements Serializable {
     Game game;
     int price;
     int id;

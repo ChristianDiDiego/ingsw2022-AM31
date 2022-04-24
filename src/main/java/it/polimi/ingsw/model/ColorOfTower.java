@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
-public enum ColorOfTower {
+import java.io.Serializable;
+
+public enum ColorOfTower implements Serializable {
     WHITE,
     BLACK,
     GREY

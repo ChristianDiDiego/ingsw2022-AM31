@@ -61,11 +61,10 @@ public class RemoteView implements PropertyChangeListener{
             ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
             showMessage(clouds);
 
-            ListOfPlayers players = new ListOfPlayers(currentGame.getOrderOfPlayers());
-            showMessage(players);
-
             if(currentGame.getCurrentPlayer() == player){
                 showMessage(player.getMyDeck());
+                //ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
+                //showMessage(players);
             }
             if(player.getNickname().equals(evt.getNewValue())){
                 System.out.println("I'm notified and is my turn");
