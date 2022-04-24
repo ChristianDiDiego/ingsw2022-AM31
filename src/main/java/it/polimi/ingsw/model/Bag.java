@@ -4,6 +4,9 @@ import it.polimi.ingsw.utilities.constants.Constants;
 
 import java.util.Random;
 
+/**
+ * Contains the students that needs to be randomly picked
+ */
 public class Bag {
     private int[] studentsInBag;
     private int numberPlayer;

@@ -12,6 +12,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
 
+/**
+ * Model of the game, menage the actions that require an overview of all the game (e.g. how to assign the professors)
+ * and the chagement of the current player / current phase
+ */
 public class Game extends Observable<Game> implements Cloneable {
     private List<Player> listOfPlayers ;
     private List<Archipelago> listOfArchipelagos;

@@ -3,6 +3,10 @@ package it.polimi.ingsw.model;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * A card of the game , which power can be between 1 and 10
+ * is compared with other cards by that value
+ */
 public class Card implements Comparable<Card>, Serializable {
     @Serial
     private static final long serialVersionUID = 10L;

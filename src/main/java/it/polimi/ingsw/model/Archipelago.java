@@ -5,6 +5,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An archipelago contains the list of islands that compose it;
+ * In the beginning of the match, every island produce 1 archipelago
+ */
 public class Archipelago implements Serializable {
     @Serial
     private static final long serialVersionUID = 7L;

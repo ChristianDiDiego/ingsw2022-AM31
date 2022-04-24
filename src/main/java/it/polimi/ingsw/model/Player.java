@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.expertMode.Characters;
 import java.io.Serializable;
 import java.util.Optional;
 
+/**
+ * Represents a player of the game with his features and his board, deck, wallet (if in expert mode),..
+ */
 public class Player implements Serializable {
     private String nickname;
     private Deck myDeck;

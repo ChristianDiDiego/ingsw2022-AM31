@@ -8,6 +8,9 @@ import java.beans.PropertyChangeSupport;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * Represents the entrance of a player; allow the movements of the students from/for the entrance
+ */
 public class Entrance implements Serializable {
     /*This array contains the number of students for each color depending on the position.
       0 - RED
@@ -27,15 +30,14 @@ public class Entrance implements Serializable {
         this.support = new PropertyChangeSupport(this);
     }
 
-    /**
-     * Remove a student from the entrance
-     * @param studColor color of the student to be removed
-     */
-
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
 
+    /**
+     * Remove a student from the entrance
+     * @param studColor color of the student to be removed
+     */
     public void removeStudent(StudsAndProfsColor studColor) {
             studentsInEntrance[studColor.ordinal()]--;
             support.firePropertyChange("RemovedStudentFromEntrance", 0, 1);

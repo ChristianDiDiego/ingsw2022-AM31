@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.StudsAndProfsColor;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * Represents the professors table allowing to remove or add them
+ */
 public class ProfessorsTable implements Serializable {
     /*This array contains the status of the prof for each color depending on the position.
   0 - RED

@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Deck of cards that can be used by the player
+ */
 public class Deck implements Serializable {
     @Serial
     private static final long serialVersionUID = 9L;
