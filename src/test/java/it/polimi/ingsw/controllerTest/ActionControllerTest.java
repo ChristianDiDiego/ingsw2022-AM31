@@ -6,7 +6,12 @@ import it.polimi.ingsw.controller.GameHandler;
 import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
+import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.utilities.ListOfBoards;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,10 +77,11 @@ class ActionControllerTest {
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.YELLOW));
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.PINK));
 
-
-        for(Player p : gameHandler.getGame().getListOfPlayer()){
-            cli.printBoard(p.getMyBoard());
+        List<Board> boards = new ArrayList<>();
+        for(Player p : gameHandler.getGame().getListOfPlayer()) {
+            boards.add(p.getMyBoard());
         }
+        cli.printBoard(boards);
 
     }
 

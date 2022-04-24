@@ -85,7 +85,7 @@ public class MatchTest {
 
         assertEquals(Phase.CLOUD_SELECTION, gameHandler.getGame().getPhase());
         for(Cloud c: gameHandler.getGame().getListOfClouds()){
-            cli.printCloud(c);
+            //cli.printCloud(c);
         }
         assertFalse(gameHandler.getGame().getListOfClouds().get(1).getIsTaken());
         assertTrue(gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("carmine", "CLOUD 1"));

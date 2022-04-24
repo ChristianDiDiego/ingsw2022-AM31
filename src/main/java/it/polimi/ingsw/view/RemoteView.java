@@ -3,11 +3,14 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.controller.ActionParser;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.server.SocketClientConnection;
-import it.polimi.ingsw.utilities.gameMessage;
+import it.polimi.ingsw.utilities.*;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 //Observer: osserva qualcosa e quando c'è una notify
 // dell'oggetto osservato lancia l'update
@@ -27,11 +30,11 @@ public class RemoteView implements PropertyChangeListener{
         this.currentGame = currentGame;
         this.actionParser = actionParser;
         //c.addObserver(new MessageReceiver());
-        // c.asyncSend("Your opponent is: " + opponent);
+        //c.asyncSend("Your opponent is: " + opponent);
 
     }
 
-    protected synchronized void showMessage(Object message) {
+    protected void showMessage(Object message) {
         clientConnection.asyncSend(message);
     }
 
@@ -45,40 +48,34 @@ public class RemoteView implements PropertyChangeListener{
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if(evt.getPropertyName().equals("currentPlayerChanged")){
-            synchronized (this){
-                for (Archipelago a : currentGame.getListOfArchipelagos()) {
-                        showMessage(a);
-                }
+            List<Board> boards = new ArrayList<>();
+            for(Player p : currentGame.getListOfPlayer()) {
+                boards.add(p.getMyBoard());
             }
-            synchronized (this){
-                for(Player p : currentGame.getListOfPlayer()) {
-                    System.out.println("board for"  + player.getNickname());
-                    showMessage(p.getMyBoard());
+            ListOfBoards boards1 = new ListOfBoards(boards);
+            showMessage(boards1);
 
-                }
+            ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
+            showMessage(archipelagos);
+
+            ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
+            showMessage(clouds);
+
+            ListOfPlayers players = new ListOfPlayers(currentGame.getOrderOfPlayers());
+            showMessage(players);
+
+            if(currentGame.getCurrentPlayer() == player){
+                showMessage(player.getMyDeck());
             }
-          synchronized (this){
-              for (Cloud c : currentGame.getListOfClouds()) {
-                  System.out.println("cloud for"  + player.getNickname());
-                  showMessage(c);
-              }
-          }
-
-            synchronized (this){
-                if(currentGame.getCurrentPlayer() == player){
-                    System.out.println("deck for"  + player.getNickname());
-                    showMessage(player.getMyDeck());
+            if(player.getNickname().equals(evt.getNewValue())){
+                System.out.println("I'm notified and is my turn");
+                showMessage(evt.getNewValue() + " is your turn!");
+                if(currentGame.getPhase().equals(Phase.CARD_SELECTION)){
+                    showMessage(gameMessage.cardSelectionMessage);
                 }
-            }
-            synchronized (this){
-                if(player.getNickname().equals(evt.getNewValue())){
-                    System.out.println("I'm notified and is my turn");
-                    showMessage(evt.getNewValue() + " is your turn!");
-
-                }else{
-                    System.out.println("I'm notified");
-                    showMessage("is the turn of " + evt.getNewValue());
-                }
+            }else{
+                System.out.println("I'm notified");
+                showMessage("is the turn of " + evt.getNewValue());
             }
         }
         if(evt.getPropertyName().equals("MNmove") || evt.getPropertyName().equals("ArchUnified")){
@@ -86,7 +83,6 @@ public class RemoteView implements PropertyChangeListener{
                 showMessage(a);
             }
         } else if(evt.getPropertyName().equals("PhaseChanged")){
-
             if(currentGame.getCurrentPlayer() == player){
                 switch (currentGame.getPhase()){
                     case CARD_SELECTION -> {

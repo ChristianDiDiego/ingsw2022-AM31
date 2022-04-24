@@ -3,9 +3,10 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.expertMode.Characters;
 
+import java.io.Serializable;
 import java.util.Optional;
 
-public class Player {
+public class Player implements Serializable {
     private String nickname;
     private Deck myDeck;
     private ColorOfTower colorOfTowers;
