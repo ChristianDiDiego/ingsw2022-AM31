@@ -128,13 +128,15 @@ public class Cli{
         }
 
         public void printMyDeck (Deck deck){
+            System.out.println("YOUR DECK~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             for (Card c : deck.getLeftCards()) {
-                System.out.println("Power: " + c.getPower() + " Steps: " + c.getMaxSteps() + "\n");
+                System.out.println("    Power: " + c.getPower() + " Steps: " + c.getMaxSteps());
             }
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         }
 
         public void printLastUsedCards (List<Player> players) {
-            System.out.println("CARDS PLAYED IN THIS TURN~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("CARDS PLAYED IN THIS TURN~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             int min = 10;
             int i;
             for (i = 0; i < players.size(); i++) {
@@ -143,9 +145,9 @@ public class Cli{
                 }
             }
             for (i = 0; i < players.size(); i++) {
-                if (players.get(i).getMyDeck().getLeftCards().size() == min) {
-                    System.out.println("Player " + players.get(i).getNickname() + " choose the card:" + "\n");
-                    System.out.println("Power: " + players.get(i).getLastUsedCard().getPower() + " Steps: " + players.get(i).getLastUsedCard().getMaxSteps());
+                if (players.get(i).getMyDeck().getLeftCards().size() == min && players.get(i).getLastUsedCard() != null) {
+                    System.out.print("    Player " + players.get(i).getNickname() + " choose the card:");
+                    System.out.println(" Power: " + players.get(i).getLastUsedCard().getPower() + " Steps: " + players.get(i).getLastUsedCard().getMaxSteps());
                 }
             }
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
@@ -166,16 +168,17 @@ public class Cli{
                 }
 
                 StringBuilder boardString = new StringBuilder();
-                boardString.append(ColorsCli.RESET).append("\n Board of player: " + b.getNickname() + "\n").append(ColorsCli.RESET);
+                boardString.append(ColorsCli.RESET).append("    Board of player: " + b.getNickname() + "\n").append(ColorsCli.RESET);
                 for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
+                        boardString.append(ColorsCli.RESET).append("    ").append(ColorsCli.RESET);
                     for (int k = 0; k < nSDN[j]; k++) {
-                        boardString.append(ColorsCli.getColorByNumber(j)).append(" ●").append(ColorsCli.getColorByNumber(j));
+                        boardString.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.getColorByNumber(j));
                     }
                     for (int k = nSDN[j]; k < Constants.MAXSTUDENTSINDINING; k++) {
                         if ((k + 1) % 3 == 0) {
-                            boardString.append(ColorsCli.getColorByNumber(j)).append(" ©").append(ColorsCli.getColorByNumber(j));
+                            boardString.append(ColorsCli.getColorByNumber(j)).append("© ").append(ColorsCli.getColorByNumber(j));
                         } else {
-                            boardString.append(ColorsCli.getColorByNumber(j)).append(" ◯").append(ColorsCli.getColorByNumber(j));
+                            boardString.append(ColorsCli.getColorByNumber(j)).append("◯ ").append(ColorsCli.getColorByNumber(j));
                         }
                     }
                     if (hasProf[j]) {
@@ -186,16 +189,17 @@ public class Cli{
                     boardString.append(ColorsCli.BLACK).append("\n").append(ColorsCli.BLACK);
                 }
 
-                boardString.append(ColorsCli.RESET).append(" Students in entrance: \n").append(ColorsCli.RESET);
+                boardString.append(ColorsCli.RESET).append("    Students in entrance: \n    ").append(ColorsCli.RESET);
                 for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
                     for (int k = 0; k < nSE[i]; k++) {
-                        boardString.append(ColorsCli.getColorByNumber(i)).append(" ●").append(ColorsCli.getColorByNumber(i));
+                        boardString.append(ColorsCli.getColorByNumber(i)).append("● ").append(ColorsCli.getColorByNumber(i));
                     }
                 }
-                boardString.append(ColorsCli.RESET).append("\n Towers on board: \n").append(ColorsCli.RESET);
+                boardString.append(ColorsCli.RESET).append("\n    Towers on board: \n    ").append(ColorsCli.RESET);
                 for (int i = 0; i < nT; i++) {
-                    boardString.append(ColorsCli.RESET).append(" ♜").append(ColorsCli.BLACK).append(ColorsCli.RESET);
+                    boardString.append(ColorsCli.RESET).append("♜ ").append(ColorsCli.BLACK).append(ColorsCli.RESET);
                 }
+                boardString.append(ColorsCli.RESET).append("\n").append(ColorsCli.RESET);
                 System.out.println(boardString.toString());
             }
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
@@ -207,11 +211,11 @@ public class Cli{
             System.out.println(archipelago.toString());
             for(Archipelago a : archipelagos) {
                 archipelago = new StringBuilder();
-                archipelago.append(ColorsCli.RESET).append(" Id archipelago: " + a.getIdArchipelago() + (a.getOwner() == null ? "" : " owner: " + a.getOwner().getNickname()) + (a.getIsMNPresent() == false ? "" : " MN is here") + "\n").append(ColorsCli.RESET);
+                archipelago.append(ColorsCli.RESET).append("    Id archipelago: " + a.getIdArchipelago() + (a.getOwner() == null ? "" : " owner: " + a.getOwner().getNickname()) + (a.getIsMNPresent() == false ? "" : " MN is here") + "\n    ").append(ColorsCli.RESET);
                 for (Island is : a.getBelongingIslands()) {
                     for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
                         for (int k = 0; k < is.getStudentsByColor(StudsAndProfsColor.values()[j]); k++) {
-                            archipelago.append(ColorsCli.getColorByNumber(j)).append(" ●").append(ColorsCli.RESET);
+                            archipelago.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.RESET);
                         }
                     }
                     System.out.println(archipelago.toString());
@@ -230,10 +234,10 @@ public class Cli{
             for(Cloud c : clouds)
                 if (c.getIsTaken() == false) {
                     cloud = new StringBuilder();
-                    cloud.append(ColorsCli.RESET).append(" Id cloud: " + c.getIdCloud() + "\n").append(ColorsCli.RESET);
+                    cloud.append(ColorsCli.RESET).append("    Id cloud: " + c.getIdCloud() + "\n    ").append(ColorsCli.RESET);
                     for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
                         for (int k = 0; k < c.getStudents()[j]; k++) {
-                            cloud.append(ColorsCli.getColorByNumber(j)).append(" ●").append(ColorsCli.RESET);
+                            cloud.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.RESET);
                         }
                     }
                     System.out.println(cloud.toString());

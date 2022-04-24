@@ -11,7 +11,14 @@ import java.util.concurrent.Executors;
 public class ServerApp {
     public static void main( String[] args )
     {
-        System.out.println("Eryantis Server | Welcome!");
+        System.out.println("\n" +
+                "███████╗██████╗ ██╗   ██╗ █████╗ ███╗   ██╗████████╗██╗███████╗\n" +
+                "██╔════╝██╔══██╗╚██╗ ██╔╝██╔══██╗████╗  ██║╚══██╔══╝██║██╔════╝\n" +
+                "█████╗  ██████╔╝ ╚████╔╝ ███████║██╔██╗ ██║   ██║   ██║███████╗\n" +
+                "██╔══╝  ██╔══██╗  ╚██╔╝  ██╔══██║██║╚██╗██║   ██║   ██║╚════██║\n" +
+                "███████╗██║  ██║   ██║   ██║  ██║██║ ╚████║   ██║   ██║███████║\n" +
+                "╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚══════╝\n" +
+                "                                                               \n");
         Scanner scanner = new Scanner(System.in);
     //    System.out.println(">Insert the port which server will listen on.");
      //   System.out.print(">");

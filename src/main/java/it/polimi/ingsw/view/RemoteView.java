@@ -62,10 +62,11 @@ public class RemoteView implements PropertyChangeListener{
                 ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
                 showMessage(clouds);
 
+                ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
+                showMessage(players);
+
                 if(currentGame.getCurrentPlayer() == player){
                     showMessage(player.getMyDeck());
-                    //ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
-                    //showMessage(players);
                 }
             }
             synchronized (this){
@@ -80,9 +81,8 @@ public class RemoteView implements PropertyChangeListener{
             }
         }
         if(evt.getPropertyName().equals("MNmove") || evt.getPropertyName().equals("ArchUnified")){
-            for(Archipelago a : currentGame.getListOfArchipelagos()){
-                showMessage(a);
-            }
+            ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
+            showMessage(archipelagos);
         } else if(evt.getPropertyName().equals("PhaseChanged")){
             if(currentGame.getCurrentPlayer() == player){
                 switch (currentGame.getPhase()){
@@ -98,31 +98,39 @@ public class RemoteView implements PropertyChangeListener{
                 }
             }
         }else if(evt.getPropertyName().equals("UsedCard")){
-            if(currentGame.getCurrentPlayer() == player){
-                showMessage(player.getMyDeck());
-            }
-            for(Player p : currentGame.getOrderOfPlayers()){
-                showMessage(p.getLastUsedCard());
-            }
+                if (currentGame.getCurrentPlayer() == player) {
+                    showMessage(player.getMyDeck());
+                }
+
+                ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
+                showMessage(players);
+
         }else if (evt.getPropertyName().equals("RemovedStudentFromEntrance")){
-            for(Archipelago a : currentGame.getListOfArchipelagos()){
-                showMessage(a);
-            }
-            for(Player p : currentGame.getListOfPlayer()) {
-                showMessage(p.getMyBoard());
-            }
+                ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
+                showMessage(archipelagos);
+
+                List<Board> boards = new ArrayList<>();
+                for (Player p : currentGame.getListOfPlayer()) {
+                    boards.add(p.getMyBoard());
+                }
+                ListOfBoards boards1 = new ListOfBoards(boards);
+                showMessage(boards1);
+
         }else if(evt.getPropertyName().equals("ChangedProfessor")){
-            for(Player p : currentGame.getListOfPlayer()) {
-                showMessage(p.getMyBoard());
-            }
+                List<Board> boards = new ArrayList<>();
+                for (Player p : currentGame.getListOfPlayer()) {
+                    boards.add(p.getMyBoard());
+                }
+                ListOfBoards boards1 = new ListOfBoards(boards);
+                showMessage(boards1);
+
         }else if(evt.getPropertyName().equals("MessageForParser")){
             System.out.println("Action to send to parser ");
             actionParser.actionSerializer(player.getNickname(),(String)evt.getNewValue());
 
         }else if(evt.getPropertyName().equals("ChangedCloudStatus")){
-            for(Cloud c : currentGame.getListOfClouds()){
-                showMessage(c);
-            }
+            ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
+            showMessage(clouds);
         }
     }
 

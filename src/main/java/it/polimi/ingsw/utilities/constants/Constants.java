@@ -5,7 +5,7 @@ package it.polimi.ingsw.utilities.constants;
 public class Constants {
 
     public static final int IDSTARTINGARCMN = 1;
-    public static final int IDSTARTINGOPPOSITEARC = 5;
+    public static final int IDSTARTINGOPPOSITEARC = 7;
     public static final int IDLASTARC = 12;
     public static final int NUMBEROFKINGDOMS = 5;
     public static final int NUMBEROFISLANDS = 12;
