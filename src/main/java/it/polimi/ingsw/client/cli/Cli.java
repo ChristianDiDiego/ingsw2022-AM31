@@ -137,7 +137,7 @@ public class Cli{
 
         public void printLastUsedCards (List<Player> players) {
             System.out.println("CARDS PLAYED IN THIS TURN~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            int min = 10;
+            int min = Constants.NUMBEROFCARDSINDECK;
             int i;
             for (i = 0; i < players.size(); i++) {
                 if (players.get(i).getMyDeck().getLeftCards().size() < min) {
