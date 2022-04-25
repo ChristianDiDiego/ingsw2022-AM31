@@ -205,13 +205,13 @@ public class Game extends Observable<Game> implements Cloneable {
         int index = 0;
         for(Archipelago arci : listOfArchipelagos){
             if(arci.getIsMNPresent()){
-                index = arci.getIdArchipelago();
+                index = listOfArchipelagos.indexOf(arci);
                 arci.changeMNPresence();
             }
         }
-        index = (index + steps)%listOfArchipelagos.size();
+        index = (index + steps) % listOfArchipelagos.size();
         for(Archipelago arci : listOfArchipelagos){
-            if(arci.getIdArchipelago() == index){
+            if(listOfArchipelagos.indexOf(arci) == index){
                 arci.changeMNPresence();
             }
         }
