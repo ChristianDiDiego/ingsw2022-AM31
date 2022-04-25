@@ -13,6 +13,10 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/*
+ Manage the connections of the clients and starts configuration of the game
+ when the expected number of players is connected
+ */
 public class Server {
     private int port;
     private int numberOfPlayers;

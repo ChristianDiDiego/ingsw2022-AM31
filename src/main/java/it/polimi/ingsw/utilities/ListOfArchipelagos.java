@@ -5,7 +5,9 @@ import it.polimi.ingsw.model.Archipelago;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+Serializable list of archs.
+ */
 public class ListOfArchipelagos implements Serializable {
     private List<Archipelago> archipelagos = new ArrayList<>();
 

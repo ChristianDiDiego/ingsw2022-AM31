@@ -1,3 +1,4 @@
+/*
 package it.polimi.ingsw.utilities;
 
 import it.polimi.ingsw.model.Player;
@@ -11,3 +12,4 @@ public class MessageForParser {
         this.message = message;
     }
 }
+*/

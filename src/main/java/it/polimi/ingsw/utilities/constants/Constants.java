@@ -1,7 +1,8 @@
 package it.polimi.ingsw.utilities.constants;
 
-//This class contains the parameters that do not change according to the number of players
-
+/*
+This class contains the parameters of the game that do not change according to the number of players
+ */
 public class Constants {
 
     public static final int IDSTARTINGARCMN = 1;

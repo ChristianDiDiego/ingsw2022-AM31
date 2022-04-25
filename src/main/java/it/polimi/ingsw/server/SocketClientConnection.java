@@ -15,9 +15,9 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-//Interagisce con il client
-//Connessione lato server
-//public class SocketClientConnection extends Observable<String> implements Runnable
+/*
+Instanced by the server, it interacts with a client sending and receiving message from it
+ */
 public class SocketClientConnection implements Runnable{
     private Socket socket;
     private ObjectOutputStream out;

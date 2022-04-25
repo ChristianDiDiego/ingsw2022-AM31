@@ -12,12 +12,9 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-//Observer: osserva qualcosa e quando c'è una notify
-// dell'oggetto osservato lancia l'update
-
-//Observable: un metodo della classe lancerà una notify del
-//tipo detto nell'observable
-//public class RemoteView extends Observable<MessageForParser> implements Observer<Game>, PropertyChangeListener {
+/*
+Remote view: listen the changements from the model and send a message to the client who is associated with it
+ */
 public class RemoteView implements PropertyChangeListener{
     private final SocketClientConnection clientConnection;
     private final Player player;
@@ -87,8 +84,7 @@ public class RemoteView implements PropertyChangeListener{
                     showMessage("is the turn of " + evt.getNewValue());
                 }
             }
-        }
-        if(evt.getPropertyName().equals("MNmove") || evt.getPropertyName().equals("ArchUnified")){
+        }else if(evt.getPropertyName().equals("MNmove") || evt.getPropertyName().equals("ArchUnified")){
             ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
             showMessage(archipelagos);
         } else if(evt.getPropertyName().equals("PhaseChanged")){

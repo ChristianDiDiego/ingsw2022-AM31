@@ -8,6 +8,9 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/*
+The server app that the server needs to start
+ */
 public class ServerApp {
     public static void main( String[] args )
     {

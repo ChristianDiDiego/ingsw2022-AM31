@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/*
+The app the client will open, entering the ip and port of the server
+ */
 public class ClientApp {
     public static void main(String[] args) {
         System.out.println("Eryantis Client | Welcome!");

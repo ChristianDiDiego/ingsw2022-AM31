@@ -1,5 +1,7 @@
 package it.polimi.ingsw.utilities;
-
+/*
+This class contains the messages to be sent to the client
+ */
 public class gameMessage {
     public static String notYourTurn = "Is not your turn!";
 
