@@ -34,7 +34,7 @@ public class RemoteView implements PropertyChangeListener{
 
     }
 
-    protected void showMessage(Object message) {
+    protected synchronized void showMessage(Object message) {
         clientConnection.asyncSend(message);
     }
 
@@ -48,33 +48,41 @@ public class RemoteView implements PropertyChangeListener{
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if(evt.getPropertyName().equals("currentPlayerChanged")){
+            Object lock = new Object();
             synchronized (this){
                 List<Board> boards = new ArrayList<>();
                 for(Player p : currentGame.getListOfPlayer()) {
                     boards.add(p.getMyBoard());
                 }
                 ListOfBoards boards1 = new ListOfBoards(boards);
-                showMessage(boards1);
+                synchronized (lock){
+                    showMessage(boards1);
+                }
 
                 ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
-                showMessage(archipelagos);
+                synchronized (lock){
+                    showMessage(archipelagos);
+                }
 
                 ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
-                showMessage(clouds);
+                synchronized (lock){
+                    showMessage(clouds);
+                }
 
                 ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
-                showMessage(players);
+                synchronized (lock){
+                    showMessage(players);
+                }
 
                 if(currentGame.getCurrentPlayer() == player){
-                    showMessage(player.getMyDeck());
+                    synchronized (lock){
+                        showMessage(player.getMyDeck());
+                    }
                 }
             }
             synchronized (this){
                 if(player.getNickname().equals(evt.getNewValue())){
                     showMessage(evt.getNewValue() + " is your turn!");
-                    if(currentGame.getPhase().equals(Phase.CARD_SELECTION)){
-                        showMessage(gameMessage.cardSelectionMessage);
-                    }
                 }else{
                     showMessage("is the turn of " + evt.getNewValue());
                 }
@@ -84,28 +92,32 @@ public class RemoteView implements PropertyChangeListener{
             ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
             showMessage(archipelagos);
         } else if(evt.getPropertyName().equals("PhaseChanged")){
-            if(currentGame.getCurrentPlayer() == player){
-                switch (currentGame.getPhase()){
-                    case CARD_SELECTION -> {
-                        System.out.println("card selection");
-                        showMessage(gameMessage.cardSelectionMessage);
-                    }case MOVE_STUDENTS ->
-                            showMessage(gameMessage.studentMovementMessage);
-                    case MOVE_MN ->
-                            showMessage(gameMessage.moveMotherNatureMessage);
-                    case CLOUD_SELECTION ->
-                            showMessage(gameMessage.chooseCloudMessage);
+            synchronized (this){
+                if(currentGame.getCurrentPlayer() == player){
+                    switch (currentGame.getPhase()){
+                        case CARD_SELECTION -> {
+                            System.out.println("card selection");
+                            showMessage(gameMessage.cardSelectionMessage);
+                        }case MOVE_STUDENTS ->
+                                showMessage(gameMessage.studentMovementMessage);
+                        case MOVE_MN ->
+                                showMessage(gameMessage.moveMotherNatureMessage);
+                        case CLOUD_SELECTION ->
+                                showMessage(gameMessage.chooseCloudMessage);
+                    }
                 }
             }
         }else if(evt.getPropertyName().equals("UsedCard")){
+            synchronized (this){
                 if (currentGame.getCurrentPlayer() == player) {
                     showMessage(player.getMyDeck());
                 }
 
                 ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
                 showMessage(players);
-
+            }
         }else if (evt.getPropertyName().equals("RemovedStudentFromEntrance")){
+            synchronized (this){
                 ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
                 showMessage(archipelagos);
 
@@ -115,22 +127,26 @@ public class RemoteView implements PropertyChangeListener{
                 }
                 ListOfBoards boards1 = new ListOfBoards(boards);
                 showMessage(boards1);
-
+            }
         }else if(evt.getPropertyName().equals("ChangedProfessor")){
+            synchronized (this){
                 List<Board> boards = new ArrayList<>();
                 for (Player p : currentGame.getListOfPlayer()) {
                     boards.add(p.getMyBoard());
                 }
                 ListOfBoards boards1 = new ListOfBoards(boards);
                 showMessage(boards1);
-
+            }
         }else if(evt.getPropertyName().equals("MessageForParser")){
-            System.out.println("Action to send to parser ");
-            actionParser.actionSerializer(player.getNickname(),(String)evt.getNewValue());
-
+            synchronized (this){
+                //System.out.println("Action to send to parser ");
+                actionParser.actionSerializer(player.getNickname(),(String)evt.getNewValue());
+            }
         }else if(evt.getPropertyName().equals("ChangedCloudStatus")){
-            ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
-            showMessage(clouds);
+            synchronized (this){
+                ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
+                showMessage(clouds);
+            }
         }
     }
 
