@@ -59,7 +59,7 @@ public class Server {
             //TODO: add check if the inserted mode is fine
 
             int mode = -1;
-            while(mode == -1){
+            while(mode <0 || mode >1){
                 mode = c.askMode();
             }
             color = c.askColor();
@@ -68,7 +68,8 @@ public class Server {
             }
             Player player1 = new Player(nickname, color);
             waitingConnection.put(player1, c);
-            gameHandler = new GameHandler(player1, numberOfPlayers, Boolean.parseBoolean(String.valueOf(mode)));
+            gameHandler = new GameHandler(player1, numberOfPlayers, mode == 1);
+            System.out.println("after create game");
             RemoteView remV1 = new RemoteView(player1, c, gameHandler.getGame(), gameHandler.getController().getTurnController().getActionController().getActionParser());
             c.addPropertyChangeListener(remV1);
             //remV1.addPropertyChangeListener(gameHandler.getGame());

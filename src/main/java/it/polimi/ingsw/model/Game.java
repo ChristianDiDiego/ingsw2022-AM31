@@ -1,10 +1,9 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.expertMode.*;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.utilities.constants.Constants;
-import it.polimi.ingsw.model.expertMode.Character8;
-import it.polimi.ingsw.model.expertMode.CharactersEnum;
 import it.polimi.ingsw.view.RemoteView;
 
 import javax.swing.event.EventListenerList;
@@ -27,7 +26,8 @@ public class Game extends Observable<Game> implements Cloneable {
     private Phase phase;
     private boolean endTurn;
     private int bank;
-    private int[] playableCharacters;
+
+    private Characters[] charactersPlayable;
     private boolean expertModeOn;
     //protected EventListenerList listenerList = new EventListenerList();
 
@@ -88,20 +88,49 @@ public class Game extends Observable<Game> implements Cloneable {
         if(expertModeOn){
             this.bank = 20;
             //Extract 3 characters that will be available for the game
-            this.playableCharacters = new int[Constants.NUMBEROFPLAYABLECHARACTERS];
+            charactersPlayable = new Characters[Constants.NUMBEROFPLAYABLECHARACTERS];
             int i = 0;
+            System.out.println("Im expe mode");
             while (i < Constants.NUMBEROFPLAYABLECHARACTERS) {
-                int value = random.nextInt(Constants.NUMBEROFCHARACTERS);
+                //Randomly generate a number between 1 and 8 (random last value is exclusive)
+                int value = random.nextInt(1,Constants.NUMBEROFCHARACTERS+1);
                 boolean found = false;
-
-                for (int playableCharacter : playableCharacters) {
-                    if (playableCharacter == value) {
-                        found = true;
-                        break;
+                for(Characters c: charactersPlayable){
+                    if(c!= null){
+                        if(c.getId() == value){
+                            found = true;
+                            break;
+                        }
                     }
                 }
                 if(!found){
-                    playableCharacters[i] = value;
+                    switch (value){
+                        case 1:
+                            charactersPlayable[i] = new Character1(this);
+                            break;
+                        case 2:
+                            charactersPlayable[i] = new Character2(this);
+                            break;
+                        case 3:
+                            charactersPlayable[i] = new Character3(this);
+                            break;
+                        case 4:
+                            charactersPlayable[i] = new Character4(this);
+                            break;
+                        case 5:
+                            charactersPlayable[i] = new Character5(this);
+                            break;
+                        case 6:
+                            charactersPlayable[i] = new Character6(this);
+                            break;
+                        case 7:
+                            charactersPlayable[i] = new Character7(this);
+                            break;
+                        case 8:
+                            charactersPlayable[i] = new Character8(this);
+                            break;
+                    }
+                    System.out.println(charactersPlayable[i].getDescriptionOfPower());
                     i++;
                 }
             }
@@ -377,8 +406,8 @@ public class Game extends Observable<Game> implements Cloneable {
     }
 
 
-    public int[] getPlayableCharacters() {
-        return playableCharacters;
+    public Characters[] getCharactersPlayable() {
+        return charactersPlayable;
     }
 
     public boolean isExpertModeOn() {

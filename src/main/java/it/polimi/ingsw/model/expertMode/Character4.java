@@ -20,9 +20,12 @@ public class Character4 extends Characters {
     /**
      * sets usedCharacter in current player
      */
-    public void usePower() {
+    public boolean usePower() {
         if(payForUse()){
             game.getCurrentPlayer().setUsedCharacter(this);
+            return true;
+        }else{
+            return false;
         }
     }
 

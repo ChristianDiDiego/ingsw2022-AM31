@@ -21,13 +21,16 @@ public class Character2 extends Characters{
     /**
      * sets usedCharacter in player
      */
-    public void usePower() {
+    public boolean usePower() {
         if(payForUse()){
             if(game.getPhase() == Phase.MOVE_STUDENTS){
                 game.getCurrentPlayer().setUsedCharacter(this);
             }else{
                 System.out.println("you can't use this power anymore");
             }
+            return true;
+        }else{
+            return false;
         }
     }
 

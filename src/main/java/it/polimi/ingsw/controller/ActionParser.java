@@ -31,7 +31,7 @@ public class ActionParser {
      * @param message received from the player
      * @return 1 if action valid, 0 if some error occurs
      */
-    public boolean actionSerializer(String nickname, String message){
+    public synchronized boolean actionSerializer(String nickname, String message){
         String[] input = message.split(" ");
         String phase = input[0];
         Player player = recognisePlayer(nickname);
@@ -90,20 +90,14 @@ public class ActionParser {
     }
 
     private StudsAndProfsColor charToColorEnum(char color){
-        switch (Character.toUpperCase(color)){
-            case 'R':
-                return StudsAndProfsColor.RED;
-            case 'G':
-                return StudsAndProfsColor.GREEN;
-            case 'Y':
-                return StudsAndProfsColor.YELLOW;
-            case 'P':
-                return StudsAndProfsColor.PINK;
-            case 'B':
-                return StudsAndProfsColor.BLUE;
-           
-        }
-        return null;
+        return switch (Character.toUpperCase(color)) {
+            case 'R' -> StudsAndProfsColor.RED;
+            case 'G' -> StudsAndProfsColor.GREEN;
+            case 'Y' -> StudsAndProfsColor.YELLOW;
+            case 'P' -> StudsAndProfsColor.PINK;
+            case 'B' -> StudsAndProfsColor.BLUE;
+            default -> null;
+        };
     }
 
 

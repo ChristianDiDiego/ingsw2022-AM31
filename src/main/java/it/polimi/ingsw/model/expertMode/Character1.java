@@ -14,7 +14,8 @@ public class Character1 extends Characters {
     public Character1(Game game) {
         super(3, game);
         id = 1;
-        descriptionOfPower = "Choose an island and calculate the influence as if MN is on that island";
+        descriptionOfPower = "Choose an island and calculate the influence as if MN is on that island \n " +
+                                "Usage: CHARACTER 1 [IDARCHIPELAGO]";
     }
 
 
@@ -22,7 +23,7 @@ public class Character1 extends Characters {
      * calculates asynch influence in the chosen archipelago
      * @param idArchipelago
      */
-    public void usePower(int idArchipelago) {
+    public boolean usePower(int idArchipelago) {
         if (payForUse()) {
             game.getCurrentPlayer().setUsedCharacter(this);
             Player newOwner;
@@ -77,6 +78,9 @@ public class Character1 extends Characters {
                     }
                 }
             }
+            return true;
+        }else{
+            return false;
         }
     }
 

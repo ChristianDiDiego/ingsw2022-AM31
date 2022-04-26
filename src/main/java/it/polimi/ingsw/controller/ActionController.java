@@ -4,6 +4,8 @@ import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.expertMode.*;
 
+import java.beans.PropertyChangeSupport;
+
 
 // Add tests!!!!!!
 
@@ -17,6 +19,8 @@ public class ActionController {
     private int isFinished;
     private ActionParser actionParser;
     private TurnController turnController;
+
+    private PropertyChangeSupport support;
 
     public ActionController(Game game, TurnController turnController){
         this.game = game;
@@ -62,6 +66,7 @@ public class ActionController {
             }
         }else{
             for(Archipelago a : game.getListOfArchipelagos()){
+                //TODO: add message "influence not calculated because forbidden"
                 if(a.getIsMNPresent() && a.getIsForbidden() == false){
                     Player newOwner;
                     Player oldOwner;
@@ -304,57 +309,86 @@ public class ActionController {
     public boolean checkActionCharacter(Player player, int idOfCharacter, String action) {
         if(game.isExpertModeOn()){
             if(player == game.getCurrentPlayer()){
-                for(int charId :game.getPlayableCharacters()){
-                    if(charId == idOfCharacter){
+                for(Characters c :game.getCharactersPlayable()){
+                    if(c.getId() == idOfCharacter){
+                        String playedCharacter = "";
                         switch (idOfCharacter) {
                             case 1 -> {
+                                playedCharacter = CharactersEnum.CHARACTER1.toString();
                                 for (Archipelago arc : game.getListOfArchipelagos()) {
                                     if (arc.getIdArchipelago() == Integer.parseInt(action)) {
                                         Character1 character1 = new Character1(game);
-                                        character1.usePower(Integer.parseInt(action));
-                                        return true;
+                                        if(character1.usePower(Integer.parseInt(action))){
+                                            support.firePropertyChange("playedCharacter", "", playedCharacter);
+                                            return true;
+                                        }else{
+                                            System.out.println("Error in playing character" + playedCharacter);
+                                            return false;
+                                        }
                                     }
                                 }
                                 return false;
                             }
                             case 2 -> {
+                                playedCharacter = CharactersEnum.CHARACTER2.toString();
                                 Character2 character2 = new Character2(game);
-                                character2.usePower();
-                                return true;
+                                if(character2.usePower()){
+                                    support.firePropertyChange("playedCharacter", "", playedCharacter);
+                                    return true;
+                                }else{
+                                    System.out.println("Error in playing character" + playedCharacter);
+                                    return false;
+                                }
                             }
                             case 3 -> {
+                                playedCharacter = CharactersEnum.CHARACTER3.toString();
                                 for (Archipelago arc : game.getListOfArchipelagos()) {
                                     if (arc.getIdArchipelago() == Integer.parseInt(action)) {
                                         Character3 character3 = new Character3(game);
-                                        character3.usePower(Integer.parseInt(action));
-                                        return true;
+                                        if(character3.usePower(Integer.parseInt(action))){
+                                            support.firePropertyChange("playedCharacter", "", playedCharacter);
+                                            return true;
+                                        }else{
+                                            System.out.println("Error in playing character" + playedCharacter);
+                                            return false;
+                                        }
                                     }
                                 }
                                 return false;
                             }
                             case 4 -> {
+                                playedCharacter = CharactersEnum.CHARACTER4.toString();
                                 Character4 character4 = new Character4(game);
                                 character4.usePower();
+                                support.firePropertyChange("playedCharacter", "", playedCharacter);
                                 return true;
                             }
                             case 5 -> {
+                                playedCharacter = CharactersEnum.CHARACTER5.toString();
                                 Character5 character5 = new Character5(game);
                                 character5.usePower();
+                                support.firePropertyChange("playedCharacter", "", playedCharacter);
                                 return true;
                             }
                             case 6 -> {
+                                playedCharacter = CharactersEnum.CHARACTER6.toString();
                                 Character6 character6 = new Character6(game);
                                 character6.usePower(StudsAndProfsColor.valueOf(action));
+                                support.firePropertyChange("playedCharacter", "", playedCharacter);
                                 return true;
                             }
                             case 7 -> {
+                                playedCharacter = CharactersEnum.CHARACTER7.toString();
                                 Character7 character7 = new Character7(game);
                                 String[] colorDestination = action.split(",");
+                                support.firePropertyChange("playedCharacter", "", playedCharacter);
                                 return character7.usePower(StudsAndProfsColor.valueOf(colorDestination[0]), StudsAndProfsColor.valueOf(colorDestination[1]), StudsAndProfsColor.valueOf(colorDestination[2]), StudsAndProfsColor.valueOf(colorDestination[3]));
                             }
                             case 8 -> {
+                                playedCharacter = CharactersEnum.CHARACTER8.toString();
                                 Character8 character8 = new Character8(game);
                                 character8.usePower();
+                                support.firePropertyChange("playedCharacter", "", playedCharacter);
                                 return true;
                             }
                             default -> {
@@ -362,7 +396,6 @@ public class ActionController {
                                 return false;
                             }
                         }
-
                     }
                 }
                 System.out.println("The selected character is not available for this game");

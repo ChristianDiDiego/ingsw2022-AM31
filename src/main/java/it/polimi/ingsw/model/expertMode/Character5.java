@@ -17,9 +17,12 @@ public class Character5 extends Characters{
         bonusInfluence = 2;
     }
 
-    public void usePower() {
+    public boolean usePower() {
         if(payForUse()) {
             game.getCurrentPlayer().setUsedCharacter(this);
+            return true;
+        }else{
+            return false;
         }
     }
 

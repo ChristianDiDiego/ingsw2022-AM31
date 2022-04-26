@@ -98,7 +98,7 @@ class GameTest {
         Game game = new Game(3,pl1,true);
 
         assertEquals(20, game.getBank());
-        assertEquals(3, game.getPlayableCharacters().length);
+        assertEquals(3, game.getCharactersPlayable().length);
         game.getCoinFromBank(2);
         assertEquals(18, game.getBank());
     }

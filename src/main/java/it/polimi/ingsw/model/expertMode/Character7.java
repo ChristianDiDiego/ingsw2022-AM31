@@ -16,7 +16,8 @@ public class Character7 extends Characters{
     public Character7(Game game) {
         super(1, game);
         id = 7;
-        this.descriptionOfPower = "The player can switch max 2 students between entrance and dining room";
+        this.descriptionOfPower = "The player can switch max 2 students between entrance and dining room \n" +
+                "Usage CHARACTER 7 [COLOR ENTRANCE],[COLOR ENTRANCE],[COLOR DR],[COLOR DR]";
     }
 
 
@@ -44,11 +45,12 @@ public class Character7 extends Characters{
                 diningRoom.removeStudent(color2ToRemove);
                 entrance.addStudent(toAdd);
                 return true;
+            } else {
+                return false;
             }
-        } else {
-            System.out.println("You don't have these students");
+        }else {
+            System.out.println("You don't have some of these students");
             return false;
         }
-        return false;
     }
 }

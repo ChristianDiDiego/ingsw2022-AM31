@@ -18,9 +18,12 @@ public class Character8 extends Characters{
         this.descriptionOfPower = "When this card is used, assignProfessor assign the professor to the player who use the card also if the number of students in the dining rooms of the two players is the same";
     }
 
-    public void usePower() {
+    public boolean usePower() {
         if(payForUse()) {
             game.getCurrentPlayer().setUsedCharacter(this);
+            return true;
+        }else{
+            return false;
         }
     }
 

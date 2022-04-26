@@ -18,7 +18,8 @@ public class Character3 extends Characters{
 
         super(2, game);
         id = 3;
-        descriptionOfPower = "Set a forbidden sign to an archipelago to do not allow the calculate of the influence on that island";
+        descriptionOfPower = "Set a forbidden sign to an archipelago to do not allow the calculate of the influence on that island"+
+                              "Usage: CHARACTER 3 [IDARCHIPELAGO]";
         forbiddenSigns = 4;
     }
 
@@ -26,23 +27,24 @@ public class Character3 extends Characters{
      * uses the forbiddenSign on the chosen archipelago
      * @param idArchipelago
      */
-    public void usePower(int idArchipelago) {
+    public boolean usePower(int idArchipelago) {
         if(payForUse()){
             if(forbiddenSigns > 0){
                 forbiddenSigns--;
                 for(Archipelago a : game.getListOfArchipelagos()) {
                     if (a.getIdArchipelago() == idArchipelago) {
                         a.setIsForbidden(true);
-                        return;
+                        return true;
                     }
                 }
                 System.out.println("this archipelago doesn't exist");
-                return;
+                return false;
             }else{
                 System.out.println("there are not forbidden signs left");
-                return;
+                return false;
             }
-
+        }else{
+            return false;
         }
 
     }

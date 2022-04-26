@@ -4,8 +4,11 @@ import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.controller.ActionParser;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.expertMode.Characters;
+import it.polimi.ingsw.model.expertMode.CharactersEnum;
 import it.polimi.ingsw.server.SocketClientConnection;
 import it.polimi.ingsw.utilities.*;
+import it.polimi.ingsw.utilities.constants.Constants;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -55,32 +58,39 @@ public class RemoteView implements PropertyChangeListener{
                 }
                 ListOfBoards boards1 = new ListOfBoards(boards);
                 synchronized (lock){
-                    System.out.println("Sending board");
                     showMessage(boards1);
                 }
 
                 ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
                 synchronized (lock){
-                    System.out.println("Sending arch");
                     showMessage(archipelagos);
                 }
 
                 ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
                 synchronized (lock){
-                    System.out.println("Sending clouds");
                     showMessage(clouds);
                 }
 
                 ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
                 synchronized (lock){
-                    System.out.println("Sending card played");
                     showMessage(players);
                 }
 
                 if(currentGame.getCurrentPlayer() == player){
                     synchronized (lock){
-                        System.out.println("Sending deck");
                         showMessage(player.getMyDeck());
+                    }
+                    System.out.println("exmode: " + currentGame.isExpertModeOn());
+                    if(currentGame.isExpertModeOn()){
+                        synchronized (lock){
+                            showMessage("Playable characters: \n");
+                            for(Characters c : currentGame.getCharactersPlayable()){
+                                showMessage("Character: " + c.getId() + "\n Description: " + c.getDescriptionOfPower() + "\n Price:" + c.getPrice() + "\n\n");
+                            }
+                        }
+                        synchronized (lock){
+                            showMessage("Available coins: " + currentGame.getCurrentPlayer().getWallet());
+                        }
                     }
                 }
             }
@@ -161,6 +171,30 @@ public class RemoteView implements PropertyChangeListener{
             synchronized (this){
                 ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
                 showMessage(clouds);
+            }
+        }else if(evt.getPropertyName().equals("playedCharacter")){
+            synchronized (this){
+                showMessage(evt.getNewValue());
+                switch (evt.getNewValue().toString()){
+                    case "CHARACTER1":
+                        ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
+                        showMessage(archipelagos);
+                        break;
+                    case "CHARACTER3":
+                        ListOfArchipelagos archipelagoss = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
+                        showMessage(archipelagoss);
+                        break;
+                    case "CHARACTER7":
+                        List<Board> boards = new ArrayList<>();
+                        for (Player p : currentGame.getListOfPlayer()) {
+                            boards.add(p.getMyBoard());
+                        }
+                        ListOfBoards boards1 = new ListOfBoards(boards);
+                        showMessage(boards1);
+                        break;
+
+
+                }
             }
         }
     }
