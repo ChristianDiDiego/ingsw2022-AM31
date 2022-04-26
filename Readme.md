@@ -10,11 +10,11 @@ Professor : Alessandro Margara
 | Functionality |     Status     |
 |:-----------------------|:--------------:|
 | Basic rules |     🟢     |
-| Complete rules |     🟢      |
+| Complete rules |     🟡      |
 | Socket | 🟡 |
 | GUI | 🔴 |
 | CLI |     🟡     |
-| Multiple games | 🔴 |
+| Multiple games | 🟡 |
 | 4 players | 🔴 |
 | Persistence | 🔴 |
 
