@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.ActionController;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.utilities.MessageForParser;
 import it.polimi.ingsw.view.RemoteView;
 
 import java.util.Locale;
