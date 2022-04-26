@@ -157,49 +157,45 @@ public class ActionController {
        int destination;
        if(game.getPhase()== Phase.MOVE_STUDENTS && player == game.getCurrentPlayer()) {
            if (colors.length == turnController.getGameHandler().getNumberOfMovements()) {
-               for (int i = 0; i < destinations.length; i++) {
-                   color = colors[i];
-                   destination = destinations[i];
-
-                   if (player.getMyBoard().getEntrance().getStudentsByColor(color) == 0) {
-                       System.out.println("You do not have a student of color " + color.toString());
-                       return false;
-                   } else {
-                       if (destination == 0) {
-                           if (player.getMyBoard().getDiningRoom().getStudentsByColor(color) == Constants.MAXSTUDENTSINDINING) {
-                               System.out.println("Your dining room of the color " + color.toString() + " is full");
-                               return false;
-                           } else {
-                               //TODO: add coin every 3 students (only in expert)
-                               player.getMyBoard().getEntrance().removeStudent(color);
-                               player.getMyBoard().getDiningRoom().addStudent(color);
-                               if(game.isExpertModeOn()){
-                                   if(player.getMyBoard().getDiningRoom().getStudentsByColor(color) % 3 == 0){
-                                       if(game.getCoinFromBank(1)){
-                                           player.addCoinsToWallet(1);
-                                       }else{
-                                           System.out.println("Sorry, there are not enough money in the box :(");
+               if(checkColors(player, colors)){
+                   if(checkDestinations(player, colors, destinations)){
+                       for (int i = 0; i < destinations.length; i++) {
+                           color = colors[i];
+                           destination = destinations[i];
+                               if (destination == 0) {
+                                       player.getMyBoard().getEntrance().removeStudent(color);
+                                       player.getMyBoard().getDiningRoom().addStudent(color);
+                                       if(game.isExpertModeOn()){
+                                           if(player.getMyBoard().getDiningRoom().getStudentsByColor(color) % 3 == 0){
+                                               if(game.getCoinFromBank(1)){
+                                                   player.addCoinsToWallet(1);
+                                               }else{
+                                                   System.out.println("Sorry, there are not enough money in the box :(");
+                                               }
+                                           }
+                                       }
+                                       game.assignProfessor(color);
+                               } else {
+                                   player.getMyBoard().getEntrance().removeStudent(color);
+                                   for (Archipelago arc : game.getListOfArchipelagos()) {
+                                       for (Island island : arc.getBelongingIslands()) {
+                                           if (island.getIdIsland() == destination) {
+                                               island.addStudent(color);
+                                           }
                                        }
                                    }
                                }
-                               game.assignProfessor(color);
-                           }
-                       } else {
-                           player.getMyBoard().getEntrance().removeStudent(color);
-                           for (Archipelago arc : game.getListOfArchipelagos()) {
-                               for (Island island : arc.getBelongingIslands()) {
-                                   if (island.getIdIsland() == destination) {
-                                       island.addStudent(color);
-                                   }
-                               }
-                           }
-                           System.out.println("Destination not valid");
-                           return false;
                        }
+                       game.nextPhase();
+                       return true;
+                   }else{
+                       System.out.println("Destination not valid");
+                       return false;
                    }
+               }else{
+                   System.out.println("You do not have a student of one of the color that you inserted ");
+                   return false;
                }
-               game.nextPhase();
-               return true;
            }else {
                System.out.println("You can move only " + turnController.getGameHandler().getNumberOfMovements() + " students");
                return false;
@@ -225,7 +221,6 @@ public class ActionController {
      */
     public boolean checkActionMoveMN(Player player,int steps){
         if(game.getPhase()== Phase.MOVE_MN && player == game.getCurrentPlayer()){
-
                 if(steps <= player.getLastUsedCard().getMaxSteps() + (player.getUsedCharacter() != null ? player.getUsedCharacter().getBonusSteps() : 0 )){
                     game.moveMotherNature(steps);
                     calculateInfluence();
@@ -385,5 +380,40 @@ public class ActionController {
 
     public ActionParser getActionParser() {
         return actionParser;
+    }
+
+    private boolean checkColors(Player p, StudsAndProfsColor[] colors){
+        for(StudsAndProfsColor c : colors){
+            if(p.getMyBoard().getEntrance().getStudentsByColor(c) == 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkDestinations(Player p, StudsAndProfsColor[] colors, int[] destinations){
+        for (int i = 0; i < destinations.length; i++) {
+            StudsAndProfsColor color = colors[i];
+            int destination = destinations[i];
+            if (destination == 0) {
+                //Check if the dining room of a color is already full
+                if (p.getMyBoard().getDiningRoom().getStudentsByColor(color) == Constants.MAXSTUDENTSINDINING) {
+                    return false;
+                }
+                //check if the arc of that index exists
+            }else if (!checkArchipelagoExistence(destination)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkArchipelagoExistence(int d){
+        for(Archipelago a : game.getListOfArchipelagos()){
+            if(a.getIdArchipelago() == d){
+                return true;
+            }
+        }
+        return false;
     }
 }
