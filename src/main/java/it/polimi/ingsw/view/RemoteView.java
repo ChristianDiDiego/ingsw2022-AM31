@@ -11,6 +11,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /*
 Remote view: listen the changements from the model and send a message to the client who is associated with it
@@ -46,41 +47,59 @@ public class RemoteView implements PropertyChangeListener{
     public void propertyChange(PropertyChangeEvent evt) {
         if(evt.getPropertyName().equals("currentPlayerChanged")){
             Object lock = new Object();
-            synchronized (this){
+            Object lock2 = new Object();
+            synchronized (lock2){
                 List<Board> boards = new ArrayList<>();
                 for(Player p : currentGame.getListOfPlayer()) {
                     boards.add(p.getMyBoard());
                 }
                 ListOfBoards boards1 = new ListOfBoards(boards);
                 synchronized (lock){
+                    System.out.println("Sending board");
                     showMessage(boards1);
                 }
 
                 ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
                 synchronized (lock){
+                    System.out.println("Sending arch");
                     showMessage(archipelagos);
                 }
 
                 ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
                 synchronized (lock){
+                    System.out.println("Sending clouds");
                     showMessage(clouds);
                 }
 
                 ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
                 synchronized (lock){
+                    System.out.println("Sending card played");
                     showMessage(players);
                 }
 
                 if(currentGame.getCurrentPlayer() == player){
                     synchronized (lock){
+                        System.out.println("Sending deck");
                         showMessage(player.getMyDeck());
                     }
                 }
             }
-            synchronized (this){
+            synchronized (lock2){
                 if(player.getNickname().equals(evt.getNewValue())){
+                    try {
+                        TimeUnit.MICROSECONDS.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    System.out.println(evt.getNewValue() + " is your turn!");
                     showMessage(evt.getNewValue() + " is your turn!");
                 }else{
+                    try {
+                        TimeUnit.MICROSECONDS.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    System.out.println("is the turn of " + evt.getNewValue());
                     showMessage("is the turn of " + evt.getNewValue());
                 }
             }
