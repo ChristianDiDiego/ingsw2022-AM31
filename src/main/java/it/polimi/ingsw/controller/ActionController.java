@@ -126,11 +126,11 @@ public class ActionController {
         int index = game.getListOfArchipelagos().indexOf(a);
         int previous = index - 1;
         int next = index + 1;
-        if(index == Constants.IDSTARTINGARCMN) {
-            previous = Constants.IDLASTARC;
+        if(index == 0){
+            previous = game.getListOfArchipelagos().size()-1;
         }
-        if(index == Constants.IDLASTARC) {
-            next = Constants.IDSTARTINGARCMN;
+        if(index == game.getListOfArchipelagos().size()-1) {
+            next = 0;
         }
 
         if(a.getOwner() == game.getListOfArchipelagos().get(previous).getOwner()) {
