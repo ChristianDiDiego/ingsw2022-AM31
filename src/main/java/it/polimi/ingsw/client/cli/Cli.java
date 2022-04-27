@@ -211,7 +211,7 @@ public class Cli{
             System.out.println(archipelago.toString());
             for(Archipelago a : archipelagos) {
                 archipelago = new StringBuilder();
-                archipelago.append(ColorsCli.RESET).append("    Id archipelago: " + a.getIdArchipelago() + (a.getOwner() == null ? "" : " owner: " + a.getOwner().getNickname()) + (a.getIsMNPresent() == false ? "" : " MN is here") + "\n    ").append(ColorsCli.RESET);
+                archipelago.append(ColorsCli.RESET).append("    Id archipelago: " + a.getIdArchipelago() + (a.getOwner() == null ? "" : " owner: " + a.getOwner().getNickname()) + (a.getIsMNPresent() == false ? "" : " MN is here") + (a.getIsForbidden() == false ? "" : " \uD83D\uDEAB") + "\n    ").append(ColorsCli.RESET);
                 for (Island is : a.getBelongingIslands()) {
                     for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
                         for (int k = 0; k < is.getStudentsByColor(StudsAndProfsColor.values()[j]); k++) {
