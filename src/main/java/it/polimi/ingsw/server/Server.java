@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.utilities.ErrorMessage;
 import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.controller.GameHandler;
 import it.polimi.ingsw.model.ColorOfTower;
@@ -12,6 +13,7 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /*
  Manage the connections of the clients and starts configuration of the game
@@ -44,48 +46,96 @@ public class Server {
     public synchronized void lobby(SocketClientConnection c){
         List<Player> keys = new ArrayList<>(waitingConnection.keySet());
         ColorOfTower color = null;
+        int maxnumbercolortowers;
         //I moved nickname here so when other player connect the others receive his name
-        String nickname ;
-        while(!checkNickname(nickname = c.askNickname()));
+        String nickname = c.askNickname();
+        while(!checkNickname(nickname)){
+            c.asyncSend(ErrorMessage.DuplicateNickname);
+            try {
+                TimeUnit.MILLISECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            nickname = c.askNickname();
+        }
+
         for(int i = 0; i < keys.size(); i++){
             SocketClientConnection connection = waitingConnection.get(keys.get(i));
             connection.asyncSend("Connected User: " + nickname);
         }
         if(waitingConnection.size() == 0) {
             numberOfPlayers = c.askHowManyPlayers();
-            while (numberOfPlayers < 0 || numberOfPlayers > Constants.MAXPLAYERS){
+            while (numberOfPlayers <= 0 || numberOfPlayers > Constants.MAXPLAYERS){
+                c.asyncSend(ErrorMessage.NumberOfPlayersNotValid);
+                try {
+                    TimeUnit.MILLISECONDS.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 numberOfPlayers = c.askHowManyPlayers();
             };
             //TODO: add check if the inserted mode is fine
 
             int mode = -1;
-            while(mode <0 || mode >1){
+            mode = c.askMode();
+
+            while(mode == -1){
+                c.asyncSend(ErrorMessage.ModeNotValid);
+                try {
+                    TimeUnit.MILLISECONDS.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 mode = c.askMode();
             }
             color = c.askColor();
             while(color == null ){
+                c.asyncSend( ErrorMessage.ActionNotValid);
+                try {
+                    TimeUnit.MILLISECONDS.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 color = c.askColor();
             }
             Player player1 = new Player(nickname, color);
             waitingConnection.put(player1, c);
-            gameHandler = new GameHandler(player1, numberOfPlayers, mode == 1);
-            System.out.println("after create game");
+            gameHandler = new GameHandler(player1, numberOfPlayers, Boolean.parseBoolean(String.valueOf(mode)));
             RemoteView remV1 = new RemoteView(player1, c, gameHandler.getGame(), gameHandler.getController().getTurnController().getActionController().getActionParser());
             c.addPropertyChangeListener(remV1);
             //remV1.addPropertyChangeListener(gameHandler.getGame());
             gameHandler.getGame().addPropertyChangeListener(remV1);
-            //gameHandler.getGame().addEventListener(remV1);
-            //controllerListener.addPropertyChangeListener(controller);
+            gameHandler.getController().getTurnController().getActionController().addPropertyChangeListener(remV1);
+            gameHandler.getController().getTurnController().addPropertyChangeListener(remV1);
 
         } else {
+            color = c.askColor();
             while (color == null || !checkColorTower(color)){
-                color = c.askColor();
+                if(color == null) {
+                    c.asyncSend(ErrorMessage.ActionNotValid);
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    color = c.askColor();
+                }else{
+                    c.asyncSend(ErrorMessage.ColorNotValid);
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    color = c.askColor();
+                }
             }
             Player player = new Player(nickname, color);
             waitingConnection.put(player, c);
             RemoteView remV = new RemoteView(player, c, gameHandler.getGame(), gameHandler.getController().getTurnController().getActionController().getActionParser());
             c.addPropertyChangeListener(remV);
             gameHandler.getGame().addPropertyChangeListener(remV);
+            gameHandler.getController().getTurnController().getActionController().addPropertyChangeListener(remV);
+            gameHandler.getController().getTurnController().addPropertyChangeListener(remV);
             gameHandler.addNewPlayer(player);
         }
 
@@ -108,11 +158,13 @@ public class Server {
                 i++;
                 gameHandler.getGame().addObserver(rw);
                 gameHandler.getGame().addPropertyChangeListener(rw);
-                rw.addObserver(gameHandler.getController().getTurnController().getActionController().getActionParser());
+                //rw.addObserver(gameHandler.getController().getTurnController().getActionController().getActionParser());
                 listOfGames.add(temp);
             }
              */
-            waitingConnection.clear();
+
+
+            //waitingConnection.clear();
         }
     }
 
@@ -140,6 +192,11 @@ public class Server {
      * @return True if the color is still available, false if it is already been taken
      */
     public boolean checkColorTower(ColorOfTower colorOfTower){
+        if(gameHandler.getGame().getNumberOfPlayers() == 2 ||gameHandler.getGame().getNumberOfPlayers() == 4){
+            if(colorOfTower == ColorOfTower.GREY){
+                return false;
+            }
+        }
         for(Player p : waitingConnection.keySet()){
             if(p.getColorOfTowers() == colorOfTower){
                 return false;

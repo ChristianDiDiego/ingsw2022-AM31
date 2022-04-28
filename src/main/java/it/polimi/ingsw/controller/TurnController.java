@@ -1,5 +1,9 @@
 package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.utilities.ErrorMessage;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 //TODO: ADDTESTS!!!!!!
 // and add cloud choice
@@ -12,14 +16,20 @@ public class TurnController {
     private ActionController actionController;
     private GameHandler gameHandler;
     private Game game;
+    private PropertyChangeSupport support;
 
     public TurnController(Controller controller, GameHandler gameHandler, Game game){
         this.controller = controller;
         this.actionController = new ActionController(game, this);
         this.gameHandler = gameHandler;
         this.game = game;
+        this.support = new PropertyChangeSupport(this);
 
     }
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
+
 
     public Controller getController() {
         return controller;
@@ -91,18 +101,22 @@ public class TurnController {
                     return true;
                 }else{
                     System.out.println("Card already played in this turn");
+                    support.firePropertyChange("ErrorMessage", "", ErrorMessage.CardAlreadyTaken);
                     return false;
                 }
             }else{
                 System.out.println("Card not present in the deck!");
+                support.firePropertyChange("ErrorMessage", "", ErrorMessage.CardNotPresent);
                 return false;
             }
 
         }else if(game.getPhase()== Phase.CARD_SELECTION || player != game.getCurrentPlayer()){
             System.out.println("non è il tuo turno!!");
+            support.firePropertyChange("ErrorMessage", "", ErrorMessage.NotYourTurn);
             return false;
         }else {
             System.out.println("hai inviato un'azione non valida, riprova");
+            support.firePropertyChange("ErrorMessage", "", ErrorMessage.ActionNotValid);
             return false;
         }
     }

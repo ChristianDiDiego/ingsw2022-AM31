@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.view.RemoteView;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -38,6 +39,7 @@ public class SocketClientConnection implements Runnable{
         support.addPropertyChangeListener(pcl);
     }
 
+
     private synchronized boolean isActive(){
         return active;
     }
@@ -52,7 +54,7 @@ public class SocketClientConnection implements Runnable{
             out.reset();
             out.writeObject(message);
             out.flush();
-            System.out.println("sent");
+            System.out.println("sent" + message);
         } catch(IOException e){
             System.out.println("error when sending " + message.toString());
             System.err.println(e.getMessage());
@@ -93,9 +95,13 @@ public class SocketClientConnection implements Runnable{
         try {
             in = new Scanner(socket.getInputStream());
             send("Type 0 for normal mode or 1 for expert mode"); //manda al client
-            String read = in.nextLine(); // legge dal client il nome
-            return Integer.parseInt(read);
-        } catch (IOException | NoSuchElementException e) {
+            String read = in.nextLine();// legge dal client il nome
+            if(Integer.parseInt(read)== 0 || Integer.parseInt(read) ==1) {
+                return Integer.parseInt(read);
+            }else{
+                return -1;
+            }
+        } catch (IOException | NoSuchElementException e ) {
             System.err.println("Error! " + e.getMessage());
             return -1;
         }
@@ -110,7 +116,11 @@ public class SocketClientConnection implements Runnable{
             send("Choose a color - write 0 for black, 1 for white"); //manda al client
             String read = in.nextLine(); // legge dal client il nome
             number = Integer.parseInt(read);
-            return ColorOfTower.values()[number];
+            if(number < 0 || number > 2){
+                return null;
+            }else {
+                return ColorOfTower.values()[number];
+            }
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
             return null;
@@ -150,6 +160,7 @@ public class SocketClientConnection implements Runnable{
         }).start();
     }
 
+
     @Override
     public void run() {
         Scanner in;
@@ -157,13 +168,14 @@ public class SocketClientConnection implements Runnable{
         Player player;
         try{
             in = new Scanner(socket.getInputStream());
-           // baos = new ByteArrayOutputStream();
+           //baos = new ByteArrayOutputStream();
             out = new ObjectOutputStream(socket.getOutputStream());
             send("Welcome!");
             server.lobby(this);
             while(isActive()){        //legge dal client tutti i messaggi e notifica il listener della view
                 read = in.nextLine();
                 support.firePropertyChange("MessageForParser","aaa", read);
+
             }
         } catch(IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());

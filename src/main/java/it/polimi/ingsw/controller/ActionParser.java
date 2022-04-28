@@ -38,9 +38,9 @@ public class ActionParser {
         if( player != null){
             switch (phase.toUpperCase(Locale.ROOT)) {
                 case "CARD" -> {
-                    int cardPower = Integer.parseInt(input[1]);
-                    System.out.println("Card " + cardPower + " received");
-                    return actionController.getTurnController().checkActionCard(player, cardPower);
+                        int cardPower = Integer.parseInt(input[1]);
+                        System.out.println("Card " + cardPower + " received");
+                        return actionController.getTurnController().checkActionCard(player, cardPower);
                 }
                 case "MOVEST" -> {
                     String[] colorDestination = input[1].split(",");

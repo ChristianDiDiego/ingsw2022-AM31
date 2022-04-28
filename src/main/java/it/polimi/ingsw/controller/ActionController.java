@@ -1,9 +1,13 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.utilities.ErrorMessage;
 import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.expertMode.*;
 
+import java.beans.PropertyChangeSupport;
+
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 
@@ -27,7 +31,13 @@ public class ActionController {
         isFinished = 0;
         actionParser = new ActionParser(this);
         this.turnController = turnController;
+        this.support = new PropertyChangeSupport(this);
     }
+
+   public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
+
 
     public Phase getPhase() {
         return phase;
@@ -176,6 +186,7 @@ public class ActionController {
                                                    player.addCoinsToWallet(1);
                                                }else{
                                                    System.out.println("Sorry, there are not enough money in the box :(");
+                                                   support.firePropertyChange("ErrorMessage" , "", ErrorMessage.EmptyBank);
                                                }
                                            }
                                        }
@@ -199,20 +210,26 @@ public class ActionController {
                    }
                }else{
                    System.out.println("You do not have a student of one of the color that you inserted ");
+                   support.firePropertyChange("ErrorMessage" , "", ErrorMessage.StudentNotPresent );
                    return false;
                }
            }else {
                System.out.println("You can move only " + turnController.getGameHandler().getNumberOfMovements() + " students");
+               support.firePropertyChange("ErrorMessage" , "", ErrorMessage.WrongNumberOfMovements + turnController.getGameHandler().getNumberOfMovements() + "students");
                return false;
            }
        }else if(game.getPhase()== Phase.MOVE_STUDENTS || player != game.getCurrentPlayer()){
                System.out.println("non è il tuo turno!!");
+           support.firePropertyChange("ErrorMessage" , "", ErrorMessage.NotYourTurn );
                return false;
            }else if (game.getPhase()!= Phase.MOVE_STUDENTS){
             System.out.println("You are not in the phase " + Phase.MOVE_STUDENTS);
+           support.firePropertyChange("ErrorMessage" , "", ErrorMessage.wrongPhase + game.getPhase() );
+
              return false;
        } else {
                System.out.println("hai inviato un'azione non valida, riprova");
+               support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
                return false;
            }
    }
@@ -234,6 +251,7 @@ public class ActionController {
                 }else {
                     System.out.println("The card that you played does not allow you to do these steps!" +
                             "(you can do max " + player.getLastUsedCard().getMaxSteps() + " steps)");
+                    support.firePropertyChange("ErrorMessage", "", ErrorMessage.TooManySteps + player.getLastUsedCard().getMaxSteps() + "steps");
                     return false;
                 }
 
@@ -242,6 +260,7 @@ public class ActionController {
             return false;
         }else{
             System.out.println("hai inviato un'azione non valida, riprova");
+            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
             return false;
         }
     }
@@ -265,20 +284,24 @@ public class ActionController {
                         return true;
                     }else{
                         System.out.println("Cloud already taken");
+                        support.firePropertyChange("ErrorMessage" , "", ErrorMessage.CloudTaken);
                         return false;
                     }
                 }
                 }
             }else {
                 System.out.println("Number of the cloud not valid");
+                support.firePropertyChange("ErrorMessage", "", ErrorMessage.DestinationNotValid);
                 return false;
             }
 
         }else if(game.getPhase()== Phase.CLOUD_SELECTION || player != game.getCurrentPlayer()){
             System.out.println("non è il tuo turno!!");
+            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.NotYourTurn);
             return false;
         }else {
             System.out.println("hai inviato un'azione non valida, riprova");
+            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
             return false;
         }
         return false;
@@ -431,10 +454,12 @@ public class ActionController {
             if (destination == 0) {
                 //Check if the dining room of a color is already full
                 if (p.getMyBoard().getDiningRoom().getStudentsByColor(color) == Constants.MAXSTUDENTSINDINING) {
+                    support.firePropertyChange("ErrorMessage","", ErrorMessage.FullDiningRoom);
                     return false;
                 }
                 //check if the arc of that index exists
             }else if (!checkArchipelagoExistence(destination)) {
+                support.firePropertyChange("ErrorMessage","", ErrorMessage.DestinationNotValid);
                 return false;
             }
         }

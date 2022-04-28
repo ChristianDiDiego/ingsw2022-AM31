@@ -6,7 +6,6 @@ import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.view.RemoteView;
 
-import javax.swing.event.EventListenerList;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
@@ -29,7 +28,6 @@ public class Game extends Observable<Game> implements Cloneable {
 
     private Characters[] charactersPlayable;
     private boolean expertModeOn;
-    //protected EventListenerList listenerList = new EventListenerList();
 
     private PropertyChangeSupport support;
 
@@ -137,19 +135,6 @@ public class Game extends Observable<Game> implements Cloneable {
         }
     }
 
-    /*
-    public void addEventListener(EventListener listener) {
-        listenerList.add(EventListener.class, listener);
-    }
-    public void removesEventListener(EventListener listener) {
-        listenerList.remove(EventListener.class, listener);
-    }
-    void fireMyEvent(EventObject evt) {
-        for(RemoteView event : listenerList.getListeners(RemoteView.class)){
-            event.eventPerformed(evt);
-        }
-    }
-     */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
         for(Cloud c : getListOfClouds()) {

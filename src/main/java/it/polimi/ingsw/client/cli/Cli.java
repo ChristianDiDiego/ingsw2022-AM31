@@ -94,9 +94,13 @@ public class Cli{
                     while (isActive()) {
                         //mando sia board che la stringa
                         String inputLine = stdin.nextLine();
-                        //in inputline salvo quello che leggo da tastiera
-                        socketOut.println(inputLine);
-                        socketOut.flush();
+                        if(inputLine.length() > 0) {
+                            //in inputline salvo quello che leggo da tastiera
+                            socketOut.println(inputLine);
+                            socketOut.flush();
+                        }else{
+                            System.out.println("Null input is not valid");
+                        }
                     }
                 } catch (Exception e) {
                     setActive(false);

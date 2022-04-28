@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.utilities.constants.Constants;
+import it.polimi.ingsw.view.RemoteView;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -17,7 +18,6 @@ public class Deck implements Serializable {
     private static final long serialVersionUID = 9L;
     private List<Card> playerCards;
     private PropertyChangeSupport support;
-
     public Deck(){
         this.playerCards = new ArrayList<>();
         int maxSteps = 1;
