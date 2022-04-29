@@ -174,7 +174,7 @@ public class RemoteView implements PropertyChangeListener{
             }
         }else if(evt.getPropertyName().equals("playedCharacter")){
             synchronized (this){
-                showMessage(evt.getNewValue());
+                showMessage("Played character: " + evt.getNewValue());
                 switch (evt.getNewValue().toString()){
                     case "CHARACTER1":
                         ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
@@ -192,8 +192,6 @@ public class RemoteView implements PropertyChangeListener{
                         ListOfBoards boards1 = new ListOfBoards(boards);
                         showMessage(boards1);
                         break;
-
-
                 }
             }
         }else if(evt.getPropertyName().equals("ErrorMessage")){

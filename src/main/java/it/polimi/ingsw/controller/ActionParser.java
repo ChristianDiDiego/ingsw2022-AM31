@@ -4,8 +4,11 @@ import it.polimi.ingsw.controller.ActionController;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.utilities.ErrorMessage;
 import it.polimi.ingsw.view.RemoteView;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Locale;
 
 /**
@@ -21,6 +24,8 @@ import java.util.Locale;
 public class ActionParser {
     private ActionController actionController;
 
+    private PropertyChangeSupport support;
+
     public ActionParser(ActionController actionController){
         this.actionController = actionController;
     }
@@ -32,37 +37,80 @@ public class ActionParser {
      * @return 1 if action valid, 0 if some error occurs
      */
     public synchronized boolean actionSerializer(String nickname, String message){
+        System.out.println("message: " +message);
+        //Every proper action message is composed of phase+action, so if
+        //a message does not contain at least a space is not fine
+        if(!message.contains(" ")){
+            System.out.println(ErrorMessage.ActionNotValid);
+            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+            return false;
+        }
         String[] input = message.split(" ");
         String phase = input[0];
         Player player = recognisePlayer(nickname);
         if( player != null){
             switch (phase.toUpperCase(Locale.ROOT)) {
                 case "CARD" -> {
-                        int cardPower = Integer.parseInt(input[1]);
+                        Integer cardPower = tryParse(input[1]);
+                        if(cardPower == null){
+                            System.out.println(ErrorMessage.ActionNotValid);
+                            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                            return false;
+                        }
                         System.out.println("Card " + cardPower + " received");
                         return actionController.getTurnController().checkActionCard(player, cardPower);
                 }
                 case "MOVEST" -> {
+                    if(!input[1].contains(",")){
+                        System.out.println(ErrorMessage.ActionNotValid);
+                        support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                        return false;
+                    }
                     String[] colorDestination = input[1].split(",");
                     StudsAndProfsColor[] colors = new StudsAndProfsColor[colorDestination.length];
                     int[] destinations = new int[colorDestination.length];
                     for (int i = 0; i < colorDestination.length; i++) {
-
+                        if(!colorDestination[i].contains("-")){
+                            System.out.println(ErrorMessage.ActionNotValid);
+                            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                            return false;
+                        }
                         colors[i] = charToColorEnum(colorDestination[i].split("-")[0].charAt(0));
-                        destinations[i] = Integer.parseInt(colorDestination[i].split("-")[1]);
+                        Integer tempDestination = tryParse(colorDestination[i].split("-")[1]);
+                        if(tempDestination == null || colors[i] == null){
+                            System.out.println(ErrorMessage.ActionNotValid);
+                            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                            return false;
+                        }
+                        destinations[i] = tempDestination;
                     }
                     return actionController.checkActionMoveStudent(player, colors, destinations);
                 }
                 case "MOVEMN" -> {
-                    int mnSteps = Integer.parseInt(input[1]);
+                    Integer mnSteps = tryParse(input[1]);
+                    if(mnSteps == null){
+                        System.out.println(ErrorMessage.ActionNotValid);
+                        support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                        return false;
+                    }
                     return actionController.checkActionMoveMN(player, mnSteps);
                 }
                 case "CLOUD" -> {
-                    int nOfCloud = Integer.parseInt(input[1]);
+                    Integer nOfCloud = tryParse(input[1]);
+                    if(nOfCloud == null){
+                        System.out.println(ErrorMessage.ActionNotValid);
+                        support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                        return false;
+                    }
                     return actionController.checkActionCloud(player, nOfCloud);
                 }
                 case "CHARACTER" -> {
-                    int idOfCharacter = Integer.parseInt(input[1]);
+                    Integer idOfCharacter = tryParse(input[1]);
+                    if(idOfCharacter == null){
+                        System.out.println(ErrorMessage.ActionNotValid);
+                        support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                        return false;
+                    }
                     String action = input[2];
                     //TODO: set in action controller to check
                     return actionController.checkActionCharacter(player, idOfCharacter, action);
@@ -98,6 +146,14 @@ public class ActionParser {
             case 'B' -> StudsAndProfsColor.BLUE;
             default -> null;
         };
+    }
+
+    private static Integer tryParse(String text) {
+        try {
+            return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
 

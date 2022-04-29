@@ -19,4 +19,5 @@ public class ErrorMessage {
     public static String CloudTaken = "This cloud is alreay taken, please choose another one";
     public static String TooManySteps = "The card that you played does not allow you to do these steps! You can do max ";
 
+    public static String characterNotValid = "Character not recognised";
 }

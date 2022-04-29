@@ -341,7 +341,13 @@ public class ActionController {
                                 for (Archipelago arc : game.getListOfArchipelagos()) {
                                     if (arc.getIdArchipelago() == Integer.parseInt(action)) {
                                         Character1 character1 = new Character1(game);
-                                        if(character1.usePower(Integer.parseInt(action))){
+                                        Integer actionToUse = tryParseInteger(action);
+                                        if(actionToUse == null){
+                                            System.out.println(ErrorMessage.ActionNotValid);
+                                            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                                            return false;
+                                        }
+                                        if(character1.usePower(actionToUse)){
                                             support.firePropertyChange("playedCharacter", "", playedCharacter);
                                             return true;
                                         }else{
@@ -366,9 +372,15 @@ public class ActionController {
                             case 3 -> {
                                 playedCharacter = CharactersEnum.CHARACTER3.toString();
                                 for (Archipelago arc : game.getListOfArchipelagos()) {
-                                    if (arc.getIdArchipelago() == Integer.parseInt(action)) {
+                                    Integer actionToUse = tryParseInteger(action);
+                                    if(actionToUse == null){
+                                        System.out.println(ErrorMessage.ActionNotValid);
+                                        support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                                        return false;
+                                    }
+                                    if (arc.getIdArchipelago() == actionToUse) {
                                         Character3 character3 = new Character3(game);
-                                        if(character3.usePower(Integer.parseInt(action))){
+                                        if(character3.usePower(actionToUse)){
                                             support.firePropertyChange("playedCharacter", "", playedCharacter);
                                             return true;
                                         }else{
@@ -396,16 +408,33 @@ public class ActionController {
                             case 6 -> {
                                 playedCharacter = CharactersEnum.CHARACTER6.toString();
                                 Character6 character6 = new Character6(game);
-                                character6.usePower(StudsAndProfsColor.valueOf(action));
+                                try{
+                                    character6.usePower(StudsAndProfsColor.valueOf(action));
+                                }catch (IllegalArgumentException e){
+                                    System.out.println(ErrorMessage.ActionNotValid);
+                                    support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                                    return false;
+                                }
                                 support.firePropertyChange("playedCharacter", "", playedCharacter);
                                 return true;
                             }
                             case 7 -> {
                                 playedCharacter = CharactersEnum.CHARACTER7.toString();
                                 Character7 character7 = new Character7(game);
+                                if(!action.contains(",")){
+                                    System.out.println(ErrorMessage.ActionNotValid);
+                                    support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                                    return false;
+                                }
                                 String[] colorDestination = action.split(",");
                                 support.firePropertyChange("playedCharacter", "", playedCharacter);
-                                return character7.usePower(StudsAndProfsColor.valueOf(colorDestination[0]), StudsAndProfsColor.valueOf(colorDestination[1]), StudsAndProfsColor.valueOf(colorDestination[2]), StudsAndProfsColor.valueOf(colorDestination[3]));
+                                try{
+                                    return character7.usePower(StudsAndProfsColor.valueOf(colorDestination[0]), StudsAndProfsColor.valueOf(colorDestination[1]), StudsAndProfsColor.valueOf(colorDestination[2]), StudsAndProfsColor.valueOf(colorDestination[3]));
+                                }catch (IllegalArgumentException e){
+                                    System.out.println(ErrorMessage.ActionNotValid);
+                                    support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                                    return false;
+                                }
                             }
                             case 8 -> {
                                 playedCharacter = CharactersEnum.CHARACTER8.toString();
@@ -415,7 +444,8 @@ public class ActionController {
                                 return true;
                             }
                             default -> {
-                                System.out.println("Character not recognised");
+                                System.out.println(ErrorMessage.characterNotValid);
+                                support.firePropertyChange("ErrorMessage" , "", ErrorMessage.characterNotValid );
                                 return false;
                             }
                         }
@@ -473,5 +503,13 @@ public class ActionController {
             }
         }
         return false;
+    }
+
+    private static Integer tryParseInteger(String text) {
+        try {
+            return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 }
