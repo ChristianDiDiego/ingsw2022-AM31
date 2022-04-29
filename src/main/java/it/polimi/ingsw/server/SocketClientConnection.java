@@ -21,6 +21,7 @@ Instanced by the server, it interacts with a client sending and receiving messag
  */
 public class SocketClientConnection implements Runnable{
     private Socket socket;
+    private String nickname;
     private ObjectOutputStream out;
 
    // private ByteArrayOutputStream baos;
@@ -112,8 +113,16 @@ public class SocketClientConnection implements Runnable{
         int number;
         try {
             in = new Scanner(socket.getInputStream());
-            //TODO: ask grey only if expertMode
-            send("Choose a color - write 0 for black, 1 for white"); //manda al client
+            //TODO: ask grey only if 3 players
+            switch (server.getNumberOfPlayers()){
+                case 2:
+                case 4:
+                    send("Choose a color - write 0 for black, 1 for white"); //manda al client
+                    break;
+                case 3:
+                    send("Choose a color - write 0 for black, 1 for white, 2 for grey"); //manda al client
+            }
+
             String read = in.nextLine(); // legge dal client il nome
             number = Integer.parseInt(read);
             if(number < 0 || number > 2){
@@ -184,4 +193,11 @@ public class SocketClientConnection implements Runnable{
         }
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

@@ -20,7 +20,6 @@ import java.util.concurrent.TimeUnit;
  when the expected number of players is connected
  */
 public class Server {
-    private int port;
     private int numberOfPlayers;
     private ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(128);
@@ -34,7 +33,10 @@ public class Server {
             for(SocketClientConnection s : l){
                 if(s == c){
                     for(SocketClientConnection toRemove : l){
-                        toRemove.closeConnection();
+                        if(toRemove != c){
+                            toRemove.send("User " + c.getNickname() + " closed the connection. \n Exiting from the game...");
+                            toRemove.closeConnection();
+                        }
                     }
                     listOfGames.remove(l);
                 }
@@ -58,6 +60,7 @@ public class Server {
             }
             nickname = c.askNickname();
         }
+        c.setNickname(nickname);
 
         for(int i = 0; i < keys.size(); i++){
             SocketClientConnection connection = waitingConnection.get(keys.get(i));
@@ -152,19 +155,12 @@ public class Server {
               //  connection.asyncSend("Number of player reached! Starting the game... ");
             }System.out.println("Number of player reached! Starting the game... ");
 
-            /*
             List<SocketClientConnection> temp = new ArrayList<>();
-            int i = 0;
             for(Player p : waitingConnection.keySet()) {
-                RemoteView rw = new RemoteView(p, waitingConnection.get(p));
                 temp.add(waitingConnection.get(p));
-                i++;
-                gameHandler.getGame().addObserver(rw);
-                gameHandler.getGame().addPropertyChangeListener(rw);
-                //rw.addObserver(gameHandler.getController().getTurnController().getActionController().getActionParser());
                 listOfGames.add(temp);
             }
-             */
+
 
 
             //waitingConnection.clear();
@@ -206,6 +202,10 @@ public class Server {
             }
         }
         return true;
+    }
+
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
     }
 
     public void run(){
