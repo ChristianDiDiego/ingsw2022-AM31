@@ -269,6 +269,7 @@ public class Game extends Observable<Game> implements Cloneable {
         }
         index = index + 1;
         currentPlayer = listOfPlayers.get(index);
+        support.firePropertyChange("PhaseChanged", "", Phase.CARD_SELECTION);
         support.firePropertyChange("currentPlayerChanged", "aaaa", currentPlayer.getNickname());
         //   System.out.println(currentPlayer.getNickname() + " is your turn!");
     }
