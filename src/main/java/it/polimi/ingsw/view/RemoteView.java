@@ -1,14 +1,11 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.controller.ActionParser;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.expertMode.Characters;
-import it.polimi.ingsw.model.expertMode.CharactersEnum;
 import it.polimi.ingsw.server.SocketClientConnection;
 import it.polimi.ingsw.utilities.*;
-import it.polimi.ingsw.utilities.constants.Constants;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -63,26 +60,51 @@ public class RemoteView implements PropertyChangeListener{
 
                 ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
                 synchronized (lock){
+                    try {
+                        TimeUnit.MICROSECONDS.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     showMessage(archipelagos);
                 }
 
                 ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
                 synchronized (lock){
+                    try {
+                        TimeUnit.MICROSECONDS.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     showMessage(clouds);
                 }
 
                 ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
                 synchronized (lock){
+                    try {
+                        TimeUnit.MICROSECONDS.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     showMessage(players);
                 }
 
                 if(currentGame.getCurrentPlayer() == player){
                     synchronized (lock){
+                        try {
+                            TimeUnit.MICROSECONDS.sleep(500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                         showMessage(player.getMyDeck());
                     }
                     System.out.println("exmode: " + currentGame.isExpertModeOn());
                     if(currentGame.isExpertModeOn()){
                         synchronized (lock){
+                            try {
+                                TimeUnit.MICROSECONDS.sleep(500);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
                             showMessage("Playable characters: \n");
                             for(Characters c : currentGame.getCharactersPlayable()){
                                 showMessage("Character: " + c.getId() + "\n Description: " + c.getDescriptionOfPower() + "\n Price:" + c.getPrice() + "\n\n");
