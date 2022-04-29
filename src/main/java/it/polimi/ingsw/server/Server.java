@@ -106,6 +106,9 @@ public class Server {
             //remV1.addPropertyChangeListener(gameHandler.getGame());
             gameHandler.getGame().addPropertyChangeListener(remV1);
             gameHandler.getController().getTurnController().getActionController().addPropertyChangeListener(remV1);
+            System.out.println("devo aggiunger listener al parser");
+            gameHandler.getController().getTurnController().getActionController().getActionParser().addPropertyChangeListener(remV1);
+            System.out.println("ho aggiunto listener al parser");
             gameHandler.getController().getTurnController().addPropertyChangeListener(remV1);
 
         } else {
