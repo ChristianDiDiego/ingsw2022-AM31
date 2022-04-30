@@ -102,6 +102,8 @@ public class Server {
                 color = c.askColor();
             }
             Player player1 = new Player(nickname, color);
+            player1.setTeam(0);
+
             waitingConnection.put(player1, c);
             gameHandler = new GameHandler(player1, numberOfPlayers, mode == 1);
             RemoteView remV1 = new RemoteView(player1, c, gameHandler.getGame(), gameHandler.getController().getTurnController().getActionController().getActionParser());
@@ -115,27 +117,44 @@ public class Server {
             gameHandler.getController().getTurnController().addPropertyChangeListener(remV1);
 
         } else {
-            color = c.askColor();
-            while (color == null || !checkColorTower(color)){
-                if(color == null) {
-                    c.asyncSend(ErrorMessage.ActionNotValid);
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+            if(numberOfPlayers != 4 || (waitingConnection.size() + 1) % 2 != 0){
+                color = c.askColor();
+                while (color == null || !checkColorTower(color)){
+                    if(color == null) {
+                        c.asyncSend(ErrorMessage.ActionNotValid);
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        color = c.askColor();
+                    }else{
+                        c.asyncSend(ErrorMessage.ColorNotValid);
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        color = c.askColor();
                     }
-                    color = c.askColor();
-                }else{
-                    c.asyncSend(ErrorMessage.ColorNotValid);
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    color = c.askColor();
                 }
+            }else{
+                //Only the first member of the team take the towers
+                color = null;
             }
+
             Player player = new Player(nickname, color);
+            /*
+            if 4 players:
+            if size 1--> 0; 2 --> 1 ; 3--> 1
+            else for 2,3 players team is a progressive number
+             */
+            if(numberOfPlayers == 4){
+                player.setTeam(Math.round(waitingConnection.size() / 4));
+            }else{
+                player.setTeam(waitingConnection.size());
+            }
+            player.setTeam(Math.round(waitingConnection.size() / 4));
             waitingConnection.put(player, c);
             RemoteView remV = new RemoteView(player, c, gameHandler.getGame(), gameHandler.getController().getTurnController().getActionController().getActionParser());
             c.addPropertyChangeListener(remV);

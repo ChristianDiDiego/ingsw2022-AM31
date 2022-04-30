@@ -15,7 +15,7 @@ Professor : Alessandro Margara
 | GUI | 🔴 |
 | CLI |     🟡     |
 | Multiple games | 🟡 |
-| 4 players | 🔴 |
+| 4 players | 🟡 |
 | Persistence | 🔴 |
 
 key :   

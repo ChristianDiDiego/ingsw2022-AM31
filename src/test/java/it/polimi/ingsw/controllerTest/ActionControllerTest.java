@@ -20,14 +20,62 @@ class ActionControllerTest {
     GameHandler gameHandler;
     @Test
     void calculateInfluence() {
-        /*
-        Player pl1 = new Player("carmine", ColorOfTower.WHITE);
-        GameHandler gameHandler = new GameHandler(pl1, 3);
+        //Case 2 players, oldOwner = null
+        Player pl1 = new Player("leo", ColorOfTower.WHITE);
+        pl1.setTeam(0);
+        Player pl2 = new Player("Lisa", ColorOfTower.BLACK);
+        pl2.setTeam(1);
+        GameHandler gameHandler = new GameHandler(pl1, 2, false);
+        gameHandler.addNewPlayer(pl2);
+        pl1.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.YELLOW);
+        pl2.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.RED);
+        assertEquals(8,pl1.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        assertEquals(8,pl2.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.YELLOW);
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.YELLOW);
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.RED);
+        gameHandler.getController().getTurnController().getActionController().calculateInfluence();
+        assertEquals(pl1, gameHandler.getController().getGame().getListOfArchipelagos().get(0).getOwner());
+        assertEquals(7,pl1.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+
+        //Case 4 players, oldOwner = null
+        pl1 = new Player("Bianca", ColorOfTower.WHITE);
+        pl1.setTeam(0);
+        pl2 = new Player("Bianca2", null);
+        pl2.setTeam(0);
+        Player pl3 = new Player("Nera", ColorOfTower.BLACK);
+        pl3.setTeam(1);
+        Player pl4 = new Player("Nera2", null);
+        pl4.setTeam(1);
+        gameHandler = new GameHandler(pl1, 4, false);
+        gameHandler.addNewPlayer(pl2);
+        gameHandler.addNewPlayer(pl3);
+        gameHandler.addNewPlayer(pl4);
+        pl1.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.BLUE);
+        pl1.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.YELLOW);
+        pl2.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.GREEN);
+        pl3.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.RED);
+        pl4.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.PINK);
+        assertEquals(8,pl1.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        assertEquals(0,pl2.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        assertNull(pl2.getColorOfTowers());
+        assertEquals(8,pl3.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        assertEquals(0,pl4.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        assertNull(pl4.getColorOfTowers());
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.YELLOW);
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.YELLOW);
         gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.RED);
         gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.RED);
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.GREEN);
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.PINK);
         gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.BLUE);
-        gameHandler.getController().getGame().;
-        */
+        gameHandler.getController().getTurnController().getActionController().calculateInfluence();
+
+        assertEquals(pl1.getTeam(), gameHandler.getController().getGame().getListOfArchipelagos().get(0).getOwner().getTeam());
+        assertEquals(7,pl1.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        assertEquals(0,pl2.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        assertEquals(8,pl3.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        assertEquals(0,pl4.getMyBoard().getTowersOnBoard().getNumberOfTowers());
     }
 
     @Test

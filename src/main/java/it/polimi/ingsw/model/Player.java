@@ -18,6 +18,8 @@ public class Player implements Serializable {
     private int wallet;
     private Characters usedCharacter;
 
+    private int team;
+
     //TODO: characterUsed and wallet are optionals
     public Player(String nickname, ColorOfTower colorOfTowers){
         this.nickname = nickname;
@@ -84,5 +86,13 @@ public class Player implements Serializable {
 
     public void setUsedCharacter(Characters usedCharacter) {
         this.usedCharacter = usedCharacter;
+    }
+
+    public int getTeam() {
+        return team;
+    }
+
+    public void setTeam(int team) {
+        this.team = team;
     }
 }

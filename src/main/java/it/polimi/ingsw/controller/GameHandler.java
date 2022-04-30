@@ -80,8 +80,10 @@ public class GameHandler {
 
         for(Player p : game.getOrderOfPlayers()){
             p.getMyBoard().getEntrance().addStudent(game.getBag().pickStudent(maxStudentsInEntrance));
-            for(int i = 0; i< maxNumberOfTowers; i++){
-                p.getMyBoard().getTowersOnBoard().addTower();
+            if(p.getColorOfTowers() != null){
+                for(int i = 0; i< maxNumberOfTowers; i++){
+                    p.getMyBoard().getTowersOnBoard().addTower();
+                }
             }
             if(game.isExpertModeOn()){
                 if(game.getCoinFromBank(1)){
