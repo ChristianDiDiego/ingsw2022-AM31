@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.utilities.ErrorMessage;
+import it.polimi.ingsw.utilities.constants.Constants;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -57,6 +58,11 @@ public class TurnController {
             for(Cloud cloud : game.getListOfClouds()){
                 cloud.addStudents( game.getBag().pickStudent(gameHandler.getNumberOfStudentsOnCloud()) );
             }
+
+            if(game.getListOfPlayer().get(0).getMyDeck().getLeftCards().size() == Constants.NUMBEROFCARDSINDECK){
+                support.firePropertyChange("StartingGame", "", "Game is starting...");
+            }
+
         }
         System.out.println("Turn started");
         game.findPlayerOrder();

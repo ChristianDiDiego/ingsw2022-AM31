@@ -222,6 +222,25 @@ public class RemoteView implements PropertyChangeListener{
                     showMessage(evt.getNewValue());
                 }
             }
+        }else if(evt.getPropertyName().equals("StartingGame")) {
+            synchronized (this) {
+                showMessage(evt.getNewValue());
+                if(currentGame.getNumberOfPlayers() == 4) {
+                    String teammate = new String();
+                    String color = new String();
+                    for(Player p : currentGame.getListOfPlayer()){
+                        if(p.getTeam() == player.getTeam() && p != player){
+                            teammate = p.getNickname();
+                            if(p.getColorOfTowers() != null) {
+                                color = p.getColorOfTowers().toString();
+                            } else {
+                                color = player.getColorOfTowers().toString();
+                            }
+                        }
+                    }
+                    showMessage("Your teammate is " + teammate + "\n" + "Your color of towers is " + color);
+                }
+            }
         }
     }
 

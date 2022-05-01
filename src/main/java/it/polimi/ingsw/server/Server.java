@@ -150,11 +150,16 @@ public class Server {
             else for 2,3 players team is a progressive number
              */
             if(numberOfPlayers == 4){
-                player.setTeam(Math.round(waitingConnection.size() / 4));
+                if(waitingConnection.size() == 1){
+                    player.setTeam(0);
+                }else{
+                    player.setTeam(1);
+                }
+               // player.setTeam(Math.round(waitingConnection.size() / 4));
             }else{
                 player.setTeam(waitingConnection.size());
             }
-            player.setTeam(Math.round(waitingConnection.size() / 4));
+            //player.setTeam(Math.round(waitingConnection.size() / 4));
             waitingConnection.put(player, c);
             RemoteView remV = new RemoteView(player, c, gameHandler.getGame(), gameHandler.getController().getTurnController().getActionController().getActionParser());
             c.addPropertyChangeListener(remV);
@@ -168,12 +173,12 @@ public class Server {
         keys = new ArrayList<>(waitingConnection.keySet());
         if(waitingConnection.size() < numberOfPlayers){
             c.asyncSend("Waiting for other players");
-        }
-        else if (waitingConnection.size() == numberOfPlayers) {
+        } else if (waitingConnection.size() == numberOfPlayers) {
             for(int i = 0; i < waitingConnection.size(); i++){
-              //  SocketClientConnection connection = waitingConnection.get(keys.get(i));
-              //  connection.asyncSend("Number of player reached! Starting the game... ");
-            }System.out.println("Number of player reached! Starting the game... ");
+                //SocketClientConnection connection = waitingConnection.get(keys.get(i));
+                //connection.asyncSend("Number of player reached! Starting the game... ");
+            }
+            System.out.println("Number of player reached! Starting the game... ");
 
             List<SocketClientConnection> temp = new ArrayList<>();
             for(Player p : waitingConnection.keySet()) {
