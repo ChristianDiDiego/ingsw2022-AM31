@@ -161,6 +161,7 @@ public class Server {
             gameHandler.getGame().addPropertyChangeListener(remV);
             gameHandler.getController().getTurnController().getActionController().addPropertyChangeListener(remV);
             gameHandler.getController().getTurnController().addPropertyChangeListener(remV);
+            gameHandler.getController().getTurnController().getActionController().getActionParser().addPropertyChangeListener(remV);
             gameHandler.addNewPlayer(player);
         }
 

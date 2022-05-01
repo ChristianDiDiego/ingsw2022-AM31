@@ -218,7 +218,9 @@ public class RemoteView implements PropertyChangeListener{
             }
         }else if(evt.getPropertyName().equals("ErrorMessage")){
             synchronized (this){
-                showMessage(evt.getNewValue());
+                if(evt.getOldValue().equals(player.getNickname())) {
+                    showMessage(evt.getNewValue());
+                }
             }
         }
     }

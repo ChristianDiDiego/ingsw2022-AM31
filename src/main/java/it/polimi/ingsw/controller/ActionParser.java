@@ -45,7 +45,7 @@ public class ActionParser {
         //a message does not contain at least a space is not fine
         if(!message.contains(" ")){
             System.out.println(ErrorMessage.ActionNotValid);
-            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+            support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid );
             System.out.println("ERRORE INVIATO");
             return false;
         }else{
@@ -58,7 +58,7 @@ public class ActionParser {
                         Integer cardPower = tryParse(input[1]);
                         if(cardPower == null){
                             System.out.println(ErrorMessage.ActionNotValid);
-                            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                            support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
                             return false;
                         }
                         System.out.println("Card " + cardPower + " received");
@@ -67,7 +67,7 @@ public class ActionParser {
                     case "MOVEST" -> {
                         if(!input[1].contains(",")){
                             System.out.println(ErrorMessage.ActionNotValid);
-                            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                            support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
                             return false;
                         }
                         String[] colorDestination = input[1].split(",");
@@ -76,14 +76,14 @@ public class ActionParser {
                         for (int i = 0; i < colorDestination.length; i++) {
                             if(!colorDestination[i].contains("-")){
                                 System.out.println(ErrorMessage.ActionNotValid);
-                                support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                                support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
                                 return false;
                             }
                             colors[i] = charToColorEnum(colorDestination[i].split("-")[0].charAt(0));
                             Integer tempDestination = tryParse(colorDestination[i].split("-")[1]);
                             if(tempDestination == null || colors[i] == null){
                                 System.out.println(ErrorMessage.ActionNotValid);
-                                support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                                support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
                                 return false;
                             }
                             destinations[i] = tempDestination;
@@ -94,7 +94,7 @@ public class ActionParser {
                         Integer mnSteps = tryParse(input[1]);
                         if(mnSteps == null){
                             System.out.println(ErrorMessage.ActionNotValid);
-                            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                            support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
                             return false;
                         }
                         return actionController.checkActionMoveMN(player, mnSteps);
@@ -103,7 +103,7 @@ public class ActionParser {
                         Integer nOfCloud = tryParse(input[1]);
                         if(nOfCloud == null){
                             System.out.println(ErrorMessage.ActionNotValid);
-                            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                            support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
                             return false;
                         }
                         return actionController.checkActionCloud(player, nOfCloud);
@@ -112,7 +112,7 @@ public class ActionParser {
                         Integer idOfCharacter = tryParse(input[1]);
                         if(idOfCharacter == null){
                             System.out.println(ErrorMessage.ActionNotValid);
-                            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                            support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
                             return false;
                         }
                         String action = input[2];
@@ -120,6 +120,7 @@ public class ActionParser {
                         return actionController.checkActionCharacter(player, idOfCharacter, action);
                     }
                     default -> {
+                        support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid);
                         System.out.println("Action not recognised");
                         return false;
                     }

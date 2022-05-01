@@ -220,7 +220,7 @@ public class ActionController {
                                                    player.addCoinsToWallet(1);
                                                }else{
                                                    System.out.println("Sorry, there are not enough money in the box :(");
-                                                   support.firePropertyChange("ErrorMessage" , "", ErrorMessage.EmptyBank);
+                                                   support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.EmptyBank);
                                                }
                                            }
                                        }
@@ -244,26 +244,26 @@ public class ActionController {
                    }
                }else{
                    System.out.println("You do not have a student of one of the color that you inserted ");
-                   support.firePropertyChange("ErrorMessage" , "", ErrorMessage.StudentNotPresent );
+                   support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.StudentNotPresent );
                    return false;
                }
            }else {
                System.out.println("You can move only " + turnController.getGameHandler().getNumberOfMovements() + " students");
-               support.firePropertyChange("ErrorMessage" , "", ErrorMessage.WrongNumberOfMovements + turnController.getGameHandler().getNumberOfMovements() + "students");
+               support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.WrongNumberOfMovements + turnController.getGameHandler().getNumberOfMovements() + "students");
                return false;
            }
        }else if(game.getPhase()== Phase.MOVE_STUDENTS || player != game.getCurrentPlayer()){
                System.out.println("non è il tuo turno!!");
-           support.firePropertyChange("ErrorMessage" , "", ErrorMessage.NotYourTurn );
+           support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.NotYourTurn );
                return false;
            }else if (game.getPhase()!= Phase.MOVE_STUDENTS){
             System.out.println("You are not in the phase " + Phase.MOVE_STUDENTS);
-           support.firePropertyChange("ErrorMessage" , "", ErrorMessage.wrongPhase + game.getPhase() );
+           support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.wrongPhase + game.getPhase() );
 
              return false;
        } else {
                System.out.println("hai inviato un'azione non valida, riprova");
-               support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+               support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
                return false;
            }
    }
@@ -285,7 +285,7 @@ public class ActionController {
                 }else {
                     System.out.println("The card that you played does not allow you to do these steps!" +
                             "(you can do max " + player.getLastUsedCard().getMaxSteps() + " steps)");
-                    support.firePropertyChange("ErrorMessage", "", ErrorMessage.TooManySteps + player.getLastUsedCard().getMaxSteps() + "steps");
+                    support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.TooManySteps + player.getLastUsedCard().getMaxSteps() + "steps");
                     return false;
                 }
 
@@ -294,7 +294,7 @@ public class ActionController {
             return false;
         }else{
             System.out.println("hai inviato un'azione non valida, riprova");
-            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+            support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
             return false;
         }
     }
@@ -318,24 +318,24 @@ public class ActionController {
                         return true;
                     }else{
                         System.out.println("Cloud already taken");
-                        support.firePropertyChange("ErrorMessage" , "", ErrorMessage.CloudTaken);
+                        support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.CloudTaken);
                         return false;
                     }
                 }
                 }
             }else {
                 System.out.println("Number of the cloud not valid");
-                support.firePropertyChange("ErrorMessage", "", ErrorMessage.DestinationNotValid);
+                support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.DestinationNotValid);
                 return false;
             }
 
         }else if(game.getPhase()== Phase.CLOUD_SELECTION || player != game.getCurrentPlayer()){
             System.out.println("non è il tuo turno!!");
-            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.NotYourTurn);
+            support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.NotYourTurn);
             return false;
         }else {
             System.out.println("hai inviato un'azione non valida, riprova");
-            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+            support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
             return false;
         }
         return false;
@@ -378,11 +378,11 @@ public class ActionController {
                                         Integer actionToUse = tryParseInteger(action);
                                         if(actionToUse == null){
                                             System.out.println(ErrorMessage.ActionNotValid);
-                                            support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                                            support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
                                             return false;
                                         }
                                         if(character1.usePower(actionToUse)){
-                                            support.firePropertyChange("playedCharacter", "", playedCharacter);
+                                            support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
                                             return true;
                                         }else{
                                             System.out.println("Error in playing character" + playedCharacter);
@@ -409,13 +409,13 @@ public class ActionController {
                                     Integer actionToUse = tryParseInteger(action);
                                     if(actionToUse == null){
                                         System.out.println(ErrorMessage.ActionNotValid);
-                                        support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                                        support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
                                         return false;
                                     }
                                     if (arc.getIdArchipelago() == actionToUse) {
                                         Character3 character3 = new Character3(game);
                                         if(character3.usePower(actionToUse)){
-                                            support.firePropertyChange("playedCharacter", "", playedCharacter);
+                                            support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
                                             return true;
                                         }else{
                                             System.out.println("Error in playing character" + playedCharacter);
@@ -446,10 +446,10 @@ public class ActionController {
                                     character6.usePower(StudsAndProfsColor.valueOf(action));
                                 }catch (IllegalArgumentException e){
                                     System.out.println(ErrorMessage.ActionNotValid);
-                                    support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                                    support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
                                     return false;
                                 }
-                                support.firePropertyChange("playedCharacter", "", playedCharacter);
+                                support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
                                 return true;
                             }
                             case 7 -> {
@@ -457,16 +457,16 @@ public class ActionController {
                                 Character7 character7 = new Character7(game);
                                 if(!action.contains(",")){
                                     System.out.println(ErrorMessage.ActionNotValid);
-                                    support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                                    support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
                                     return false;
                                 }
                                 String[] colorDestination = action.split(",");
-                                support.firePropertyChange("playedCharacter", "", playedCharacter);
+                                support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
                                 try{
                                     return character7.usePower(StudsAndProfsColor.valueOf(colorDestination[0]), StudsAndProfsColor.valueOf(colorDestination[1]), StudsAndProfsColor.valueOf(colorDestination[2]), StudsAndProfsColor.valueOf(colorDestination[3]));
                                 }catch (IllegalArgumentException e){
                                     System.out.println(ErrorMessage.ActionNotValid);
-                                    support.firePropertyChange("ErrorMessage" , "", ErrorMessage.ActionNotValid );
+                                    support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
                                     return false;
                                 }
                             }
@@ -479,7 +479,7 @@ public class ActionController {
                             }
                             default -> {
                                 System.out.println(ErrorMessage.characterNotValid);
-                                support.firePropertyChange("ErrorMessage" , "", ErrorMessage.characterNotValid );
+                                support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.characterNotValid );
                                 return false;
                             }
                         }
@@ -518,12 +518,12 @@ public class ActionController {
             if (destination == 0) {
                 //Check if the dining room of a color is already full
                 if (p.getMyBoard().getDiningRoom().getStudentsByColor(color) == Constants.MAXSTUDENTSINDINING) {
-                    support.firePropertyChange("ErrorMessage","", ErrorMessage.FullDiningRoom);
+                    support.firePropertyChange("ErrorMessage", p.getNickname(), ErrorMessage.FullDiningRoom);
                     return false;
                 }
                 //check if the arc of that index exists
             }else if (!checkArchipelagoExistence(destination)) {
-                support.firePropertyChange("ErrorMessage","", ErrorMessage.DestinationNotValid);
+                support.firePropertyChange("ErrorMessage", p.getNickname(), ErrorMessage.DestinationNotValid);
                 return false;
             }
         }

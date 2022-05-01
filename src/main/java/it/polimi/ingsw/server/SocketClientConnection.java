@@ -51,7 +51,6 @@ public class SocketClientConnection implements Runnable{
      */
     public synchronized void send(Object message) {
         try {
-
             out.reset();
             out.writeObject(message);
             out.flush();
