@@ -49,4 +49,15 @@ public class ProfessorsTable implements Serializable {
     public boolean getHasProf(StudsAndProfsColor profColor){
         return hasProfessor[profColor.ordinal()];
     }
+
+    public int getNumberOfProf(){
+        int number = 0;
+
+        for(int i=0; i<Constants.NUMBEROFKINGDOMS ; i++){
+            if(hasProfessor[i]){
+                number ++;
+            }
+        }
+        return number;
+    }
 }

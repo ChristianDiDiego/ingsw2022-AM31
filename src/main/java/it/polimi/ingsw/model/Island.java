@@ -49,8 +49,6 @@ public class Island implements Serializable {
      * increments the counter of che received student's color in the island
      * @param studColor color of the student to be added
      */
-
-
     public void addStudent(StudsAndProfsColor studColor) {
         studentOnIsland[studColor.ordinal()] += 1;
     }

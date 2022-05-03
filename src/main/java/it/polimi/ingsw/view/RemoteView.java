@@ -27,21 +27,11 @@ public class RemoteView implements PropertyChangeListener{
         this.clientConnection = c;
         this.currentGame = currentGame;
         this.actionParser = actionParser;
-        //c.addObserver(new MessageReceiver());
-        //c.asyncSend("Your opponent is: " + opponent);
-
     }
 
     protected synchronized void showMessage(Object message) {
         clientConnection.asyncSend(message);
     }
-
-    /**
-     public void eventPerformed(EventObject evt){
-     System.out.println("Fired: " + ((Integer)evt.getSource()).toString());
-     showMessage(evt);
-     }
-     */
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -241,22 +231,13 @@ public class RemoteView implements PropertyChangeListener{
                     showMessage("Your teammate is " + teammate + "\n" + "Your color of towers is " + color);
                 }
             }
+        }else if(evt.getPropertyName().equals("EndGame")){
+            if(evt.getNewValue().equals(player.getTeam())){
+                showMessage("The game has ended \n YOU WON");
+            }else{
+                showMessage("The game has ended \n YOU LOST");
+            }
         }
     }
 
-    /**
-     private class MessageReceiver extends Observable<MessageForParser> implements Observer<String>{
-    @Override
-    public void update(String message) {
-    // riceve il messaggio da socketClientConnection (input del client) e lo manda al parser
-    System.out.println("Received: " + message);
-    try{
-    MessageForParser m = new MessageForParser(player, message);
-    notify(m);
-    }catch(IllegalArgumentException | ArrayIndexOutOfBoundsException e){
-    clientConnection.asyncSend("Error!");
-    }
-    }
-    }
-     */
 }

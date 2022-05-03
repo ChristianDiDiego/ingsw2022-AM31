@@ -11,8 +11,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 
-// Add tests!!!!!!
-
 /**
  * Contains the methods to check that the action received from the Client via ActionParser
  * are allowed for that client; if yes, perform the action
@@ -20,7 +18,6 @@ import java.beans.PropertyChangeSupport;
 public class ActionController {
     private Phase phase;
     private Game game;
-    private int isFinished;
     private ActionParser actionParser;
     private TurnController turnController;
 
@@ -28,7 +25,6 @@ public class ActionController {
 
     public ActionController(Game game, TurnController turnController){
         this.game = game;
-        isFinished = 0;
         actionParser = new ActionParser(this);
         this.turnController = turnController;
         this.support = new PropertyChangeSupport(this);
@@ -49,13 +45,13 @@ public class ActionController {
 
     /**
      * finisce il turno di ogni giocatore, aggiorna la fase 2 volte per saltare quella della selezione carte
-     */
     public void endPlayerTurn(){
         game.nextPhase();
         game.nextPhase();
         phase = game.getPhase();
 
     }
+     */
 
     /**
      * Calculate the influence on the archipelago where MN is present
@@ -147,6 +143,7 @@ public class ActionController {
                                     }
                                     if(newOwner.getTeam() == p.getTeam() && p.getColorOfTowers() != null){
                                         p.getMyBoard().getTowersOnBoard().removeTower();
+                                        //checkWinner(newOwner);
                                         //TODO: if the number of towers finish, the game is over
                                     }
                                 }
@@ -200,7 +197,7 @@ public class ActionController {
      * @param colors of the students that the player wants to move
      * @param destinations of the students (0 = dining room, [1..12] number of the archipelago
      */
-//TODO: check if the destination is valid
+     //TODO: check if the destination is valid
    public boolean checkActionMoveStudent(Player player,StudsAndProfsColor[] colors, int[] destinations){
        StudsAndProfsColor color;
        int destination;
@@ -265,10 +262,9 @@ public class ActionController {
                System.out.println("hai inviato un'azione non valida, riprova");
                support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
                return false;
-           }
+       }
    }
 
-    //TODO: add an observer that when MN change the position calculate the influence
     /**
      * Check if a player can move MN of the steps that he sent
      * @param player that want to move MN
@@ -307,14 +303,23 @@ public class ActionController {
     public boolean checkActionCloud(Player player,int cloudId){
         if(game.getPhase()== Phase.CLOUD_SELECTION && player == game.getCurrentPlayer()){
             if(cloudId >= 0 && cloudId < game.getListOfClouds().size()){
-
             for(Cloud cloud : game.getListOfClouds()){
                 if (cloud.getIdCloud() == cloudId){
                     if(!cloud.getIsTaken()){
                         player.getMyBoard().getEntrance().addStudent(cloud.getStudents());
                         cloud.removeStudents();
                         game.getCurrentPlayer().setUsedCharacter(null);
-                        game.nextPhase();
+
+                        if(player == game.getOrderOfPlayers().get(game.getNumberOfPlayers()-1)){
+                            if(turnController.isFinished() == true){
+                                turnController.getGameHandler().endGame();
+                            }
+                            turnController.startTurn();
+                        }else{
+                            game.nextPhase();
+                        }
+
+                        //game.nextPhase();
                         return true;
                     }else{
                         System.out.println("Cloud already taken");
@@ -348,9 +353,6 @@ public class ActionController {
     /**
      * Called if a player, adding the tower to an archipelago, run out of them
      */
-    public void endGameImmediately(){
-        isFinished = 1;
-    }
 
     public TurnController getTurnController() {
         return turnController;
@@ -546,4 +548,11 @@ public class ActionController {
             return null;
         }
     }
+
+    public void checkWinner(Player p){
+        if(p.getMyBoard().getTowersOnBoard().getNumberOfTowers() == 0){
+            turnController.getGameHandler().endGameImmediately(p);
+        }
+    }
+
 }

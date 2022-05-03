@@ -2,6 +2,13 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
 
+import java.awt.image.AreaAveragingScaleFilter;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Menage the game status ;
  * starts the game if the number of player is reached and
@@ -12,12 +19,13 @@ public class GameHandler {
     private Game game;
     private int isStarted;
     private int playersNumber;
-
     private int numberOfClouds;
     private int maxNumberOfTowers;
     private int maxStudentsInEntrance;
     private int numberOfStudentsOnCloud;
     private int numberOfMovements;
+    private PropertyChangeSupport support;
+
 
     public GameHandler(Player firstPlayer, int playersNumber, boolean expertMode){
         this.playersNumber = playersNumber;
@@ -26,6 +34,11 @@ public class GameHandler {
         //TODO: parse expertMode
         parametersSwitch(playersNumber, false);
         isStarted = 0;
+        this.support = new PropertyChangeSupport(this);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
     }
 
     public Game getGame() {
@@ -40,9 +53,40 @@ public class GameHandler {
     /**
      * Comunicate to the server that the game is over
      */
-    public void endGame(){
+    public void endGameImmediately(Player winner){
+        support.firePropertyChange("EndGame", 0, winner.getNickname());
         //while isStarted != -1  o isFinished != 0 wait
         //comunica al server partita finita
+    }
+
+    public void endGame(){
+        int maxTowers = 0;
+        Player winner = game.getListOfPlayer().get(0);
+        List<Player> listOfWinners = new ArrayList<Player>();
+
+        for(Player p : game.getListOfPlayer()){
+            if(p.getMyBoard().getTowersOnBoard().getNumberOfTowers() < winner.getMyBoard().getTowersOnBoard().getNumberOfTowers()){
+                winner = p;
+                maxTowers = p.getMyBoard().getTowersOnBoard().getNumberOfTowers();
+            }
+        }
+        for(Player sameTower : game.getListOfPlayer()){
+            if(sameTower.getMyBoard().getTowersOnBoard().getNumberOfTowers() == winner.getMyBoard().getTowersOnBoard().getNumberOfTowers() && sameTower != winner){
+                listOfWinners.add(sameTower);
+            }
+        }
+
+        int maxProfs = winner.getMyBoard().getProfessorsTable().getNumberOfProf();
+
+        for(Player p: listOfWinners){
+            if(p.getMyBoard().getProfessorsTable().getNumberOfProf() > maxProfs){
+                winner = p;
+                maxProfs = p.getMyBoard().getProfessorsTable().getNumberOfProf();
+            }
+
+
+        }
+        support.firePropertyChange("EndGame", 0, winner.getTeam());
     }
 
     public void setIsStarted(int i){
@@ -54,14 +98,12 @@ public class GameHandler {
     }
 
     /**
-     * TODO: check nickname
      * Add a new player (since the second one) to the game
      * Set isStarted = 1 when the numberOfPlaers required is reached and call startGame
      * @param //nickname name chosen by the player
      * @param //colorOfTower color chosen by the player
      */
     public void addNewPlayer(Player player){
-        //Player newPlayer = new Player(nickname, colorOfTower);
         game.addPlayer(player);
         if (game.getOrderOfPlayers().size() == game.getNumberOfPlayers()) {
             setIsStarted(1);

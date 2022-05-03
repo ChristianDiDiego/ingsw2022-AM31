@@ -9,9 +9,7 @@ import java.io.Serializable;
 public class TowersOnBoard implements Serializable {
     @Serial
     private static final long serialVersionUID = 6L;
-
     private int numberOfTowers;
-
     public TowersOnBoard(){
         this.numberOfTowers = 0;
     }

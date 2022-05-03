@@ -3,7 +3,6 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
-import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.view.RemoteView;
 
 import java.beans.PropertyChangeListener;
@@ -40,7 +39,6 @@ public class SocketClientConnection implements Runnable{
         support.addPropertyChangeListener(pcl);
     }
 
-
     private synchronized boolean isActive(){
         return active;
     }
@@ -59,7 +57,6 @@ public class SocketClientConnection implements Runnable{
             System.out.println("error when sending " + message.toString());
             System.err.println(e.getMessage());
         }
-
     }
 
     public int askHowManyPlayers() {
@@ -168,12 +165,10 @@ public class SocketClientConnection implements Runnable{
         }).start();
     }
 
-
     @Override
     public void run() {
         Scanner in;
         String read;
-        Player player;
         try{
             in = new Scanner(socket.getInputStream());
            //baos = new ByteArrayOutputStream();

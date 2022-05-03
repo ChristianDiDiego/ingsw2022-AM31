@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.expertMode.*;
-import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.view.RemoteView;
 
@@ -14,7 +13,7 @@ import java.util.*;
  * Model of the game, menage the actions that require an overview of all the game (e.g. how to assign the professors)
  * and the chagement of the current player / current phase
  */
-public class Game extends Observable<Game> implements Cloneable {
+public class Game implements Cloneable {
     private List<Player> listOfPlayers ;
     private List<Archipelago> listOfArchipelagos;
     private List<Cloud> listOfClouds;
@@ -23,15 +22,13 @@ public class Game extends Observable<Game> implements Cloneable {
     private int numberOfPlayers;
     private Player currentPlayer;
     private Phase phase;
+
     private boolean endTurn;
     private int bank;
-
     private Characters[] charactersPlayable;
     private boolean expertModeOn;
-
     private PropertyChangeSupport support;
 
-    //Aggiungi expertMode come parametro
     public Game(int numberOfPlayers, Player player, boolean expertModeOn){
         this.support = new PropertyChangeSupport(this);
         this.listOfPlayers = new ArrayList<>();
@@ -48,11 +45,9 @@ public class Game extends Observable<Game> implements Cloneable {
         this.expertModeOn = expertModeOn;
 
         for(int i = Constants.IDSTARTINGARCMN; i <= Constants.NUMBEROFISLANDS; i++){
-
             Archipelago arc = new Archipelago(i);
             listOfArchipelagos.add(arc);
         }
-
         for(int i = 0; i < numberOfPlayers; i++){
             Cloud cloud = new Cloud(i);
             listOfClouds.add(cloud);
@@ -190,27 +185,13 @@ public class Game extends Observable<Game> implements Cloneable {
         this.currentPlayer = orderOfPlayers.get(0);
         System.out.println("I should notify the curent player with "+ currentPlayer.getNickname());
         support.firePropertyChange("currentPlayerChanged", "aaaa", currentPlayer.getNickname());
-        // notify(this.clone());
         // System.out.println(currentPlayer.getNickname() + " is your turn!");
-    }
-
-    @Override
-    protected final Game clone() {
-        Game game;
-        try{
-            game = (Game) super.clone();
-        }catch (CloneNotSupportedException e)
-        {
-            throw new Error();
-        }
-        return game;
     }
 
     public List<Player> getOrderOfPlayers(){
         return orderOfPlayers;
     }
 
-    //TODO: add an observer that when MN change the position calculate the influence
     /**
      * Move Mother Nature from the current archipelago to another one
      * @param steps number of steps that MN needs to do
@@ -330,9 +311,9 @@ public class Game extends Observable<Game> implements Cloneable {
 
     /**
      * Decide the nextPhase of the match
+     * every time that the phase of a player change send a message to everyone
+     * saying what should he do
      */
-    //every time that the phase of a player change send a message to everyone
-    //saying what should he do
     public void nextPhase(){
         switch (phase){
             case START_GAME:

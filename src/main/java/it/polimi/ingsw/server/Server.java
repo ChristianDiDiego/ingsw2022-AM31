@@ -48,7 +48,6 @@ public class Server {
     public synchronized void lobby(SocketClientConnection c){
         List<Player> keys = new ArrayList<>(waitingConnection.keySet());
         ColorOfTower color = null;
-        int maxnumbercolortowers;
         //I moved nickname here so when other player connect the others receive his name
         String nickname = c.askNickname();
         while(!checkNickname(nickname)){
@@ -77,7 +76,6 @@ public class Server {
                 }
                 numberOfPlayers = c.askHowManyPlayers();
             };
-            //TODO: add check if the inserted mode is fine
 
             int mode = -1;
             mode = c.askMode();
@@ -108,7 +106,7 @@ public class Server {
             gameHandler = new GameHandler(player1, numberOfPlayers, mode == 1);
             RemoteView remV1 = new RemoteView(player1, c, gameHandler.getGame(), gameHandler.getController().getTurnController().getActionController().getActionParser());
             c.addPropertyChangeListener(remV1);
-            //remV1.addPropertyChangeListener(gameHandler.getGame());
+            gameHandler.addPropertyChangeListener(remV1);
             gameHandler.getGame().addPropertyChangeListener(remV1);
             gameHandler.getController().getTurnController().getActionController().addPropertyChangeListener(remV1);
             System.out.println("devo aggiunger listener al parser");
@@ -163,6 +161,7 @@ public class Server {
             waitingConnection.put(player, c);
             RemoteView remV = new RemoteView(player, c, gameHandler.getGame(), gameHandler.getController().getTurnController().getActionController().getActionParser());
             c.addPropertyChangeListener(remV);
+            //gameHandler.addPropertyChangeListener(remV);
             gameHandler.getGame().addPropertyChangeListener(remV);
             gameHandler.getController().getTurnController().getActionController().addPropertyChangeListener(remV);
             gameHandler.getController().getTurnController().addPropertyChangeListener(remV);
@@ -185,8 +184,6 @@ public class Server {
                 temp.add(waitingConnection.get(p));
                 listOfGames.add(temp);
             }
-
-
 
             //waitingConnection.clear();
         }

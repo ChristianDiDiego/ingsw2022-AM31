@@ -17,7 +17,6 @@ public class Player implements Serializable {
     private Board myBoard;
     private int wallet;
     private Characters usedCharacter;
-
     private int team;
 
     //TODO: characterUsed and wallet are optionals
@@ -53,7 +52,6 @@ public class Player implements Serializable {
        }else{
            return false;
        }
-
     }
 
     public Board getMyBoard() {

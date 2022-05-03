@@ -2,12 +2,10 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.utilities.ErrorMessage;
 import it.polimi.ingsw.utilities.constants.Constants;
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-//TODO: ADDTESTS!!!!!!
-// and add cloud choice
+// TODO: add cloud choice
 
 /**
  * Menage the turn changements and the pianification phase
@@ -18,6 +16,7 @@ public class TurnController {
     private GameHandler gameHandler;
     private Game game;
     private PropertyChangeSupport support;
+    private boolean isFinished = false;
 
     public TurnController(Controller controller, GameHandler gameHandler, Game game){
         this.controller = controller;
@@ -30,7 +29,6 @@ public class TurnController {
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
-
 
     public Controller getController() {
         return controller;
@@ -51,8 +49,8 @@ public class TurnController {
      * Call endGame if the number of the students in the bag is finished
      */
     public void startTurn(){
-        if(game.getBag().getNumberOfLeftStudents() == 0) {
-            gameHandler.endGame();
+        if(game.getBag().getNumberOfLeftStudents() == 0 || game.getCurrentPlayer().getMyDeck().getLeftCards().size() == 0) {
+            isFinished = true;
         }else{
             //Add the students to the clouds
             for(Cloud cloud : game.getListOfClouds()){
@@ -62,11 +60,11 @@ public class TurnController {
             if(game.getListOfPlayer().get(0).getMyDeck().getLeftCards().size() == Constants.NUMBEROFCARDSINDECK){
                 support.firePropertyChange("StartingGame", "", "Game is starting...");
             }
-
         }
         System.out.println("Turn started");
-        game.findPlayerOrder();
         game.nextPhase();
+        game.findPlayerOrder();
+
         //Message to be sent to the current player
       //  System.out.println(game.getCurrentPlayer().getNickname() + " is your turn!");
     }
@@ -161,6 +159,13 @@ public class TurnController {
         return false;
     }
 
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public void setFinished(boolean finished) {
+        isFinished = finished;
+    }
 }
 
 
