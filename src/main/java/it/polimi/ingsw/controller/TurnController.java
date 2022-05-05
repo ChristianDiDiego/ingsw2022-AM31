@@ -97,6 +97,8 @@ public class TurnController {
                                 System.out.println("Passo alla fase " + game.getPhase());
                             }else{
                                 game.calculateNextPlayerPianification();
+                                support.firePropertyChange("PhaseChanged", 0 , 1);
+
                             }
                         }
                     }

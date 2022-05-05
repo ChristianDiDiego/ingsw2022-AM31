@@ -133,12 +133,12 @@ public class RemoteView implements PropertyChangeListener{
                 if(currentGame.getCurrentPlayer() == player){
                     switch (currentGame.getPhase()){
                         case CARD_SELECTION -> {
-                            System.out.println("card selection");
+
                             showMessage(gameMessage.cardSelectionMessage);
                         }case MOVE_STUDENTS ->
-                                showMessage(gameMessage.studentMovementMessage);
+                                showMessage(String.format(gameMessage.studentMovementMessage, actionParser.getActionController().getTurnController().getGameHandler().getNumberOfMovements()));
                         case MOVE_MN ->
-                                showMessage(gameMessage.moveMotherNatureMessage);
+                                showMessage(String.format(gameMessage.moveMotherNatureMessage, player.getLastUsedCard().getMaxSteps()));
                         case CLOUD_SELECTION ->
                                 showMessage(gameMessage.chooseCloudMessage);
                     }

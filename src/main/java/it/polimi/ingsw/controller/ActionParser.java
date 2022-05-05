@@ -159,4 +159,7 @@ public class ActionParser {
         }
     }
 
+    public ActionController getActionController() {
+        return actionController;
+    }
 }
