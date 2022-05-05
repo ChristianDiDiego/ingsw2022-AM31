@@ -156,9 +156,11 @@ public class ActionController {
                             }
                         }
                         checkUnification(a);
+                        break;
                     }
                 } else if (a.getIsMNPresent() && a.getIsForbidden() == true){
                     a.setIsForbidden(false);
+                    break;
                 }
             }
         }
