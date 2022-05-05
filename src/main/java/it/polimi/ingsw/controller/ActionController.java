@@ -173,16 +173,17 @@ public class ActionController {
     public void checkUnification(Archipelago a){
         int index = game.getListOfArchipelagos().indexOf(a);
         int previous = index - 1;
-        int next = index + 1;
         if(index == 0){
             previous = game.getListOfArchipelagos().size()-1;
-        }
-        if(index == game.getListOfArchipelagos().size()-1) {
-            next = 0;
         }
 
         if(a.getOwner() == game.getListOfArchipelagos().get(previous).getOwner()) {
             game.unifyArchipelagos(a, game.getListOfArchipelagos().get(previous));
+            index = game.getListOfArchipelagos().indexOf(a);
+        }
+        int next = index + 1;
+        if(index == game.getListOfArchipelagos().size()-1) {
+            next = 0;
         }
         if(a.getOwner() == game.getListOfArchipelagos().get(next).getOwner()) {
             game.unifyArchipelagos(a, game.getListOfArchipelagos().get(next));

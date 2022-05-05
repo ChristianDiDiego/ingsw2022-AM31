@@ -202,15 +202,20 @@ public class Game implements Cloneable {
             if(arci.getIsMNPresent()){
                 index = listOfArchipelagos.indexOf(arci);
                 arci.changeMNPresence();
+                break;
             }
         }
+        System.out.println("index mn before adj: " + index);
         index += steps;
-        if(index > listOfArchipelagos.size()) {
+        System.out.println("index before adj: " + index);
+        if(index >= listOfArchipelagos.size()) {
             index = index % listOfArchipelagos.size();
         }
+        System.out.println("index: " + index);
         for(Archipelago arci : listOfArchipelagos){
             if(listOfArchipelagos.indexOf(arci) == index){
                 arci.changeMNPresence();
+                break;
             }
         }
         support.firePropertyChange("MNmove", 0, 1);

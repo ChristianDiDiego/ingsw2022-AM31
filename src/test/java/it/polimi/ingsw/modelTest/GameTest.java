@@ -48,6 +48,16 @@ class GameTest {
 
         game.moveMotherNature(14);
         assertEquals(true,  game.getListOfArchipelagos().get(4).getIsMNPresent());
+        game.unifyArchipelagos(game.getListOfArchipelagos().get(2),game.getListOfArchipelagos().get(1) );
+        assertEquals(11, game.getListOfArchipelagos().size());
+        game.moveMotherNature(9);
+        for(Archipelago a: game.getListOfArchipelagos()){
+            if(a.getIsMNPresent()){
+                System.out.println("MN is in arc with index " +game.getListOfArchipelagos().indexOf(a) + " and id " + a.getIdArchipelago());
+            }
+        }
+
+        assertEquals(true,  game.getListOfArchipelagos().get(1).getIsMNPresent());
 
     }
 

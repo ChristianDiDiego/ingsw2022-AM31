@@ -80,6 +80,25 @@ class ActionControllerTest {
 
     @Test
     void checkUnification() {
+        Player pl1 = new Player("carmine", ColorOfTower.WHITE);
+        gameHandler = new GameHandler(pl1, 3,false);
+        //other players login
+        Player pl2 = new Player("fede", ColorOfTower.BLACK);
+        gameHandler.addNewPlayer(pl2);
+        gameHandler.getGame().getListOfArchipelagos().get(1).changeOwner(pl1);
+        gameHandler.getGame().getListOfArchipelagos().get(2).changeOwner(pl1);
+        gameHandler.getGame().moveMotherNature(2);
+        assertEquals(true,gameHandler.getGame().getListOfArchipelagos().get(2).getIsMNPresent());
+        gameHandler.getController().getTurnController().getActionController().checkUnification(gameHandler.getGame().getListOfArchipelagos().get(2));
+        assertEquals(11,gameHandler.getGame().getListOfArchipelagos().size());
+        assertEquals(true,gameHandler.getGame().getListOfArchipelagos().get(1).getIsMNPresent());
+        gameHandler.getGame().moveMotherNature(10);
+        assertEquals(true,gameHandler.getGame().getListOfArchipelagos().get(0).getIsMNPresent());
+        gameHandler.getGame().getListOfArchipelagos().get(0).changeOwner(pl1);
+        gameHandler.getController().getTurnController().getActionController().checkUnification(gameHandler.getGame().getListOfArchipelagos().get(0));
+        assertEquals(10,gameHandler.getGame().getListOfArchipelagos().size());
+        assertEquals(true,gameHandler.getGame().getListOfArchipelagos().get(0).getIsMNPresent());
+
     }
 
     @Test
