@@ -214,6 +214,7 @@ public class Cli{
             archipelago.append(ColorsCli.RESET).append("ARCHIPELAGOS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
             System.out.println(archipelago.toString());
             for(Archipelago a : archipelagos) {
+                int numberTower = a.getBelongingIslands().size();
                 archipelago = new StringBuilder();
                 archipelago.append(ColorsCli.RESET).append("    Id archipelago: " + a.getIdArchipelago() + (a.getOwner() == null ? "" : " owner: " + a.getOwner().getNickname() + " team: " + a.getOwner().getTeam()) + (a.getIsMNPresent() == false ? "" : " MN is here") + (a.getIsForbidden() == false ? "" : " \uD83D\uDEAB") + "\n    ").append(ColorsCli.RESET);
                 for (Island is : a.getBelongingIslands()) {
@@ -222,8 +223,13 @@ public class Cli{
                             archipelago.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.RESET);
                         }
                     }
-                    System.out.println(archipelago.toString());
                 }
+                if(a.getOwner() != null) {
+                    for(int i = 0; i < numberTower; i++) {
+                        archipelago.append(ColorsCli.RESET).append("♜ ").append(ColorsCli.RESET);
+                    }
+                }
+                System.out.println(archipelago.toString());
             }
 
             archipelago = new StringBuilder();
