@@ -129,6 +129,9 @@ public class ActionController {
                             alreadyCalculated = p;
                         }
                     }
+                    if(maxInfluence == newInfluence){
+                        newOwner = oldOwner;
+                    }
 
                     if(maxInfluence > 0){
                         a.changeOwner(newOwner);
@@ -237,6 +240,7 @@ public class ActionController {
                                }
                        }
                        game.nextPhase();
+                       support.firePropertyChange("moveST", 0, 1);
                        return true;
                    }else{
                        System.out.println("Destination not valid");
