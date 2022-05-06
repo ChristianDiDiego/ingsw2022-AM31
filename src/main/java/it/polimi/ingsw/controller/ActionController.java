@@ -520,8 +520,8 @@ public class ActionController {
                     studsOfAColorToBeMoved++;
                 }
             }
-            System.out.println("studs of color " + colorToCheck + " to be moved: " + studsOfAColorToBeMoved);
-            if(studsOfAColorToBeMoved != 0 && p.getMyBoard().getEntrance().getStudentsByColor(colorToCheck) != studsOfAColorToBeMoved){
+
+            if(studsOfAColorToBeMoved != 0 && p.getMyBoard().getEntrance().getStudentsByColor(colorToCheck) < studsOfAColorToBeMoved){
                 return false;
             }
         }
