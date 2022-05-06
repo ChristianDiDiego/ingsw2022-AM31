@@ -511,9 +511,17 @@ public class ActionController {
         return actionParser;
     }
 
-    private boolean checkColors(Player p, StudsAndProfsColor[] colors){
-        for(StudsAndProfsColor c : colors){
-            if(p.getMyBoard().getEntrance().getStudentsByColor(c) == 0){
+    public boolean checkColors(Player p, StudsAndProfsColor[] colors){
+        int studsOfAColorToBeMoved = 0;
+        for(StudsAndProfsColor colorToCheck : StudsAndProfsColor.values()){
+            studsOfAColorToBeMoved = 0;
+            for(StudsAndProfsColor colorToMove : colors){
+                if(colorToCheck.equals(colorToMove)){
+                    studsOfAColorToBeMoved++;
+                }
+            }
+            System.out.println("studs of color " + colorToCheck + " to be moved: " + studsOfAColorToBeMoved);
+            if(studsOfAColorToBeMoved != 0 && p.getMyBoard().getEntrance().getStudentsByColor(colorToCheck) != studsOfAColorToBeMoved){
                 return false;
             }
         }

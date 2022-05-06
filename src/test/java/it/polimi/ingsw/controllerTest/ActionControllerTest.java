@@ -153,6 +153,23 @@ class ActionControllerTest {
 
     }
 
+    @Test
+    public void checkColorsTest(){
+        Player pl1 = new Player("leo", ColorOfTower.WHITE);
+        gameHandler = new GameHandler(pl1, 2,false);
+        int[] students = {2,1,0,1,0};
+        pl1.getMyBoard().getEntrance().addStudent(students);
+        assertEquals(2, pl1.getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.RED));
+        assertEquals(1, pl1.getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.GREEN));
+        assertEquals(0, pl1.getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.YELLOW));
+        assertEquals(1, pl1.getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.PINK));
+        assertEquals(0, pl1.getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.BLUE));
+        StudsAndProfsColor[] colors = {StudsAndProfsColor.RED,StudsAndProfsColor.RED,StudsAndProfsColor.RED};
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkColors(pl1, colors));
+        StudsAndProfsColor[] colors2 = {StudsAndProfsColor.RED,StudsAndProfsColor.RED,StudsAndProfsColor.GREEN};
+        assertTrue(gameHandler.getController().getTurnController().getActionController().checkColors(pl1, colors2));
+    }
+
 
     private Player recognisePlayer(String nickname){
         for(Player player :gameHandler.getController().getTurnController().getActionController().getGame().getOrderOfPlayers()){
@@ -162,6 +179,8 @@ class ActionControllerTest {
         }
         return null;
     }
+
+
 
 
 }
