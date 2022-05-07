@@ -132,7 +132,7 @@ public class ActionController {
                   - non c'è un pareggio
 
                    */
-                    if(maxInfluence > 0 && (oldOwner == null || oldOwner.getTeam() == teamMaxInfluence) && !tie){
+                    if(maxInfluence > 0 && (oldOwner == null || oldOwner.getTeam() != teamMaxInfluence) && !tie){
                         for(int i = 0; i < a.getBelongingIslands().size(); i++) {
                                 //Only if the newOwner is different from the oldOwner (or this was null) change the towers
 
