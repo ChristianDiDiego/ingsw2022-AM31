@@ -59,14 +59,19 @@ public class TurnController {
 
             if(game.getListOfPlayer().get(0).getMyDeck().getLeftCards().size() == Constants.NUMBEROFCARDSINDECK){
                 support.firePropertyChange("StartingGame", "", "Game is starting...");
+
             }
+
         }
+
         System.out.println("Turn started");
         game.nextPhase();
-        game.findPlayerOrder();
+        game.setCurrentPlayer(game.getOrderOfPlayers().get(0));
+        support.firePropertyChange("currentPlayerChanged", "CS", game.getCurrentPlayer().getNickname());
+        //game.findPlayerOrder();
 
         //Message to be sent to the current player
-      //  System.out.println(game.getCurrentPlayer().getNickname() + " is your turn!");
+        //System.out.println(game.getCurrentPlayer().getNickname() + " is your turn!");
     }
 
     //TODO: listener of orderOfPlayer instead of calling it directly?

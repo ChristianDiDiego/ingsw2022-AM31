@@ -165,6 +165,11 @@ public class Game implements Cloneable {
         return this.currentPlayer;
     }
 
+    public void setCurrentPlayer(Player p){
+        this.currentPlayer = p;
+    }
+
+
     /**
      * For each player, according to the power of the card used, calculate his order in the next turn
      */
@@ -256,7 +261,7 @@ public class Game implements Cloneable {
         index = index + 1;
         currentPlayer = listOfPlayers.get(index);
         support.firePropertyChange("PhaseChanged", "", Phase.CARD_SELECTION);
-        support.firePropertyChange("currentPlayerChanged", "aaaa", currentPlayer.getNickname());
+        support.firePropertyChange("currentPlayerChanged", "CS", currentPlayer.getNickname());
         //   System.out.println(currentPlayer.getNickname() + " is your turn!");
     }
 

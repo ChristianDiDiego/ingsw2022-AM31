@@ -9,6 +9,7 @@ import java.beans.PropertyChangeSupport;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -143,12 +144,15 @@ public class ActionController {
                                 if(p.getTeam() == teamMaxInfluence && p.getColorOfTowers() != null){
                                     p.getMyBoard().getTowersOnBoard().removeTower();
                                     a.changeOwner(p);
-                                    //checkWinner(newOwner);
+                                    checkWinner(p);
                                     //TODO: if the number of towers finish, the game is over
                                 }
                             }
                         }
                             checkUnification(a);
+                            if(game.getListOfArchipelagos().size() < 4) {
+                                turnController.getGameHandler().endGame();
+                            }
                             break;
                         }
 

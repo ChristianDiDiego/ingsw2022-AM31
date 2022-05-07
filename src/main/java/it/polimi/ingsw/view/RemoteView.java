@@ -35,7 +35,14 @@ public class RemoteView implements PropertyChangeListener{
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if(evt.getPropertyName().equals("currentPlayerChanged")){
+        if(evt.getPropertyName().equals("EndGame")){
+            if(evt.getNewValue().equals(player.getTeam())){
+                showMessage("The game has ended \n YOU WON");
+            }else{
+                showMessage("The game has ended \n YOU LOST");
+            }
+
+        }else if(evt.getPropertyName().equals("currentPlayerChanged")){
             Object lock = new Object();
             Object lock2 = new Object();
             synchronized (lock2){
@@ -115,6 +122,9 @@ public class RemoteView implements PropertyChangeListener{
                     }
                     System.out.println(evt.getNewValue() + " is your turn!");
                     showMessage(evt.getNewValue() + " is your turn!");
+                    if(evt.getOldValue().equals("CS")){
+                        showMessage(gameMessage.cardSelectionMessage);
+                    }
                 }else{
                     try {
                         TimeUnit.MICROSECONDS.sleep(500);
@@ -132,15 +142,51 @@ public class RemoteView implements PropertyChangeListener{
             synchronized (this){
                 if(currentGame.getCurrentPlayer() == player){
                     switch (currentGame.getPhase()){
-                        case CARD_SELECTION -> {
+                        //case CARD_SELECTION ->
 
-                            showMessage(gameMessage.cardSelectionMessage);
-                        }case MOVE_STUDENTS ->
+                            //showMessage(gameMessage.cardSelectionMessage);
+                        case MOVE_STUDENTS ->
                                 showMessage(String.format(gameMessage.studentMovementMessage, actionParser.getActionController().getTurnController().getGameHandler().getNumberOfMovements()));
-                        case MOVE_MN ->
-                                showMessage(String.format(gameMessage.moveMotherNatureMessage, player.getLastUsedCard().getMaxSteps()));
-                        case CLOUD_SELECTION ->
-                                showMessage(gameMessage.chooseCloudMessage);
+                        case MOVE_MN -> {
+                            Object lock = new Object();
+                            Object lock2 = new Object();
+                            synchronized (lock2) {
+                                List<Board> boards = new ArrayList<>();
+                                for (Player p : currentGame.getListOfPlayer()) {
+                                    boards.add(p.getMyBoard());
+                                }
+                                ListOfBoards boards1 = new ListOfBoards(boards);
+                                synchronized (lock) {
+                                    showMessage(boards1);
+                                }
+
+                                ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
+                                synchronized (lock) {
+                                    try {
+                                        TimeUnit.MICROSECONDS.sleep(500);
+                                    } catch (InterruptedException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    showMessage(archipelagos);
+                                }
+                            }
+                            try {
+                                TimeUnit.MICROSECONDS.sleep(500);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            showMessage(String.format(gameMessage.moveMotherNatureMessage, player.getLastUsedCard().getMaxSteps()));
+
+                        }case CLOUD_SELECTION -> {
+                            ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
+                            showMessage(clouds);
+                            try {
+                                TimeUnit.MICROSECONDS.sleep(500);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            showMessage(gameMessage.chooseCloudMessage);
+                        }
                     }
                 }
             }
@@ -231,13 +277,14 @@ public class RemoteView implements PropertyChangeListener{
                     showMessage("Your teammate is " + teammate + "\n" + "Your color of towers is " + color);
                 }
             }
-        }else if(evt.getPropertyName().equals("EndGame")){
+        }/*else if(evt.getPropertyName().equals("EndGame")){
             if(evt.getNewValue().equals(player.getTeam())){
                 showMessage("The game has ended \n YOU WON");
             }else{
                 showMessage("The game has ended \n YOU LOST");
             }
         }
+        */
     }
 
 }

@@ -54,7 +54,7 @@ public class GameHandler {
      * Comunicate to the server that the game is over
      */
     public void endGameImmediately(Player winner){
-        support.firePropertyChange("EndGame", 0, winner.getNickname());
+        support.firePropertyChange("EndGame", 0, winner.getTeam());
         //while isStarted != -1  o isFinished != 0 wait
         //comunica al server partita finita
     }
