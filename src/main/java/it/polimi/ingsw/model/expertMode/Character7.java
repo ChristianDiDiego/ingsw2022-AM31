@@ -44,6 +44,10 @@ public class Character7 extends Characters{
                 diningRoom.removeStudent(color1ToRemove);
                 diningRoom.removeStudent(color2ToRemove);
                 entrance.addStudent(toAdd);
+                game.assignProfessor(color1ToAdd);
+                game.assignProfessor(color2ToAdd);
+                game.assignProfessor(color1ToRemove);
+                game.assignProfessor(color2ToRemove);
                 return true;
             } else {
                 return false;

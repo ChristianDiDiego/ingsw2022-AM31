@@ -66,7 +66,13 @@ public class ActionController {
                 character4.calculateInfluence();
             }else if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER5.ordinal()){
                 Character5 character5 = new Character5(game);
-                character5.calculateInfluence();
+                if(character5.calculateInfluence()){
+                    turnController.getGameHandler().endGame();
+                }else {
+                    for(Player p : game.getListOfPlayer()){
+                        checkWinner(p);
+                    }
+                }
             }else if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER6.ordinal()){
                 Character6 character6 = new Character6(game);
                 character6.calculateInfluence();
@@ -155,8 +161,15 @@ public class ActionController {
                             }
                             break;
                         }
+                    } else if (a.getIsMNPresent() && a.getIsForbidden() == true){
+                    a.setIsForbidden(false);
+                    break;
+                }
+            }
+        }
+    }
 
-                     /*
+                         /*
                     Player newOwner;
                     Player oldOwner;
                     int[] influences = new int[game.getNumberOfPlayers()];
@@ -269,13 +282,7 @@ public class ActionController {
                         }
 
                       */
-                    } else if (a.getIsMNPresent() && a.getIsForbidden() == true){
-                    a.setIsForbidden(false);
-                    break;
-                }
-            }
-        }
-    }
+
     /**
      * Check if an archipelago has to be unified with previous or next,
      * if yes, it calls game.unifyArchipelagos()
@@ -429,6 +436,7 @@ public class ActionController {
                             if(turnController.isFinished() == true){
                                 turnController.getGameHandler().endGame();
                             }
+                            game.nextPhase();
                             turnController.startTurn();
                         }else{
                             game.nextPhase();
@@ -500,6 +508,13 @@ public class ActionController {
                                         }
                                         if(character1.usePower(actionToUse)){
                                             support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
+                                            if(game.getListOfArchipelagos().size()<4){
+                                                turnController.getGameHandler().endGame();
+                                            }else{
+                                                for(Player p : game.getListOfPlayer()){
+                                                    checkWinner(p);
+                                                }
+                                            }
                                             return true;
                                         }else{
                                             System.out.println("Error in playing character" + playedCharacter);

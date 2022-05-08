@@ -169,13 +169,12 @@ public class Game implements Cloneable {
         this.currentPlayer = p;
     }
 
-
     /**
      * For each player, according to the power of the card used, calculate his order in the next turn
      */
     public void findPlayerOrder(){
         this.currentPlayer = orderOfPlayers.get(1);
-        System.out.println("old cplayer " + currentPlayer.getNickname());
+        System.out.println("old player " + currentPlayer.getNickname());
         orderOfPlayers.sort(new Comparator<Player>() {
             @Override
             public int compare(Player o1, Player o2) {
@@ -188,9 +187,12 @@ public class Game implements Cloneable {
 
         });
         this.currentPlayer = orderOfPlayers.get(0);
-        System.out.println("I should notify the curent player with "+ currentPlayer.getNickname());
+        System.out.println("If should notify the curent player with "+ currentPlayer.getNickname());
+
         support.firePropertyChange("currentPlayerChanged", "aaaa", currentPlayer.getNickname());
-        // System.out.println(currentPlayer.getNickname() + " is your turn!");
+
+
+
     }
 
     public List<Player> getOrderOfPlayers(){
@@ -349,7 +351,7 @@ public class Game implements Cloneable {
                 }
                 break;
         }
-        support.firePropertyChange("PhaseChanged", 0 , 1);
+        //support.firePropertyChange("PhaseChanged", 0 , 1);
     }
 
     public Bag getBag(){
@@ -389,6 +391,15 @@ public class Game implements Cloneable {
 
     public boolean isExpertModeOn() {
         return expertModeOn;
+    }
+
+    public Archipelago getArchipelagoById(int idArchipelago) {
+        for(Archipelago a : listOfArchipelagos) {
+            if(a.getIdArchipelago() == idArchipelago) {
+                return a;
+            }
+        }
+        return null;
     }
 
 }
