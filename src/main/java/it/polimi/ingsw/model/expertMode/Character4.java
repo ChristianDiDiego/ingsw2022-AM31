@@ -33,6 +33,7 @@ public class Character4 extends Characters {
      * calculates influence without counting towers
      */
     public void calculateInfluence(){
+        System.out.println("Char 4 played");
         for(Archipelago a : game.getListOfArchipelagos()){
             //TODO: add message "influence not calculated because forbidden";
             // calculate influence for 4 players
@@ -68,6 +69,7 @@ public class Character4 extends Characters {
                             }
                         }
                     }
+                    System.out.println(p.getNickname() + "influence: " + influences[p.getTeam()]);
                 }
                 //Trova il massimo nel vettore influenza e si salva il team corrispondente
                 int maxInfluence = 0;

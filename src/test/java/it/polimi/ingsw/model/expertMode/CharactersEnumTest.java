@@ -8,7 +8,7 @@ class CharactersEnumTest {
 
     @Test
     void values() {
-        assertEquals(8, CharactersEnum.values().length);
+        assertEquals(9, CharactersEnum.values().length);
     }
 
     @Test

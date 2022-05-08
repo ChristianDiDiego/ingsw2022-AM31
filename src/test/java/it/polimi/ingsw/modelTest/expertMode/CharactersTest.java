@@ -30,6 +30,7 @@ class CharactersTest {
         game.addPlayer(player2);
         character5.usePower();
         assertEquals(null, player1.getUsedCharacter());
+        assertFalse(character5.usePower());
         player1.addCoinsToWallet(5);
         character5.usePower();
         assertEquals(5, player1.getUsedCharacter().getId());
@@ -50,6 +51,7 @@ class CharactersTest {
     @Test
     void getAlreadyUsedTest() {
         game.addPlayer(player2);
+        assertFalse(character5.usePower());
         player1.addCoinsToWallet(5);
         character5.usePower();
         assertEquals(true, character5.getAlreadyUsed());

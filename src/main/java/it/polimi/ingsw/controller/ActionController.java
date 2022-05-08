@@ -61,7 +61,13 @@ public class ActionController {
      */
     public void calculateInfluence(){
         if(game.isExpertModeOn()){
+            if(getCurrentPlayer().getUsedCharacter() != null){
+                System.out.println("played card" + getCurrentPlayer().getUsedCharacter().getDescriptionOfPower());
+                System.out.println("played card id" + getCurrentPlayer().getUsedCharacter().getId());
+                 }
+
             if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER4.ordinal()){
+                System.out.println("Char 4 played");
                 Character4 character4 = new Character4(game);
                 character4.calculateInfluence();
                 return;
@@ -76,7 +82,7 @@ public class ActionController {
                 }
                 return;
             }else if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER6.ordinal()){
-                Character6 character6 = new Character6(game);
+                Character6 character6 = (Character6) getCurrentPlayer().getUsedCharacter();
                 character6.calculateInfluence();
                 return;
             }

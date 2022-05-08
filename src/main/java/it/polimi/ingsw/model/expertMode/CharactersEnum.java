@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.expertMode;
 
 public enum CharactersEnum {
+    NULLCHARACTER,
     CHARACTER1,
     CHARACTER2,
     CHARACTER3,
