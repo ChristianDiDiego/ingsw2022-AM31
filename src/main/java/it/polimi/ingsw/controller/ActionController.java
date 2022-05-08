@@ -64,6 +64,7 @@ public class ActionController {
             if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER4.ordinal()){
                 Character4 character4 = new Character4(game);
                 character4.calculateInfluence();
+                return;
             }else if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER5.ordinal()){
                 Character5 character5 = new Character5(game);
                 if(character5.calculateInfluence()){
@@ -73,11 +74,13 @@ public class ActionController {
                         checkWinner(p);
                     }
                 }
+                return;
             }else if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER6.ordinal()){
                 Character6 character6 = new Character6(game);
                 character6.calculateInfluence();
+                return;
             }
-        }else{
+        }
             for(Archipelago a : game.getListOfArchipelagos()){
                 //TODO: add message "influence not calculated because forbidden";
                 // calculate influence for 4 players
@@ -167,7 +170,6 @@ public class ActionController {
                 }
             }
         }
-    }
 
                          /*
                     Player newOwner;
