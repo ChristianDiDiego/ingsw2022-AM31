@@ -37,86 +37,74 @@ public class Character4 extends Characters {
             //TODO: add message "influence not calculated because forbidden";
             // calculate influence for 4 players
             if(a.getIsMNPresent() && a.getIsForbidden() == false){
-                Player newOwner;
+                // PROPOSAL OF NEW CALCULATE INFLUENCE:
                 Player oldOwner;
-                int maxInfluence = 0;
-                if(a.getOwner() == null){
-                    System.out.println("No old owner");
-                    oldOwner = null;
-                    newOwner = game.getCurrentPlayer();
+                int[] influences = new int[game.getNumberOfPlayers()];
+                for(int i = 0; i< game.getNumberOfPlayers(); i++){
+                    influences[i] = 0;
+                }
 
+                if(a.getOwner() == null){
+                    oldOwner = null;
                 }else {
                     oldOwner = a.getOwner();
-                    newOwner = a.getOwner();
-                    maxInfluence = 0;
                 }
-                //Sum the influence of the players who have the same team number of the newOwner
-                //for instance, if the game has 2 or 3 players each of them has a different number of the team
+
+                //Calcola l'influenza di ogni giocatore sull'arcipelago a
+                //assegna questo valore incrementando il vettore influences alla posizione
+                //corrispondente al proprio team:
+                //In tal modo, sia se si sta giocando a squadre che tutti contro tutti
+                //vengono calcolate correttamente
                 for(Player p : game.getOrderOfPlayers()){
-                    if(p.getTeam() == newOwner.getTeam()){
-                        for(int c = 0; c < Constants.NUMBEROFKINGDOMS; c++){
-                            for(Island i : a.getBelongingIslands()){
-                                if(i.getAllStudents()[c] > 0 && p.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
-                                    maxInfluence += i.getAllStudents()[c];
-                                }
+                    //Se oldowner non è nullo e il suo numero di squadra coincide con il player su cui
+                    //stiamo iterando, aggiunge all'influenza del suo team il numero di torri(=numero di isole)
+                    if(oldOwner != null && oldOwner.getTeam() == p.getTeam()){
+                        influences[p.getTeam()] = 0;
+                    }
+                    for(int c = 0; c < Constants.NUMBEROFKINGDOMS; c++){
+                        for(Island i : a.getBelongingIslands()){
+                            if(i.getAllStudents()[c] > 0 && p.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
+                                influences[p.getTeam()] += i.getAllStudents()[c];
                             }
                         }
                     }
                 }
-
-                Player alreadyCalculated = null;
-                int newInfluence = 0;
-                //Sum the influence of the players who have different team number than the newOwner
-                //for instance, if the game has 2 or 3 players each of them has a different number of the team
-                //Reset the value of newInfluence only if p has a different number of team than the player
-                //who we already calculated the influence; in this way, when 2 or 3 players are playing it is resetted every time
-                //but in case of 4 players the influence of the teammates is summed
-                for(Player p : game.getOrderOfPlayers()){
-                    if(p != newOwner && p.getTeam() != newOwner.getTeam()){
-                        if(alreadyCalculated == null || alreadyCalculated.getTeam() != p.getTeam()){
-                            newInfluence = 0;
-                        }
-                        for(int c=0; c< Constants.NUMBEROFKINGDOMS; c++){
-                            for(Island i: a.getBelongingIslands()){
-                                if(i.getAllStudents()[c] > 0 && p.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
-                                    newInfluence += i.getAllStudents()[c];
-                                }
-                            }
-
-                        }
-                        if(newInfluence > maxInfluence){
-                            newOwner = p;
-                            maxInfluence = newInfluence;
-                        }
-                        alreadyCalculated = p;
+                //Trova il massimo nel vettore influenza e si salva il team corrispondente
+                int maxInfluence = 0;
+                int teamMaxInfluence = 0;
+                for(int i = 0; i< influences.length; i++){
+                    if(influences[i] > maxInfluence){
+                        maxInfluence = influences[i];
+                        teamMaxInfluence = i;
                     }
                 }
-                if(maxInfluence == newInfluence){
-                    newOwner = oldOwner;
+                boolean tie = false;
+                //Controlla se ci sono due giocatori diversi con la stessa influenza:
+                //in quel caso si ha un pareggio
+                for(int i = 0; i< influences.length; i++){
+                    if(influences[i] == maxInfluence && i != teamMaxInfluence){
+                        tie = true;
+                        break;
+                    }
                 }
 
-                if(maxInfluence > 0){
-                    a.changeOwner(newOwner);
-                    System.out.println("The new owner is " + newOwner.getNickname());
+                  /*Procede con il cambiamento di torri solo se:
+                  - Almeno un giocatore ha l'influenza su quell'isola (maxInfluence >0)
+                  - l'arcipelago non era di nessuno O è cambia il team proprietario
+                  - non c'è un pareggio
+
+                   */
+                if(maxInfluence > 0 && (oldOwner == null || oldOwner.getTeam() != teamMaxInfluence) && !tie){
                     for(int i = 0; i < a.getBelongingIslands().size(); i++) {
                         //Only if the newOwner is different from the oldOwner (or this was null) change the towers
-                        if(oldOwner != null && oldOwner.getTeam() != newOwner.getTeam()){
-                            System.out.println("I should not enter int this if ");
-                            for(Player p : game.getOrderOfPlayers()){
-                                if(oldOwner.getTeam() == p.getTeam() && p.getColorOfTowers() != null){
-                                    p.getMyBoard().getTowersOnBoard().addTower();
-                                }
-                                if(newOwner.getTeam() == p.getTeam() && p.getColorOfTowers() != null){
-                                    p.getMyBoard().getTowersOnBoard().removeTower();
-                                    //checkWinner(newOwner);
-                                    //TODO: if the number of towers finish, the game is over
-                                }
+
+                        for(Player p : game.getOrderOfPlayers()){
+                            if(oldOwner != null && oldOwner.getTeam() == p.getTeam() && p.getColorOfTowers() != null){
+                                p.getMyBoard().getTowersOnBoard().addTower();
                             }
-                        }else if(oldOwner == null){
-                            for(Player p : game.getOrderOfPlayers()){
-                                if(newOwner.getTeam() == p.getTeam() && p.getColorOfTowers() != null){
-                                    p.getMyBoard().getTowersOnBoard().removeTower();
-                                }
+                            if(p.getTeam() == teamMaxInfluence && p.getColorOfTowers() != null){
+                                p.getMyBoard().getTowersOnBoard().removeTower();
+                                a.changeOwner(p);
                             }
                         }
                     }
@@ -129,6 +117,8 @@ public class Character4 extends Characters {
             }
         }
     }
+
+
 
 
 
