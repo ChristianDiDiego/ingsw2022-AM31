@@ -261,6 +261,9 @@ public class Game implements Cloneable {
             index++;
         }
         index = index + 1;
+        if(index == listOfPlayers.size()) {
+            index = 0;
+        }
         currentPlayer = listOfPlayers.get(index);
         support.firePropertyChange("PhaseChanged", "", Phase.CARD_SELECTION);
         support.firePropertyChange("currentPlayerChanged", "CS", currentPlayer.getNickname());
@@ -343,6 +346,7 @@ public class Game implements Cloneable {
             case CLOUD_SELECTION:
                 if(getCurrentPlayer()==orderOfPlayers.get(orderOfPlayers.size()-1)){
                     phase = Phase.CARD_SELECTION;
+                    System.out.println("Sono entrato nell'if di cloud_selection");
                     support.firePropertyChange("lastTurnPlayer", currentPlayer, orderOfPlayers.get(0));
                     currentPlayer = orderOfPlayers.get(0);
                 }else{

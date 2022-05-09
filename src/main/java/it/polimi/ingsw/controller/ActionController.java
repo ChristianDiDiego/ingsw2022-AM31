@@ -444,7 +444,7 @@ public class ActionController {
                             if(turnController.isFinished() == true){
                                 turnController.getGameHandler().endGame();
                             }
-                            game.nextPhase();
+                            //game.nextPhase();
                             turnController.startTurn();
                         }else{
                             game.nextPhase();

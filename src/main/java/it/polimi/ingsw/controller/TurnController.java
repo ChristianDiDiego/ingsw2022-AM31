@@ -94,8 +94,19 @@ public class TurnController {
                             cardToUse = c;
                             player.setLastUsedCard(c);
                             System.out.println("Carta giocata");
-
-                            if(player == game.getListOfPlayer().get(game.getListOfPlayer().size()-1)){
+                            int index = 0;
+                            for( Player p : game.getListOfPlayer()){
+                                if(p.getNickname().equals(player.getNickname())){
+                                    break;
+                                }
+                                index++;
+                            }
+                            index = index + 1;
+                            if(index == game.getListOfPlayer().size()) {
+                                index = 0;
+                            }
+                            if(game.getListOfPlayer().get(index) == game.getOrderOfPlayers().get(0)){
+                            //if(player == game.getListOfPlayer().get(game.getListOfPlayer().size()-1)){
                                 //Send a message to all saying that the card selection phase is finished
                                 game.findPlayerOrder();
                                 game.nextPhase();
