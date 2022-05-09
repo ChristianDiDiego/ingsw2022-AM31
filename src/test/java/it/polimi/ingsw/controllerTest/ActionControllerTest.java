@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.expertMode.Character1;
 import it.polimi.ingsw.utilities.ListOfBoards;
 import org.junit.jupiter.api.Test;
 
@@ -168,6 +169,34 @@ class ActionControllerTest {
         assertFalse(gameHandler.getController().getTurnController().getActionController().checkColors(pl1, colors));
         StudsAndProfsColor[] colors2 = {StudsAndProfsColor.BLUE,StudsAndProfsColor.BLUE,StudsAndProfsColor.YELLOW};
         assertTrue(gameHandler.getController().getTurnController().getActionController().checkColors(pl1, colors2));
+    }
+
+    @Test
+    public void checkActionCharacter(){
+    //Character1:
+        Player pl1 = new Player("leo", ColorOfTower.WHITE);
+        pl1.setTeam(0);
+        Player pl2 = new Player("Lisa", ColorOfTower.BLACK);
+        pl2.setTeam(1);
+        GameHandler gameHandler = new GameHandler(pl1, 2, true);
+        gameHandler.addNewPlayer(pl2);
+        pl1.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.YELLOW);
+        pl2.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.RED);
+        assertEquals(8,pl1.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        assertEquals(8,pl2.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.YELLOW);
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.YELLOW);
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.RED);
+        Character1 character1 = new Character1(gameHandler.getGame());
+        gameHandler.getGame().setCharacterPlayable(character1);
+        gameHandler.getGame().getCurrentPlayer().addCoinsToWallet(20);
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 1, null));
+        gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 1, "1");
+        assertEquals(pl1, gameHandler.getController().getGame().getListOfArchipelagos().get(0).getOwner());
+        assertEquals(7,pl1.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+
+
+
     }
 
 

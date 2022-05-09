@@ -388,6 +388,10 @@ public class Game implements Cloneable {
     public Characters[] getCharactersPlayable() {
         return charactersPlayable;
     }
+    //Only for testing purposes:
+    public void setCharacterPlayable(Characters c){
+        charactersPlayable[0] = c;
+    }
 
     public boolean isExpertModeOn() {
         return expertModeOn;

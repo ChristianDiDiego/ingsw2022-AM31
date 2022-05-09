@@ -504,16 +504,16 @@ public class ActionController {
                         String playedCharacter = "";
                         switch (idOfCharacter) {
                             case 1 -> {
-                                playedCharacter = CharactersEnum.CHARACTER1.toString();
+
                                 for (Archipelago arc : game.getListOfArchipelagos()) {
-                                    if (arc.getIdArchipelago() == Integer.parseInt(action)) {
-                                        Character1 character1 = new Character1(game);
-                                        Integer actionToUse = tryParseInteger(action);
-                                        if(actionToUse == null){
-                                            System.out.println(ErrorMessage.ActionNotValid);
-                                            support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
-                                            return false;
-                                        }
+                                    Integer actionToUse = tryParseInteger(action);
+                                    if(actionToUse == null){
+                                        System.out.println(ErrorMessage.ActionNotValid);
+                                        support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
+                                        return false;
+                                    }
+                                    if (arc.getIdArchipelago() == actionToUse) {
+                                        Character1 character1 = (Character1) c;
                                         if(character1.usePower(actionToUse)){
                                             support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
                                             if(game.getListOfArchipelagos().size()<4){
@@ -523,6 +523,7 @@ public class ActionController {
                                                     checkWinner(p);
                                                 }
                                             }
+                                            player.setUsedCharacter(character1);
                                             return true;
                                         }else{
                                             System.out.println("Error in playing character" + playedCharacter);
@@ -533,10 +534,10 @@ public class ActionController {
                                 return false;
                             }
                             case 2 -> {
-                                playedCharacter = CharactersEnum.CHARACTER2.toString();
                                 Character2 character2 = new Character2(game);
                                 if(character2.usePower()){
                                     support.firePropertyChange("playedCharacter", "", playedCharacter);
+                                    player.setUsedCharacter(character2);
                                     return true;
                                 }else{
                                     System.out.println("Error in playing character" + playedCharacter);
@@ -544,7 +545,6 @@ public class ActionController {
                                 }
                             }
                             case 3 -> {
-                                playedCharacter = CharactersEnum.CHARACTER3.toString();
                                 for (Archipelago arc : game.getListOfArchipelagos()) {
                                     Integer actionToUse = tryParseInteger(action);
                                     if(actionToUse == null){
@@ -556,6 +556,7 @@ public class ActionController {
                                         Character3 character3 = new Character3(game);
                                         if(character3.usePower(actionToUse)){
                                             support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
+                                            player.setUsedCharacter(character3);
                                             return true;
                                         }else{
                                             System.out.println("Error in playing character" + playedCharacter);
