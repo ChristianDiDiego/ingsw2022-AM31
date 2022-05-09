@@ -42,7 +42,7 @@ public class ActionParser {
     public synchronized boolean actionSerializer(String nickname, String message){
         //Every proper action message is composed of phase+action, so if
         //a message does not contain at least a space is not fine
-        if(!message.contains(" ")){
+        if(!message.contains(" ") || message.split(" ").length <=1){
             System.out.println(ErrorMessage.ActionNotValid);
             support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid );
             System.out.println("ERRORE INVIATO");
@@ -51,6 +51,7 @@ public class ActionParser {
             String[] input = message.split(" ");
             String phase = input[0];
             Player player = recognisePlayer(nickname);
+            System.out.println("input size:" + input.length);
             if( player != null){
                 switch (phase.toUpperCase(Locale.ROOT)) {
                     case "CARD" -> {
