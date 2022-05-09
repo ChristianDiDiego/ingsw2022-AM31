@@ -355,7 +355,7 @@ public class Game implements Cloneable {
                 }
                 break;
         }
-        //support.firePropertyChange("PhaseChanged", 0 , 1);
+        support.firePropertyChange("PhaseChanged", 0 , 1);
     }
 
     public Bag getBag(){
