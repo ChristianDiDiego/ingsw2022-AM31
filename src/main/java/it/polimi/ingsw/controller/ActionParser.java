@@ -115,7 +115,10 @@ public class ActionParser {
                             support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
                             return false;
                         }
-                        String action = input[2];
+                        String action = "";
+                        if(input.length >=3){
+                            action = input[2];
+                        }
                         //TODO: set in action controller to check
                         return actionController.checkActionCharacter(player, idOfCharacter, action);
                     }
