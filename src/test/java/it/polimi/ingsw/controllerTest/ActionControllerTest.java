@@ -196,7 +196,6 @@ class ActionControllerTest {
         assertEquals(7,pl1.getMyBoard().getTowersOnBoard().getNumberOfTowers());
 
 
-
     }
 
 

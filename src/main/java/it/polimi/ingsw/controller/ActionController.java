@@ -498,144 +498,153 @@ public class ActionController {
      */
     public boolean checkActionCharacter(Player player, int idOfCharacter, String action) {
         if(game.isExpertModeOn()){
-            if(player == game.getCurrentPlayer()){
-                for(Characters c :game.getCharactersPlayable()){
-                    if(c.getId() == idOfCharacter){
-                        String playedCharacter = "";
-                        switch (idOfCharacter) {
-                            case 1 -> {
-                                for (Archipelago arc : game.getListOfArchipelagos()) {
-                                    Integer actionToUse = tryParseInteger(action);
-                                    if(actionToUse == null){
-                                        System.out.println(ErrorMessage.ActionNotValid);
-                                        support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
-                                        return false;
-                                    }
-                                    if (arc.getIdArchipelago() == actionToUse) {
-                                        Character1 character1 = (Character1) c;
-                                        if(character1.usePower(actionToUse)){
-                                            playedCharacter = CharactersEnum.CHARACTER1.toString();
-                                            support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
-                                            if(game.getListOfArchipelagos().size()<4){
-                                                turnController.getGameHandler().endGame();
-                                            }else{
-                                                for(Player p : game.getListOfPlayer()){
-                                                    checkWinner(p);
+            if(player == game.getCurrentPlayer()) {
+                if (player.getUsedCharacter() == null) {
+                    for (Characters c : game.getCharactersPlayable()) {
+                        if (c.getId() == idOfCharacter) {
+                            String playedCharacter = "";
+                            switch (idOfCharacter) {
+                                case 1 -> {
+                                    for (Archipelago arc : game.getListOfArchipelagos()) {
+                                        Integer actionToUse = tryParseInteger(action);
+                                        if (actionToUse == null) {
+                                            System.out.println(ErrorMessage.ActionNotValid);
+                                            support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
+                                            return false;
+                                        }
+                                        if (arc.getIdArchipelago() == actionToUse) {
+                                            Character1 character1 = (Character1) c;
+                                            if (character1.usePower(actionToUse)) {
+                                                playedCharacter = CharactersEnum.CHARACTER1.toString();
+                                                support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
+                                                if (game.getListOfArchipelagos().size() < 4) {
+                                                    turnController.getGameHandler().endGame();
+                                                } else {
+                                                    for (Player p : game.getListOfPlayer()) {
+                                                        checkWinner(p);
+                                                    }
                                                 }
+                                                player.setUsedCharacter(character1);
+                                                return true;
+                                            } else {
+                                                System.out.println("Error in playing character" + playedCharacter);
+                                                return false;
                                             }
-                                            player.setUsedCharacter(character1);
-                                            return true;
-                                        }else{
-                                            System.out.println("Error in playing character" + playedCharacter);
-                                            return false;
                                         }
                                     }
-                                }
-                                return false;
-                            }
-                            case 2 -> {
-                                Character2 character2 = (Character2) c;
-                                if(character2.usePower()){
-                                    playedCharacter = CharactersEnum.CHARACTER2.toString();
-                                    support.firePropertyChange("playedCharacter", "", playedCharacter);
-                                    player.setUsedCharacter(character2);
-                                    return true;
-                                }else{
-                                    System.out.println("Error in playing character" + playedCharacter);
                                     return false;
                                 }
-                            }
-                            case 3 -> {
-                                for (Archipelago arc : game.getListOfArchipelagos()) {
-                                    Integer actionToUse = tryParseInteger(action);
-                                    if(actionToUse == null){
-                                        System.out.println(ErrorMessage.ActionNotValid);
-                                        support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
+                                case 2 -> {
+                                    Character2 character2 = (Character2) c;
+                                    if (character2.usePower()) {
+                                        playedCharacter = CharactersEnum.CHARACTER2.toString();
+                                        support.firePropertyChange("playedCharacter", "", playedCharacter);
+                                        player.setUsedCharacter(character2);
+                                        return true;
+                                    } else {
+                                        System.out.println("Error in playing character" + playedCharacter);
                                         return false;
                                     }
-                                    if (arc.getIdArchipelago() == actionToUse) {
-                                        Character3 character3 = (Character3) c;
-                                        playedCharacter = CharactersEnum.CHARACTER3.toString();
-                                        if(character3.usePower(actionToUse)){
-                                            support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
-                                            player.setUsedCharacter(character3);
-                                            return true;
-                                        }else{
-                                            System.out.println("Error in playing character" + playedCharacter);
+                                }
+                                case 3 -> {
+                                    for (Archipelago arc : game.getListOfArchipelagos()) {
+                                        Integer actionToUse = tryParseInteger(action);
+                                        if (actionToUse == null) {
+                                            System.out.println(ErrorMessage.ActionNotValid);
+                                            support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
                                             return false;
                                         }
+                                        if (arc.getIdArchipelago() == actionToUse) {
+                                            Character3 character3 = (Character3) c;
+                                            playedCharacter = CharactersEnum.CHARACTER3.toString();
+                                            if (character3.usePower(actionToUse)) {
+                                                support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
+                                                player.setUsedCharacter(character3);
+                                                return true;
+                                            } else {
+                                                System.out.println("Error in playing character" + playedCharacter);
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                    return false;
+                                }
+                                case 4 -> {
+                                    playedCharacter = CharactersEnum.CHARACTER4.toString();
+                                    Character4 character4 = (Character4) c;
+                                    character4.usePower();
+                                    support.firePropertyChange("playedCharacter", "", playedCharacter);
+                                    return true;
+                                }
+                                case 5 -> {
+                                    playedCharacter = CharactersEnum.CHARACTER5.toString();
+                                    Character5 character5 = (Character5) c;
+                                    character5.usePower();
+                                    support.firePropertyChange("playedCharacter", "", playedCharacter);
+                                    return true;
+                                }
+                                case 6 -> {
+                                    playedCharacter = CharactersEnum.CHARACTER6.toString();
+                                    Character6 character6 = (Character6) c;
+                                    try {
+                                        character6.usePower(StudsAndProfsColor.valueOf(action));
+                                    } catch (IllegalArgumentException e) {
+                                        System.out.println(ErrorMessage.ActionNotValid);
+                                        support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
+                                        return false;
+                                    }
+                                    support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
+                                    return true;
+                                }
+                                case 7 -> {
+                                    playedCharacter = CharactersEnum.CHARACTER7.toString();
+                                    Character7 character7 = (Character7) c;
+                                    if (!action.contains(",")) {
+                                        System.out.println(ErrorMessage.ActionNotValid);
+                                        support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
+                                        return false;
+                                    }
+                                    String[] colorDestination = action.split(",");
+                                    support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
+                                    try {
+                                        return character7.usePower(StudsAndProfsColor.valueOf(colorDestination[0]), StudsAndProfsColor.valueOf(colorDestination[1]), StudsAndProfsColor.valueOf(colorDestination[2]), StudsAndProfsColor.valueOf(colorDestination[3]));
+                                    } catch (IllegalArgumentException e) {
+                                        System.out.println(ErrorMessage.ActionNotValid);
+                                        support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
+                                        return false;
                                     }
                                 }
-                                return false;
-                            }
-                            case 4 -> {
-                                playedCharacter = CharactersEnum.CHARACTER4.toString();
-                                Character4 character4 = (Character4) c;
-                                character4.usePower();
-                                support.firePropertyChange("playedCharacter", "", playedCharacter);
-                                return true;
-                            }
-                            case 5 -> {
-                                playedCharacter = CharactersEnum.CHARACTER5.toString();
-                                Character5 character5 = (Character5) c;
-                                character5.usePower();
-                                support.firePropertyChange("playedCharacter", "", playedCharacter);
-                                return true;
-                            }
-                            case 6 -> {
-                                playedCharacter = CharactersEnum.CHARACTER6.toString();
-                                Character6 character6 = (Character6) c;
-                                try{
-                                    character6.usePower(StudsAndProfsColor.valueOf(action));
-                                }catch (IllegalArgumentException e){
-                                    System.out.println(ErrorMessage.ActionNotValid);
-                                    support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
+                                case 8 -> {
+                                    playedCharacter = CharactersEnum.CHARACTER8.toString();
+                                    Character8 character8 = (Character8) c;
+                                    character8.usePower();
+                                    support.firePropertyChange("playedCharacter", "", playedCharacter);
+                                    return true;
+                                }
+                                default -> {
+                                    System.out.println(ErrorMessage.characterNotValid);
+                                    support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.characterNotValid);
                                     return false;
                                 }
-                                support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
-                                return true;
-                            }
-                            case 7 -> {
-                                playedCharacter = CharactersEnum.CHARACTER7.toString();
-                                Character7 character7 = (Character7) c;
-                                if(!action.contains(",")){
-                                    System.out.println(ErrorMessage.ActionNotValid);
-                                    support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
-                                    return false;
-                                }
-                                String[] colorDestination = action.split(",");
-                                support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
-                                try{
-                                    return character7.usePower(StudsAndProfsColor.valueOf(colorDestination[0]), StudsAndProfsColor.valueOf(colorDestination[1]), StudsAndProfsColor.valueOf(colorDestination[2]), StudsAndProfsColor.valueOf(colorDestination[3]));
-                                }catch (IllegalArgumentException e){
-                                    System.out.println(ErrorMessage.ActionNotValid);
-                                    support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
-                                    return false;
-                                }
-                            }
-                            case 8 -> {
-                                playedCharacter = CharactersEnum.CHARACTER8.toString();
-                                Character8 character8 = (Character8) c;
-                                character8.usePower();
-                                support.firePropertyChange("playedCharacter", "", playedCharacter);
-                                return true;
-                            }
-                            default -> {
-                                System.out.println(ErrorMessage.characterNotValid);
-                                support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.characterNotValid );
-                                return false;
                             }
                         }
                     }
+                    System.out.println("The selected character is not available for this game");
+                    support.firePropertyChange("ErrorMessage",player.getNickname(), ErrorMessage.CharacterNotPresent);
+                    return false;
+                } else {
+                    System.out.println("you already played a character in this turn");
+                    support.firePropertyChange("ErrorMessage",player.getNickname(), ErrorMessage.AlreadyUsedCharacter);
+                    return false;
                 }
-                System.out.println("The selected character is not available for this game");
-                return false;
-            }else{
+            }else {
                 System.out.println("Is not your turn");
+                support.firePropertyChange("ErrorMessage",player.getNickname(), ErrorMessage.NotYourTurn);
                 return false;
             }
         }else{
             System.out.println("You are not playing in expert mode");
+            support.firePropertyChange("ErrorMessage",player.getNickname(), ErrorMessage.NotExpertMode);
             return false;
         }
 

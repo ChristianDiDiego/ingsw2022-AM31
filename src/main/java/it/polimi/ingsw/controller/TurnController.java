@@ -51,18 +51,26 @@ public class TurnController {
     public void startTurn(){
         if(game.getBag().getNumberOfLeftStudents() == 0 || game.getCurrentPlayer().getMyDeck().getLeftCards().size() == 0) {
             isFinished = true;
-        }else{
-            //Add the students to the clouds
-            for(Cloud cloud : game.getListOfClouds()){
-                cloud.addStudents( game.getBag().pickStudent(gameHandler.getNumberOfStudentsOnCloud()) );
-            }
-
-            if(game.getListOfPlayer().get(0).getMyDeck().getLeftCards().size() == Constants.NUMBEROFCARDSINDECK){
-                support.firePropertyChange("StartingGame", "", "Game is starting...");
-
-            }
-
         }
+        //Add the students to the clouds
+        /*for(Cloud cloud : game.getListOfClouds()){
+            cloud.addStudents( game.getBag().pickStudent(gameHandler.getNumberOfStudentsOnCloud()) );
+        }*/
+
+        if(game.getListOfPlayer().get(0).getMyDeck().getLeftCards().size() == Constants.NUMBEROFCARDSINDECK){
+            support.firePropertyChange("StartingGame", "", "Game is starting...");
+        }
+
+        for(Cloud cloud : game.getListOfClouds()){
+            cloud.addStudents( game.getBag().pickStudent(gameHandler.getNumberOfStudentsOnCloud()) );
+        }
+
+        if(game.isExpertModeOn() == true){
+            for(Player p: game.getListOfPlayer()){
+              p.setUsedCharacter(null);
+            }
+        }
+
 
         System.out.println("Turn started");
         game.nextPhase();
@@ -123,22 +131,22 @@ public class TurnController {
                     return true;
                 }else{
                     System.out.println("Card already played in this turn");
-                    support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.CardAlreadyTaken);
+                    //support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.CardAlreadyTaken);
                     return false;
                 }
             }else{
                 System.out.println("Card not present in the deck!");
-                support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.CardNotPresent);
+                //support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.CardNotPresent);
                 return false;
             }
 
         }else if(game.getPhase()== Phase.CARD_SELECTION || player != game.getCurrentPlayer()){
             System.out.println("non è il tuo turno!!");
-            support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.NotYourTurn);
+            //support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.NotYourTurn);
             return false;
         }else {
             System.out.println("hai inviato un'azione non valida, riprova");
-            support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
+            //support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
             return false;
         }
     }

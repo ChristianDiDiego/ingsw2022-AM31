@@ -18,6 +18,11 @@ public class ErrorMessage {
     public static String ActionNotValid = "This action is not valid";
     public static String CloudTaken = "This cloud is alreay taken, please choose another one";
     public static String TooManySteps = "The card that you played does not allow you to do these steps! You can do max ";
-
     public static String characterNotValid = "Character not recognised";
+    public static String AlreadyUsedCharacter = "You already used one character in this turn, so you can't use another one";
+    public static String CharacterNotPresent = "The selected character is not available for this game";
+
+    public static String NotExpertMode = "Game is not in expert mode, so you can't use any character";
+
+
 }

@@ -43,6 +43,7 @@ public abstract class Characters implements Serializable {
         } else {
             if(game.getCurrentPlayer().getWallet() >= price + 1) {
                 game.getCurrentPlayer().removeCoinsFromWallet(price + 1);
+
                 game.addCoinInBank(price+1);
             }else {
                 System.out.println("you don't have enough money to use this power");
