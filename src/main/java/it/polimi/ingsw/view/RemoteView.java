@@ -103,12 +103,29 @@ public class RemoteView implements PropertyChangeListener{
                                 throw new RuntimeException(e);
                             }
                             showMessage("Playable characters: \n");
+
+                            try {
+                                TimeUnit.MICROSECONDS.sleep(500);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+
                             for(Characters c : currentGame.getCharactersPlayable()){
                                 showMessage("Character: " + c.getId() + "\n Description: " + c.getDescriptionOfPower() + "\n Price:" + c.getPrice() + "\n\n");
+                            }
+                            try {
+                                TimeUnit.MICROSECONDS.sleep(500);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
                             }
                         }
                         synchronized (lock){
                             showMessage("Available coins: " + currentGame.getCurrentPlayer().getWallet());
+                            try {
+                                TimeUnit.MICROSECONDS.sleep(500);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     }
                 }

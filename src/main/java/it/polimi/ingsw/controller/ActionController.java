@@ -514,6 +514,7 @@ public class ActionController {
                                     if (arc.getIdArchipelago() == actionToUse) {
                                         Character1 character1 = (Character1) c;
                                         if(character1.usePower(actionToUse)){
+                                            playedCharacter = CharactersEnum.CHARACTER1.toString();
                                             support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
                                             if(game.getListOfArchipelagos().size()<4){
                                                 turnController.getGameHandler().endGame();
@@ -535,6 +536,7 @@ public class ActionController {
                             case 2 -> {
                                 Character2 character2 = (Character2) c;
                                 if(character2.usePower()){
+                                    playedCharacter = CharactersEnum.CHARACTER2.toString();
                                     support.firePropertyChange("playedCharacter", "", playedCharacter);
                                     player.setUsedCharacter(character2);
                                     return true;
@@ -553,6 +555,7 @@ public class ActionController {
                                     }
                                     if (arc.getIdArchipelago() == actionToUse) {
                                         Character3 character3 = (Character3) c;
+                                        playedCharacter = CharactersEnum.CHARACTER3.toString();
                                         if(character3.usePower(actionToUse)){
                                             support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
                                             player.setUsedCharacter(character3);
