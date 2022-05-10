@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Check if the methods of Entrance class work
+ */
 public class EntranceTest {
     private Entrance entrance = new Entrance();
     int[] i = {0,1,1,1,4};

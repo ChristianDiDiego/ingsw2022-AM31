@@ -9,6 +9,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests if: the player correctly pay in order to use the card
+ * show the description of a card
+ * get if a card has been already used
+ */
 class CharactersTest {
     Player player1 = new Player("player1", ColorOfTower.BLACK);
     Player player2 = new Player("player2", ColorOfTower.WHITE);

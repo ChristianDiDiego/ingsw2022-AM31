@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Check if the methods of Island class work
+ */
 class IslandTest {
     Island island = new Island(2);
 

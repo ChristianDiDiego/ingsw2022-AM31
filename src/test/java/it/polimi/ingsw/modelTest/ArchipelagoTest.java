@@ -9,6 +9,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests if the owner of an archipelago change
+ * if mother nature is properly moved
+ */
 class ArchipelagoTest {
 
     private Archipelago archi = new Archipelago(2);

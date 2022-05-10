@@ -13,6 +13,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests if the power of the character 7 works
+ */
 class Character7Test {
     Player player1 = new Player("player1", ColorOfTower.BLACK);
     Player player2 = new Player("player2", ColorOfTower.WHITE);

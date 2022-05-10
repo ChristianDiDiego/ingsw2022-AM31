@@ -9,6 +9,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Check if the methods of Game class work
+ */
 class GameTest {
 
     Player pl1 = new Player("carmine", ColorOfTower.WHITE);

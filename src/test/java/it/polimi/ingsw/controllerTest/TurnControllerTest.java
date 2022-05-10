@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests that the cards are properly played
+ */
 class TurnControllerTest {
     GameHandler gameHandler;
 

@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests if the game is properly started
+ */
 class GameHandlerTest {
     private GameHandler gameHandler;
 

@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests the methods of Cloud class
+ */
 class CloudTest {
     Cloud cloud = new Cloud(3);
 

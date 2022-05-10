@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests if the students are correctly picked from the bag
+ */
 class BagTest {
 
     /**

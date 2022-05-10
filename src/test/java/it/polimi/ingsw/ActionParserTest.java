@@ -11,6 +11,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+/**
+ * Check if the actionParser properly parses the messagese of the user
+ */
 public class ActionParserTest {
     GameHandler gameHandler;
 

@@ -6,6 +6,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Check if the methods of ProfessorsTable class work
+ * tests if the professors are properly removed/added
+ */
 class ProfessorsTableTest {
     ProfessorsTable professorsTable = new ProfessorsTable();
 

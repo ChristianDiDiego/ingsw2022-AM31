@@ -7,6 +7,9 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
+/**
+ * Check if the methods of DiningRoom class work
+ */
 public class DiningRoomTest {
     private DiningRoom diningRoom = new DiningRoom();
 

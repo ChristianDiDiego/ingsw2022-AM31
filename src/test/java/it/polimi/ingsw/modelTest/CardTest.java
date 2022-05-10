@@ -8,6 +8,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests if two cards are properly compared;
+ * Check if the power of a card is properly read
+ * Check if the maxSteps of a card is properly read
+ */
 class CardTest {
     /**
      * Check if the maxSteps of a card is properly read
