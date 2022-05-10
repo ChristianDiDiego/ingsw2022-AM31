@@ -171,12 +171,13 @@ public class RemoteView implements PropertyChangeListener{
                                 }
                             }
                             try {
-                                TimeUnit.MICROSECONDS.sleep(500);
+                                TimeUnit.MICROSECONDS.sleep(1000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
-                            showMessage(String.format(gameMessage.moveMotherNatureMessage, player.getLastUsedCard().getMaxSteps()));
-
+                            synchronized (lock) {
+                                showMessage(String.format(gameMessage.moveMotherNatureMessage, player.getLastUsedCard().getMaxSteps()));
+                            }
                         }case CLOUD_SELECTION -> {
                             ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
                             showMessage(clouds);
