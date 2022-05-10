@@ -29,21 +29,21 @@ public class Character7 extends Characters{
      * @param color2ToRemove student in the dining room
      */
     public boolean usePower(StudsAndProfsColor color1ToAdd, StudsAndProfsColor color2ToAdd, StudsAndProfsColor color1ToRemove, StudsAndProfsColor color2ToRemove) {
-        Entrance entrance = game.getCurrentPlayer().getMyBoard().getEntrance();
-        DiningRoom diningRoom = game.getCurrentPlayer().getMyBoard().getDiningRoom();
-        if(entrance.getStudentsByColor(color1ToAdd) > 0 && entrance.getStudentsByColor(color2ToAdd) > 0 && diningRoom.getStudentsByColor(color1ToRemove) > 0 && diningRoom.getStudentsByColor(color2ToRemove) > 0) {
+        //Entrance entrance = game.getCurrentPlayer().getMyBoard().getEntrance();
+        //DiningRoom diningRoom = game.getCurrentPlayer().getMyBoard().getDiningRoom();
+        if(checkStudent(color1ToAdd, color2ToAdd, color1ToRemove, color2ToRemove)) {
             if (payForUse()) {
                 int[] toAdd = new int[Constants.NUMBEROFKINGDOMS];
                 toAdd[color1ToRemove.ordinal()]++;
                 toAdd[color2ToRemove.ordinal()]++;
 
-                entrance.removeStudent(color1ToAdd);
-                entrance.removeStudent(color2ToAdd);
-                diningRoom.addStudent(color1ToAdd);
-                diningRoom.addStudent(color1ToAdd);
-                diningRoom.removeStudent(color1ToRemove);
-                diningRoom.removeStudent(color2ToRemove);
-                entrance.addStudent(toAdd);
+                game.getCurrentPlayer().getMyBoard().getEntrance().removeStudent(color1ToAdd);
+                game.getCurrentPlayer().getMyBoard().getEntrance().removeStudent(color2ToAdd);
+                game.getCurrentPlayer().getMyBoard().getDiningRoom().addStudent(color1ToAdd);
+                game.getCurrentPlayer().getMyBoard().getDiningRoom().addStudent(color1ToAdd);
+                game.getCurrentPlayer().getMyBoard().getDiningRoom().removeStudent(color1ToRemove);
+                game.getCurrentPlayer().getMyBoard().getDiningRoom().removeStudent(color2ToRemove);
+                game.getCurrentPlayer().getMyBoard().getEntrance().addStudent(toAdd);
                 game.assignProfessor(color1ToAdd);
                 game.assignProfessor(color2ToAdd);
                 game.assignProfessor(color1ToRemove);
@@ -55,6 +55,19 @@ public class Character7 extends Characters{
         }else {
             System.out.println("You don't have some of these students");
             return false;
+        }
+    }
+
+    public boolean checkStudent(StudsAndProfsColor color1ToAdd, StudsAndProfsColor color2ToAdd, StudsAndProfsColor color1ToRemove, StudsAndProfsColor color2ToRemove) {
+        if(game.getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color1ToAdd) < 1 && game.getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color2ToAdd) < 1 && game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color1ToRemove) < 1 && game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color2ToRemove) < 1) {
+            return false;
+        } else {
+            if(color1ToAdd == color2ToAdd && game.getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color1ToAdd) < 2) {
+                return false;
+            } else if(color1ToRemove == color2ToRemove && game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color1ToRemove) < 2) {
+                return false;
+            }
+            return true;
         }
     }
 }
