@@ -533,7 +533,7 @@ public class ActionController {
                                 return false;
                             }
                             case 2 -> {
-                                Character2 character2 = new Character2(game);
+                                Character2 character2 = (Character2) c;
                                 if(character2.usePower()){
                                     support.firePropertyChange("playedCharacter", "", playedCharacter);
                                     player.setUsedCharacter(character2);
@@ -552,7 +552,7 @@ public class ActionController {
                                         return false;
                                     }
                                     if (arc.getIdArchipelago() == actionToUse) {
-                                        Character3 character3 = new Character3(game);
+                                        Character3 character3 = (Character3) c;
                                         if(character3.usePower(actionToUse)){
                                             support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
                                             player.setUsedCharacter(character3);
@@ -567,21 +567,21 @@ public class ActionController {
                             }
                             case 4 -> {
                                 playedCharacter = CharactersEnum.CHARACTER4.toString();
-                                Character4 character4 = new Character4(game);
+                                Character4 character4 = (Character4) c;
                                 character4.usePower();
                                 support.firePropertyChange("playedCharacter", "", playedCharacter);
                                 return true;
                             }
                             case 5 -> {
                                 playedCharacter = CharactersEnum.CHARACTER5.toString();
-                                Character5 character5 = new Character5(game);
+                                Character5 character5 = (Character5) c;
                                 character5.usePower();
                                 support.firePropertyChange("playedCharacter", "", playedCharacter);
                                 return true;
                             }
                             case 6 -> {
                                 playedCharacter = CharactersEnum.CHARACTER6.toString();
-                                Character6 character6 = new Character6(game);
+                                Character6 character6 = (Character6) c;
                                 try{
                                     character6.usePower(StudsAndProfsColor.valueOf(action));
                                 }catch (IllegalArgumentException e){
@@ -594,7 +594,7 @@ public class ActionController {
                             }
                             case 7 -> {
                                 playedCharacter = CharactersEnum.CHARACTER7.toString();
-                                Character7 character7 = new Character7(game);
+                                Character7 character7 = (Character7) c;
                                 if(!action.contains(",")){
                                     System.out.println(ErrorMessage.ActionNotValid);
                                     support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
@@ -612,7 +612,7 @@ public class ActionController {
                             }
                             case 8 -> {
                                 playedCharacter = CharactersEnum.CHARACTER8.toString();
-                                Character8 character8 = new Character8(game);
+                                Character8 character8 = (Character8) c;
                                 character8.usePower();
                                 support.firePropertyChange("playedCharacter", "", playedCharacter);
                                 return true;
