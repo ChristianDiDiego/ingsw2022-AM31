@@ -140,9 +140,8 @@ public class Cli{
         }
 
         public void printLastUsedCards (List<Player> players) {
-            System.out.println("CARDS PLAYED IN THIS TURN~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("\nCARDS PLAYED IN THIS TURN~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             int min = Constants.NUMBEROFCARDSINDECK;
-            int i;
             for (Player p : players) {
                 if (p.getMyDeck().getLeftCards().size() < min) {
                     min = p.getMyDeck().getLeftCards().size();

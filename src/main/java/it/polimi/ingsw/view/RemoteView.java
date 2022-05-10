@@ -75,15 +75,7 @@ public class RemoteView implements PropertyChangeListener{
                     showMessage(clouds);
                 }
 
-                ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
-                synchronized (lock){
-                    try {
-                        TimeUnit.MICROSECONDS.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    showMessage(players);
-                }
+
 
                 if(currentGame.getCurrentPlayer() == player){
                     synchronized (lock){
@@ -143,11 +135,13 @@ public class RemoteView implements PropertyChangeListener{
                         showMessage(gameMessage.cardSelectionMessage);
                     }
                 }else{
+
                     try {
                         TimeUnit.MICROSECONDS.sleep(500);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
+
                     System.out.println("is the turn of " + evt.getNewValue());
                     showMessage("is the turn of " + evt.getNewValue());
                 }
@@ -159,7 +153,18 @@ public class RemoteView implements PropertyChangeListener{
             synchronized (this){
                 if(currentGame.getCurrentPlayer() == player){
                     switch (currentGame.getPhase()){
-                        //case CARD_SELECTION ->
+                        case CARD_SELECTION ->{
+                            Object lock = new Object();
+                            ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
+                            try {
+                                TimeUnit.MICROSECONDS.sleep(500);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            synchronized (lock){
+                                showMessage(players);
+                            }
+                        }
 
                             //showMessage(gameMessage.cardSelectionMessage);
                         case MOVE_STUDENTS ->
@@ -179,11 +184,6 @@ public class RemoteView implements PropertyChangeListener{
 
                                 ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
                                 synchronized (lock) {
-                                    try {
-                                        TimeUnit.MICROSECONDS.sleep(500);
-                                    } catch (InterruptedException e) {
-                                        throw new RuntimeException(e);
-                                    }
                                     showMessage(archipelagos);
                                 }
                             }
