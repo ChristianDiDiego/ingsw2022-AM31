@@ -504,7 +504,6 @@ public class ActionController {
                         String playedCharacter = "";
                         switch (idOfCharacter) {
                             case 1 -> {
-
                                 for (Archipelago arc : game.getListOfArchipelagos()) {
                                     Integer actionToUse = tryParseInteger(action);
                                     if(actionToUse == null){

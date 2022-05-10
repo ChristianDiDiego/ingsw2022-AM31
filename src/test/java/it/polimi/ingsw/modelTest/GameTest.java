@@ -113,4 +113,8 @@ class GameTest {
         assertEquals(18, game.getBank());
     }
 
+    @Test
+    public void getArchipelagoByIdTest(){
+        assertEquals(game.getListOfArchipelagos().get(1), game.getArchipelagoById(2));
+    }
 }

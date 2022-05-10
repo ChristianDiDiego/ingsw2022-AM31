@@ -102,13 +102,13 @@ public class Character1 extends Characters {
                                 }
                             }
                         }
-                        checkUnification(a);
+                        checkUnification(game.getArchipelagoById(idArchipelago));
                         if(game.getListOfArchipelagos().size() < 4) {
                         //    turnController.getGameHandler().endGame();
                         }
                     }
                 } else if (a.getIsMNPresent() && a.getIsForbidden() == true){
-                    a.setIsForbidden(false);
+                    game.getArchipelagoById(idArchipelago).setIsForbidden(false);
                 }
             }
 

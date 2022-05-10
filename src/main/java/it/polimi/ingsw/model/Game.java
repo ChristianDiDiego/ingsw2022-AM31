@@ -184,14 +184,11 @@ public class Game implements Cloneable {
                     return o1.getLastUsedCard().compareTo(o2.getLastUsedCard());
                 }
             }
-
         });
         this.currentPlayer = orderOfPlayers.get(0);
         System.out.println("If should notify the curent player with "+ currentPlayer.getNickname());
 
         support.firePropertyChange("currentPlayerChanged", "aaaa", currentPlayer.getNickname());
-
-
 
     }
 

@@ -14,7 +14,6 @@ public interface View {
     public void printLogo();
 
     void printMyDeck(Deck deck);
-
     void printLastUsedCards(List<Player> players);
     void printBoards(List<Player> players);
 

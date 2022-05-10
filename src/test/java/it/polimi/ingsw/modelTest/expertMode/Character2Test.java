@@ -29,8 +29,14 @@ class Character2Test {
         assertNotEquals(character2, gameHandler.getGame().getCurrentPlayer().getUsedCharacter());
         gameHandler.getGame().nextPhase();
         gameHandler.getGame().nextPhase();
+
+        System.out.println(gameHandler.getGame().getPhase());
         character2.usePower();
+        gameHandler.getGame().nextPhase();
         assertEquals(character2, gameHandler.getGame().getCurrentPlayer().getUsedCharacter());
+        gameHandler.getGame().getCurrentPlayer().setLastUsedCard(gameHandler.getGame().getCurrentPlayer().getMyDeck().getLeftCards().get(2));
+        gameHandler.getGame().moveMotherNature(4);
+        assertEquals(true, gameHandler.getGame().getListOfArchipelagos().get(4).getIsMNPresent());
 
     }
 
