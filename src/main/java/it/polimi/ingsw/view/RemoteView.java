@@ -193,7 +193,7 @@ public class RemoteView implements PropertyChangeListener{
                                 throw new RuntimeException(e);
                             }
                             synchronized (lock) {
-                                showMessage(String.format(gameMessage.moveMotherNatureMessage, player.getLastUsedCard().getMaxSteps()));
+                                showMessage(String.format(gameMessage.moveMotherNatureMessage, player.getLastUsedCard().getMaxSteps() + ((player.getUsedCharacter() == null)? 0: player.getUsedCharacter().getBonusSteps())));
                             }
                         }case CLOUD_SELECTION -> {
                             ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
@@ -295,7 +295,20 @@ public class RemoteView implements PropertyChangeListener{
                     showMessage("Your teammate is " + teammate + "\n" + "Your color of towers is " + color);
                 }
             }
-        }/*else if(evt.getPropertyName().equals("EndGame")){
+        }else if(evt.getPropertyName().equals("DeckRequired")){
+            System.out.println("im notified");
+            if(player.getNickname().equals(evt.getNewValue())){
+                showMessage(player.getMyDeck());
+            }
+        }else if(evt.getPropertyName().equals("AvailableCharactersRequired")){
+            if(player.getNickname().equals(evt.getNewValue())){
+                for(Characters c : currentGame.getCharactersPlayable()){
+                    showMessage("Character: " + c.getId() + "\n Description: " + c.getDescriptionOfPower() + "\n Price:" + c.getPrice() + "\n\n");
+                }
+            }
+        }
+
+        /*else if(evt.getPropertyName().equals("EndGame")){
             if(evt.getNewValue().equals(player.getTeam())){
                 showMessage("The game has ended \n YOU WON");
             }else{

@@ -51,6 +51,8 @@ public class ActionParserTest {
         Assertions.assertFalse(gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("carmine", "MOVEST B0,R-0,G-0,Y-0"));
         Assertions.assertFalse(gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("carmine", "MOVEST B-,R-0,G-0,Y-0"));
         Assertions.assertFalse(gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("carmine", "MOVEST B-A,R-0,G-0,Y-0"));
+        Assertions.assertFalse(gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("carmine", "MOVEST 5-5,R-0,G-0,Y-0"));
+        Assertions.assertFalse(gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("carmine", "MOVEST B-5,-0,G-0,Y-0"));
 
         assertTrue(gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer("carmine", "MOVEST B-0,R-0,G-0,Y-0"));
 

@@ -8,6 +8,7 @@ import it.polimi.ingsw.view.RemoteView;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -43,6 +44,17 @@ public class ActionParser {
         //Every proper action message is composed of phase+action, so if
         //a message does not contain at least a space is not fine
         if(!message.contains(" ") || message.split(" ").length <=1){
+            if(message.equalsIgnoreCase("SHOWDECK")){
+                System.out.println("I received deck request");
+                support.firePropertyChange("DeckRequired", "", nickname);
+                System.out.println("Fire sent");
+                return true;
+            }else if (message.equalsIgnoreCase("SHOWAVAILABLECHARACTERS")){
+                if(getActionController().getGame().isExpertModeOn()){
+                    support.firePropertyChange("AvailableCharactersRequired", "", nickname);
+                    return true;
+                }
+            }
             System.out.println(ErrorMessage.ActionNotValid);
             support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid );
             System.out.println("ERRORE INVIATO");
@@ -74,17 +86,12 @@ public class ActionParser {
                         StudsAndProfsColor[] colors = new StudsAndProfsColor[colorDestination.length];
                         int[] destinations = new int[colorDestination.length];
                         for (int i = 0; i < colorDestination.length; i++) {
-                            if(!colorDestination[i].contains("-")){
+                            if(!colorDestination[i].contains("-") || colorDestination[i].split("-").length <=1  || colorDestination[i].split("-")[0].isEmpty() || colorDestination[i].split("-")[1].isEmpty()){
                                 System.out.println(ErrorMessage.ActionNotValid);
                                 support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
                                 return false;
                             }
                             colors[i] = charToColorEnum(colorDestination[i].split("-")[0].charAt(0));
-                            if(colorDestination[i].split("-").length <=1){
-                                System.out.println(ErrorMessage.ActionNotValid);
-                                support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
-                                return false;
-                            }
                             Integer tempDestination = tryParse(colorDestination[i].split("-")[1]);
                             if(tempDestination == null || colors[i] == null){
                                 System.out.println(ErrorMessage.ActionNotValid);

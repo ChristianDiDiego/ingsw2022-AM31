@@ -27,10 +27,13 @@ public class Cli{
     private final String ip;
     private final int port;
     private boolean active = true;
+    private Object lockPrint;
+    Socket socket;
 
     public Cli(String ip, int port) {
         this.ip = ip;
         this.port = port;
+        this.lockPrint = new Object();
     }
 
     public synchronized boolean isActive() {
@@ -96,8 +99,14 @@ public class Cli{
                         String inputLine = stdin.nextLine();
                         if(inputLine.length() > 0) {
                             //in inputline salvo quello che leggo da tastiera
-                            socketOut.println(inputLine);
-                            socketOut.flush();
+                            if(inputLine.equalsIgnoreCase("QUIT")){
+                                System.out.println("I should quit");
+                                socket.close();
+                                setActive(false);
+                            }else{
+                                socketOut.println(inputLine);
+                                socketOut.flush();
+                            }
                         }else{
                             System.out.println("Null input is not valid");
                         }
@@ -132,135 +141,145 @@ public class Cli{
         }
 
         public void printMyDeck (Deck deck){
-            System.out.println("YOUR DECK~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            for (Card c : deck.getLeftCards()) {
-                System.out.println("    Power: " + c.getPower() + " Steps: " + c.getMaxSteps());
+            synchronized (lockPrint){
+                System.out.println("YOUR DECK~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                for (Card c : deck.getLeftCards()) {
+                    System.out.println("    Power: " + c.getPower() + " Steps: " + c.getMaxSteps());
+                }
+                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             }
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         }
 
         public void printLastUsedCards (List<Player> players) {
-            System.out.println("\nCARDS PLAYED IN THIS TURN~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            int min = Constants.NUMBEROFCARDSINDECK;
-            for (Player p : players) {
-                if (p.getMyDeck().getLeftCards().size() < min) {
-                    min = p.getMyDeck().getLeftCards().size();
+            synchronized (lockPrint) {
+                System.out.println("\nCARDS PLAYED IN THIS TURN~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                int min = Constants.NUMBEROFCARDSINDECK;
+                for (Player p : players) {
+                    if (p.getMyDeck().getLeftCards().size() < min) {
+                        min = p.getMyDeck().getLeftCards().size();
+                    }
                 }
-            }
-            for (Player p : players) {
-                if (p.getMyDeck().getLeftCards().size() == min && p.getLastUsedCard() != null) {
-                    System.out.print("    Player " + p.getNickname() + " choose the card:");
-                    System.out.println(" Power: " + p.getLastUsedCard().getPower() + " Steps: " + p.getLastUsedCard().getMaxSteps());
+                for (Player p : players) {
+                    if (p.getMyDeck().getLeftCards().size() == min && p.getLastUsedCard() != null) {
+                        System.out.print("    Player " + p.getNickname() + " choose the card:");
+                        System.out.println(" Power: " + p.getLastUsedCard().getPower() + " Steps: " + p.getLastUsedCard().getMaxSteps());
+                    }
                 }
+                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             }
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         }
 
         public void printBoard(List<Board> boards) {
-            String green, red, yellow, pink, blue;
-            System.out.println("BOARDS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            for(Board b : boards) {
-                int[] nSDN = new int[]{0, 0, 0, 0, 0};
-                int[] nSE = new int[]{0, 0, 0, 0, 0};
-                int nT = b.getTowersOnBoard().getNumberOfTowers();
-                boolean[] hasProf = new boolean[]{false, false, false, false, false};
-                for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
-                    nSDN[i] = b.getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]);
-                    nSE[i] = b.getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]);
-                    hasProf[i] = b.getProfessorsTable().getHasProf(StudsAndProfsColor.values()[i]);
-                }
-
-                StringBuilder boardString = new StringBuilder();
-                boardString.append(ColorsCli.RESET).append("    Board of player: " + b.getNickname() + "\n").append(ColorsCli.RESET);
-                for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
-                        boardString.append(ColorsCli.RESET).append("    ").append(ColorsCli.RESET);
-                    for (int k = 0; k < nSDN[j]; k++) {
-                        boardString.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.getColorByNumber(j));
+            synchronized (lockPrint) {
+                String green, red, yellow, pink, blue;
+                System.out.println("BOARDS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                for (Board b : boards) {
+                    int[] nSDN = new int[]{0, 0, 0, 0, 0};
+                    int[] nSE = new int[]{0, 0, 0, 0, 0};
+                    int nT = b.getTowersOnBoard().getNumberOfTowers();
+                    boolean[] hasProf = new boolean[]{false, false, false, false, false};
+                    for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
+                        nSDN[i] = b.getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]);
+                        nSE[i] = b.getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]);
+                        hasProf[i] = b.getProfessorsTable().getHasProf(StudsAndProfsColor.values()[i]);
                     }
-                    for (int k = nSDN[j]; k < Constants.MAXSTUDENTSINDINING; k++) {
-                        if ((k + 1) % 3 == 0) {
-                            boardString.append(ColorsCli.getColorByNumber(j)).append("© ").append(ColorsCli.getColorByNumber(j));
+
+                    StringBuilder boardString = new StringBuilder();
+                    boardString.append(ColorsCli.RESET).append("    Board of player: " + b.getNickname() + "\n").append(ColorsCli.RESET);
+                    for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
+                        boardString.append(ColorsCli.RESET).append("    ").append(ColorsCli.RESET);
+                        for (int k = 0; k < nSDN[j]; k++) {
+                            boardString.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.getColorByNumber(j));
+                        }
+                        for (int k = nSDN[j]; k < Constants.MAXSTUDENTSINDINING; k++) {
+                            if ((k + 1) % 3 == 0) {
+                                boardString.append(ColorsCli.getColorByNumber(j)).append("© ").append(ColorsCli.getColorByNumber(j));
+                            } else {
+                                boardString.append(ColorsCli.getColorByNumber(j)).append("◯ ").append(ColorsCli.getColorByNumber(j));
+                            }
+                        }
+                        if (hasProf[j]) {
+                            boardString.append(ColorsCli.getColorByNumber(j)).append(" | ⬢  ").append(ColorsCli.getColorByNumber(j));
                         } else {
-                            boardString.append(ColorsCli.getColorByNumber(j)).append("◯ ").append(ColorsCli.getColorByNumber(j));
+                            boardString.append(ColorsCli.getColorByNumber(j)).append(" | ⬡  ").append(ColorsCli.getColorByNumber(j));
+                        }
+                        boardString.append(ColorsCli.BLACK).append("\n").append(ColorsCli.BLACK);
+                    }
+
+                    boardString.append(ColorsCli.RESET).append("    Students in entrance: \n    ").append(ColorsCli.RESET);
+                    for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
+                        for (int k = 0; k < nSE[i]; k++) {
+                            boardString.append(ColorsCli.getColorByNumber(i)).append("● ").append(ColorsCli.getColorByNumber(i));
                         }
                     }
-                    if (hasProf[j]) {
-                        boardString.append(ColorsCli.getColorByNumber(j)).append(" | ⬢  ").append(ColorsCli.getColorByNumber(j));
-                    } else {
-                        boardString.append(ColorsCli.getColorByNumber(j)).append(" | ⬡  ").append(ColorsCli.getColorByNumber(j));
+                    boardString.append(ColorsCli.RESET).append("\n    Towers on board: \n    ").append(ColorsCli.RESET);
+                    for (int i = 0; i < nT; i++) {
+                        boardString.append(ColorsCli.RESET).append("♜ ").append(ColorsCli.BLACK).append(ColorsCli.RESET);
                     }
-                    boardString.append(ColorsCli.BLACK).append("\n").append(ColorsCli.BLACK);
+                    boardString.append(ColorsCli.RESET).append("\n").append(ColorsCli.RESET);
+                    System.out.println(boardString.toString());
                 }
-
-                boardString.append(ColorsCli.RESET).append("    Students in entrance: \n    ").append(ColorsCli.RESET);
-                for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
-                    for (int k = 0; k < nSE[i]; k++) {
-                        boardString.append(ColorsCli.getColorByNumber(i)).append("● ").append(ColorsCli.getColorByNumber(i));
-                    }
-                }
-                boardString.append(ColorsCli.RESET).append("\n    Towers on board: \n    ").append(ColorsCli.RESET);
-                for (int i = 0; i < nT; i++) {
-                    boardString.append(ColorsCli.RESET).append("♜ ").append(ColorsCli.BLACK).append(ColorsCli.RESET);
-                }
-                boardString.append(ColorsCli.RESET).append("\n").append(ColorsCli.RESET);
-                System.out.println(boardString.toString());
+                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             }
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         }
 
         public void printArchipelago(List<Archipelago> archipelagos) {
-            StringBuilder archipelago = new StringBuilder();
-            archipelago.append(ColorsCli.RESET).append("ARCHIPELAGOS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
-            System.out.println(archipelago.toString());
-            for(Archipelago a : archipelagos) {
-                int numberTower = a.getBelongingIslands().size();
-                archipelago = new StringBuilder();
-                archipelago.append(ColorsCli.RESET).append("    Id archipelago: " + a.getIdArchipelago() + (a.getOwner() == null ? "" : " owner: " + a.getOwner().getNickname() + " team: " + a.getOwner().getTeam()) + (a.getIsMNPresent() == false ? "" : " MN is here") + (a.getIsForbidden() == false ? "" : " \uD83D\uDEAB") + "\n    ").append(ColorsCli.RESET);
-                for (Island is : a.getBelongingIslands()) {
-                    for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
-                        for (int k = 0; k < is.getStudentsByColor(StudsAndProfsColor.values()[j]); k++) {
-                            archipelago.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.RESET);
+            synchronized (lockPrint) {
+                StringBuilder archipelago = new StringBuilder();
+                archipelago.append(ColorsCli.RESET).append("ARCHIPELAGOS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
+                System.out.println(archipelago.toString());
+                for (Archipelago a : archipelagos) {
+                    int numberTower = a.getBelongingIslands().size();
+                    archipelago = new StringBuilder();
+                    archipelago.append(ColorsCli.RESET).append("    Id archipelago: " + a.getIdArchipelago() + (a.getOwner() == null ? "" : " owner: " + a.getOwner().getNickname() + " team: " + a.getOwner().getTeam()) + (a.getIsMNPresent() == false ? "" : " MN is here") + (a.getIsForbidden() == false ? "" : " \uD83D\uDEAB") + "\n    ").append(ColorsCli.RESET);
+                    for (Island is : a.getBelongingIslands()) {
+                        for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
+                            for (int k = 0; k < is.getStudentsByColor(StudsAndProfsColor.values()[j]); k++) {
+                                archipelago.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.RESET);
+                            }
                         }
                     }
-                }
-                if(a.getOwner() != null) {
-                    for(int i = 0; i < numberTower; i++) {
-                        archipelago.append(ColorsCli.RESET).append("♜ ").append(ColorsCli.RESET);
+                    if (a.getOwner() != null) {
+                        for (int i = 0; i < numberTower; i++) {
+                            archipelago.append(ColorsCli.RESET).append("♜ ").append(ColorsCli.RESET);
+                        }
                     }
+                    System.out.println(archipelago.toString());
                 }
+
+                archipelago = new StringBuilder();
+                archipelago.append(ColorsCli.RESET).append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n").append(ColorsCli.RESET);
                 System.out.println(archipelago.toString());
             }
-
-            archipelago = new StringBuilder();
-            archipelago.append(ColorsCli.RESET).append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n").append(ColorsCli.RESET);
-            System.out.println(archipelago.toString());
         }
 
         public void printCloud (List<Cloud> clouds) {
-            StringBuilder cloud = new StringBuilder();
-            cloud.append(ColorsCli.RESET).append("CLOUDS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
-            System.out.println(cloud.toString());
-            for(Cloud c : clouds)
-                if (c.getIsTaken() == false) {
-                    cloud = new StringBuilder();
-                    cloud.append(ColorsCli.RESET).append("    Id cloud: " + c.getIdCloud() + "\n    ").append(ColorsCli.RESET);
-                    for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
-                        for (int k = 0; k < c.getStudents()[j]; k++) {
-                            cloud.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.RESET);
+            synchronized (lockPrint) {
+                StringBuilder cloud = new StringBuilder();
+                cloud.append(ColorsCli.RESET).append("CLOUDS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
+                System.out.println(cloud.toString());
+                for (Cloud c : clouds)
+                    if (c.getIsTaken() == false) {
+                        cloud = new StringBuilder();
+                        cloud.append(ColorsCli.RESET).append("    Id cloud: " + c.getIdCloud() + "\n    ").append(ColorsCli.RESET);
+                        for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
+                            for (int k = 0; k < c.getStudents()[j]; k++) {
+                                cloud.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.RESET);
+                            }
                         }
+                        System.out.println(cloud.toString());
                     }
-                    System.out.println(cloud.toString());
-                }
 
-            cloud = new StringBuilder();
-            cloud.append(ColorsCli.RESET).append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n").append(ColorsCli.RESET);
-            System.out.println(cloud.toString());
+                cloud = new StringBuilder();
+                cloud.append(ColorsCli.RESET).append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n").append(ColorsCli.RESET);
+                System.out.println(cloud.toString());
+            }
         }
 
 
     public void run() throws IOException {
         printLogo();
-        Socket socket = new Socket(ip, port);
+        socket = new Socket(ip, port);
         System.out.println("Connection established");
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
@@ -271,13 +290,15 @@ public class Cli{
             Thread t1 = asyncWriteToSocket(stdin, socketOut);
             t0.join();
             t1.join();
+            while (isActive());
+            t0.interrupt();
+            t1.interrupt();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
             stdin.close();
             socketIn.close();
             socketOut.close();
-            socket.close();
         }
     }
 }

@@ -134,12 +134,12 @@ public class SocketClientConnection implements Runnable{
 
     //invia il messaggio di chiusura al client
     public synchronized void closeConnection() {
-        send("Connection closed!");
         try {
             socket.close();
         } catch (IOException e) {
             System.err.println("Error when closing socket!");
         }
+        send("Connection closed!");
         active = false;
     }
 
