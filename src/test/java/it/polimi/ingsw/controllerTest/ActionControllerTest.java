@@ -3,11 +3,14 @@ package it.polimi.ingsw.controllerTest;
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.controller.ActionController;
 import it.polimi.ingsw.controller.GameHandler;
+import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.expertMode.Character1;
+import it.polimi.ingsw.model.expertMode.Character2;
+import it.polimi.ingsw.model.expertMode.Character3;
 import it.polimi.ingsw.utilities.ListOfBoards;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +19,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests calculateInfluence with 2 and 4 players,
+ * unification of different archi.
+ * correct movements of students
+ * check that characters are correctly called
+ */
 class ActionControllerTest {
     private ActionController actionController;
     GameHandler gameHandler;
@@ -195,8 +204,50 @@ class ActionControllerTest {
         assertEquals(pl1, gameHandler.getController().getGame().getListOfArchipelagos().get(0).getOwner());
         assertEquals(7,pl1.getMyBoard().getTowersOnBoard().getNumberOfTowers());
 
+    //Character2 Allow to move MN of 2 steps more than the used card
+        pl1 = new Player("leo", ColorOfTower.WHITE);
+        pl1.setTeam(0);
+        pl2 = new Player("Lisa", ColorOfTower.BLACK);
+        pl2.setTeam(1);
+        gameHandler = new GameHandler(pl1, 2, true);
+        gameHandler.addNewPlayer(pl2);
+        Character2 character2 = new Character2(gameHandler.getGame());
+        gameHandler.getGame().setCharacterPlayable(character2);
+        gameHandler.getGame().getCurrentPlayer().addCoinsToWallet(20);
+        gameHandler.getGame().getCurrentPlayer().setLastUsedCard(new Card(1,1));
+        gameHandler.getGame().nextPhase();
+        gameHandler.getGame().nextPhase();
+        //Try to do 2 steps (when max is 1) before playing character 2: fail
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionMoveMN(gameHandler.getGame().getCurrentPlayer(),2));
+        gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 2, null);
+        //Try to do 2 steps (when max is 1) after playing character 2: success
+        assertTrue(gameHandler.getController().getTurnController().getActionController().checkActionMoveMN(gameHandler.getGame().getCurrentPlayer(),2));
 
+        //Character 3: Set a forbidden sign to an archipelago to do not allow the calculate of the influence on that island
+        //when MN visit the archipelago, the forbidden flag go away
+
+        pl1 = new Player("leo", ColorOfTower.WHITE);
+        pl1.setTeam(0);
+        pl2 = new Player("Lisa", ColorOfTower.BLACK);
+        pl2.setTeam(1);
+        gameHandler = new GameHandler(pl1, 2, true);
+        gameHandler.addNewPlayer(pl2);
+        Character3 character3 = new Character3(gameHandler.getGame());
+        gameHandler.getGame().setCharacterPlayable(character3);
+        gameHandler.getGame().getCurrentPlayer().addCoinsToWallet(20);
+        //get 2 and not 3 because the id of the arc starts from 1
+        assertEquals(false,gameHandler.getGame().getListOfArchipelagos().get(2).getIsForbidden());
+        gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 3, "3");
+        assertEquals(true, gameHandler.getGame().getListOfArchipelagos().get(2).getIsForbidden());
+        gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 3, "3");
+        gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 3, "1");
+        gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 3, "4");
+        gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 3, "5");
+
+        assertEquals(false, gameHandler.getGame().getListOfArchipelagos().get(5).getIsForbidden());
+        assertEquals(null, gameHandler.getGame().getListOfArchipelagos().get(5).getOwner());
     }
+
 
 
     private Player recognisePlayer(String nickname){
