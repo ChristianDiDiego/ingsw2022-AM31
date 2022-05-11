@@ -200,7 +200,7 @@ class ActionControllerTest {
         gameHandler.getGame().setCharacterPlayable(character1);
         gameHandler.getGame().getCurrentPlayer().addCoinsToWallet(20);
         assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 1, null));
-        gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 1, "1");
+        gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer(gameHandler.getGame().getCurrentPlayer().getNickname(), "CHARACTER 1 1");
         assertEquals(pl1, gameHandler.getController().getGame().getListOfArchipelagos().get(0).getOwner());
         assertEquals(7,pl1.getMyBoard().getTowersOnBoard().getNumberOfTowers());
 

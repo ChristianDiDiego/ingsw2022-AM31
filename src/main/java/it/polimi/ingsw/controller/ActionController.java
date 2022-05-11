@@ -68,11 +68,11 @@ public class ActionController {
 
             if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER4.ordinal()){
                 System.out.println("Char 4 played");
-                Character4 character4 = new Character4(game);
+                Character4 character4 = (Character4) getCurrentPlayer().getUsedCharacter();
                 character4.calculateInfluence();
                 return;
             }else if(getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER5.ordinal()){
-                Character5 character5 = new Character5(game);
+                Character5 character5 = (Character5) getCurrentPlayer().getUsedCharacter();
                 if(character5.calculateInfluence()){
                     turnController.getGameHandler().endGame();
                 }else {

@@ -80,6 +80,11 @@ public class ActionParser {
                                 return false;
                             }
                             colors[i] = charToColorEnum(colorDestination[i].split("-")[0].charAt(0));
+                            if(colorDestination[i].split("-").length <=1){
+                                System.out.println(ErrorMessage.ActionNotValid);
+                                support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
+                                return false;
+                            }
                             Integer tempDestination = tryParse(colorDestination[i].split("-")[1]);
                             if(tempDestination == null || colors[i] == null){
                                 System.out.println(ErrorMessage.ActionNotValid);

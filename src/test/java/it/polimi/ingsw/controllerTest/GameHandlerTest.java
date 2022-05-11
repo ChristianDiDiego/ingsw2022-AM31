@@ -82,4 +82,13 @@ class GameHandlerTest {
 
     }
 
+    /*
+    TODO: improve test endGame
+     */
+    @Test
+    void endGame(){
+        startGame();
+        gameHandler.endGame();
+    }
+
 }
