@@ -8,9 +8,7 @@ import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.expertMode.Character1;
-import it.polimi.ingsw.model.expertMode.Character2;
-import it.polimi.ingsw.model.expertMode.Character3;
+import it.polimi.ingsw.model.expertMode.*;
 import it.polimi.ingsw.utilities.ListOfBoards;
 import org.junit.jupiter.api.Test;
 
@@ -246,6 +244,111 @@ class ActionControllerTest {
 
         assertEquals(false, gameHandler.getGame().getListOfArchipelagos().get(5).getIsForbidden());
         assertEquals(null, gameHandler.getGame().getListOfArchipelagos().get(5).getOwner());
+
+
+        //Character 4: calculates the influence without counting towers
+        System.out.println("test character 4: ");
+        pl1 = new Player("leo", ColorOfTower.WHITE);
+        pl1.setTeam(0);
+        pl2 = new Player("Lisa", ColorOfTower.BLACK);
+        pl2.setTeam(1);
+        gameHandler = new GameHandler(pl1, 2, true);
+        gameHandler.addNewPlayer(pl2);
+        pl1.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.YELLOW);
+        pl2.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.RED);
+        assertEquals(8,pl1.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        assertEquals(8,pl2.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.YELLOW);
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.YELLOW);
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.RED);
+        Character4 character4 = new Character4(gameHandler.getGame());
+        gameHandler.getGame().setCharacterPlayable(character4);
+        gameHandler.getGame().getCurrentPlayer().addCoinsToWallet(20);
+        assertEquals(true, gameHandler.getGame().getListOfArchipelagos().get(0).getIsMNPresent());
+        gameHandler.getController().getTurnController().getActionController().calculateInfluence();
+        assertEquals(pl1, gameHandler.getGame().getListOfArchipelagos().get(0).getOwner());
+        assertEquals(7, pl1.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        //at this point player 1 is owner of archipelago 0
+
+        //now I add 2 red students on arch 0, so that there are 3 red, 2 yellow and 1 tower
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.RED);
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.RED);
+
+        //pl1 uses character 4, so when the influence is calculated on island 0 the new owner must be pl2
+        gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer(gameHandler.getGame().getCurrentPlayer().getNickname(), "CHARACTER 4");
+
+        gameHandler.getGame().setCurrentPlayer(pl1);
+        assertEquals(true, gameHandler.getGame().getListOfArchipelagos().get(0).getIsMNPresent());
+        gameHandler.getController().getTurnController().getActionController().calculateInfluence();
+        assertEquals(pl2, gameHandler.getGame().getListOfArchipelagos().get(0).getOwner());
+
+
+        //Character 5: When you calculate the influence, the player who play this card has 2 additional points
+        System.out.println("test character 5:");
+        pl1 = new Player("leo", ColorOfTower.WHITE);
+        pl1.setTeam(0);
+        pl2 = new Player("Lisa", ColorOfTower.BLACK);
+        pl2.setTeam(1);
+        gameHandler = new GameHandler(pl1, 2, true);
+        gameHandler.addNewPlayer(pl2);
+        pl1.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.RED);
+        pl2.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.YELLOW);
+        assertEquals(8,pl1.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        assertEquals(8,pl2.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.YELLOW);
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.YELLOW);
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.RED);
+        Character5 character5 = new Character5(gameHandler.getGame());
+        gameHandler.getGame().setCharacterPlayable(character5);
+        gameHandler.getGame().getCurrentPlayer().addCoinsToWallet(20);
+        gameHandler.getController().getTurnController().getActionController().calculateInfluence();
+        assertEquals(pl2, gameHandler.getGame().getListOfArchipelagos().get(0).getOwner());
+        assertEquals(7, pl2.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        //at this point player 2 is owner of archipelago 0
+
+        //pl1 uses character 5, so he has 3 points when calculating influence
+        gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer(gameHandler.getGame().getCurrentPlayer().getNickname(), "CHARACTER 5");
+
+        //now pl1 has 4 points in influence, while pl2 has just 3
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.RED);
+
+        gameHandler.getGame().setCurrentPlayer(pl1);
+        gameHandler.getController().getTurnController().getActionController().calculateInfluence();
+        assertEquals(pl1, gameHandler.getGame().getListOfArchipelagos().get(0).getOwner());
+
+        //Character6: Choose a color of students that will not be counted for the influence
+        System.out.println("test character 5:");
+        pl1 = new Player("leo", ColorOfTower.WHITE);
+        pl1.setTeam(0);
+        pl2 = new Player("Lisa", ColorOfTower.BLACK);
+        pl2.setTeam(1);
+        gameHandler = new GameHandler(pl1, 2, true);
+        gameHandler.addNewPlayer(pl2);
+        pl1.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.RED);
+        pl2.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.YELLOW);
+        assertEquals(8,pl1.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        assertEquals(8,pl2.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.YELLOW);
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.YELLOW);
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.RED);
+        Character6 character6 = new Character6(gameHandler.getGame());
+        gameHandler.getGame().setCharacterPlayable(character6);
+        gameHandler.getGame().getCurrentPlayer().addCoinsToWallet(20);
+        gameHandler.getController().getTurnController().getActionController().calculateInfluence();
+        assertEquals(pl2, gameHandler.getGame().getListOfArchipelagos().get(0).getOwner());
+        assertEquals(7, pl2.getMyBoard().getTowersOnBoard().getNumberOfTowers());
+        //at this point player 2 is owner of archipelago 0
+
+        gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer(gameHandler.getGame().getCurrentPlayer().getNickname(), "CHARACTER 6 YELLOW");
+
+        gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.RED);
+        //now the influence is: 2 yellow and 1 tower for pl2, 2 red for pl1
+        //using character 6 it becomes: 1 tower for pl2, 2 red for pl1 --> new owner is pl1
+
+        gameHandler.getController().getTurnController().getActionController().calculateInfluence();
+        assertEquals(pl1, gameHandler.getGame().getListOfArchipelagos().get(0).getOwner());
+
+
     }
 
 
