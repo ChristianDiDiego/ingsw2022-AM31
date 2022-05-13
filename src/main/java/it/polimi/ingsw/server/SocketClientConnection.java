@@ -136,7 +136,7 @@ public class SocketClientConnection implements Runnable{
     public synchronized void closeConnection() {
         try {
             send("Connection closed!");
-            System.out.println( "I'm disconnecting" + getNickname());
+            System.out.println( "I'm disconnecting " + getNickname());
             socket.close();
         } catch (IOException e) {
             System.err.println("Error when closing socket!");
@@ -145,9 +145,10 @@ public class SocketClientConnection implements Runnable{
     }
 
     private void close() { //stampa sul server
+        server.deregisterConnection(this);
         closeConnection();
         System.out.println("Deregistering client...");
-        server.deregisterConnection(this);
+
         System.out.println("Done!");
     }
 
