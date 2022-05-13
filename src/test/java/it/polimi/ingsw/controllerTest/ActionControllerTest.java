@@ -113,14 +113,12 @@ class ActionControllerTest {
     void checkActionMoveStudent(){
         Cli cli = new Cli("127.0.0.1", 5000);
         Player pl1 = new Player("carmine", ColorOfTower.WHITE);
-        gameHandler = new GameHandler(pl1, 3,false);
+        gameHandler = new GameHandler(pl1, 3,true);
         //other players login
         Player pl2 = new Player("chri", ColorOfTower.BLACK);
         gameHandler.addNewPlayer(pl2);
         assertEquals(0, gameHandler.getIsStarted());
         //gameHandler.addNewPlayer("fede", ColorOfTower.GREY);
-        gameHandler.getGame().nextPhase();
-        gameHandler.getGame().nextPhase();
         System.out.println(gameHandler.getGame().getCurrentPlayer().getNickname());
         System.out.println(gameHandler.getGame().getPhase());
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE));
@@ -139,14 +137,19 @@ class ActionControllerTest {
 
         // cli.printBoards(gameHandler.getGame().getListOfPlayer());
         StudsAndProfsColor[] colorToMove = {StudsAndProfsColor.BLUE, StudsAndProfsColor.RED, StudsAndProfsColor.GREEN, StudsAndProfsColor.YELLOW};
-        int[] destinations = {0,0,0,0};
+        StudsAndProfsColor[] colorsForFalseStatement ={StudsAndProfsColor.BLUE, StudsAndProfsColor.RED, StudsAndProfsColor.GREEN, StudsAndProfsColor.GREEN};
+        int[] destinations = {0,0,0,1};
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionMoveStudent(recognisePlayer("carmine"), colorToMove, destinations ));
+        gameHandler.getGame().nextPhase();
+        gameHandler.getGame().nextPhase();
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionMoveStudent(recognisePlayer("carmine"), colorsForFalseStatement, destinations ));
         gameHandler.getController().getTurnController().getActionController().checkActionMoveStudent(recognisePlayer("carmine"), colorToMove, destinations );
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE));
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.RED));
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.GREEN));
-        assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.YELLOW));
+        assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.YELLOW));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK));
-
+assertEquals(1, gameHandler.getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).getStudentsByColor(StudsAndProfsColor.YELLOW));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.BLUE));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.RED));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.GREEN));
@@ -348,6 +351,24 @@ class ActionControllerTest {
         gameHandler.getController().getTurnController().getActionController().calculateInfluence();
         assertEquals(pl1, gameHandler.getGame().getListOfArchipelagos().get(0).getOwner());
 
+
+    }
+
+    @Test
+    public void checkActionCloud(){
+        Player pl1 = new Player("carmine", ColorOfTower.WHITE);
+        gameHandler = new GameHandler(pl1, 2,false);
+        //other players login
+        Player pl2 = new Player("chri", ColorOfTower.BLACK);
+        gameHandler.addNewPlayer(pl2);
+        gameHandler.getGame().nextPhase();
+        gameHandler.getGame().nextPhase();
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCloud(gameHandler.getGame().getCurrentPlayer(),0));
+        gameHandler.getGame().nextPhase();
+        gameHandler.getGame().getListOfClouds().get(0).changeStatus();
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCloud(gameHandler.getGame().getCurrentPlayer(),0));
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCloud(gameHandler.getGame().getCurrentPlayer(),3));
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCloud(gameHandler.getGame().getListOfPlayer().get(1),0));
 
     }
 

@@ -469,11 +469,9 @@ public class ActionController {
             System.out.println("non è il tuo turno!!");
             support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.NotYourTurn);
             return false;
-        }else {
-            System.out.println("hai inviato un'azione non valida, riprova");
-            support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
-            return false;
         }
+        System.out.println("hai inviato un'azione non valida, riprova");
+        support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
         return false;
     }
 
