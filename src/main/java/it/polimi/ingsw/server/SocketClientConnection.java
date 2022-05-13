@@ -23,6 +23,8 @@ public class SocketClientConnection implements Runnable{
     private String nickname;
     private ObjectOutputStream out;
 
+    private Scanner inGeneral;
+
     private boolean playerQuitted = false;
 
    // private ByteArrayOutputStream baos;
@@ -144,6 +146,7 @@ public class SocketClientConnection implements Runnable{
             try {
                 System.out.println( "I'm disconnecting " + getNickname());
                 socket.close();
+             //   inGeneral.close();
             } catch (IOException e) {
                 System.err.println("Error when closing socket!");
             }
@@ -177,32 +180,39 @@ public class SocketClientConnection implements Runnable{
 
     @Override
     public void run() {
-        Scanner in;
         String read;
         try{
-            in = new Scanner(socket.getInputStream());
+            inGeneral = new Scanner(socket.getInputStream());
            //baos = new ByteArrayOutputStream();
             out = new ObjectOutputStream(socket.getOutputStream());
             send("Welcome!");
             server.lobby(this);
             while(isActive()){        //legge dal client tutti i messaggi e notifica il listener della view
-                read = in.nextLine();
+                read = inGeneral.nextLine();
                 if(read.equalsIgnoreCase("QUIT")){
                     System.out.println("quit received");
-                    playerQuitted = true;
+                    //playerQuitted = true;
                     close();
+                    inGeneral.close();
                     return ;
                 }else{
                     support.firePropertyChange("MessageForParser","aaa", read);
                 }
-
+                if(playerQuitted){
+                    System.out.println("I'm in closing in of " + getNickname());
+                    inGeneral.close();
+                }
             }
+            System.out.println("exit from while");
         } catch(IOException | NoSuchElementException e) {
-            System.err.println("Error! " + e.getMessage());
+            System.err.println("Error! " + e.getMessage() + getNickname());
         }
+        System.out.println("is active is + " + isActive() + getNickname());
             if(!playerQuitted) {
                 System.out.println("I'm in the finally of " + getNickname());
+
                 close();
+
             }
 
     }
