@@ -33,9 +33,9 @@ public class Character7 extends Characters{
         //DiningRoom diningRoom = game.getCurrentPlayer().getMyBoard().getDiningRoom();
         if(checkStudent(color1ToAdd, color2ToAdd, color1ToRemove, color2ToRemove)) {
             if (payForUse()) {
-                int[] toAdd = new int[Constants.NUMBEROFKINGDOMS];
-                toAdd[color1ToRemove.ordinal()]++;
-                toAdd[color2ToRemove.ordinal()]++;
+                int[] toAdd = {0,0,0,0,0};
+                toAdd[color1ToRemove.ordinal()] += 1;
+                toAdd[color2ToRemove.ordinal()] += 1;
 
                 game.getCurrentPlayer().getMyBoard().getEntrance().removeStudent(color1ToAdd);
                 game.getCurrentPlayer().getMyBoard().getEntrance().removeStudent(color2ToAdd);

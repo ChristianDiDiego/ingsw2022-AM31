@@ -149,7 +149,7 @@ class ActionControllerTest {
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.GREEN));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.YELLOW));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK));
-assertEquals(1, gameHandler.getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).getStudentsByColor(StudsAndProfsColor.YELLOW));
+        assertEquals(1, gameHandler.getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).getStudentsByColor(StudsAndProfsColor.YELLOW));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.BLUE));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.RED));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.GREEN));
@@ -351,7 +351,67 @@ assertEquals(1, gameHandler.getGame().getListOfArchipelagos().get(0).getBelongin
         gameHandler.getController().getTurnController().getActionController().calculateInfluence();
         assertEquals(pl1, gameHandler.getGame().getListOfArchipelagos().get(0).getOwner());
 
+    }
 
+    @Test
+    public void checkActionCharacter7(){
+        //Character 7: the player can switch max 2 students between entrance and dining room
+        Player player1 = new Player("A", ColorOfTower.WHITE);
+        player1.setTeam(0);
+        Player player2 = new Player("B", ColorOfTower.BLACK);
+        player2.setTeam(1);
+        gameHandler = new GameHandler(player1, 2, true);
+        gameHandler.addNewPlayer(player2);
+
+        Character7 character7 = new Character7(gameHandler.getGame());
+        gameHandler.getGame().setCharacterPlayable(character7);
+
+        gameHandler.getGame().getCurrentPlayer().addCoinsToWallet(20);
+
+        int[] addEntrance = {1,1,0,0,0};
+        gameHandler.getGame().getCurrentPlayer().getMyBoard().getEntrance().addStudent(addEntrance);
+        gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.PINK);
+        gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.BLUE);
+
+        assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.RED));
+        assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.GREEN));
+        assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK));
+        assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE));
+
+        character7.usePower(StudsAndProfsColor.RED, StudsAndProfsColor.GREEN, StudsAndProfsColor.PINK, StudsAndProfsColor.BLUE);
+        assertEquals(true, character7.checkStudent(StudsAndProfsColor.RED, StudsAndProfsColor.GREEN, StudsAndProfsColor.PINK, StudsAndProfsColor.BLUE));
+        assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.PINK));
+        assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.BLUE));
+        //assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.GREEN));
+        assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.RED));
+    }
+
+    @Test
+    public void checkActionCharacter8(){
+        //Character 8: when this card is used, assignProfessor assign the professor to the player who use the card also if the number of students in the dining rooms of the two players is the same"
+        Player player1 = new Player("A", ColorOfTower.WHITE);
+        player1.setTeam(0);
+        Player player2 = new Player("B", ColorOfTower.BLACK);
+        player2.setTeam(1);
+        gameHandler = new GameHandler(player1, 2, true);
+        gameHandler.addNewPlayer(player2);
+
+        Character8 character8 = new Character8(gameHandler.getGame());
+        gameHandler.getGame().setCharacterPlayable(character8);
+
+        gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.RED);
+        gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.RED);
+        gameHandler.getGame().assignProfessor(StudsAndProfsColor.RED);
+        assertEquals(true, gameHandler.getGame().getCurrentPlayer().getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.RED));
+
+        gameHandler.getGame().setCurrentPlayer(player2);
+        gameHandler.getGame().getCurrentPlayer().addCoinsToWallet(20);
+        character8.usePower();
+        gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.RED);
+        gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.RED);
+
+        gameHandler.getGame().assignProfessor(StudsAndProfsColor.RED);
+        assertEquals(true, gameHandler.getGame().getCurrentPlayer().getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.RED));
     }
 
     @Test
