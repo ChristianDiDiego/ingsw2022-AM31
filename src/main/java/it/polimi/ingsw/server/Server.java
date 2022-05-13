@@ -31,10 +31,12 @@ public class Server {
     public synchronized void deregisterConnection(SocketClientConnection c) {
         for(List<SocketClientConnection> l : listOfGames){
             for(SocketClientConnection s : l){
-                if(s.equals(c)){
+                System.out.println("I'm confroning" + s.getNickname());
+                if(s.getNickname().equals(c.getNickname())){
                     for(SocketClientConnection toRemove : l){
-                        if(!toRemove.equals(c)){
-                            System.out.println("I'm sending to " + c.getNickname());
+                        System.out.println("I'm confroning" + toRemove.getNickname());
+                        if(!toRemove.getNickname().equals(c.getNickname())){
+                            System.out.println("I'm sending to " + toRemove.getNickname());
                             toRemove.send("User " + c.getNickname() + " closed the connection. \n Exiting from the game...");
                             toRemove.closeConnection();
                         }

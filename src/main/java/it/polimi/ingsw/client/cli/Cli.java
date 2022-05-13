@@ -100,7 +100,7 @@ public class Cli{
                         if(inputLine.length() > 0) {
                             //in inputline salvo quello che leggo da tastiera
                             //  if(inputLine.equalsIgnoreCase("QUIT")){
-                               System.out.println("I should quit");
+                              // System.out.println("I should quit");
                                 //socket.close();
                               //  setActive(false);
                            // }else{

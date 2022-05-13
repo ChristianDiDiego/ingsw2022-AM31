@@ -134,14 +134,20 @@ public class SocketClientConnection implements Runnable{
 
     //invia il messaggio di chiusura al client
     public synchronized void closeConnection() {
-        try {
+        Object lock1 = new Object();
+        synchronized (lock1){
             send("Connection closed!");
-            System.out.println( "I'm disconnecting " + getNickname());
-            socket.close();
-        } catch (IOException e) {
-            System.err.println("Error when closing socket!");
         }
-        active = false;
+        synchronized (lock1){
+            try {
+                System.out.println( "I'm disconnecting " + getNickname());
+                socket.close();
+            } catch (IOException e) {
+                System.err.println("Error when closing socket!");
+            }
+            active = false;
+        }
+
     }
 
     private void close() { //stampa sul server
@@ -180,7 +186,8 @@ public class SocketClientConnection implements Runnable{
             while(isActive()){        //legge dal client tutti i messaggi e notifica il listener della view
                 read = in.nextLine();
                 if(read.equalsIgnoreCase("QUIT")){
-                    closeConnection();
+                    System.out.println("quit received");
+                    close();
                 }else{
                     support.firePropertyChange("MessageForParser","aaa", read);
                 }
@@ -189,7 +196,7 @@ public class SocketClientConnection implements Runnable{
         } catch(IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
         } finally {
-            close();
+          //  close();
         }
     }
 
