@@ -56,7 +56,7 @@ public class SocketClientConnection implements Runnable{
             out.reset();
             out.writeObject(message);
             out.flush();
-            System.out.println("sent" + message);
+            System.out.println("sent " + message);
         } catch(IOException e){
             System.out.println("error when sending " + message.toString());
             System.err.println(e.getMessage());
@@ -146,7 +146,7 @@ public class SocketClientConnection implements Runnable{
             try {
                 System.out.println( "I'm disconnecting " + getNickname());
                 socket.close();
-             //   inGeneral.close();
+                inGeneral.close();
             } catch (IOException e) {
                 System.err.println("Error when closing socket!");
             }
@@ -159,7 +159,6 @@ public class SocketClientConnection implements Runnable{
         server.deregisterConnection(this);
         closeConnection();
         System.out.println("Deregistering client...");
-
         System.out.println("Done!");
     }
 
@@ -183,38 +182,28 @@ public class SocketClientConnection implements Runnable{
         String read;
         try{
             inGeneral = new Scanner(socket.getInputStream());
-           //baos = new ByteArrayOutputStream();
             out = new ObjectOutputStream(socket.getOutputStream());
             send("Welcome!");
             server.lobby(this);
-            while(isActive()){        //legge dal client tutti i messaggi e notifica il listener della view
+            while(isActive() && inGeneral.hasNextLine()){        //legge dal client tutti i messaggi e notifica il listener della view
                 read = inGeneral.nextLine();
                 if(read.equalsIgnoreCase("QUIT")){
                     System.out.println("quit received");
                     //playerQuitted = true;
                     close();
-                    inGeneral.close();
-                    return ;
+                    return;
                 }else{
                     support.firePropertyChange("MessageForParser","aaa", read);
-                }
-                if(playerQuitted){
-                    System.out.println("I'm in closing in of " + getNickname());
-                    inGeneral.close();
                 }
             }
             System.out.println("exit from while");
         } catch(IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage() + getNickname());
         }
-        System.out.println("is active is + " + isActive() + getNickname());
-            if(!playerQuitted) {
-                System.out.println("I'm in the finally of " + getNickname());
-
-                close();
-
-            }
-
+        if(!playerQuitted) {
+            System.out.println("I'm in the finally of " + getNickname());
+            close();
+        }
     }
 
     public String getNickname() {
