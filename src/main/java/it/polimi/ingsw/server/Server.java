@@ -38,6 +38,7 @@ public class Server {
                         if(!toRemove.getNickname().equals(c.getNickname())){
                             System.out.println("I'm sending to " + toRemove.getNickname());
                             toRemove.send("User " + c.getNickname() + " closed the connection. \n Exiting from the game...");
+                            toRemove.setPlayerQuitted(true);
                             toRemove.closeConnection();
                         }
 

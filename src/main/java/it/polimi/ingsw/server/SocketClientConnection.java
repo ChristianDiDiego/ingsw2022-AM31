@@ -23,6 +23,8 @@ public class SocketClientConnection implements Runnable{
     private String nickname;
     private ObjectOutputStream out;
 
+    private boolean playerQuitted = false;
+
    // private ByteArrayOutputStream baos;
     private Server server;
     private PropertyChangeSupport support;
@@ -187,7 +189,9 @@ public class SocketClientConnection implements Runnable{
                 read = in.nextLine();
                 if(read.equalsIgnoreCase("QUIT")){
                     System.out.println("quit received");
+                    playerQuitted = true;
                     close();
+                    return ;
                 }else{
                     support.firePropertyChange("MessageForParser","aaa", read);
                 }
@@ -195,9 +199,12 @@ public class SocketClientConnection implements Runnable{
             }
         } catch(IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
-        } finally {
-          //  close();
         }
+            if(!playerQuitted) {
+                System.out.println("I'm in the finally of " + getNickname());
+                close();
+            }
+
     }
 
     public String getNickname() {
@@ -206,5 +213,9 @@ public class SocketClientConnection implements Runnable{
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void setPlayerQuitted(boolean playerQuitted) {
+        this.playerQuitted = playerQuitted;
     }
 }
