@@ -12,7 +12,9 @@ import it.polimi.ingsw.model.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -279,7 +281,9 @@ public class Cli{
 
     public void run() throws IOException {
         printLogo();
-        socket = new Socket(ip, port);
+        socket = new Socket();
+        SocketAddress socketAddress = new InetSocketAddress(ip, port);
+        socket.connect(socketAddress, 30000);
         System.out.println("Connection established");
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
