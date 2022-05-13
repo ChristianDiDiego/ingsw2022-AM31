@@ -40,7 +40,7 @@ public class Character7 extends Characters{
                 game.getCurrentPlayer().getMyBoard().getEntrance().removeStudent(color1ToAdd);
                 game.getCurrentPlayer().getMyBoard().getEntrance().removeStudent(color2ToAdd);
                 game.getCurrentPlayer().getMyBoard().getDiningRoom().addStudent(color1ToAdd);
-                game.getCurrentPlayer().getMyBoard().getDiningRoom().addStudent(color1ToAdd);
+                game.getCurrentPlayer().getMyBoard().getDiningRoom().addStudent(color2ToAdd);
                 game.getCurrentPlayer().getMyBoard().getDiningRoom().removeStudent(color1ToRemove);
                 game.getCurrentPlayer().getMyBoard().getDiningRoom().removeStudent(color2ToRemove);
                 game.getCurrentPlayer().getMyBoard().getEntrance().addStudent(toAdd);

@@ -99,14 +99,14 @@ public class Cli{
                         String inputLine = stdin.nextLine();
                         if(inputLine.length() > 0) {
                             //in inputline salvo quello che leggo da tastiera
-                            if(inputLine.equalsIgnoreCase("QUIT")){
-                                System.out.println("I should quit");
-                                socket.close();
-                                setActive(false);
-                            }else{
+                            //  if(inputLine.equalsIgnoreCase("QUIT")){
+                               System.out.println("I should quit");
+                                //socket.close();
+                              //  setActive(false);
+                           // }else{
                                 socketOut.println(inputLine);
                                 socketOut.flush();
-                            }
+                        //    }
                         }else{
                             System.out.println("Null input is not valid");
                         }

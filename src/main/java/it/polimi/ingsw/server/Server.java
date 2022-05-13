@@ -31,14 +31,16 @@ public class Server {
     public synchronized void deregisterConnection(SocketClientConnection c) {
         for(List<SocketClientConnection> l : listOfGames){
             for(SocketClientConnection s : l){
-                if(s == c){
+                if(s.equals(c)){
                     for(SocketClientConnection toRemove : l){
-                        if(toRemove != c){
+                        if(!toRemove.equals(c)){
+                            System.out.println("I'm sending to " + c.getNickname());
                             toRemove.send("User " + c.getNickname() + " closed the connection. \n Exiting from the game...");
-                            toRemove.closeConnection();
                         }
+                        toRemove.closeConnection();
                     }
                     listOfGames.remove(l);
+                    break;
                 }
             }
         }

@@ -134,6 +134,11 @@ public class ActionParser {
                         //TODO: set in action controller to check
                         return actionController.checkActionCharacter(player, idOfCharacter, action);
                     }
+                    case "QUIT" ->{
+
+
+                        return true;
+                    }
                     default -> {
                         support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid);
                         System.out.println("Action not recognised");

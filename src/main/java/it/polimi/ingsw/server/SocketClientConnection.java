@@ -135,11 +135,12 @@ public class SocketClientConnection implements Runnable{
     //invia il messaggio di chiusura al client
     public synchronized void closeConnection() {
         try {
+            send("Connection closed!");
+            System.out.println( "I'm disconnecting" + getNickname());
             socket.close();
         } catch (IOException e) {
             System.err.println("Error when closing socket!");
         }
-        send("Connection closed!");
         active = false;
     }
 
@@ -177,7 +178,11 @@ public class SocketClientConnection implements Runnable{
             server.lobby(this);
             while(isActive()){        //legge dal client tutti i messaggi e notifica il listener della view
                 read = in.nextLine();
-                support.firePropertyChange("MessageForParser","aaa", read);
+                if(read.equalsIgnoreCase("QUIT")){
+                    closeConnection();
+                }else{
+                    support.firePropertyChange("MessageForParser","aaa", read);
+                }
 
             }
         } catch(IOException | NoSuchElementException e) {

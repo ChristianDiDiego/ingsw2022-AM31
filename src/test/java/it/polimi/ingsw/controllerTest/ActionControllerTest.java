@@ -378,11 +378,11 @@ class ActionControllerTest {
         assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK));
         assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE));
 
-        character7.usePower(StudsAndProfsColor.RED, StudsAndProfsColor.GREEN, StudsAndProfsColor.PINK, StudsAndProfsColor.BLUE);
-        assertEquals(true, character7.checkStudent(StudsAndProfsColor.RED, StudsAndProfsColor.GREEN, StudsAndProfsColor.PINK, StudsAndProfsColor.BLUE));
+        assertEquals(true, character7.checkStudent( StudsAndProfsColor.GREEN,StudsAndProfsColor.RED, StudsAndProfsColor.PINK, StudsAndProfsColor.BLUE));
+        gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(),7,"GREEN,RED,PINK,BLUE");
         assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.PINK));
         assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.BLUE));
-        //assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.GREEN));
+        assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.GREEN));
         assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.RED));
     }
 
@@ -406,7 +406,7 @@ class ActionControllerTest {
 
         gameHandler.getGame().setCurrentPlayer(player2);
         gameHandler.getGame().getCurrentPlayer().addCoinsToWallet(20);
-        character8.usePower();
+        gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 8, "");
         gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.RED);
         gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.RED);
 
