@@ -7,11 +7,13 @@ import it.polimi.ingsw.view.RemoteView;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 /*
 Instanced by the server, it interacts with a client sending and receiving message from it
@@ -24,9 +26,8 @@ public class SocketClientConnection implements Runnable{
     private Scanner inGeneral;
 
     private boolean playerQuitted = false;
-    private boolean clientOnline = true;
 
-   // private ByteArrayOutputStream baos;
+    // private ByteArrayOutputStream baos;
     private Server server;
     private PropertyChangeSupport support;
 
@@ -69,16 +70,6 @@ public class SocketClientConnection implements Runnable{
             in = new Scanner(socket.getInputStream());
             send("How many players?"); //manda al client
             String read = in.nextLine(); // legge dal client il nome
-            boolean canContinue = false;
-            while(!canContinue){
-                if(read.equals("ping")){
-                    send("pong");
-                    read = in.nextLine();
-                }else{
-                    canContinue = true;
-                }
-            }
-
             number = read;
             return Integer.parseInt(number);
         } catch (IOException | NoSuchElementException e) {
@@ -92,17 +83,7 @@ public class SocketClientConnection implements Runnable{
         try {
             in = new Scanner(socket.getInputStream());
             send("What is your nickname?"); //manda al client
-            String read = in.nextLine();
-            boolean canContinue = false;
-            while(!canContinue){
-                if(read.equals("ping")){
-                    send("pong");
-                    read = in.nextLine();
-                }else{
-                    canContinue = true;
-                }
-            }
-            return read;
+            return in.nextLine();
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
             return "wrong";
@@ -116,15 +97,6 @@ public class SocketClientConnection implements Runnable{
             in = new Scanner(socket.getInputStream());
             send("Type 0 for normal mode or 1 for expert mode"); //manda al client
             String read = in.nextLine();// legge dal client il nome
-            boolean canContinue = false;
-            while(!canContinue){
-                if(read.equals("ping")){
-                    send("pong");
-                    read = in.nextLine();
-                }else{
-                    canContinue = true;
-                }
-            }
             if(Integer.parseInt(read)== 0 || Integer.parseInt(read) ==1) {
                 return Integer.parseInt(read);
             }else{
@@ -152,15 +124,6 @@ public class SocketClientConnection implements Runnable{
             }
 
             String read = in.nextLine(); // legge dal client il nome
-            boolean canContinue = false;
-            while(!canContinue){
-                if(read.equals("ping")){
-                    send("pong");
-                    read = in.nextLine();
-                }else{
-                    canContinue = true;
-                }
-            }
             number = Integer.parseInt(read);
             if(number < 0 || number > 2){
                 return null;
@@ -213,28 +176,6 @@ public class SocketClientConnection implements Runnable{
             }
         }).start();
     }
-    public Thread pingToClient(ObjectOutputStream socketOut){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true){
-                    send("ping");
-                    clientOnline = false;
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(10000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    if(!clientOnline){
-                        close();
-                    }
-
-                }
-            }
-        });
-        t.start();
-        return t;
-    }
 
     @Override
     public void run() {
@@ -242,7 +183,6 @@ public class SocketClientConnection implements Runnable{
         try{
             inGeneral = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-            Thread t0 = pingToClient(out);
             send("Welcome!");
             server.lobby(this);
             while(isActive() && inGeneral.hasNextLine()){        //legge dal client tutti i messaggi e notifica il listener della view
@@ -252,11 +192,6 @@ public class SocketClientConnection implements Runnable{
                     //playerQuitted = true;
                     close();
                     return;
-                }else if(read.equals("ping")){
-                    send("pong");
-                    System.out.println("pong " + getNickname());
-                }else if(read.equals("pong")){
-                    clientOnline = true;
                 }else{
                     support.firePropertyChange("MessageForParser","aaa", read);
                 }

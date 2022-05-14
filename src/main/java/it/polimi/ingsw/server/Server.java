@@ -159,7 +159,7 @@ public class Server {
                 }else{
                     player.setTeam(1);
                 }
-               // player.setTeam(Math.round(waitingConnection.size() / 4));
+                // player.setTeam(Math.round(waitingConnection.size() / 4));
             }else{
                 player.setTeam(waitingConnection.size());
             }
@@ -197,7 +197,6 @@ public class Server {
 
     public Server(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
-      //  serverSocket.setSoTimeout(40000);
     }
 
     /**
