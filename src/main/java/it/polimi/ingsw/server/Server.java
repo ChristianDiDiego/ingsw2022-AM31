@@ -197,6 +197,7 @@ public class Server {
 
     public Server(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
+        serverSocket.setSoTimeout(40000);
     }
 
     /**

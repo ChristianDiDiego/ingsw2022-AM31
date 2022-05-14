@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class contains the methods that allow the client to read messages/object from the server and print them
@@ -74,6 +75,7 @@ public class Cli{
                         }
                     }
                 } catch (Exception e) {
+                    System.out.println("connection timed out");
                     setActive(false);
                     //termino
                 }
@@ -115,6 +117,25 @@ public class Cli{
                     }
                 } catch (Exception e) {
                     setActive(false);
+                }
+            }
+        });
+        t.start();
+        return t;
+    }
+
+    public Thread ping(final PrintWriter socketOut){
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    socketOut.println("ping");
+                    socketOut.flush();
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(2000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
@@ -283,7 +304,8 @@ public class Cli{
         printLogo();
         socket = new Socket();
         SocketAddress socketAddress = new InetSocketAddress(ip, port);
-        socket.connect(socketAddress, 30000);
+        socket.connect(socketAddress, 40000);
+        //socket.setSoTimeout(5000);
         System.out.println("Connection established");
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
