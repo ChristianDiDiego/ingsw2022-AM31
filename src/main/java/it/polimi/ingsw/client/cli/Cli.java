@@ -30,6 +30,8 @@ public class Cli{
     private final String ip;
     private final int port;
     private boolean active = true;
+
+    private boolean serverOnline = true;
     private Object lockPrint;
     Socket socket;
 
@@ -58,7 +60,11 @@ public class Cli{
                         Object inputObject = socketIn.readObject();
                         synchronized (this) {
                             if (inputObject instanceof String) {
-                                System.out.println((String) inputObject);
+                                if(inputObject.toString().equals("pong")){
+                                    serverOnline = true;
+                                }else{
+                                    System.out.println((String) inputObject);
+                                }
                             } else if (inputObject instanceof ListOfBoards) {
                                 printBoard(((ListOfBoards) inputObject).getBoards());
                             } else if (inputObject instanceof Deck) {
@@ -124,18 +130,23 @@ public class Cli{
         return t;
     }
 
-    public Thread ping(final PrintWriter socketOut){
+    public Thread pingToServer(final PrintWriter socketOut){
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true){
                     socketOut.println("ping");
                     socketOut.flush();
+                    serverOnline = false;
                     try {
-                        TimeUnit.MILLISECONDS.sleep(2000);
+                        TimeUnit.MILLISECONDS.sleep(10000);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
+                    if(!serverOnline){
+                        setActive(false);
+                    }
+
                 }
             }
         });
@@ -304,7 +315,8 @@ public class Cli{
         printLogo();
         socket = new Socket();
         SocketAddress socketAddress = new InetSocketAddress(ip, port);
-        socket.connect(socketAddress, 40000);
+        socket.connect(socketAddress);
+        serverOnline = true;
         //socket.setSoTimeout(5000);
         System.out.println("Connection established");
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());

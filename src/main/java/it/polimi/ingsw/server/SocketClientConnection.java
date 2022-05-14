@@ -192,7 +192,9 @@ public class SocketClientConnection implements Runnable{
                     //playerQuitted = true;
                     close();
                     return;
-                }else{
+                }else if(read.equals("ping")){
+                    send("pong");
+                } else{
                     support.firePropertyChange("MessageForParser","aaa", read);
                 }
             }
