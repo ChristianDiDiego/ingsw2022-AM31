@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -50,7 +51,7 @@ public class Cli{
     }
 
 
-    public Thread asyncReadFromSocket(final ObjectInputStream socketIn) {
+    public Thread asyncReadFromSocket(final ObjectInputStream socketIn, final PrintWriter socketOut) {
 
         Thread t = new Thread(new Runnable() {
             @Override
@@ -62,7 +63,11 @@ public class Cli{
                             if (inputObject instanceof String) {
                                 if(inputObject.toString().equals("pong")){
                                     serverOnline = true;
-                                }else{
+                                }else if(inputObject.toString().equals("ping")){
+                                    socketOut.println("pong");
+                                    socketOut.flush();
+                                }
+                                else{
                                     System.out.println((String) inputObject);
                                 }
                             } else if (inputObject instanceof ListOfBoards) {
@@ -130,7 +135,7 @@ public class Cli{
         return t;
     }
 
-    public Thread pingToServer(final PrintWriter socketOut){
+    public Thread pingToServer(PrintWriter socketOut){
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -324,16 +329,20 @@ public class Cli{
         Scanner stdin = new Scanner(System.in);
 
         try{
-            Thread t0 = asyncReadFromSocket(socketIn);
+            Thread t0 = asyncReadFromSocket(socketIn, socketOut);
             Thread t1 = asyncWriteToSocket(stdin, socketOut);
+            Thread t2 = pingToServer(socketOut);
             t0.join();
             t1.join();
+            t2.join();
             while (isActive());
             t0.interrupt();
             t1.interrupt();
+            t2.interrupt();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
+            System.out.println("I'm in finally");
             stdin.close();
             socketIn.close();
             socketOut.close();
