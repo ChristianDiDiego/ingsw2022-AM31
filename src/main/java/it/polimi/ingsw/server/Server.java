@@ -50,6 +50,24 @@ public class Server {
         }
     }
 
+    /**
+     * checks if c is the last still active connection, in case
+     * removes it from list of active games
+     * @param c
+     */
+    public synchronized void checkEmptyGames(SocketClientConnection c) {
+        for(List<SocketClientConnection> l : listOfGames){
+            for(SocketClientConnection s : l){
+                if(s.getNickname().equals(c.getNickname())) {
+                    if (l.size() == 1) {
+                        listOfGames.remove(l);
+                    }
+                }
+            }
+        }
+
+    }
+
     //Wait for another player
     public synchronized void lobby(SocketClientConnection c){
         List<Player> keys = new ArrayList<>(waitingConnection.keySet());
@@ -167,7 +185,7 @@ public class Server {
             waitingConnection.put(player, c);
             RemoteView remV = new RemoteView(player, c, gameHandler.getGame(), gameHandler.getController().getTurnController().getActionController().getActionParser());
             c.addPropertyChangeListener(remV);
-            //gameHandler.addPropertyChangeListener(remV);
+            gameHandler.addPropertyChangeListener(remV);
             gameHandler.getGame().addPropertyChangeListener(remV);
             gameHandler.getController().getTurnController().getActionController().addPropertyChangeListener(remV);
             gameHandler.getController().getTurnController().addPropertyChangeListener(remV);

@@ -21,7 +21,6 @@ public class ActionController {
     private Game game;
     private ActionParser actionParser;
     private TurnController turnController;
-
     private PropertyChangeSupport support;
 
     public ActionController(Game game, TurnController turnController){
@@ -160,7 +159,6 @@ public class ActionController {
                                     p.getMyBoard().getTowersOnBoard().removeTower();
                                     a.changeOwner(p);
                                     checkWinner(p);
-                                    //TODO: if the number of towers finish, the game is over
                                 }
                             }
                         }
@@ -171,6 +169,7 @@ public class ActionController {
                             break;
                         }
                     } else if (a.getIsMNPresent() && a.getIsForbidden() == true){
+                    support.firePropertyChange("ErrorMessage",getCurrentPlayer().getNickname(), ErrorMessage.Forbidden);
                     a.setIsForbidden(false);
                     break;
                 }
@@ -406,8 +405,13 @@ public class ActionController {
                 if(steps <= player.getLastUsedCard().getMaxSteps() + (player.getUsedCharacter() != null ? player.getUsedCharacter().getBonusSteps() : 0 )){
                     game.moveMotherNature(steps);
                     calculateInfluence();
-                    game.nextPhase();
-                    return true;
+                    if(game.getPhase() == Phase.END_GAME){
+                        return true;
+                    }else {
+                        game.nextPhase();
+                        return true;
+                    }
+
                 }else {
                     System.out.println("The card that you played does not allow you to do these steps!" +
                             "(you can do max " + player.getLastUsedCard().getMaxSteps() + " steps)");
@@ -707,6 +711,8 @@ public class ActionController {
 
     public void checkWinner(Player p){
         if(p.getMyBoard().getTowersOnBoard().getNumberOfTowers() == 0){
+            System.out.println(p.getNickname() +" ha vinto, sono in checkwinner");
+            game.setPhase(Phase.END_GAME);
             turnController.getGameHandler().endGameImmediately(p);
         }
     }

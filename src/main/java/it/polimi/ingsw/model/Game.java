@@ -407,4 +407,7 @@ public class Game implements Cloneable {
         return null;
     }
 
+    public void setPhase(Phase phase){
+        this.phase = phase;
+    }
 }

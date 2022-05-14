@@ -38,10 +38,30 @@ public class RemoteView implements PropertyChangeListener{
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if(evt.getPropertyName().equals("EndGame")){
-            if(evt.getNewValue().equals(player.getTeam())){
-                showMessage("The game has ended \n YOU WON");
-            }else{
-                showMessage("The game has ended \n YOU LOST");
+            synchronized (this){
+                if(evt.getNewValue().equals(player.getTeam())){
+                    System.out.println("sono nella view");
+                    showMessage("The game has ended \n YOU WON");
+                    clientConnection.setPlayerQuitted(true);
+                    try {
+                        TimeUnit.MICROSECONDS.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    clientConnection.closeOnlyThis();
+
+                }else{
+                    System.out.println("sono nella view");
+                    showMessage("The game has ended \n YOU LOST");
+                    clientConnection.setPlayerQuitted(true);
+                    try {
+                        TimeUnit.MICROSECONDS.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    clientConnection.closeOnlyThis();
+
+                }
             }
 
         }else if(evt.getPropertyName().equals("currentPlayerChanged")){

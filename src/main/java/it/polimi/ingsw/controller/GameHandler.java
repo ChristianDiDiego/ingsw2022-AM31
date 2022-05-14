@@ -54,20 +54,18 @@ public class GameHandler {
      * Comunicate to the server that the game is over
      */
     public void endGameImmediately(Player winner){
-        support.firePropertyChange("EndGame", 0, winner.getTeam());
-        //while isStarted != -1  o isFinished != 0 wait
+        System.out.println("sono in endGameImmediately");
+        support.firePropertyChange("EndGame", 10, winner.getTeam());
         //comunica al server partita finita
     }
 
     public void endGame(){
-        int maxTowers = 0;
         Player winner = game.getListOfPlayer().get(0);
         List<Player> listOfWinners = new ArrayList<Player>();
 
         for(Player p : game.getListOfPlayer()){
             if(p.getMyBoard().getTowersOnBoard().getNumberOfTowers() < winner.getMyBoard().getTowersOnBoard().getNumberOfTowers()){
                 winner = p;
-                maxTowers = p.getMyBoard().getTowersOnBoard().getNumberOfTowers();
             }
         }
         for(Player sameTower : game.getListOfPlayer()){
@@ -86,7 +84,8 @@ public class GameHandler {
 
 
         }
-        support.firePropertyChange("EndGame", 0, winner.getTeam());
+        game.setPhase(Phase.END_GAME);
+        support.firePropertyChange("EndGame", 10, winner.getTeam());
     }
 
     public void setIsStarted(int i){

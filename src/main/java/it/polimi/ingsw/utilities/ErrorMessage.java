@@ -24,5 +24,7 @@ public class ErrorMessage {
 
     public static String NotExpertMode = "Game is not in expert mode, so you can't use any character";
 
+    public static String Forbidden = "this archipelago is forbidden, so influence will not be calculated";
+
 
 }

@@ -156,6 +156,40 @@ class ActionControllerTest {
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.YELLOW));
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.PINK));
 
+        int[] studentsToAdd2 = {1,1,1,1,0};
+        gameHandler.getGame().getCurrentPlayer().getMyBoard().getEntrance().addStudent(studentsToAdd2);
+        int[] wrongDestinations = {0,13,0,1};
+        gameHandler.getController().getTurnController().getActionController().checkActionMoveStudent(recognisePlayer("carmine"), colorToMove, wrongDestinations );
+        assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE));
+        assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.RED));
+        assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.GREEN));
+        assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.YELLOW));
+        assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK));
+        assertEquals(1, gameHandler.getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).getStudentsByColor(StudsAndProfsColor.YELLOW));
+
+        int[] wrongDestinations2 = {0,-1,0,1};
+        gameHandler.getController().getTurnController().getActionController().checkActionMoveStudent(recognisePlayer("carmine"), colorToMove, wrongDestinations2 );
+        assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE));
+        assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.RED));
+        assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.GREEN));
+        assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.YELLOW));
+        assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK));
+        assertEquals(1, gameHandler.getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).getStudentsByColor(StudsAndProfsColor.YELLOW));
+
+
+
+        StudsAndProfsColor totry[] = {StudsAndProfsColor.BLUE};
+        int[] d = {0};
+
+        for(int i = 0; i<9 ; i++){
+            recognisePlayer("carmine").getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.BLUE);
+        }
+        int[] add = {1,0,0,0,0};
+        recognisePlayer("carmine").getMyBoard().getEntrance().addStudent(add);
+        assertEquals(10, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE));
+        gameHandler.getController().getTurnController().getActionController().checkActionMoveStudent(recognisePlayer("carmine"), totry, d );
+        assertEquals(10, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE));
+
         List<Board> boards = new ArrayList<>();
         for(Player p : gameHandler.getGame().getListOfPlayer()) {
             boards.add(p.getMyBoard());

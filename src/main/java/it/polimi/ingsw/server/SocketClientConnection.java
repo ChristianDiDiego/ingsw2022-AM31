@@ -163,6 +163,15 @@ public class SocketClientConnection implements Runnable{
     }
 
     /**
+     *     closes only one connection and, if the connection is the last one still active in
+     *     game, removes the connection list from server's gameList
+     */
+    public void closeOnlyThis(){
+        server.checkEmptyGames(this);
+        closeConnection();
+    }
+
+    /**
      * riceve dalla remoteview il messaggio con la nuova board (+vittoria ecc)
      * elo manda al client che è in ascolto con readfromsocket
      *qualsiasi cosa il client riceva la stampa a video
