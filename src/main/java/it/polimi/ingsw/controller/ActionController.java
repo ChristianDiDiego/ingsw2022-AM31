@@ -378,19 +378,14 @@ public class ActionController {
                support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.WrongNumberOfMovements + turnController.getGameHandler().getNumberOfMovements() + "students");
                return false;
            }
-       }else if(game.getPhase()== Phase.MOVE_STUDENTS || player != game.getCurrentPlayer()){
+       }else if(player != game.getCurrentPlayer()){
                System.out.println("non è il tuo turno!!");
            support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.NotYourTurn );
                return false;
-           }else if (game.getPhase()!= Phase.MOVE_STUDENTS){
+           }else{
             System.out.println("You are not in the phase " + Phase.MOVE_STUDENTS);
-           support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.wrongPhase + game.getPhase() );
-
+            support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.wrongPhase + game.getPhase() );
              return false;
-       } else {
-               System.out.println("hai inviato un'azione non valida, riprova");
-               support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
-               return false;
        }
    }
 
@@ -423,8 +418,8 @@ public class ActionController {
             System.out.println("non è il tuo turno!!");
             return false;
         }else{
-            System.out.println("hai inviato un'azione non valida, riprova");
-            support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.ActionNotValid );
+            System.out.println("You are not in the phase " + Phase.MOVE_STUDENTS);
+            support.firePropertyChange("ErrorMessage" , player.getNickname(), ErrorMessage.wrongPhase + game.getPhase() );
             return false;
         }
     }

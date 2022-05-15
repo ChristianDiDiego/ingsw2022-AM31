@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.expertMode.*;
 import it.polimi.ingsw.utilities.ListOfBoards;
+import it.polimi.ingsw.utilities.constants.Constants;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -121,11 +122,24 @@ class ActionControllerTest {
         //gameHandler.addNewPlayer("fede", ColorOfTower.GREY);
         System.out.println(gameHandler.getGame().getCurrentPlayer().getNickname());
         System.out.println(gameHandler.getGame().getPhase());
+        recognisePlayer("carmine").getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.PINK);
+        recognisePlayer("carmine").getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.PINK);
+        recognisePlayer("carmine").getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.PINK);
+        recognisePlayer("carmine").getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.PINK);
+        recognisePlayer("carmine").getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.PINK);
+        recognisePlayer("carmine").getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.PINK);
+        recognisePlayer("carmine").getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.PINK);
+        recognisePlayer("carmine").getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.PINK);
+        recognisePlayer("carmine").getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.PINK);
+        recognisePlayer("carmine").getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.PINK);
+
+
+
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.RED));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.GREEN));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.YELLOW));
-        assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK));
+        assertEquals(Constants.MAXSTUDENTSINDINING, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK));
 
         int[] studentsToAdd = {1,1,1,1,1};
         gameHandler.getGame().getCurrentPlayer().getMyBoard().getEntrance().addStudent(studentsToAdd);
@@ -138,17 +152,23 @@ class ActionControllerTest {
         // cli.printBoards(gameHandler.getGame().getListOfPlayer());
         StudsAndProfsColor[] colorToMove = {StudsAndProfsColor.BLUE, StudsAndProfsColor.RED, StudsAndProfsColor.GREEN, StudsAndProfsColor.YELLOW};
         StudsAndProfsColor[] colorsForFalseStatement ={StudsAndProfsColor.BLUE, StudsAndProfsColor.RED, StudsAndProfsColor.GREEN, StudsAndProfsColor.GREEN};
+        StudsAndProfsColor[] colorsForFalseFullDining ={StudsAndProfsColor.PINK, StudsAndProfsColor.RED, StudsAndProfsColor.GREEN, StudsAndProfsColor.GREEN};
+
         int[] destinations = {0,0,0,1};
+        int[] destinationsForFalseStatement = {0,0,0,15};
         assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionMoveStudent(recognisePlayer("carmine"), colorToMove, destinations ));
         gameHandler.getGame().nextPhase();
         gameHandler.getGame().nextPhase();
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionMoveStudent(recognisePlayer("carmine"), colorsForFalseFullDining, destinations ));
         assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionMoveStudent(recognisePlayer("carmine"), colorsForFalseStatement, destinations ));
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionMoveStudent(recognisePlayer("carmine"), colorToMove, destinationsForFalseStatement ));
+
         gameHandler.getController().getTurnController().getActionController().checkActionMoveStudent(recognisePlayer("carmine"), colorToMove, destinations );
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE));
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.RED));
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.GREEN));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.YELLOW));
-        assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK));
+        assertEquals(Constants.MAXSTUDENTSINDINING, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK));
         assertEquals(1, gameHandler.getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).getStudentsByColor(StudsAndProfsColor.YELLOW));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.BLUE));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.RED));
@@ -164,7 +184,7 @@ class ActionControllerTest {
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.RED));
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.GREEN));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.YELLOW));
-        assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK));
+        assertEquals(Constants.MAXSTUDENTSINDINING, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK));
         assertEquals(1, gameHandler.getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).getStudentsByColor(StudsAndProfsColor.YELLOW));
 
         int[] wrongDestinations2 = {0,-1,0,1};
@@ -173,7 +193,7 @@ class ActionControllerTest {
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.RED));
         assertEquals(1, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.GREEN));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.YELLOW));
-        assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK));
+        assertEquals(Constants.MAXSTUDENTSINDINING, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK));
         assertEquals(1, gameHandler.getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).getStudentsByColor(StudsAndProfsColor.YELLOW));
 
 
@@ -234,6 +254,8 @@ class ActionControllerTest {
         Character1 character1 = new Character1(gameHandler.getGame());
         gameHandler.getGame().setCharacterPlayable(character1);
         gameHandler.getGame().getCurrentPlayer().addCoinsToWallet(20);
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 9, null));
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getListOfPlayer().get(1), 1, null));
         assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 1, null));
         gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer(gameHandler.getGame().getCurrentPlayer().getNickname(), "CHARACTER 1 1");
         assertEquals(pl1, gameHandler.getController().getGame().getListOfArchipelagos().get(0).getOwner());
@@ -250,10 +272,12 @@ class ActionControllerTest {
         gameHandler.getGame().setCharacterPlayable(character2);
         gameHandler.getGame().getCurrentPlayer().addCoinsToWallet(20);
         gameHandler.getGame().getCurrentPlayer().setLastUsedCard(new Card(1,1));
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionMoveMN(gameHandler.getGame().getCurrentPlayer(),1));
         gameHandler.getGame().nextPhase();
         gameHandler.getGame().nextPhase();
         //Try to do 2 steps (when max is 1) before playing character 2: fail
         assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionMoveMN(gameHandler.getGame().getCurrentPlayer(),2));
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionMoveMN(gameHandler.getGame().getListOfPlayer().get(1),1));
         gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 2, null);
         //Try to do 2 steps (when max is 1) after playing character 2: success
         assertTrue(gameHandler.getController().getTurnController().getActionController().checkActionMoveMN(gameHandler.getGame().getCurrentPlayer(),2));
@@ -272,6 +296,11 @@ class ActionControllerTest {
         gameHandler.getGame().getCurrentPlayer().addCoinsToWallet(20);
         //get 2 and not 3 because the id of the arc starts from 1
         assertEquals(false,gameHandler.getGame().getListOfArchipelagos().get(2).getIsForbidden());
+
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 3, ""));
+        //assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 3, "3"));
+
+        gameHandler.getGame().getCurrentPlayer().addCoinsToWallet(20);
         gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 3, "3");
         assertEquals(true, gameHandler.getGame().getListOfArchipelagos().get(2).getIsForbidden());
         gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 3, "3");
@@ -376,6 +405,8 @@ class ActionControllerTest {
         assertEquals(7, pl2.getMyBoard().getTowersOnBoard().getNumberOfTowers());
         //at this point player 2 is owner of archipelago 0
 
+        assertFalse(gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer(gameHandler.getGame().getCurrentPlayer().getNickname(), "CHARACTER 6 AAA"));
+
         gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer(gameHandler.getGame().getCurrentPlayer().getNickname(), "CHARACTER 6 YELLOW");
 
         gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.RED);
@@ -413,6 +444,9 @@ class ActionControllerTest {
         assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE));
 
         assertEquals(true, character7.checkStudent( StudsAndProfsColor.GREEN,StudsAndProfsColor.RED, StudsAndProfsColor.PINK, StudsAndProfsColor.BLUE));
+
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(),7,"GREENREDINKBLUE"));
+        assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(),7,"GREEN,RED,PINK,aaaaa"));
         gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(),7,"GREEN,RED,PINK,BLUE");
         assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.PINK));
         assertNotEquals(0, gameHandler.getGame().getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(StudsAndProfsColor.BLUE));
