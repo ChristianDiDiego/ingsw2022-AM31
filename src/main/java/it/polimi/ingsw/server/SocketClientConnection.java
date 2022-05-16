@@ -7,10 +7,7 @@ import it.polimi.ingsw.view.RemoteView;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -26,12 +23,12 @@ public class SocketClientConnection implements Runnable{
     private Scanner inGeneral;
 
     private boolean playerQuitted = false;
-
-    // private ByteArrayOutputStream baos;
     private Server server;
     private PropertyChangeSupport support;
 
     private boolean active = true;
+
+    private boolean clientAlive = true;
 
     public SocketClientConnection(Socket socket, Server server) {
         this.socket = socket;
@@ -186,6 +183,42 @@ public class SocketClientConnection implements Runnable{
         }).start();
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setPlayerQuitted(boolean playerQuitted) {
+        this.playerQuitted = playerQuitted;
+    }
+
+    /*public Thread pingToClient() {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (isActive()) {
+                        Thread.sleep(25000);
+                        clientAlive = false;
+                        send("ping");
+                        Thread.sleep(10000);
+                        if(clientAlive == false) {
+                            System.out.println("eseguo close");
+                            close();
+                        }
+                    }
+                } catch (Exception e) {
+                    //active = false;
+                }
+            }
+        });
+        t.start();
+        return t;
+    }*/
+
     @Override
     public void run() {
         String read;
@@ -194,6 +227,8 @@ public class SocketClientConnection implements Runnable{
             out = new ObjectOutputStream(socket.getOutputStream());
             send("Welcome!");
             server.lobby(this);
+            //Thread t0 = pingToClient();
+            //t0.join();
             while(isActive() && inGeneral.hasNextLine()){        //legge dal client tutti i messaggi e notifica il listener della view
                 read = inGeneral.nextLine();
                 if(read.equalsIgnoreCase("QUIT")){
@@ -201,6 +236,11 @@ public class SocketClientConnection implements Runnable{
                     //playerQuitted = true;
                     close();
                     return;
+                }else if (read.equals("ping")){
+                    send("pong");
+                }else if(read.equals("pong")) {
+                    clientAlive = true;
+                    System.out.println("Ho ricevuto il pong");
                 }else{
                     support.firePropertyChange("MessageForParser","aaa", read);
                 }
@@ -215,15 +255,4 @@ public class SocketClientConnection implements Runnable{
         }
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public void setPlayerQuitted(boolean playerQuitted) {
-        this.playerQuitted = playerQuitted;
-    }
 }

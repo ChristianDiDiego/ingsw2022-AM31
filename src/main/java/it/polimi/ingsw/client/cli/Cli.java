@@ -32,6 +32,9 @@ public class Cli{
     private Object lockPrint;
     Socket socket;
 
+    private boolean serverAlive;
+
+
     public Cli(String ip, int port) {
         this.ip = ip;
         this.port = port;
@@ -57,6 +60,11 @@ public class Cli{
                         Object inputObject = socketIn.readObject();
                         synchronized (this) {
                             if (inputObject instanceof String) {
+                                if(inputObject.equals("pong")) {
+                                    serverAlive = true;
+                                } else if(inputObject.equals("ping")) {
+                                    //
+                                }
                                 System.out.println((String) inputObject);
                             } else if (inputObject instanceof ListOfBoards) {
                                 printBoard(((ListOfBoards) inputObject).getBoards());
@@ -91,24 +99,16 @@ public class Cli{
      * @param socketOut
      * @return
      */
-    public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut) {
+    public Thread asyncWriteToSocket(final Scanner stdin,final PrintWriter socketOut) {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     while (isActive()) {
-                        //mando sia board che la stringa
                         String inputLine = stdin.nextLine();
                         if(inputLine.length() > 0) {
-                            //in inputline salvo quello che leggo da tastiera
-                            //  if(inputLine.equalsIgnoreCase("QUIT")){
-                            // System.out.println("I should quit");
-                            //socket.close();
-                            //  setActive(false);
-                            // }else{
                             socketOut.println(inputLine);
                             socketOut.flush();
-                            //    }
                         }else{
                             System.out.println("Null input is not valid");
                         }
@@ -278,6 +278,30 @@ public class Cli{
         }
     }
 
+    public Thread pingToServer(final PrintWriter socketOut) {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (isActive()) {
+                        Thread.sleep(20000);
+                        socketOut.println("ping");
+                        socketOut.flush();
+                        serverAlive = false;
+                        Thread.sleep(10000);
+                        if(serverAlive == false) {
+                            System.out.println("Network connection is unavailable or server is unreachable");
+                            System.exit(0);
+                        }
+                    }
+                } catch (Exception e) {
+                    setActive(false);
+                }
+            }
+        });
+        t.start();
+        return t;
+    }
 
     public void run() throws IOException {
         printLogo();
@@ -285,6 +309,7 @@ public class Cli{
         SocketAddress socketAddress = new InetSocketAddress(ip, port);
         socket.connect(socketAddress);
         System.out.println("Connection established");
+        serverAlive = true;
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
         Scanner stdin = new Scanner(System.in);
@@ -292,11 +317,14 @@ public class Cli{
         try{
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(stdin, socketOut);
+            Thread t2 = pingToServer(socketOut);
             t0.join();
             t1.join();
+            t2.join();
             while (isActive());
             t0.interrupt();
             t1.interrupt();
+            t2.interrupt();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {

@@ -31,7 +31,7 @@ public class Server {
     public synchronized void deregisterConnection(SocketClientConnection c) {
         for(List<SocketClientConnection> l : listOfGames){
             for(SocketClientConnection s : l){
-                System.out.println("I'm confroning" + s.getNickname());
+                System.out.println("I'm confroning " + s.getNickname());
                 if(s.getNickname().equals(c.getNickname())){
                     for(SocketClientConnection toRemove : l){
                         System.out.println("I'm confroning" + toRemove.getNickname());
