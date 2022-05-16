@@ -67,8 +67,22 @@ public class SocketClientConnection implements Runnable{
             in = new Scanner(socket.getInputStream());
             send("How many players?"); //manda al client
             String read = in.nextLine(); // legge dal client il nome
-            number = read;
-            return Integer.parseInt(number);
+            boolean canContinue = false;
+            while(!canContinue){
+                if(read.equals("ping")){
+                    send("pong");
+                    read = in.nextLine();
+                }else{
+                    canContinue = true;
+                }
+            }
+                number = read;
+                try{
+                    return Integer.parseInt(number);
+                }catch (NumberFormatException e){
+                    return -1 ;
+                }
+
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
             return -1;
@@ -80,7 +94,17 @@ public class SocketClientConnection implements Runnable{
         try {
             in = new Scanner(socket.getInputStream());
             send("What is your nickname?"); //manda al client
-            return in.nextLine();
+            boolean canContinue = false;
+            String read = in.nextLine();
+            while(!canContinue){
+                if(read.equals("ping")){
+                    send("pong");
+                    read = in.nextLine();
+                }else{
+                    canContinue = true;
+                }
+            }
+            return read;
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
             return "wrong";
@@ -94,10 +118,23 @@ public class SocketClientConnection implements Runnable{
             in = new Scanner(socket.getInputStream());
             send("Type 0 for normal mode or 1 for expert mode"); //manda al client
             String read = in.nextLine();// legge dal client il nome
-            if(Integer.parseInt(read)== 0 || Integer.parseInt(read) ==1) {
-                return Integer.parseInt(read);
-            }else{
-                return -1;
+            boolean canContinue = false;
+            while(!canContinue){
+                if(read.equals("ping")){
+                    send("pong");
+                    read = in.nextLine();
+                }else{
+                    canContinue = true;
+                }
+            }
+            try{
+                if(Integer.parseInt(read)== 0 || Integer.parseInt(read) ==1) {
+                    return Integer.parseInt(read);
+                }else{
+                    return -1;
+                }
+            }catch (NumberFormatException e){
+                return -1 ;
             }
         } catch (IOException | NoSuchElementException e ) {
             System.err.println("Error! " + e.getMessage());
@@ -110,7 +147,6 @@ public class SocketClientConnection implements Runnable{
         int number;
         try {
             in = new Scanner(socket.getInputStream());
-            //TODO: ask grey only if 3 players
             switch (server.getNumberOfPlayers()){
                 case 2:
                 case 4:
@@ -121,11 +157,25 @@ public class SocketClientConnection implements Runnable{
             }
 
             String read = in.nextLine(); // legge dal client il nome
-            number = Integer.parseInt(read);
-            if(number < 0 || number > 2){
+            boolean canContinue = false;
+            while(!canContinue){
+                if(read.equals("ping")){
+                    send("pong");
+                    read = in.nextLine();
+                }else{
+                    canContinue = true;
+                }
+            }
+            try{
+                number = Integer.parseInt(read);
+                if((server.getNumberOfPlayers() == 3 && (number < 0 || number > 2))
+                || (server.getNumberOfPlayers()%2 == 0  && (number < 0 || number > 1) )){
+                    return null;
+                }else {
+                    return ColorOfTower.values()[number];
+                }
+            }catch (NumberFormatException e){
                 return null;
-            }else {
-                return ColorOfTower.values()[number];
             }
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
