@@ -278,11 +278,6 @@ public class SocketClientConnection implements Runnable{
                     //playerQuitted = true;
                     close();
                     return;
-                }else if (read.equals("ping")){
-                    send("pong");
-                }else if(read.equals("pong")) {
-                    clientAlive = true;
-                    System.out.println("Ho ricevuto il pong");
                 }else{
                     support.firePropertyChange("MessageForParser","aaa", read);
                 }
