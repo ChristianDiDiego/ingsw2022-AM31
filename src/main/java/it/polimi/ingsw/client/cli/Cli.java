@@ -12,9 +12,7 @@ import it.polimi.ingsw.model.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -278,20 +276,17 @@ public class Cli{
         }
     }
 
-    public Thread pingToServer(final PrintWriter socketOut) {
+    public Thread pingToServer(InetAddress geek) {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     while (isActive()) {
                         Thread.sleep(20000);
-                        socketOut.println("ping");
-                        socketOut.flush();
-                        serverAlive = false;
-                        Thread.sleep(10000);
-                        if(serverAlive == false) {
-                            System.out.println("Network connection is unavailable or server is unreachable");
-                            System.exit(0);
+                        if(geek.isReachable(5000)) {
+                            System.out.println("is reachable");
+                        } else {
+                            System.out.println("Non raggiungibile");
                         }
                     }
                 } catch (Exception e) {
@@ -313,11 +308,13 @@ public class Cli{
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
         Scanner stdin = new Scanner(System.in);
+        InetAddress geek = InetAddress.getByName(ip);
+
 
         try{
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(stdin, socketOut);
-            Thread t2 = pingToServer(socketOut);
+            Thread t2 = pingToServer(geek);
             t0.join();
             t1.join();
             t2.join();
