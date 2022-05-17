@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.view.RemoteView;
 
+import javax.sound.midi.Soundbank;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.*;
@@ -246,16 +247,28 @@ public class SocketClientConnection implements Runnable{
         this.playerQuitted = playerQuitted;
     }
 
-    public void pingToClient(InetAddress geek) {
-        try {
-            if(geek.isReachable(5000)) {
-                System.out.println("client " + nickname + " is reachable");
-            } else {
-                System.out.println("client " + nickname + " non raggiungibile");
+    public Thread pingToClient(InetAddress geek) {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (isActive()) {
+                        Thread.sleep(25000);
+                        if(geek.isReachable(5000)) {
+                            System.out.println("client " + nickname + " is reachable");
+                        } else {
+                            System.out.println("client " + nickname + " non raggiungibile");
+                        }
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        });
+        t.start();
+        return t;
     }
 
     @Override
@@ -267,8 +280,10 @@ public class SocketClientConnection implements Runnable{
             send("Welcome!");
             server.lobby(this);
             InetAddress geek = socket.getInetAddress();
+            Thread t0 = pingToClient(geek);
+            t0.start();
             while(isActive() && inGeneral.hasNextLine()){        //legge dal client tutti i messaggi e notifica il listener della view
-                pingToClient(geek);
+                System.out.println("Entered in while");
                 read = inGeneral.nextLine();
                 if(read.equalsIgnoreCase("QUIT")){
                     System.out.println("quit received");
