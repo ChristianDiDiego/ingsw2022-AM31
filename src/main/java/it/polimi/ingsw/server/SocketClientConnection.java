@@ -69,6 +69,12 @@ public class SocketClientConnection implements Runnable{
             in = new Scanner(socket.getInputStream());
             send("How many players?"); //manda al client
             String read = in.nextLine(); // legge dal client il nome
+            if(read.equalsIgnoreCase("quit")){
+                System.out.println("quit received");
+                //playerQuitted = true;
+                close();
+                return -2;
+            }
             number = read;
                 try{
                     return Integer.parseInt(number);
@@ -87,7 +93,14 @@ public class SocketClientConnection implements Runnable{
         try {
             in = new Scanner(socket.getInputStream());
             send("What is your nickname?"); //manda al client
-            return in.nextLine();
+            String read = in.nextLine();
+            if(read.equalsIgnoreCase("quit")){
+                System.out.println("quit received");
+                //playerQuitted = true;
+                close();
+                return read;
+            }
+            return read;
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
             return "wrong";
@@ -101,6 +114,12 @@ public class SocketClientConnection implements Runnable{
             in = new Scanner(socket.getInputStream());
             send("Type 0 for normal mode or 1 for expert mode"); //manda al client
             String read = in.nextLine();// legge dal client il nome
+            if(read.equalsIgnoreCase("quit")){
+                System.out.println("quit received");
+                //playerQuitted = true;
+                close();
+                return -2;
+            }
             try{
                 if(Integer.parseInt(read)== 0 || Integer.parseInt(read) ==1) {
                     return Integer.parseInt(read);
@@ -131,6 +150,12 @@ public class SocketClientConnection implements Runnable{
             }
 
             String read = in.nextLine(); // legge dal client il nome
+            if(read.equalsIgnoreCase("quit")){
+                System.out.println("quit received");
+                //playerQuitted = true;
+                close();
+                return null;
+            }
             try{
                 number = Integer.parseInt(read);
                 if((server.getNumberOfPlayers() == 3 && (number < 0 || number > 2))
@@ -221,6 +246,7 @@ public class SocketClientConnection implements Runnable{
                             System.out.println("client " + nickname + " is reachable");
                         } else {
                             System.out.println("client " + nickname + " non raggiungibile");
+                            close();
                         }
                     }
                 } catch (IOException e) {
@@ -240,10 +266,10 @@ public class SocketClientConnection implements Runnable{
             inGeneral = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
             send("Welcome!");
-            server.lobby(this);
             InetAddress geek = socket.getInetAddress();
             Thread t0 = pingToClient(geek);
             t0.start();
+            server.lobby(this);
             while(isActive() && inGeneral.hasNextLine()){        //legge dal client tutti i messaggi e notifica il listener della view
                 System.out.println("Entered in while");
                 read = inGeneral.nextLine();

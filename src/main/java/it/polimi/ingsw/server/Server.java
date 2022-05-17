@@ -31,8 +31,8 @@ public class Server {
     public synchronized void deregisterConnection(SocketClientConnection c) {
         for(List<SocketClientConnection> l : listOfGames){
             for(SocketClientConnection s : l){
-                System.out.println("I'm confroning " + s.getNickname());
-                if(s.getNickname().equals(c.getNickname())){
+                System.out.println("I'm confronting " + s.getNickname());
+                if(s == c){
                     for(SocketClientConnection toRemove : l){
                         System.out.println("I'm confroning" + toRemove.getNickname());
                         if(!toRemove.getNickname().equals(c.getNickname())){
@@ -48,7 +48,19 @@ public class Server {
                 }
             }
         }
-    }
+        if(!waitingConnection.isEmpty()){
+            for(SocketClientConnection s : waitingConnection.values()){
+                        System.out.println("I'm confroning" + s.getNickname());
+                        if(s != c) {
+                            System.out.println("I'm sending to " + s.getNickname());
+                            s.send("User " + c.getNickname() + " closed the connection. \n Exiting from the game...");
+                            s.setPlayerQuitted(true);
+                            s.closeConnection();
+                        }
+                }
+            waitingConnection.clear();
+            }
+        }
 
     /**
      * checks if c is the last still active connection, in case
@@ -209,7 +221,7 @@ public class Server {
                 listOfGames.add(temp);
             }
 
-            //waitingConnection.clear();
+            waitingConnection.clear();
         }
     }
 
