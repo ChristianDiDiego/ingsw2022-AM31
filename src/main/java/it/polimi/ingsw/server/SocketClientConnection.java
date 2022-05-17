@@ -241,7 +241,7 @@ public class SocketClientConnection implements Runnable{
             public void run() {
                 try {
                     while (isActive()) {
-                        Thread.sleep(25000);
+                        Thread.sleep(15000);
                         if(geek.isReachable(5000)) {
                             System.out.println("client " + nickname + " is reachable");
                         } else {

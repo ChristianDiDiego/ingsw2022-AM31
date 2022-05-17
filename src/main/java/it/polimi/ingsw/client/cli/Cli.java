@@ -275,7 +275,7 @@ public class Cli{
             public void run() {
                 try {
                     while (isActive()) {
-                        Thread.sleep(20000);
+                        Thread.sleep(10000);
                         if(!geek.isReachable(5000)) {
                             System.out.println("The server is unreachable, exiting...");
                             System.exit(0);
