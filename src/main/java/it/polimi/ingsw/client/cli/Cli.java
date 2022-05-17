@@ -30,8 +30,6 @@ public class Cli{
     private Object lockPrint;
     Socket socket;
 
-    private boolean serverAlive;
-
 
     public Cli(String ip, int port) {
         this.ip = ip;
@@ -58,11 +56,6 @@ public class Cli{
                         Object inputObject = socketIn.readObject();
                         synchronized (this) {
                             if (inputObject instanceof String) {
-                                if(inputObject.equals("pong")) {
-                                    serverAlive = true;
-                                } else if(inputObject.equals("ping")) {
-                                    //
-                                }
                                 System.out.println((String) inputObject);
                             } else if (inputObject instanceof ListOfBoards) {
                                 printBoard(((ListOfBoards) inputObject).getBoards());
@@ -283,10 +276,9 @@ public class Cli{
                 try {
                     while (isActive()) {
                         Thread.sleep(20000);
-                        if(geek.isReachable(5000)) {
-                            System.out.println("is reachable");
-                        } else {
-                            System.out.println("Non raggiungibile");
+                        if(!geek.isReachable(5000)) {
+                            System.out.println("The server is unreachable, exiting...");
+                            System.exit(0);
                         }
                     }
                 } catch (Exception e) {
@@ -304,7 +296,6 @@ public class Cli{
         SocketAddress socketAddress = new InetSocketAddress(ip, port);
         socket.connect(socketAddress);
         System.out.println("Connection established");
-        serverAlive = true;
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
         Scanner stdin = new Scanner(System.in);
