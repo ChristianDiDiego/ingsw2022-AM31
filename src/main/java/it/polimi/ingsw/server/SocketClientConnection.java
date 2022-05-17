@@ -69,16 +69,7 @@ public class SocketClientConnection implements Runnable{
             in = new Scanner(socket.getInputStream());
             send("How many players?"); //manda al client
             String read = in.nextLine(); // legge dal client il nome
-            boolean canContinue = false;
-            while(!canContinue){
-                if(read.equals("ping")){
-                    send("pong");
-                    read = in.nextLine();
-                }else{
-                    canContinue = true;
-                }
-            }
-                number = read;
+            number = read;
                 try{
                     return Integer.parseInt(number);
                 }catch (NumberFormatException e){
@@ -96,17 +87,7 @@ public class SocketClientConnection implements Runnable{
         try {
             in = new Scanner(socket.getInputStream());
             send("What is your nickname?"); //manda al client
-            boolean canContinue = false;
-            String read = in.nextLine();
-            while(!canContinue){
-                if(read.equals("ping")){
-                    send("pong");
-                    read = in.nextLine();
-                }else{
-                    canContinue = true;
-                }
-            }
-            return read;
+            return in.nextLine();
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
             return "wrong";
@@ -120,15 +101,6 @@ public class SocketClientConnection implements Runnable{
             in = new Scanner(socket.getInputStream());
             send("Type 0 for normal mode or 1 for expert mode"); //manda al client
             String read = in.nextLine();// legge dal client il nome
-            boolean canContinue = false;
-            while(!canContinue){
-                if(read.equals("ping")){
-                    send("pong");
-                    read = in.nextLine();
-                }else{
-                    canContinue = true;
-                }
-            }
             try{
                 if(Integer.parseInt(read)== 0 || Integer.parseInt(read) ==1) {
                     return Integer.parseInt(read);
@@ -159,15 +131,6 @@ public class SocketClientConnection implements Runnable{
             }
 
             String read = in.nextLine(); // legge dal client il nome
-            boolean canContinue = false;
-            while(!canContinue){
-                if(read.equals("ping")){
-                    send("pong");
-                    read = in.nextLine();
-                }else{
-                    canContinue = true;
-                }
-            }
             try{
                 number = Integer.parseInt(read);
                 if((server.getNumberOfPlayers() == 3 && (number < 0 || number > 2))
@@ -267,7 +230,6 @@ public class SocketClientConnection implements Runnable{
                 }
             }
         });
-       // t.start();
         return t;
     }
 
@@ -303,6 +265,7 @@ public class SocketClientConnection implements Runnable{
         } catch(IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage() + getNickname());
         }
+
         if(!playerQuitted) {
             System.out.println("I'm in the finally of " + getNickname());
             close();
