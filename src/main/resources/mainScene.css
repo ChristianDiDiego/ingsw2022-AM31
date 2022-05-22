@@ -1,0 +1,4 @@
+#boardPane{
+    -fx-background-image: url("images/board.jpeg");
+    -fx-background-size: stretch;
+}
