@@ -49,7 +49,7 @@ public class TurnController {
      * Call endGame if the number of the students in the bag is finished
      */
     public void startTurn(){
-        if(game.getBag().getNumberOfLeftStudents() == 0 || game.getCurrentPlayer().getMyDeck().getLeftCards().size() == 0) {
+        if(game.getBag().getNumberOfLeftStudents() == 0 || game.getCurrentPlayer().getMyDeck().getLeftCards().size() == 1) {
             isFinished = true;
         }
         //Add the students to the clouds

@@ -2,3 +2,27 @@
     -fx-background-image: url("images/board.jpeg");
     -fx-background-size: stretch;
 }
+
+#background{
+    -fx-background-color:#69bbea;
+}
+
+#cloudPane{
+    -fx-background-color:#69bbea;
+}
+#cloud1{
+    -fx-background-image: url("images/cloud.png");
+    -fx-background-size: stretch;
+}
+#cloud2{
+    -fx-background-image: url("images/cloud.png");
+    -fx-background-size: stretch;
+}
+#cloud3{
+    -fx-background-image: url("images/cloud.png");
+    -fx-background-size: stretch;
+}
+#cloud4{
+    -fx-background-image: url("images/cloud.png");
+    -fx-background-size: stretch;
+}

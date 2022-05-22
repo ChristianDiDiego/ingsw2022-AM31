@@ -442,6 +442,7 @@ public class ActionController {
                         if(player == game.getOrderOfPlayers().get(game.getNumberOfPlayers()-1)){
                             if(turnController.isFinished() == true){
                                 turnController.getGameHandler().endGame();
+                                return true;
                             }
                             //game.nextPhase();
                             turnController.startTurn();

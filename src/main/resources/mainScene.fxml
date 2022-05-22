@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
@@ -44,8 +45,56 @@
             <ImageView fx:id="profYellow" fitHeight="45.0" fitWidth="44.0" layoutX="626.0" layoutY="166.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="profPink" fitHeight="45.0" fitWidth="44.0" layoutX="626.0" layoutY="228.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="profBlue" fitHeight="45.0" fitWidth="44.0" layoutX="625.0" layoutY="290.0" pickOnBounds="true" preserveRatio="true" />
+            <HBox fx:id="gSDR" layoutX="165.0" layoutY="44.0" prefHeight="45.0" prefWidth="423.0" />
+            <HBox fx:id="ySDR" layoutX="160.0" layoutY="166.0" prefHeight="37.0" prefWidth="430.0" />
+            <HBox fx:id="pSDR" layoutX="161.0" layoutY="241.0" prefHeight="26.0" prefWidth="423.0" />
+            <HBox fx:id="rSDR" layoutX="161.0" layoutY="115.0" prefHeight="26.0" prefWidth="427.0" />
+            <HBox fx:id="bSDR" layoutX="163.0" layoutY="296.0" prefHeight="26.0" prefWidth="425.0" />
          </children></AnchorPane>
       <StackPane id="deckPane" fx:id="deckPane" layoutX="143.0" layoutY="781.0" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: green;" />
-      <AnchorPane id="cloudPane" fx:id="cloudPane" layoutX="1633.0" layoutY="772.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" />
+      <AnchorPane id="cloudPane" fx:id="cloudPane" layoutX="1447.0" layoutY="639.0" prefHeight="287.0" prefWidth="455.0">
+         <children>
+            <GridPane fx:id="cloud1" layoutX="1.0" layoutY="4.0" prefHeight="136.0" prefWidth="214.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <GridPane fx:id="cloud3" layoutX="230.0" layoutY="4.0" prefHeight="136.0" prefWidth="203.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+            <GridPane fx:id="cloud2" layoutX="7.0" layoutY="137.0" prefHeight="144.0" prefWidth="212.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+            <GridPane fx:id="cloud4" layoutX="230.0" layoutY="138.0" prefHeight="144.0" prefWidth="205.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
