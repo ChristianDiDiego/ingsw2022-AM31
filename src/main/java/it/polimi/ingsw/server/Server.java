@@ -84,6 +84,15 @@ public class Server {
     public synchronized void lobby(SocketClientConnection c){
         List<Player> keys = new ArrayList<>(waitingConnection.keySet());
         ColorOfTower color = null;
+
+        if(!waitingConnection.isEmpty()){
+            String nickOfOtherPlayers = "You are joying in the match with ";
+            for(Player p : waitingConnection.keySet()){
+                nickOfOtherPlayers += p.getNickname() + " ";
+            }
+            c.asyncSend(nickOfOtherPlayers);
+        }
+
         //I moved nickname here so when other player connect the others receive his name
         String nickname = c.askNickname();
         while(!checkNickname(nickname)){

@@ -2,18 +2,24 @@ package it.polimi.ingsw.FX;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class loginController implements Initializable {
+public class LoginController implements Initializable {
     @FXML
     Label usernameText;
     @FXML
@@ -32,6 +38,10 @@ public class loginController implements Initializable {
     Button submitMode;
     @FXML
     Button submitColor;
+    @FXML
+    Label waitingForPlayers;
+
+    boolean notFirstPlayer = false;
 
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
@@ -56,12 +66,20 @@ public class loginController implements Initializable {
             submitUsername.setVisible(false);
             usernameTextField.setVisible(false);
 
-            textHowManyPlayers.setVisible(true);
-            radio2.setVisible(true);
-            radio3.setVisible(true);
-            radio4.setVisible(true);
-            submitNumberOfPlayers.setVisible(true);
-            System.out.println("username");
+            if(!notFirstPlayer){
+                textHowManyPlayers.setVisible(true);
+                radio2.setVisible(true);
+                radio3.setVisible(true);
+                radio4.setVisible(true);
+                submitNumberOfPlayers.setVisible(true);
+            }else{
+                textColor.setVisible(true);
+                radioWhite.setVisible(true);
+                radioBlack.setVisible(true);
+                radioGrey.setVisible(true);
+                submitColor.setVisible(true);
+            }
+
 
         }
         catch (Exception e) {
@@ -149,7 +167,20 @@ public class loginController implements Initializable {
         submitNumberOfPlayers.setVisible(false);
         submitMode.setVisible(false);
         submitColor.setVisible(false);
+        waitingForPlayers.setVisible(false);
     }
 
+    public void switchToMainScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScene.fxml"));
+        usernameText.getScene().setRoot(root);
+    }
+
+    public void setWaitingForOtherPlayers(){
+        waitingForPlayers.setVisible(true);
+    }
+
+    public void setNotFirstPlayer(){
+        notFirstPlayer = true;
+    }
 
 }

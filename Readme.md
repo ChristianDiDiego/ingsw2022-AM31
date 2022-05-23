@@ -12,7 +12,7 @@ Professor : Alessandro Margara
 | Basic rules |     🟢     |
 | Complete rules |     🟢      |
 | Socket | 🟢 |
-| GUI | 🔴 |
+| GUI | 🟡 |
 | CLI |     🟢     |
 | Multiple games | 🟡 |
 | 4 players | 🟢 |

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.FX;
 
-import it.polimi.ingsw.FX.loginController;
-
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.utilities.ListOfArchipelagos;
 import it.polimi.ingsw.utilities.ListOfBoards;
@@ -32,6 +30,7 @@ public class Gui extends Application implements PropertyChangeListener {
     PrintWriter socketOut;
 
     private Scene scene;
+    private LoginController loginController;
     public synchronized boolean isActive() {
         return active;
     }
@@ -62,7 +61,12 @@ public class Gui extends Application implements PropertyChangeListener {
                             if (inputObject instanceof String) {
                                 System.out.println((String) inputObject);
                                 if(inputObject.equals("Game is starting...")){
-                                    switchToScene2();
+                                    loginController.switchToMainScene();
+                                }else if(((String) inputObject).contains("You are joying in the match with")){
+                                    loginController.setNotFirstPlayer();
+                                }
+                                else if(((String) inputObject).contains("Waiting for other players")){
+                                    loginController.setWaitingForOtherPlayers();
                                 }
                             } else if (inputObject instanceof ListOfBoards) {
                               //  printBoard(((ListOfBoards) inputObject).getBoards());
@@ -87,16 +91,6 @@ public class Gui extends Application implements PropertyChangeListener {
         });
      //   t.start();
         return t;
-    }
-
-    public void switchToScene2() throws IOException {
-        System.out.println("i should swtich");
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("sample.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage)scene.getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
     }
 
     public Thread pingToServer(InetAddress geek) {
@@ -158,8 +152,9 @@ public class Gui extends Application implements PropertyChangeListener {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("login.fxml"));
             Parent root = loader.load();
-            loginController loginController = loader.getController();
+            loginController = loader.getController();
             loginController.addPropertyChangeListener(this);
+
 
             scene = new Scene(root);
             stage.setScene(scene);
