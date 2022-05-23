@@ -49,7 +49,7 @@ public class TurnController {
      * Call endGame if the number of the students in the bag is finished
      */
     public void startTurn(){
-        if(game.getBag().getNumberOfLeftStudents() == 0 || game.getCurrentPlayer().getMyDeck().getLeftCards().size() == 1) {
+        if(game.getBag().getNumberOfLeftStudents() < (gameHandler.getNumberOfStudentsOnCloud() * gameHandler.getNumberOfClouds()) || game.getCurrentPlayer().getMyDeck().getLeftCards().size() == 1) {
             isFinished = true;
         }
         //Add the students to the clouds
@@ -61,8 +61,10 @@ public class TurnController {
             support.firePropertyChange("StartingGame", "", "Game is starting...");
         }
 
-        for(Cloud cloud : game.getListOfClouds()){
-            cloud.addStudents( game.getBag().pickStudent(gameHandler.getNumberOfStudentsOnCloud()) );
+        if(!isFinished){
+            for(Cloud cloud : game.getListOfClouds()){
+                cloud.addStudents( game.getBag().pickStudent(gameHandler.getNumberOfStudentsOnCloud()) );
+            }
         }
 
         if(game.isExpertModeOn() == true){

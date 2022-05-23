@@ -162,32 +162,28 @@ public class MainSceneController implements Initializable {
         int row=0;
         int column=0;
         for(Cloud c: cloudList){
-            while(row<2) {
-                while(column<2) {
-                    if (!c.getIsTaken()) {
-                        for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
-                            for (int k = 0; k < c.getStudents()[j]; k++) {
-                                switch (StudsAndProfsColor.values()[j]) {
-                                    case GREEN ->clouds.get(cloudList.indexOf(c)).add(new ImageView(greenStudent),row,column);
-                                    case RED ->clouds.get(cloudList.indexOf(c)).add(new ImageView(redStudent),row,column);
-                                    case YELLOW ->clouds.get(cloudList.indexOf(c)).add(new ImageView(yellowStudent),row,column);
-                                    case PINK ->clouds.get(cloudList.indexOf(c)).add(new ImageView(pinkStudent),row,column);
-                                    case BLUE ->clouds.get(cloudList.indexOf(c)).add(new ImageView(blueStudent),row,column);
+            if (!c.getIsTaken()) {
+                for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
+                    for (int k = 0; k < c.getStudents()[j]; k++) {
+                        switch (StudsAndProfsColor.values()[j]) {
+                            case GREEN ->clouds.get(cloudList.indexOf(c)).add(new ImageView(greenStudent),row,column);
+                            case RED ->clouds.get(cloudList.indexOf(c)).add(new ImageView(redStudent),row,column);
+                            case YELLOW ->clouds.get(cloudList.indexOf(c)).add(new ImageView(yellowStudent),row,column);
+                            case PINK ->clouds.get(cloudList.indexOf(c)).add(new ImageView(pinkStudent),row,column);
+                            case BLUE ->clouds.get(cloudList.indexOf(c)).add(new ImageView(blueStudent),row,column);
 
-                                }
-                                column++;
-                                if(column == 2){
-                                    column = 0;
-                                    row++;
-                                }
-                            }
+                        }
+                        column++;
+                        if(column == 2){
+                            column = 0;
+                            row++;
                         }
                     }
                 }
+                column = 0;
+                row = 0;
             }
-
         }
-
     }
 
     @Override
