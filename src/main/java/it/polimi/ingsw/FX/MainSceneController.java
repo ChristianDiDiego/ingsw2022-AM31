@@ -52,12 +52,16 @@ public class MainSceneController implements Initializable {
     @FXML ImageView profPink;
     @FXML ImageView profBlue;
 
+    /*
     @FXML HBox gSDR;
     @FXML HBox rSDR;
     @FXML HBox ySDR;
     @FXML HBox pSDR;
     @FXML HBox bSDR;
+     */
 
+    @FXML GridPane studentsInDR;
+    @FXML GridPane studentsInEntrance;
     @FXML GridPane cloud1;
     @FXML GridPane cloud2;
     @FXML GridPane cloud3;
@@ -128,7 +132,16 @@ public class MainSceneController implements Initializable {
         Image blueStudent = new Image(getClass().getResourceAsStream("/images/professors and students/studentblue.png"));
 
         Image[] studentsImages = {greenStudent,redStudent,yellowStudent,pinkStudent,blueStudent};
-        gSDR = new HBox(10);
+
+        studentsInDR = new GridPane();
+
+        for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
+            for(int j = 0; j < myBoard.getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]); j++){
+                studentsInDR.add(new ImageView(studentsImages[i]), i, j);
+            }
+        };
+
+       /* gSDR = new HBox(10);
         rSDR = new HBox(10);
         ySDR = new HBox(10);
         pSDR = new HBox(10);
@@ -147,8 +160,26 @@ public class MainSceneController implements Initializable {
             }
         }
 
-        //students in entrance
+        */
 
+
+        //students in entrance
+        int column = 0;
+        int row = 0;
+        studentsInEntrance = new GridPane();
+        for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
+            for(int j = 0; j < myBoard.getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]); j++ ){
+                if(row == 0 && column==0){
+                    column++;
+                }
+                studentsInEntrance.add(new ImageView(studentsImages[i]), row, column);
+                column++;
+                if(column == 2){
+                    column=0;
+                    row++;
+                }
+            }
+        }
 
     }
 
