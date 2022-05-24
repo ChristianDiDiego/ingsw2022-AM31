@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<AnchorPane id="background" fx:id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@mainScene.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="background" fx:id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@mainScene.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.FX.MainSceneController">
    <children>
       <GridPane id="gridArchipelagos" fx:id="gridArchipelagos" layoutX="151.0" layoutY="76.0" prefHeight="558.0" prefWidth="1620.0">
         <columnConstraints>
@@ -26,11 +26,6 @@
       </GridPane>
       <AnchorPane id="boardPane" fx:id="boardPane" layoutX="538.0" layoutY="697.0" prefHeight="377.0" prefWidth="887.0">
          <children>
-            <Label id="nGreenDR" fx:id="nGreenDR" layoutX="588.0" layoutY="48.0" prefHeight="31.0" prefWidth="44.0" text="Label" />
-            <Label id="nRedDR" fx:id="nRedDR" layoutX="588.0" layoutY="111.0" prefHeight="31.0" prefWidth="36.0" text="Label" />
-            <Label id="nYellowDR" fx:id="nYellowDR" layoutX="588.0" layoutY="172.0" prefHeight="25.0" prefWidth="36.0" text="Label" />
-            <Label id="nPinkDR" fx:id="nPinkDR" layoutX="588.0" layoutY="240.0" prefHeight="25.0" prefWidth="36.0" text="Label" />
-            <Label id="nBlueDR" fx:id="nBlueDR" layoutX="588.0" layoutY="299.0" prefHeight="25.0" prefWidth="36.0" text="Label" />
             <ImageView id="tower1" fx:id="tower1" fitHeight="52.0" fitWidth="53.0" layoutX="716.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="tower2" fitHeight="52.0" fitWidth="53.0" layoutX="783.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="tower3" fitHeight="52.0" fitWidth="53.0" layoutX="718.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true" />

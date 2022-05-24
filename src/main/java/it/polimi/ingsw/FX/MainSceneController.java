@@ -32,11 +32,6 @@ public class MainSceneController implements Initializable {
     @FXML AnchorPane cloudPane;
 
     //BoardElements
-    @FXML Label nGreenDR;
-    @FXML Label nRedDR;
-    @FXML Label nYellowDR;
-    @FXML Label nPinkDR;
-    @FXML Label nBlueDR;
     @FXML ImageView tower1;
     @FXML ImageView tower2;
     @FXML ImageView tower3;
@@ -95,12 +90,6 @@ public class MainSceneController implements Initializable {
     }
 
     public void printMyBoard() {
-        //Dining Room
-        nGreenDR.setText(String.valueOf(myBoard.getDiningRoom().getStudentsByColor(StudsAndProfsColor.GREEN)));
-        nRedDR.setText(String.valueOf(myBoard.getDiningRoom().getStudentsByColor(StudsAndProfsColor.RED)));
-        nYellowDR.setText(String.valueOf(myBoard.getDiningRoom().getStudentsByColor(StudsAndProfsColor.YELLOW)));
-        nPinkDR.setText(String.valueOf(myBoard.getDiningRoom().getStudentsByColor(StudsAndProfsColor.PINK)));
-        nBlueDR.setText(String.valueOf(myBoard.getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE)));
 
         //tower
         int tower = 0;
@@ -225,7 +214,12 @@ public class MainSceneController implements Initializable {
         Image yellowProfessor = new Image(getClass().getResourceAsStream("/images/professors and students/profyellow.png"));
         Image pinkProfessor = new Image(getClass().getResourceAsStream("/images/professors and students/profpink.png"));
         Image blueProfessor = new Image(getClass().getResourceAsStream("/images/professors and students/profblue.png"));
-        Image cloud = new Image(getClass().getResourceAsStream("/images/cloud.png"));
+
+        Archipelago a = new Archipelago(2);
+        Archipelago b = new Archipelago(3);
+        b.changeMNPresence();
+        listOfArchipelagos.add(a);
+        listOfArchipelagos.add(b);
 
         tower1 = new ImageView(tower);
         tower2 = new ImageView(tower);
@@ -282,7 +276,7 @@ public class MainSceneController implements Initializable {
 
 
         printArchipelagos();
-        printMyBoard();
-        printClouds();
+      //  printMyBoard();
+        //printClouds();
     }
 }
