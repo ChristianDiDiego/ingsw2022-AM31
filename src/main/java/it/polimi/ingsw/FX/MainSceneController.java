@@ -19,10 +19,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainSceneController implements Initializable {
-    private List<Archipelago> listOfArchipelagos = new ArrayList<>();
-    private List<Board> listOfBoards = new ArrayList<>();
-    private Board myBoard;
-    private List<Cloud> cloudList = new ArrayList<>();
     private List<ImageView> towers = new ArrayList<>();
     private List<HBox> studentsInDiningRoom = new ArrayList<>();
     private List<ImageView> professors = new ArrayList<>();
@@ -34,6 +30,8 @@ public class MainSceneController implements Initializable {
     Image yellowStudent = new Image(getClass().getResourceAsStream("/images/professors and students/studentyellow.png"));
     Image pinkStudent = new Image(getClass().getResourceAsStream("/images/professors and students/studentpink.png"));
     Image blueStudent = new Image(getClass().getResourceAsStream("/images/professors and students/studentblue.png"));
+    Image[] studentsImages = {greenStudent,redStudent,yellowStudent,pinkStudent,blueStudent};
+
     @FXML GridPane gridArchipelagos;
     @FXML FlowPane arch0;
     @FXML FlowPane arch1;
@@ -47,7 +45,6 @@ public class MainSceneController implements Initializable {
     @FXML FlowPane arch9;
     @FXML FlowPane arch10;
     @FXML FlowPane arch11;
-
     @FXML AnchorPane cloudPane;
 
     //BoardElements
@@ -111,7 +108,7 @@ public class MainSceneController implements Initializable {
         }
     }*/
 
-    public void printArchipelagos() {
+    public void printArchipelagos(List<Archipelago> listOfArchipelagos) {
         for(FlowPane f : singleCellArchipelago) {
             f.getChildren().clear();
         }
@@ -148,12 +145,12 @@ public class MainSceneController implements Initializable {
 
     }
 
-    public void printMyBoard() {
+    public void printMyBoard(Board myBoard) {
+        studentsInEntrance.getChildren().clear();
+        studentsInDR.getChildren().clear();
+
         myBoard = new Board("ca");
         int[] toAdd = {1,2,3,1,0};
-        //studentsInDR.setGridLinesVisible(true);
-        //studentsInEntrance.setGridLinesVisible(true);
-
         myBoard.getEntrance().addStudent(toAdd);
         myBoard.getDiningRoom().addStudent(StudsAndProfsColor.BLUE);
         myBoard.getDiningRoom().addStudent(StudsAndProfsColor.BLUE);
@@ -187,7 +184,6 @@ public class MainSceneController implements Initializable {
 
         //students in dining room
 
-        Image[] studentsImages = {greenStudent,redStudent,yellowStudent,pinkStudent,blueStudent};
 
         for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
             for(int j = 0; j < myBoard.getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]); j++){
@@ -220,46 +216,34 @@ public class MainSceneController implements Initializable {
 
     }
 
-    public void printClouds(){
+    public void printClouds(List<Cloud> cloudList){
+
+        for(GridPane c : clouds){
+            c.getChildren().clear();
+        }
+
+        switch (cloudList.size()){
+            case 2:{
+                cloud3.setVisible(false);
+                cloud4.setVisible(false);
+            }
+            case 3:{
+                cloud4.setVisible(false);
+            }
+            case 4:
+        }
+
         int row=0;
         int column=0;
         for(Cloud c: cloudList){
             if (!c.getIsTaken()) {
                 for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
                     for (int k = 0; k < c.getStudents()[j]; k++) {
-                        switch (StudsAndProfsColor.values()[j]) {
-                            case GREEN -> {
-                                ImageView st = new ImageView(greenStudent);
-                                st.setFitHeight(150);
-                                st.setFitWidth(150);
-                                clouds.get(cloudList.indexOf(c)).add(st, column, row);
-                            }
-                            case RED ->{
-                                ImageView st = new ImageView(redStudent);
-                                st.setFitHeight(150);
-                                st.setFitWidth(150);
-                                clouds.get(cloudList.indexOf(c)).add(st, column, row);
-                            }
-                            case YELLOW ->{
-                                ImageView st = new ImageView(yellowStudent);
-                                st.setFitHeight(150);
-                                st.setFitWidth(150);
-                                clouds.get(cloudList.indexOf(c)).add(st, column, row);
-                            }
-                            case PINK ->{
-                                ImageView st = new ImageView(pinkStudent);
-                                st.setFitHeight(150);
-                                st.setFitWidth(150);
-                                clouds.get(cloudList.indexOf(c)).add(st, column, row);
-                            }
-                            case BLUE ->{
-                                ImageView st = new ImageView(blueStudent);
-                                st.setFitHeight(150);
-                                st.setFitWidth(150);
-                                clouds.get(cloudList.indexOf(c)).add(st, column, row);
-                            }
-
-                        }
+                        ImageView st = new ImageView();
+                        st.setImage(studentsImages[j]);
+                        st.setFitHeight(150);
+                        st.setFitWidth(150);
+                        clouds.get(cloudList.indexOf(c)).add(st, column, row);
                         column++;
                         if(column == 2){
                             column = 0;
@@ -319,6 +303,20 @@ public class MainSceneController implements Initializable {
         clouds.add(cloud3);
         clouds.add(cloud4);
 
+        //test
+        Archipelago a = new Archipelago(1);
+        Archipelago b = new Archipelago(2);
+        Archipelago c = new Archipelago(3);
+        Archipelago d = new Archipelago(4);
+        a.getBelongingIslands().get(0).addStudent(StudsAndProfsColor.BLUE);
+        List<Archipelago> l = new ArrayList<>();
+        l.add(a);
+        l.add(b);
+        l.add(c);
+        l.add(d);
+
+        //test
+        List<Cloud> cloudList = new ArrayList<>();
         Cloud cloud = new Cloud(1);
         Cloud cloud2 = new Cloud(2);
         cloudList.add(cloud);
@@ -329,21 +327,13 @@ public class MainSceneController implements Initializable {
         cloud2.addStudents(toAdd);
 
 
-        /*
-        switch (numberOFPlayers){
-            case 2:{
-                cloud3.setVisible(false);
-                cloud4.setVisible(false);
-            }
-            case 3:{
-                cloud4.setVisible(false);
-            }
-            case 4:
-        }
-         */
+        Board myBoard = new Board("ca");
+        myBoard.getDiningRoom().addStudent(StudsAndProfsColor.BLUE);
+        myBoard.getEntrance().addStudent(toAdd);
 
-        //printArchipelagos();
-        //printMyBoard();
-        //printClouds();
+
+       // printArchipelagos(l);
+        printMyBoard(myBoard);
+        printClouds(cloudList);
     }
 }
