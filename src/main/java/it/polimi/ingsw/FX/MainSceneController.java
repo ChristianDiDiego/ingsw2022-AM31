@@ -303,6 +303,7 @@ public class MainSceneController implements Initializable {
         clouds.add(cloud3);
         clouds.add(cloud4);
 
+        /*
         //test
         Archipelago a = new Archipelago(1);
         Archipelago b = new Archipelago(2);
@@ -331,9 +332,9 @@ public class MainSceneController implements Initializable {
         myBoard.getDiningRoom().addStudent(StudsAndProfsColor.BLUE);
         myBoard.getEntrance().addStudent(toAdd);
 
-
-       // printArchipelagos(l);
-        printMyBoard(myBoard);
-        printClouds(cloudList);
+*/
+       //printArchipelagos(l);
+        //printMyBoard(myBoard);
+        //printClouds(cloudList);
     }
 }
