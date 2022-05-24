@@ -45,6 +45,7 @@
             <RadioButton fx:id="radioBlack" layoutX="371.0" layoutY="239.0" mnemonicParsing="false" text="black" toggleGroup="$radioColor" />
             <Button fx:id="submitColor" layoutX="483.0" layoutY="235.0" mnemonicParsing="false" onAction="#submitColor" text="send" />
             <Label fx:id="waitingForPlayers" layoutX="238.0" layoutY="321.0" text="Waiting for other players..." />
+            <Button layoutX="87.0" layoutY="305.0" mnemonicParsing="false" onAction="#switchToSceneWithButton" text="Button" />
            </children>
       </AnchorPane>
    </children>

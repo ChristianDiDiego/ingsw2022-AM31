@@ -175,6 +175,13 @@ public class LoginController implements Initializable {
         usernameText.getScene().setRoot(root);
     }
 
+    public void switchToSceneWithButton(ActionEvent event) throws IOException{
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScene.fxml"));
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
     public void setWaitingForOtherPlayers(){
         waitingForPlayers.setVisible(true);
     }
