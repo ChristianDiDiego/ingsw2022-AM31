@@ -284,21 +284,6 @@ public class MainSceneController implements Initializable {
 
         singleCellArchipelago = new FlowPane[]{arch0, arch1, arch2, arch3, arch4, arch5, arch6, arch7, arch8, arch9, arch10, arch11};
 
-        //TEST printArchipelagos()
-        Archipelago b = new Archipelago(1);
-        Archipelago c = new Archipelago(2);
-        Archipelago d = new Archipelago(3);
-        Archipelago e = new Archipelago(4);
-        Archipelago f = new Archipelago(5);
-        b.getBelongingIslands().get(0).addStudent(StudsAndProfsColor.BLUE);
-        b.getBelongingIslands().get(0).addStudent(StudsAndProfsColor.BLUE);
-        listOfArchipelagos.add(b);
-        listOfArchipelagos.add(c);
-        listOfArchipelagos.add(d);
-        listOfArchipelagos.add(e);
-        listOfArchipelagos.add(f);
-
-
         tower1.setImage(tower);
         tower2 = new ImageView(tower);
         tower3 = new ImageView(tower);
@@ -357,9 +342,7 @@ public class MainSceneController implements Initializable {
         }
          */
 
-        printArchipelagos();
-        b.changeMNPresence();
-        printArchipelagos();
+        //printArchipelagos();
         //printMyBoard();
         //printClouds();
     }
