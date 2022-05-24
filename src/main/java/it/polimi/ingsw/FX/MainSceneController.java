@@ -2,6 +2,7 @@ package it.polimi.ingsw.FX;
 
 import it.polimi.ingsw.model.Archipelago;
 import it.polimi.ingsw.model.Cloud;
+import it.polimi.ingsw.model.Island;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utilities.constants.Constants;
@@ -9,9 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 
 import java.awt.*;
 import java.net.URL;
@@ -29,12 +28,26 @@ public class MainSceneController implements Initializable {
     private List<ImageView> professors = new ArrayList<>();
     private List<GridPane> clouds = new ArrayList<>();
 
+    FlowPane[] singleCellArchipelago;
     Image greenStudent = new Image(getClass().getResourceAsStream("/images/professors and students/studentgreen.png"));
     Image redStudent = new Image(getClass().getResourceAsStream("/images/professors and students/studentred.png"));
     Image yellowStudent = new Image(getClass().getResourceAsStream("/images/professors and students/studentyellow.png"));
     Image pinkStudent = new Image(getClass().getResourceAsStream("/images/professors and students/studentpink.png"));
     Image blueStudent = new Image(getClass().getResourceAsStream("/images/professors and students/studentblue.png"));
     @FXML GridPane gridArchipelagos;
+    @FXML FlowPane arch0;
+    @FXML FlowPane arch1;
+    @FXML FlowPane arch2;
+    @FXML FlowPane arch3;
+    @FXML FlowPane arch4;
+    @FXML FlowPane arch5;
+    @FXML FlowPane arch6;
+    @FXML FlowPane arch7;
+    @FXML FlowPane arch8;
+    @FXML FlowPane arch9;
+    @FXML FlowPane arch10;
+    @FXML FlowPane arch11;
+
     @FXML AnchorPane cloudPane;
 
     //BoardElements
@@ -58,51 +71,81 @@ public class MainSceneController implements Initializable {
     @FXML GridPane cloud3;
     @FXML GridPane cloud4;
 
-
-
-
-
-    public void printArchipelagos() {
+    /*public void printArchipelagos() {
         Image archipelago = new Image(getClass().getResourceAsStream("/images/arch.jpg"));
         Image motherNature = new Image(getClass().getResourceAsStream("/images/mothernature.png"));
+        Image studentRed = new Image(getClass().getResourceAsStream("/images/professors and students/studentred.png"));
+        Image studentGreen = new Image(getClass().getResourceAsStream("/images/professors and students/studentgreen.png"));
+        Image studentYellow = new Image(getClass().getResourceAsStream("/images/professors and students/studentyellow.png"));
+        Image studentPink = new Image(getClass().getResourceAsStream("/images/professors and students/studentpink.png"));
+        Image studentBlue = new Image(getClass().getResourceAsStream("/images/professors and students/studentblue.png"));
+        Image[] studentColor = {studentGreen, studentRed, studentYellow, studentPink, studentBlue};
         int k = 0;
 
         for(int i = 0; i < 3; i++) {
-            if(i == 0 || i == 2) {
-                for (int j = 0; j < 5; j++) {
-                    if (!(i == 1 && (j == 1 || j == 2 || j == 3)) && k < listOfArchipelagos.size()) {
-                        ImageView arch = new ImageView(archipelago);
-                        ImageView mn = new ImageView(motherNature);
-                        arch.setFitHeight(100);
-                        arch.setFitWidth(100);
-                        mn.setFitHeight(20);
-                        mn.setFitWidth(20);
-                        gridArchipelagos.add(arch, j, i);
-                        if (listOfArchipelagos.get(k).getIsMNPresent() == true) {
-                            gridArchipelagos.add(mn, j, i);
-                        }
-                        k++;
+            for(int j = 0; j < 5; j++) {
+                if(!(i == 1 && (j == 1 || j ==2 || j == 3)) && k < listOfArchipelagos.size() ){
+                    ImageView arch = new ImageView(archipelago);
+                    ImageView mn = new ImageView(motherNature);
+                    arch.setFitHeight(100);
+                    arch.setFitWidth(100);
+                    mn.setFitHeight(20);
+                    mn.setFitWidth(20);
+                    gridArchipelagos.add(arch, j, i);
+                    if(listOfArchipelagos.get(k).getIsMNPresent() == true) {
+                        gridArchipelagos.add(mn, j, i);
                     }
-                }
-            }else{
-                for (int j = 0; j < 5; j++) {
-                    if (!(i == 1 && (j == 1 || j == 2 || j == 3)) && k < listOfArchipelagos.size()) {
-                        ImageView arch = new ImageView(archipelago);
-                        ImageView mn = new ImageView(motherNature);
-                        arch.setFitHeight(100);
-                        arch.setFitWidth(100);
-                        mn.setFitHeight(20);
-                        mn.setFitWidth(20);
-                        gridArchipelagos.add(arch, j, i);
-                        if (listOfArchipelagos.get(k).getIsMNPresent() == true) {
-                            gridArchipelagos.add(mn, j, i);
+                    for(Island island : listOfArchipelagos.get(k).getBelongingIslands()) {
+                        for(int s = 0; s < Constants.NUMBEROFKINGDOMS; s++) {
+                            for(int t = 0; t < island.getStudentsByColor(StudsAndProfsColor.values()[s]); t++) {
+                                ImageView st = new ImageView(studentColor[s]);
+                                st.setFitHeight(80);
+                                st.setFitWidth(80);
+                                gridArchipelagos.add(st, j, i);
+                            }
                         }
-                        k++;
                     }
+                    k++;
                 }
-
             }
         }
+    }*/
+
+    public void printArchipelagos() {
+        for(FlowPane f : singleCellArchipelago) {
+            f.getChildren().clear();
+        }
+        Image motherNature = new Image(getClass().getResourceAsStream("/images/mothernature.png"));
+        Image studentRed = new Image(getClass().getResourceAsStream("/images/professors and students/studentred.png"));
+        Image studentGreen = new Image(getClass().getResourceAsStream("/images/professors and students/studentgreen.png"));
+        Image studentYellow = new Image(getClass().getResourceAsStream("/images/professors and students/studentyellow.png"));
+        Image studentPink = new Image(getClass().getResourceAsStream("/images/professors and students/studentpink.png"));
+        Image studentBlue = new Image(getClass().getResourceAsStream("/images/professors and students/studentblue.png"));
+        Image[] studentColor = {studentRed, studentGreen, studentYellow, studentPink, studentBlue};
+        int k = 0;
+        for(int i = 0; i < listOfArchipelagos.size(); i++) {
+            if(listOfArchipelagos.get(i).getIsMNPresent()) {
+                ImageView mn = new ImageView(motherNature);
+                mn.setFitHeight(50);
+                mn.setFitWidth(50);
+                singleCellArchipelago[i].getChildren().add(mn);
+            }
+            for(Island island : listOfArchipelagos.get(i).getBelongingIslands()) {
+                for(int s = 0; s < Constants.NUMBEROFKINGDOMS; s++) {
+                    for(int t = 0; t < island.getStudentsByColor(StudsAndProfsColor.values()[s]); t++) {
+                        ImageView st = new ImageView(studentColor[s]);
+                        st.setFitHeight(80);
+                        st.setFitWidth(80);
+                        singleCellArchipelago[i].getChildren().add(st);
+                    }
+                }
+            }
+            k++;
+        }
+        for(int i = k; i < Constants.NUMBEROFISLANDS; i++) {
+            singleCellArchipelago[i].setVisible(false);
+        }
+
     }
 
     public void printMyBoard() {
@@ -239,14 +282,16 @@ public class MainSceneController implements Initializable {
         Image pinkProfessor = new Image(getClass().getResourceAsStream("/images/professors and students/profpink.png"));
         Image blueProfessor = new Image(getClass().getResourceAsStream("/images/professors and students/profblue.png"));
 
-        Archipelago a = new Archipelago(2);
-        Archipelago b = new Archipelago(3);
-        Archipelago c = new Archipelago(4);
+        singleCellArchipelago = new FlowPane[]{arch0, arch1, arch2, arch3, arch4, arch5, arch6, arch7, arch8, arch9, arch10, arch11};
+
+        //TEST printArchipelagos()
+        Archipelago b = new Archipelago(1);
+        Archipelago c = new Archipelago(2);
+        Archipelago d = new Archipelago(3);
+        Archipelago e = new Archipelago(4);
         Archipelago f = new Archipelago(5);
-        Archipelago d = new Archipelago(6);
-        Archipelago e = new Archipelago(7);
-        b.changeMNPresence();
-        listOfArchipelagos.add(a);
+        b.getBelongingIslands().get(0).addStudent(StudsAndProfsColor.BLUE);
+        b.getBelongingIslands().get(0).addStudent(StudsAndProfsColor.BLUE);
         listOfArchipelagos.add(b);
         listOfArchipelagos.add(c);
         listOfArchipelagos.add(d);
@@ -312,9 +357,10 @@ public class MainSceneController implements Initializable {
         }
          */
 
-
         printArchipelagos();
-        printMyBoard();
-        printClouds();
+        b.changeMNPresence();
+        printArchipelagos();
+        //printMyBoard();
+        //printClouds();
     }
 }
