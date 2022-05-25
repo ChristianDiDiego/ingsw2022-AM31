@@ -5,6 +5,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -46,6 +47,7 @@
             <Button fx:id="submitColor" layoutX="483.0" layoutY="235.0" mnemonicParsing="false" onAction="#submitColor" text="send" />
             <Label fx:id="waitingForPlayers" layoutX="238.0" layoutY="321.0" text="Waiting for other players..." />
             <Button layoutX="87.0" layoutY="305.0" mnemonicParsing="false" onAction="#switchToSceneWithButton" text="Button" />
+            <ImageView fx:id="tower" fitHeight="108.0" fitWidth="46.0" layoutX="58.0" layoutY="118.0" pickOnBounds="true" preserveRatio="true" />
            </children>
       </AnchorPane>
    </children>

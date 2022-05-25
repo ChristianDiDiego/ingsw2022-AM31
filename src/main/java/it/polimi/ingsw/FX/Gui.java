@@ -1,11 +1,13 @@
 package it.polimi.ingsw.FX;
 
 import it.polimi.ingsw.model.Deck;
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utilities.ListOfArchipelagos;
 import it.polimi.ingsw.utilities.ListOfBoards;
 import it.polimi.ingsw.utilities.ListOfClouds;
 import it.polimi.ingsw.utilities.ListOfPlayers;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -31,6 +33,9 @@ public class Gui extends Application implements PropertyChangeListener {
 
     private Scene scene;
     private LoginController loginController;
+    private MainSceneController mainSceneController;
+
+    private String nickname = null;
     public synchronized boolean isActive() {
         return active;
     }
@@ -57,39 +62,66 @@ public class Gui extends Application implements PropertyChangeListener {
                 try {
                     while (isActive()) {
                         Object inputObject = socketIn.readObject();
+                        /*
+                        String typeOfInput = inputObject.getClass().getName();
+                        System.out.println(typeOfInput);
+                        switch (typeOfInput) {
+                            case "String" -> manageStringInput((String) inputObject);
+                            case "ListOfBoards" -> manageListOfBoards((ListOfBoards) inputObject);
+                            // case "Deck" -> manageDeck((Deck) inputObject);
+                            case "ListOfArchipelagos" -> manageListOfArchipelagos((ListOfArchipelagos) inputObject);
+                            case "ListOfClouds" -> manageListOfClouds((ListOfClouds) inputObject);
+                            //  case "ListOfPlayers" -> manageListOfPlayers((ListOfPlayers) inputObject);
+                        }
+
+                         */
+
                         synchronized (this) {
                             if (inputObject instanceof String) {
                                 System.out.println((String) inputObject);
                                 if(inputObject.equals("Game is starting...")){
-                                    loginController.switchToMainScene();
+                                    mainSceneController = loginController.switchToMainScene();
                                 }else if(((String) inputObject).contains("You are joying in the match with")){
                                     loginController.setNotFirstPlayer();
                                 }
                                 else if(((String) inputObject).contains("Waiting for other players")){
                                     loginController.setWaitingForOtherPlayers();
                                 }
-                            } else if (inputObject instanceof ListOfBoards) {
-                              //  printBoard(((ListOfBoards) inputObject).getBoards());
+                            } else if (inputObject instanceof ListOfBoards listOfBoards) {
+                                System.out.println("I received a board");
+                                for(Board b : listOfBoards.getBoards()){
+                                    if(b.getNickname().equals(nickname)){
+                                        Platform.runLater(()-> {
+                                            mainSceneController.printMyBoard(b);
+                                        });
+
+                                        System.out.println("Board sent!");
+                                    }
+                                }
                             } else if (inputObject instanceof Deck) {
-                             //   printMyDeck((Deck) inputObject);
-                            } else if (inputObject instanceof ListOfArchipelagos) {
-                             //   printArchipelago(((ListOfArchipelagos) inputObject).getArchipelagos());
+                            } else if (inputObject instanceof ListOfArchipelagos listOfArchipelagos) {
+
+                                Platform.runLater(()-> {
+                                    mainSceneController.printArchipelagos(listOfArchipelagos.getArchipelagos());
+                                });
+
                             } else if (inputObject instanceof ListOfClouds) {
-                             //   printCloud(((ListOfClouds) inputObject).getClouds());
+                                System.out.println("received list of clouds");
+                                Platform.runLater(()->{
+                                    mainSceneController.printClouds(((ListOfClouds) inputObject).getClouds());
+                                });
                             } else if (inputObject instanceof ListOfPlayers) {
-                              //  printLastUsedCards(((ListOfPlayers) inputObject).getPlayers());
                             } else {
                                 throw new IllegalArgumentException();
                             }
                         }
+
                     }
                 } catch (Exception e) {
                     setActive(false);
-                    //termino
                 }
             }
         });
-     //   t.start();
         return t;
     }
 
@@ -172,6 +204,9 @@ public class Gui extends Application implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
             send(evt.getNewValue().toString());
+            if(evt.getPropertyName().equals("username")){
+                setNickname(evt.getNewValue().toString());
+            }
 
     }
 
@@ -181,5 +216,58 @@ public class Gui extends Application implements PropertyChangeListener {
         socketOut.println(scanner.nextLine());
         socketOut.flush();
         System.out.println("sent " + message);
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    private void manageStringInput(String inputString){
+        System.out.println(inputString);
+        if(inputString.equals("Game is starting...")){
+            try {
+                mainSceneController = loginController.switchToMainScene();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }else if(inputString.contains("You are joying in the match with")){
+            loginController.setNotFirstPlayer();
+        }
+        else if(inputString.contains("Waiting for other players")){
+            loginController.setWaitingForOtherPlayers();
+        }
+    }
+
+    private void manageListOfBoards(ListOfBoards listOfBoards){
+        Board board = findPlayerBoard(listOfBoards);
+        Platform.runLater(()-> {
+            mainSceneController.printMyBoard(board);
+        });
+    }
+
+    private Board findPlayerBoard(ListOfBoards listOfBoards){
+        for(Board b : listOfBoards.getBoards()){
+            if(b.getNickname().equals(nickname)){
+                return b;
+            }
+        }
+        return null;
+    }
+
+    private void manageListOfArchipelagos(ListOfArchipelagos listOfArchipelagos){
+        Platform.runLater(()-> {
+            mainSceneController.printArchipelagos(listOfArchipelagos.getArchipelagos());
+        });
+    }
+
+    private void manageListOfClouds(ListOfClouds listOfClouds){
+        System.out.println("received list of clouds");
+        Platform.runLater(()->{
+            mainSceneController.printClouds(listOfClouds.getClouds());
+        });
     }
 }

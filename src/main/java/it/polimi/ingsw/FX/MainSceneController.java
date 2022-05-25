@@ -18,9 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+
 public class MainSceneController implements Initializable {
+
     private List<ImageView> towers = new ArrayList<>();
-    private List<HBox> studentsInDiningRoom = new ArrayList<>();
     private List<ImageView> professors = new ArrayList<>();
     private List<GridPane> clouds = new ArrayList<>();
 
@@ -68,46 +69,6 @@ public class MainSceneController implements Initializable {
     @FXML GridPane cloud3;
     @FXML GridPane cloud4;
 
-    /*public void printArchipelagos() {
-        Image archipelago = new Image(getClass().getResourceAsStream("/images/arch.jpg"));
-        Image motherNature = new Image(getClass().getResourceAsStream("/images/mothernature.png"));
-        Image studentRed = new Image(getClass().getResourceAsStream("/images/professors and students/studentred.png"));
-        Image studentGreen = new Image(getClass().getResourceAsStream("/images/professors and students/studentgreen.png"));
-        Image studentYellow = new Image(getClass().getResourceAsStream("/images/professors and students/studentyellow.png"));
-        Image studentPink = new Image(getClass().getResourceAsStream("/images/professors and students/studentpink.png"));
-        Image studentBlue = new Image(getClass().getResourceAsStream("/images/professors and students/studentblue.png"));
-        Image[] studentColor = {studentGreen, studentRed, studentYellow, studentPink, studentBlue};
-        int k = 0;
-
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < 5; j++) {
-                if(!(i == 1 && (j == 1 || j ==2 || j == 3)) && k < listOfArchipelagos.size() ){
-                    ImageView arch = new ImageView(archipelago);
-                    ImageView mn = new ImageView(motherNature);
-                    arch.setFitHeight(100);
-                    arch.setFitWidth(100);
-                    mn.setFitHeight(20);
-                    mn.setFitWidth(20);
-                    gridArchipelagos.add(arch, j, i);
-                    if(listOfArchipelagos.get(k).getIsMNPresent() == true) {
-                        gridArchipelagos.add(mn, j, i);
-                    }
-                    for(Island island : listOfArchipelagos.get(k).getBelongingIslands()) {
-                        for(int s = 0; s < Constants.NUMBEROFKINGDOMS; s++) {
-                            for(int t = 0; t < island.getStudentsByColor(StudsAndProfsColor.values()[s]); t++) {
-                                ImageView st = new ImageView(studentColor[s]);
-                                st.setFitHeight(80);
-                                st.setFitWidth(80);
-                                gridArchipelagos.add(st, j, i);
-                            }
-                        }
-                    }
-                    k++;
-                }
-            }
-        }
-    }*/
-
     public void printArchipelagos(List<Archipelago> listOfArchipelagos) {
         for(FlowPane f : singleCellArchipelago) {
             f.getChildren().clear();
@@ -145,25 +106,15 @@ public class MainSceneController implements Initializable {
 
     }
 
-    public void printMyBoard(Board myBoard) {
+    public void printMyBoard(Board receivedBoard) {
+
         studentsInEntrance.getChildren().clear();
         studentsInDR.getChildren().clear();
-
-        myBoard = new Board("ca");
-        int[] toAdd = {1,2,3,1,0};
-        myBoard.getEntrance().addStudent(toAdd);
-        myBoard.getDiningRoom().addStudent(StudsAndProfsColor.BLUE);
-        myBoard.getDiningRoom().addStudent(StudsAndProfsColor.BLUE);
-        myBoard.getDiningRoom().addStudent(StudsAndProfsColor.BLUE);
-        myBoard.getDiningRoom().addStudent(StudsAndProfsColor.RED);
-        myBoard.getDiningRoom().addStudent(StudsAndProfsColor.YELLOW);
-        myBoard.getDiningRoom().addStudent(StudsAndProfsColor.YELLOW);
-        myBoard.getDiningRoom().addStudent(StudsAndProfsColor.GREEN);
 
         //tower
         int tower = 0;
         for(ImageView i : towers) {
-            if(tower < myBoard.getTowersOnBoard().getNumberOfTowers()) {
+            if(tower < receivedBoard.getTowersOnBoard().getNumberOfTowers()) {
                 i.setVisible(true);
             } else {
                 i.setVisible(false);
@@ -174,7 +125,7 @@ public class MainSceneController implements Initializable {
         //professor
         int prof = 0;
         for(ImageView i : professors){
-            if(myBoard.getProfessorsTable().getHasProf(StudsAndProfsColor.values()[prof])){
+            if(receivedBoard.getProfessorsTable().getHasProf(StudsAndProfsColor.values()[prof])){
                 i.setVisible(true);
             }else{
                 i.setVisible(false);
@@ -186,7 +137,7 @@ public class MainSceneController implements Initializable {
 
 
         for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
-            for(int j = 0; j < myBoard.getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]); j++){
+            for(int j = 0; j < receivedBoard.getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]); j++){
                 ImageView st = new ImageView(studentsImages[i]);
                 st.setFitHeight(100);
                 st.setFitWidth(100);
@@ -195,17 +146,24 @@ public class MainSceneController implements Initializable {
         };
 
         //students in entrance
+        System.out.println("I should print students in entrance");
         int column = 0;
         int row = 0;
+        System.out.println("This board has: ");
         for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
-            for(int j = 0; j < myBoard.getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]); j++ ){
+            System.out.println(receivedBoard.getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]) + " studs of " + i + "\n");
+        }
+        for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
+            for(int j = 0; j < receivedBoard.getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]); j++ ){
                 if(row == 0 && column==0){
                     column++;
                 }
                 ImageView st =new ImageView(studentsImages[i]);
+                System.out.println("Image setted for kingdom " + i);
                 st.setFitWidth(120);
                 st.setFitHeight(120);
                 studentsInEntrance.add(st, column, row);
+                System.out.println("Image added to grid");
                 column++;
                 if(column == 2){
                     column=0;
@@ -269,13 +227,13 @@ public class MainSceneController implements Initializable {
         singleCellArchipelago = new FlowPane[]{arch0, arch1, arch2, arch3, arch4, arch5, arch6, arch7, arch8, arch9, arch10, arch11};
 
         tower1.setImage(tower);
-        tower2 = new ImageView(tower);
-        tower3 = new ImageView(tower);
-        tower4 = new ImageView(tower);
-        tower5 = new ImageView(tower);
-        tower6 = new ImageView(tower);
-        tower7 = new ImageView(tower);
-        tower8 = new ImageView(tower);
+        tower2.setImage(tower);
+        tower3.setImage(tower);
+        tower4.setImage(tower);
+        tower5.setImage(tower);
+        tower6.setImage(tower);
+        tower7.setImage(tower);
+        tower8.setImage(tower);
         towers.add(tower1);
         towers.add(tower2);
         towers.add(tower3);
@@ -303,38 +261,5 @@ public class MainSceneController implements Initializable {
         clouds.add(cloud3);
         clouds.add(cloud4);
 
-        /*
-        //test
-        Archipelago a = new Archipelago(1);
-        Archipelago b = new Archipelago(2);
-        Archipelago c = new Archipelago(3);
-        Archipelago d = new Archipelago(4);
-        a.getBelongingIslands().get(0).addStudent(StudsAndProfsColor.BLUE);
-        List<Archipelago> l = new ArrayList<>();
-        l.add(a);
-        l.add(b);
-        l.add(c);
-        l.add(d);
-
-        //test
-        List<Cloud> cloudList = new ArrayList<>();
-        Cloud cloud = new Cloud(1);
-        Cloud cloud2 = new Cloud(2);
-        cloudList.add(cloud);
-        cloudList.add(cloud2);
-        int[] toAdd = {1,2, 1,0,0};
-        cloud.addStudents(toAdd);
-        toAdd = new int[]{0, 1, 1, 2, 0};
-        cloud2.addStudents(toAdd);
-
-
-        Board myBoard = new Board("ca");
-        myBoard.getDiningRoom().addStudent(StudsAndProfsColor.BLUE);
-        myBoard.getEntrance().addStudent(toAdd);
-
-*/
-       //printArchipelagos(l);
-        //printMyBoard(myBoard);
-        //printClouds(cloudList);
     }
 }
