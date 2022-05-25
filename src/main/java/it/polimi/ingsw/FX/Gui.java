@@ -62,58 +62,15 @@ public class Gui extends Application implements PropertyChangeListener {
                 try {
                     while (isActive()) {
                         Object inputObject = socketIn.readObject();
-                        /*
-                        String typeOfInput = inputObject.getClass().getName();
-                        System.out.println(typeOfInput);
-                        switch (typeOfInput) {
-                            case "String" -> manageStringInput((String) inputObject);
-                            case "ListOfBoards" -> manageListOfBoards((ListOfBoards) inputObject);
+
+                        switch (inputObject) {
+                            case String stringReceived -> manageStringInput(stringReceived);
+                            case ListOfBoards listOfBoards -> manageListOfBoards(listOfBoards);
                             // case "Deck" -> manageDeck((Deck) inputObject);
-                            case "ListOfArchipelagos" -> manageListOfArchipelagos((ListOfArchipelagos) inputObject);
-                            case "ListOfClouds" -> manageListOfClouds((ListOfClouds) inputObject);
+                            case ListOfArchipelagos listOfArchipelagos -> manageListOfArchipelagos(listOfArchipelagos);
+                            case ListOfClouds listOfClouds -> manageListOfClouds(listOfClouds);
                             //  case "ListOfPlayers" -> manageListOfPlayers((ListOfPlayers) inputObject);
-                        }
-
-                         */
-
-                        synchronized (this) {
-                            if (inputObject instanceof String) {
-                                System.out.println((String) inputObject);
-                                if(inputObject.equals("Game is starting...")){
-                                    mainSceneController = loginController.switchToMainScene();
-                                }else if(((String) inputObject).contains("You are joying in the match with")){
-                                    loginController.setNotFirstPlayer();
-                                }
-                                else if(((String) inputObject).contains("Waiting for other players")){
-                                    loginController.setWaitingForOtherPlayers();
-                                }
-                            } else if (inputObject instanceof ListOfBoards listOfBoards) {
-                                System.out.println("I received a board");
-                                for(Board b : listOfBoards.getBoards()){
-                                    if(b.getNickname().equals(nickname)){
-                                        Platform.runLater(()-> {
-                                            mainSceneController.printMyBoard(b);
-                                        });
-
-                                        System.out.println("Board sent!");
-                                    }
-                                }
-                            } else if (inputObject instanceof Deck) {
-                            } else if (inputObject instanceof ListOfArchipelagos listOfArchipelagos) {
-
-                                Platform.runLater(()-> {
-                                    mainSceneController.printArchipelagos(listOfArchipelagos.getArchipelagos());
-                                });
-
-                            } else if (inputObject instanceof ListOfClouds) {
-                                System.out.println("received list of clouds");
-                                Platform.runLater(()->{
-                                    mainSceneController.printClouds(((ListOfClouds) inputObject).getClouds());
-                                });
-                            } else if (inputObject instanceof ListOfPlayers) {
-                            } else {
-                                throw new IllegalArgumentException();
-                            }
+                            default -> throw new IllegalStateException("Unexpected value: " + inputObject);
                         }
 
                     }
