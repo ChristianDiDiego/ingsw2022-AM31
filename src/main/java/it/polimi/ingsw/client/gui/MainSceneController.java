@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 
 import javax.swing.text.html.ListView;
@@ -121,12 +122,74 @@ public class MainSceneController implements Initializable {
                     }
                 }
             }
+            setOnDragOver(singleCellArchipelago[i]);
+            setOnDragDropped(singleCellArchipelago[i]);
             k++;
         }
         for(int i = k; i < Constants.NUMBEROFISLANDS; i++) {
             singleCellArchipelago[i].setVisible(false);
         }
 
+    }
+
+    /**
+     * Called when the user do a click-left on a student
+     * @param student
+     */
+    public void setOnDragDetected(ImageView student)
+    {
+        student.setOnDragDetected((MouseEvent event) -> {
+            /* drag was detected, start drag-and-drop gesture*/
+            System.out.println("onDragDetected");
+            System.out.println(student.getAccessibleText());
+
+            /* allow any transfer mode */
+            Dragboard db = student.startDragAndDrop(TransferMode.ANY);
+
+            /* put a string on dragboard */
+            ClipboardContent content = new ClipboardContent();
+            content.putString(student.getAccessibleText());
+            db.setContent(content);
+
+            event.consume();
+        });
+    }
+
+    /**
+     *
+     * @param target
+     */
+    public void setOnDragOver(FlowPane target){
+        target.setOnDragOver((DragEvent event) -> {
+            /* data is dragged over the target */
+            System.out.println("onDragOver");
+            if(event.getDragboard().hasString()){
+                event.acceptTransferModes(TransferMode.ANY);
+            }
+            /* accept it only if it is  not dragged from the same node
+             * and if it has a string data */
+
+            event.consume();
+        });
+    }
+
+    public void setOnDragDropped(FlowPane target)
+    {
+        target.setOnDragDropped((DragEvent event) -> {
+            /* data dropped */
+            System.out.println("onDragDropped");
+            /* if there is a string data on dragboard, read it and use it */
+            Image studentGreen = new Image(getClass().getResourceAsStream("/images/professors and students/studentgreen.png"));
+            ImageView st = new ImageView(studentGreen);
+            st.setFitHeight(80);
+            st.setFitWidth(80);
+            target.getChildren().add(st);
+            /* let the source know whether the string was successfully
+             * transferred and used */
+
+
+            event.consume();
+        });
     }
 
     public void printMyBoard(Board receivedBoard) {
@@ -185,6 +248,8 @@ public class MainSceneController implements Initializable {
                 System.out.println("Image setted for kingdom " + i);
                 st.setFitWidth(120);
                 st.setFitHeight(120);
+                st.setAccessibleText(""+i);
+                setOnDragDetected(st);
                 studentsInEntrance.add(st, column, row);
                 System.out.println("Image added to grid");
                 column++;
