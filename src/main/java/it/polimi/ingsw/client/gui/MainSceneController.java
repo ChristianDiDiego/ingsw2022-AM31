@@ -1,18 +1,17 @@
-package it.polimi.ingsw.FX;
+package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.model.Archipelago;
-import it.polimi.ingsw.model.Cloud;
-import it.polimi.ingsw.model.Island;
-import it.polimi.ingsw.model.StudsAndProfsColor;
+import it.polimi.ingsw.client.View;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utilities.constants.Constants;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
-import java.awt.*;
+import javax.swing.text.html.ListView;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,18 +19,29 @@ import java.util.ResourceBundle;
 
 
 public class MainSceneController implements Initializable {
-
     private List<ImageView> towers = new ArrayList<>();
     private List<ImageView> professors = new ArrayList<>();
     private List<GridPane> clouds = new ArrayList<>();
 
     FlowPane[] singleCellArchipelago;
-    Image greenStudent = new Image(getClass().getResourceAsStream("/images/professors and students/studentgreen.png"));
-    Image redStudent = new Image(getClass().getResourceAsStream("/images/professors and students/studentred.png"));
-    Image yellowStudent = new Image(getClass().getResourceAsStream("/images/professors and students/studentyellow.png"));
-    Image pinkStudent = new Image(getClass().getResourceAsStream("/images/professors and students/studentpink.png"));
-    Image blueStudent = new Image(getClass().getResourceAsStream("/images/professors and students/studentblue.png"));
+    Image greenStudent = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentgreen.png"));
+    Image redStudent = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentred.png"));
+    Image yellowStudent = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentyellow.png"));
+    Image pinkStudent = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentpink.png"));
+    Image blueStudent = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentblue.png"));
     Image[] studentsImages = {greenStudent,redStudent,yellowStudent,pinkStudent,blueStudent};
+
+    Image assistant1 = new Image(getClass().getResourceAsStream("/images/assistants/Assistente1.png"));
+    Image assistant2 = new Image(getClass().getResourceAsStream("/images/assistants/Assistente2.png"));
+    Image assistant3 = new Image(getClass().getResourceAsStream("/images/assistants/Assistente3.png"));
+    Image assistant4 = new Image(getClass().getResourceAsStream("/images/assistants/Assistente4.png"));
+    Image assistant5 = new Image(getClass().getResourceAsStream("/images/assistants/Assistente5.png"));
+    Image assistant6 = new Image(getClass().getResourceAsStream("/images/assistants/Assistente6.png"));
+    Image assistant7 = new Image(getClass().getResourceAsStream("/images/assistants/Assistente7.png"));
+    Image assistant8 = new Image(getClass().getResourceAsStream("/images/assistants/Assistente8.png"));
+    Image assistant9 = new Image(getClass().getResourceAsStream("/images/assistants/Assistente9.png"));
+    Image assistant10 = new Image(getClass().getResourceAsStream("/images/assistants/Assistente10.png"));
+    Image[] assistants = {assistant1,assistant2,assistant3,assistant4,assistant5,assistant6,assistant7,assistant8,assistant9,assistant10};
 
     @FXML GridPane gridArchipelagos;
     @FXML FlowPane arch0;
@@ -68,17 +78,30 @@ public class MainSceneController implements Initializable {
     @FXML GridPane cloud2;
     @FXML GridPane cloud3;
     @FXML GridPane cloud4;
+    @FXML ImageView card1;
+    @FXML ImageView card2;
+    @FXML ImageView card3;
+    @FXML ImageView card4;
+    @FXML ImageView card5;
+    @FXML ImageView card6;
+    @FXML ImageView card7;
+    @FXML ImageView card8;
+    @FXML ImageView card9;
+    @FXML ImageView card10;
+
+    ImageView[] cards;
+
 
     public void printArchipelagos(List<Archipelago> listOfArchipelagos) {
         for(FlowPane f : singleCellArchipelago) {
             f.getChildren().clear();
         }
         Image motherNature = new Image(getClass().getResourceAsStream("/images/mothernature.png"));
-        Image studentRed = new Image(getClass().getResourceAsStream("/images/professors and students/studentred.png"));
-        Image studentGreen = new Image(getClass().getResourceAsStream("/images/professors and students/studentgreen.png"));
-        Image studentYellow = new Image(getClass().getResourceAsStream("/images/professors and students/studentyellow.png"));
-        Image studentPink = new Image(getClass().getResourceAsStream("/images/professors and students/studentpink.png"));
-        Image studentBlue = new Image(getClass().getResourceAsStream("/images/professors and students/studentblue.png"));
+        Image studentRed = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentred.png"));
+        Image studentGreen = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentgreen.png"));
+        Image studentYellow = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentyellow.png"));
+        Image studentPink = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentpink.png"));
+        Image studentBlue = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentblue.png"));
         Image[] studentColor = {studentRed, studentGreen, studentYellow, studentPink, studentBlue};
         int k = 0;
         for(int i = 0; i < listOfArchipelagos.size(); i++) {
@@ -215,14 +238,22 @@ public class MainSceneController implements Initializable {
         }
     }
 
+    public void printDeck(Deck deck) {
+        for(Card c : deck.getLeftCards()) {
+            cards[deck.getLeftCards().indexOf(c)].setImage(assistants[c.getPower() - 1]);
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image tower = new Image(getClass().getResourceAsStream("/images/tower.png"));
-        Image greenProfessor = new Image(getClass().getResourceAsStream("/images/professors and students/profgreen.png"));
-        Image redProfessor = new Image(getClass().getResourceAsStream("/images/professors and students/profred.png"));
-        Image yellowProfessor = new Image(getClass().getResourceAsStream("/images/professors and students/profyellow.png"));
-        Image pinkProfessor = new Image(getClass().getResourceAsStream("/images/professors and students/profpink.png"));
-        Image blueProfessor = new Image(getClass().getResourceAsStream("/images/professors and students/profblue.png"));
+        Image greenProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profgreen.png"));
+        Image redProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profred.png"));
+        Image yellowProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profyellow.png"));
+        Image pinkProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profpink.png"));
+        Image blueProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profblue.png"));
+
+        cards = new ImageView[]{card1, card2, card3, card4, card5, card6, card7, card8, card9, card10};
 
         singleCellArchipelago = new FlowPane[]{arch0, arch1, arch2, arch3, arch4, arch5, arch6, arch7, arch8, arch9, arch10, arch11};
 
@@ -254,7 +285,6 @@ public class MainSceneController implements Initializable {
         professors.add(profYellow);
         professors.add(profPink);
         professors.add(profBlue);
-
 
         clouds.add(cloud1);
         clouds.add(cloud2);

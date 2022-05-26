@@ -10,6 +10,15 @@
 #cloudPane{
     -fx-background-color:#69bbea;
 }
+
+#deckPane {
+    -fx-background-color: green;
+}
+
+#stackPane {
+    -fx-background-color: red;
+}
+
 #cloud1{
     -fx-background-image: url("images/cloud.png");
     -fx-background-size: stretch;

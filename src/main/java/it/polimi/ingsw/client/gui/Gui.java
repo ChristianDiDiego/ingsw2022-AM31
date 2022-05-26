@@ -1,11 +1,10 @@
-package it.polimi.ingsw.FX;
+package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utilities.ListOfArchipelagos;
 import it.polimi.ingsw.utilities.ListOfBoards;
 import it.polimi.ingsw.utilities.ListOfClouds;
-import it.polimi.ingsw.utilities.ListOfPlayers;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -66,7 +65,7 @@ public class Gui extends Application implements PropertyChangeListener {
                         switch (inputObject) {
                             case String stringReceived -> manageStringInput(stringReceived);
                             case ListOfBoards listOfBoards -> manageListOfBoards(listOfBoards);
-                            // case "Deck" -> manageDeck((Deck) inputObject);
+                            case Deck deck -> manageDeck(deck);
                             case ListOfArchipelagos listOfArchipelagos -> manageListOfArchipelagos(listOfArchipelagos);
                             case ListOfClouds listOfClouds -> manageListOfClouds(listOfClouds);
                             //  case "ListOfPlayers" -> manageListOfPlayers((ListOfPlayers) inputObject);
@@ -225,6 +224,13 @@ public class Gui extends Application implements PropertyChangeListener {
         System.out.println("received list of clouds");
         Platform.runLater(()->{
             mainSceneController.printClouds(listOfClouds.getClouds());
+        });
+    }
+
+    private void manageDeck(Deck deck){
+        System.out.println("received deck");
+        Platform.runLater(()->{
+            mainSceneController.printDeck(deck);
         });
     }
 }

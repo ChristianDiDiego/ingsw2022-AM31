@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.FX.Gui;
+import it.polimi.ingsw.client.gui.Gui;
 
 public class ClientAppGui {
     public static void main(String[] args) {
