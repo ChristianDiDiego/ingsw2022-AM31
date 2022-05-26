@@ -1,0 +1,23 @@
+#board1{
+    -fx-background-image: url("images/board.jpeg");
+    -fx-background-size: stretch;
+}
+
+#board2{
+    -fx-background-image: url("images/board.jpeg");
+    -fx-background-size: stretch;
+}
+
+#board3{
+    -fx-background-image: url("images/board.jpeg");
+    -fx-background-size: stretch;
+}
+
+#board4{
+    -fx-background-image: url("images/board.jpeg");
+    -fx-background-size: stretch;
+}
+
+/*
+#86c063
+ */
