@@ -21,3 +21,7 @@
 /*
 #86c063
  */
+
+#boardsBackground{
+    -fx-background-color: #86c063;
+}
