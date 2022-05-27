@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utilities.ListOfArchipelagos;
 import it.polimi.ingsw.utilities.ListOfBoards;
 import it.polimi.ingsw.utilities.ListOfClouds;
+import it.polimi.ingsw.utilities.ListOfPlayers;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -61,6 +62,7 @@ public class Gui extends Application implements PropertyChangeListener {
                 try {
                     while (isActive()) {
                         Object inputObject = socketIn.readObject();
+                        System.out.println("something received");
 
                         switch (inputObject) {
                             case String stringReceived -> manageStringInput(stringReceived);
@@ -68,12 +70,15 @@ public class Gui extends Application implements PropertyChangeListener {
                             case Deck deck -> manageDeck(deck);
                             case ListOfArchipelagos listOfArchipelagos -> manageListOfArchipelagos(listOfArchipelagos);
                             case ListOfClouds listOfClouds -> manageListOfClouds(listOfClouds);
-                            //  case "ListOfPlayers" -> manageListOfPlayers((ListOfPlayers) inputObject);
-                            default -> throw new IllegalStateException("Unexpected value: " + inputObject);
+                            case ListOfPlayers listOfPlayers-> System.out.println("received list of players");//manageListOfPlayers((ListOfPlayers) inputObject);
+                            default -> System.out.println("Unexpected argument received from the server");
                         }
 
+                        System.out.println("active status " + active);
                     }
                 } catch (Exception e) {
+                    System.out.println("set active to false from read froom socket");
+                    e.printStackTrace();
                     setActive(false);
                 }
             }
@@ -94,6 +99,7 @@ public class Gui extends Application implements PropertyChangeListener {
                         }
                     }
                 } catch (Exception e) {
+                    System.out.println("set active to false");
                     setActive(false);
                 }
             }
@@ -159,6 +165,7 @@ public class Gui extends Application implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        //Send the string that are coming from the gui interface (MainSceneController)
             send(evt.getNewValue().toString());
             switch(evt.getPropertyName()){
                case "username" -> setNickname(evt.getNewValue().toString());
