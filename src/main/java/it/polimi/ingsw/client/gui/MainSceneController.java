@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utilities.constants.Constants;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -13,6 +14,8 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 
 import javax.swing.text.html.ListView;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +95,17 @@ public class MainSceneController implements Initializable {
 
     ImageView[] cards;
 
+    //This variable will store the number of students already moved somewhere from the entrance
+    int numberOfMovedStudents = 0;
+    String movedStudents = "MOVEST ";
+
+    int idArchipelagoMNPosition;
+
+    private PropertyChangeSupport support = new PropertyChangeSupport(this);
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
+
 
     public void printArchipelagos(List<Archipelago> listOfArchipelagos) {
         for(FlowPane f : singleCellArchipelago) {
@@ -111,6 +125,11 @@ public class MainSceneController implements Initializable {
                 mn.setFitHeight(50);
                 mn.setFitWidth(50);
                 singleCellArchipelago[i].getChildren().add(mn);
+
+                idArchipelagoMNPosition = listOfArchipelagos.get(i).getIdArchipelago();
+                mn.setAccessibleText("mn");
+                setOnDragMNDetected(mn);
+
             }
             for(Island island : listOfArchipelagos.get(i).getBelongingIslands()) {
                 for(int s = 0; s < Constants.NUMBEROFKINGDOMS; s++) {
@@ -122,8 +141,9 @@ public class MainSceneController implements Initializable {
                     }
                 }
             }
-            setOnDragOver(singleCellArchipelago[i]);
-            setOnDragDropped(singleCellArchipelago[i]);
+            singleCellArchipelago[i].setAccessibleText(""+listOfArchipelagos.get(i).getIdArchipelago());
+            setOnDragOverArchipelago(singleCellArchipelago[i]);
+            setOnDragDroppedOnArchipelago(singleCellArchipelago[i]);
             k++;
         }
         for(int i = k; i < Constants.NUMBEROFISLANDS; i++) {
@@ -136,7 +156,7 @@ public class MainSceneController implements Initializable {
      * Called when the user do a click-left on a student
      * @param student
      */
-    public void setOnDragDetected(ImageView student)
+    public void setOnDragStudentDetected(ImageView student)
     {
         student.setOnDragDetected((MouseEvent event) -> {
             /* drag was detected, start drag-and-drop gesture*/
@@ -145,10 +165,13 @@ public class MainSceneController implements Initializable {
 
             /* allow any transfer mode */
             Dragboard db = student.startDragAndDrop(TransferMode.ANY);
+            //Shows an image of the student that is moveing
+            db.setDragView(student.getImage());
 
             /* put a string on dragboard */
             ClipboardContent content = new ClipboardContent();
             content.putString(student.getAccessibleText());
+            content.putImage(student.getImage());
             db.setContent(content);
 
             event.consume();
@@ -159,34 +182,111 @@ public class MainSceneController implements Initializable {
      *
      * @param target
      */
-    public void setOnDragOver(FlowPane target){
+    public void setOnDragOverArchipelago(FlowPane target){
         target.setOnDragOver((DragEvent event) -> {
             /* data is dragged over the target */
-            System.out.println("onDragOver");
+          //  System.out.println("onDragOver");
             if(event.getDragboard().hasString()){
                 event.acceptTransferModes(TransferMode.ANY);
             }
-            /* accept it only if it is  not dragged from the same node
-             * and if it has a string data */
+            /* accept it only if it has a string data */
 
             event.consume();
         });
     }
 
-    public void setOnDragDropped(FlowPane target)
+    public void setOnDragDroppedOnArchipelago(FlowPane target)
     {
         target.setOnDragDropped((DragEvent event) -> {
             /* data dropped */
             System.out.println("onDragDropped");
-            /* if there is a string data on dragboard, read it and use it */
-            Image studentGreen = new Image(getClass().getResourceAsStream("/images/professors and students/studentgreen.png"));
-            ImageView st = new ImageView(studentGreen);
-            st.setFitHeight(80);
-            st.setFitWidth(80);
-            target.getChildren().add(st);
-            /* let the source know whether the string was successfully
-             * transferred and used */
+            try {
+                /* if there is a string data on dragboard, read it and use it */
+                if(event.getDragboard().getString().equals("mn")){
+                    ImageView mn = new ImageView(event.getDragboard().getImage());
+                    mn.setFitHeight(80);
+                    mn.setFitWidth(80);
+                    target.getChildren().add(mn);
+                    playMoveMn(target.getAccessibleText());
 
+                    event.consume();
+                    return;
+                }
+
+                ImageView st = new ImageView(event.getDragboard().getImage());
+                st.setFitHeight(80);
+                st.setFitWidth(80);
+                target.getChildren().add(st);
+
+                String colorMoved = convertTextNumberToColor(event.getDragboard().getString());
+                String destination = target.getAccessibleText();
+                movedStudents += colorMoved + "-" + destination;
+                numberOfMovedStudents++;
+                System.out.println(movedStudents);
+                if(numberOfMovedStudents == 3){
+
+                    playMoveStudents(movedStudents);
+                    movedStudents = "MOVEST ";
+                    numberOfMovedStudents = 0;
+                }else{
+                    movedStudents +=",";
+                }
+                /* let the source know whether the string was successfully
+                 * transferred and used */
+
+
+                event.consume();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        });
+    }
+
+    private void playMoveStudents(String movedStudents){
+        support.firePropertyChange("movedStudents", "", movedStudents );
+    }
+    private void playMoveMn(String mnDestination){
+        int idMnDestination = Integer.parseInt(mnDestination);
+        int mnSteps = idMnDestination - idArchipelagoMNPosition;
+        String moveMn = "MOVEMN " + mnSteps;
+        support.firePropertyChange("moveMn", "", moveMn );
+    }
+    private void setOnClickListener(ImageView card){
+        card.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("Card pressed " + card.getAccessibleText());
+                playCard(card.getAccessibleText());
+
+                event.consume();
+            }
+        });
+    }
+
+    private void playCard(String cardPower){
+        String playSelectedCard = "CARD " + cardPower;
+        support.firePropertyChange("cardPlayed", "", playSelectedCard );
+    }
+
+    public void setOnDragMNDetected(ImageView motherNature)
+    {
+        motherNature.setOnDragDetected((MouseEvent event) -> {
+            /* drag was detected, start drag-and-drop gesture*/
+            System.out.println("onDragDetected");
+            System.out.println(motherNature.getAccessibleText());
+
+            /* allow any transfer mode */
+            Dragboard db = motherNature.startDragAndDrop(TransferMode.ANY);
+            //Shows an image of the motherNature that is moveing
+            db.setDragView(motherNature.getImage());
+
+            /* put a string on dragboard */
+            ClipboardContent content = new ClipboardContent();
+            content.putString(motherNature.getAccessibleText());
+            content.putImage(motherNature.getImage());
+            db.setContent(content);
 
             event.consume();
         });
@@ -232,13 +332,8 @@ public class MainSceneController implements Initializable {
         };
 
         //students in entrance
-        System.out.println("I should print students in entrance");
         int column = 0;
         int row = 0;
-        System.out.println("This board has: ");
-        for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
-            System.out.println(receivedBoard.getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]) + " studs of " + i + "\n");
-        }
         for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
             for(int j = 0; j < receivedBoard.getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]); j++ ){
                 if(row == 0 && column==0){
@@ -249,7 +344,7 @@ public class MainSceneController implements Initializable {
                 st.setFitWidth(120);
                 st.setFitHeight(120);
                 st.setAccessibleText(""+i);
-                setOnDragDetected(st);
+                setOnDragStudentDetected(st);
                 studentsInEntrance.add(st, column, row);
                 System.out.println("Image added to grid");
                 column++;
@@ -304,8 +399,11 @@ public class MainSceneController implements Initializable {
     }
 
     public void printDeck(Deck deck) {
+
         for(Card c : deck.getLeftCards()) {
             cards[deck.getLeftCards().indexOf(c)].setImage(assistants[c.getPower() - 1]);
+            cards[deck.getLeftCards().indexOf(c)].setAccessibleText(""+c.getPower());
+            setOnClickListener(cards[deck.getLeftCards().indexOf(c)]);
         }
     }
 
@@ -356,5 +454,21 @@ public class MainSceneController implements Initializable {
         clouds.add(cloud3);
         clouds.add(cloud4);
 
+    }
+
+    /**
+     * Convert the number of the color of the student provided to the initial letter of the color
+     */
+    private String convertTextNumberToColor(String textNumberOfTheColor){
+
+        int numberOfTheColor = Integer.parseInt(textNumberOfTheColor);
+        switch (numberOfTheColor){
+            case 0 -> {return "G";}
+            case 1 -> {return "R";}
+            case 2 -> {return "Y";}
+            case 3 -> {return "P";}
+            case 4 -> {return "B";}
+        }
+        return null;
     }
 }

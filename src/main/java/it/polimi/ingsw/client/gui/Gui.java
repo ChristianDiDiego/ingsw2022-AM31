@@ -160,9 +160,12 @@ public class Gui extends Application implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
             send(evt.getNewValue().toString());
-            if(evt.getPropertyName().equals("username")){
-                setNickname(evt.getNewValue().toString());
+            switch(evt.getPropertyName()){
+               case "username" -> setNickname(evt.getNewValue().toString());
             }
+
+
+
 
     }
 
@@ -187,6 +190,7 @@ public class Gui extends Application implements PropertyChangeListener {
         if(inputString.equals("Game is starting...")){
             try {
                 mainSceneController = loginController.switchToMainScene();
+                mainSceneController.addPropertyChangeListener(this);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
