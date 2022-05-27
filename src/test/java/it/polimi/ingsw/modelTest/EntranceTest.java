@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class EntranceTest {
     private Entrance entrance = new Entrance();
-    int[] i = {0,1,1,1,4};
+    int[] i = {1,0,1,1,4};
 
     /**
      * Test that the students are properly added to the Entrance

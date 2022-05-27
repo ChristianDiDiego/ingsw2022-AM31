@@ -29,7 +29,7 @@ class Character7Test {
     @Test
     void usePower() {
         player1.addCoinsToWallet(5);
-        int[] toAdd = {2,3,0,0,0};
+        int[] toAdd = {3,2,0,0,0};
         player1.getMyBoard().getEntrance().addStudent(toAdd);
         player1.getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.YELLOW);
         player1.getMyBoard().getDiningRoom().addStudent(StudsAndProfsColor.YELLOW);

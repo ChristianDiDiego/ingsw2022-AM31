@@ -163,8 +163,8 @@ public class ActionParser {
 
     private StudsAndProfsColor charToColorEnum(char color){
         return switch (Character.toUpperCase(color)) {
-            case 'R' -> StudsAndProfsColor.RED;
             case 'G' -> StudsAndProfsColor.GREEN;
+            case 'R' -> StudsAndProfsColor.RED;
             case 'Y' -> StudsAndProfsColor.YELLOW;
             case 'P' -> StudsAndProfsColor.PINK;
             case 'B' -> StudsAndProfsColor.BLUE;
