@@ -118,6 +118,10 @@ public class MainSceneController implements Initializable {
         Image studentPink = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentpink.png"));
         Image studentBlue = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentblue.png"));
         Image[] studentColor = {studentRed, studentGreen, studentYellow, studentPink, studentBlue};
+        Image whiteTower = new Image(getClass().getResourceAsStream("/images/whitetower.png"));
+        Image blackTower = new Image(getClass().getResourceAsStream("/images/blacktower.png"));
+        Image greyTower = new Image(getClass().getResourceAsStream("/images/greytower.png"));
+        Image[] towerColor = {whiteTower, blackTower, greyTower};
         int k = 0;
         for(int i = 0; i < listOfArchipelagos.size(); i++) {
             if(listOfArchipelagos.get(i).getIsMNPresent()) {
@@ -146,6 +150,16 @@ public class MainSceneController implements Initializable {
             setOnDragOverArchipelago(singleCellArchipelago[i]);
             setOnDragDroppedOnArchipelago(singleCellArchipelago[i]);
             k++;
+
+            if(listOfArchipelagos.get(i).getOwner() != null) {
+                for(int j = 0; j < listOfArchipelagos.get(i).getBelongingIslands().size(); j++) {
+                    ImageView tower = new ImageView(towerColor[listOfArchipelagos.get(i).getOwner().getColorOfTowers().ordinal()]);
+                    tower.setFitHeight(40);
+                    tower.setFitWidth(35);
+                    singleCellArchipelago[i].getChildren().add(tower);
+                }
+            }
+
         }
         for(int i = k; i < Constants.NUMBEROFISLANDS; i++) {
             singleCellArchipelago[i].setVisible(false);
