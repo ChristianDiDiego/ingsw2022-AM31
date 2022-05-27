@@ -129,6 +129,7 @@ public class MainSceneController implements Initializable {
                 idArchipelagoMNPosition = listOfArchipelagos.get(i).getIdArchipelago();
                 mn.setAccessibleText("mn");
                 setOnDragMNDetected(mn);
+                setOnDragImageDone(mn);
 
             }
             for(Island island : listOfArchipelagos.get(i).getBelongingIslands()) {
@@ -156,7 +157,7 @@ public class MainSceneController implements Initializable {
      * Called when the user do a click-left on a student
      * @param student
      */
-    public void setOnDragStudentDetected(ImageView student)
+    private void setOnDragStudentDetected(ImageView student)
     {
         student.setOnDragDetected((MouseEvent event) -> {
             /* drag was detected, start drag-and-drop gesture*/
@@ -164,7 +165,7 @@ public class MainSceneController implements Initializable {
             System.out.println(student.getAccessibleText());
 
             /* allow any transfer mode */
-            Dragboard db = student.startDragAndDrop(TransferMode.ANY);
+            Dragboard db = student.startDragAndDrop(TransferMode.MOVE);
             //Shows an image of the student that is moveing
             db.setDragView(student.getImage());
 
@@ -182,7 +183,7 @@ public class MainSceneController implements Initializable {
      *
      * @param target
      */
-    public void setOnDragOverArchipelago(FlowPane target){
+    private void setOnDragOverArchipelago(FlowPane target){
         target.setOnDragOver((DragEvent event) -> {
             /* data is dragged over the target */
           //  System.out.println("onDragOver");
@@ -195,11 +196,12 @@ public class MainSceneController implements Initializable {
         });
     }
 
-    public void setOnDragDroppedOnArchipelago(FlowPane target)
+    private void setOnDragDroppedOnArchipelago(FlowPane target)
     {
         target.setOnDragDropped((DragEvent event) -> {
             /* data dropped */
             System.out.println("onDragDropped");
+            boolean success = false;
             try {
                 /* if there is a string data on dragboard, read it and use it */
                 if(event.getDragboard().getString().equals("mn")){
@@ -209,6 +211,7 @@ public class MainSceneController implements Initializable {
                     target.getChildren().add(mn);
                     playMoveMn(target.getAccessibleText());
 
+                    event.setDropCompleted(true);
                     event.consume();
                     return;
                 }
@@ -233,13 +236,24 @@ public class MainSceneController implements Initializable {
                 }
                 /* let the source know whether the string was successfully
                  * transferred and used */
-
-
+                event.setDropCompleted(true);
                 event.consume();
             }catch (Exception e){
                 e.printStackTrace();
             }
 
+        });
+    }
+
+    private void setOnDragImageDone(ImageView image){
+        image.setOnDragDone((DragEvent event) -> {
+            /* the drag-and-drop gesture ended */
+            /* if the data was successfully moved, clear it */
+            if (event.getTransferMode() == TransferMode.MOVE) {
+                image.setVisible(false);
+            }
+
+            event.consume();
         });
     }
 
@@ -252,7 +266,7 @@ public class MainSceneController implements Initializable {
         String moveMn = "MOVEMN " + mnSteps;
         support.firePropertyChange("moveMn", "", moveMn );
     }
-    private void setOnClickListener(ImageView card){
+    private void setOnClickCardListener(ImageView card){
         card.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
             @Override
@@ -264,6 +278,7 @@ public class MainSceneController implements Initializable {
             }
         });
     }
+
 
     private void playCard(String cardPower){
         String playSelectedCard = "CARD " + cardPower;
@@ -345,6 +360,7 @@ public class MainSceneController implements Initializable {
                 st.setFitHeight(120);
                 st.setAccessibleText(""+i);
                 setOnDragStudentDetected(st);
+                setOnDragImageDone(st);
                 studentsInEntrance.add(st, column, row);
                 System.out.println("Image added to grid");
                 column++;
@@ -394,16 +410,37 @@ public class MainSceneController implements Initializable {
                 }
                 column = 0;
                 row = 0;
+
+                clouds.get(cloudList.indexOf(c)).setAccessibleText(""+c.getIdCloud());
+                setOnClickCloud(clouds.get(cloudList.indexOf(c)));
             }
         }
     }
 
+    private void setOnClickCloud(GridPane cloud){
+        cloud.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("Cloud pressed " + cloud.getAccessibleText());
+                playCloud(cloud.getAccessibleText());
+
+                event.consume();
+            }
+        });
+    }
+
+    private void playCloud(String cloudSelected){
+        String playSelectedCloud = "CLOUD " + cloudSelected;
+        support.firePropertyChange("cloudPlayed", "", playSelectedCloud );
+
+    }
     public void printDeck(Deck deck) {
 
         for(Card c : deck.getLeftCards()) {
             cards[deck.getLeftCards().indexOf(c)].setImage(assistants[c.getPower() - 1]);
             cards[deck.getLeftCards().indexOf(c)].setAccessibleText(""+c.getPower());
-            setOnClickListener(cards[deck.getLeftCards().indexOf(c)]);
+            setOnClickCardListener(cards[deck.getLeftCards().indexOf(c)]);
         }
     }
 
