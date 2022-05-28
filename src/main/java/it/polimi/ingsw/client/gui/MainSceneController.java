@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -18,6 +19,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -100,6 +102,8 @@ public class MainSceneController implements Initializable {
     String movedStudents = "MOVEST ";
 
     int idArchipelagoMNPosition;
+    //Contains the first position available for each row of the dining room
+    HashMap<Integer, Integer> firsPositionsAvailableDR = new HashMap<>();
 
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
@@ -358,7 +362,18 @@ public class MainSceneController implements Initializable {
                 st.setFitWidth(100);
                 studentsInDR.add(st, j, i);
             }
+            firsPositionsAvailableDR.put(i, receivedBoard.getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]));
         };
+        //Adding StackPane to every Cell in the GridPane and Adding the Target Events to each StackPane.
+        for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
+            for(int j= 0; j< Constants.MAXSTUDENTSINDINING; j++){
+                StackPane stackPane = new StackPane();
+                stackPane.setPrefSize(100, 100);
+                setOnDragOverDiningRoom(stackPane);
+                setOnDragDroppedOnDiningRoom(stackPane);
+                studentsInDR.add(stackPane, j, i);
+            }
+        }
 
         //students in entrance
         int column = 0;
@@ -369,14 +384,12 @@ public class MainSceneController implements Initializable {
                     column++;
                 }
                 ImageView st =new ImageView(studentsImages[i]);
-                System.out.println("Image setted for kingdom " + i);
                 st.setFitWidth(120);
                 st.setFitHeight(120);
                 st.setAccessibleText(""+i);
                 setOnDragStudentDetected(st);
                 setOnDragImageDone(st);
                 studentsInEntrance.add(st, column, row);
-                System.out.println("Image added to grid");
                 column++;
                 if(column == 2){
                     column=0;
@@ -385,6 +398,77 @@ public class MainSceneController implements Initializable {
             }
         }
 
+    }
+
+    private void setOnDragOverDiningRoom(StackPane diningRoom){
+        diningRoom.setOnDragOver((DragEvent event) -> {
+            /* data is dragged over the target */
+            //  System.out.println("onDragOver");
+            if(event.getDragboard().hasString()){
+                event.acceptTransferModes(TransferMode.ANY);
+            }
+            /* accept it only if it has a string data */
+
+            event.consume();
+        });
+    }
+    private void setOnDragDroppedOnDiningRoom(StackPane diningRoomTarget)
+    {
+        diningRoomTarget.setOnDragDropped((DragEvent event) -> {
+            /* data dropped */
+            System.out.println("onDragDropped");
+            boolean success = false;
+
+
+            try {
+                /* if there is a string data on dragboard, read it and use it */
+                if(event.getDragboard().hasString()){
+
+                    //Getting the coordinate of the target on the diningRoom
+                    Integer cIndex = GridPane.getColumnIndex(diningRoomTarget);
+                    Integer rIndex = GridPane.getRowIndex(diningRoomTarget);
+                    int x = cIndex == null ? 0 : cIndex;
+                    int kingdomTarget = rIndex == null ? 0 : rIndex;
+
+                    ImageView st = new ImageView(event.getDragboard().getImage());
+                    st.setFitHeight(80);
+                    st.setFitWidth(80);
+                    int kingdomOfTheStudent = Integer.parseInt(event.getDragboard().getString());
+                    //allow the movemnt only if the row is the one of the student
+                    if(kingdomTarget == kingdomOfTheStudent && firsPositionsAvailableDR.get(kingdomTarget) < Constants.MAXSTUDENTSINDINING){
+                        //add(whatToAdd, column, row
+                            studentsInDR.add(st, firsPositionsAvailableDR.get(kingdomTarget), kingdomOfTheStudent);
+                            firsPositionsAvailableDR.put(kingdomTarget, firsPositionsAvailableDR.get(kingdomTarget)+1);
+
+                        String colorMoved = convertTextNumberToColor(event.getDragboard().getString());
+                        String destination = ""+0;
+                        movedStudents += colorMoved + "-" + destination;
+                        numberOfMovedStudents++;
+                        System.out.println(movedStudents);
+                        if(numberOfMovedStudents == 3){
+
+                            playMoveStudents(movedStudents);
+                            movedStudents = "MOVEST ";
+                            numberOfMovedStudents = 0;
+                        }else{
+                            movedStudents +=",";
+                        }
+                            event.setDropCompleted(true);
+                            event.consume();
+
+                    }else{
+                        event.setDropCompleted(false);
+                        event.consume();
+                    }
+
+
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        });
     }
 
     public void printClouds(List<Cloud> cloudList){
