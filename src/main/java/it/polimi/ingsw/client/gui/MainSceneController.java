@@ -118,6 +118,8 @@ public class MainSceneController implements Initializable {
     Parent rootBoard;
     Scene sceneBoard;
 
+    private Stage stageBoard;
+
 
     public FXMLLoader getBoardSceneLoader() {
         return boardSceneLoader;
@@ -560,13 +562,15 @@ public class MainSceneController implements Initializable {
     }
 
     public void openBoardScene(ActionEvent event) throws IOException {
-        //stage.setFullScreen(true);
-        Stage stageBoard = new Stage();
-        if(sceneBoard == null) {
+        if(stageBoard == null) {
+            stageBoard = new Stage();
             sceneBoard = new Scene(rootBoard);
+            stageBoard.setScene(sceneBoard);
         }
-        stageBoard.setScene(sceneBoard);
-        stageBoard.show();
+
+        if(stageBoard.isShowing() == false) {
+            stageBoard.show();
+        }
     }
 
 
