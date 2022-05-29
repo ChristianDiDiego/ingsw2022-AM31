@@ -23,48 +23,68 @@ public class BoardSceneController implements Initializable {
     Image yellowProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profyellow.png"));
     Image pinkProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profpink.png"));
     Image blueProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profblue.png"));
-    Image[] professors = {greenProfessor,redProfessor,yellowProfessor,pinkProfessor,blueProfessor};
+    List<Image> professors = new ArrayList<>();
     Image greenStudent = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentgreen.png"));
     Image redStudent = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentred.png"));
     Image yellowStudent = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentyellow.png"));
     Image pinkStudent = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentpink.png"));
     Image blueStudent = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentblue.png"));
-    Image[] studentsImages = {greenStudent,redStudent,yellowStudent,pinkStudent,blueStudent};
-
+    List<Image> students = new ArrayList<>();
     @FXML AnchorPane board1;
     @FXML AnchorPane board2;
     @FXML AnchorPane board3;
     @FXML AnchorPane board4;
-
-    AnchorPane[] boards = {board1,board2,board3,board4};
+    List<AnchorPane> boards = new ArrayList<>();
 
     @FXML GridPane seb1;
     @FXML GridPane seb2;
     @FXML GridPane seb3;
     @FXML GridPane seb4;
-    GridPane[] seb = {seb1,seb2,seb3,seb4};
+    List<GridPane> seb = new ArrayList<>();
 
 
     @FXML GridPane sdrb1;
     @FXML GridPane sdrb2;
     @FXML GridPane sdrb3;
     @FXML GridPane sdrb4;
-    GridPane[] sdrb = {sdrb1,sdrb2,sdrb3,sdrb4};
+    List<GridPane> sdrb = new ArrayList<>();
 
     @FXML GridPane tb1;
     @FXML GridPane tb2;
     @FXML GridPane tb3;
     @FXML GridPane tb4;
-    GridPane[] tb ={tb1,tb2,tb3,tb4};
+
+    List<GridPane> tb = new ArrayList<>();
 
     @FXML Label ob1;
     @FXML Label ob2;
     @FXML Label ob3;
     @FXML Label ob4;
 
-    Label[] ob = {ob1,ob2,ob3,ob4};
+    List<Label> ob = new ArrayList<>();
 
-    public void showAllBoards(List<Board> receivedBoards){
+    @FXML GridPane pb1;
+    @FXML GridPane pb2;
+    @FXML GridPane pb3;
+    @FXML GridPane pb4;
+
+    List<GridPane> pb = new ArrayList<>();
+
+    private List<Board> receivedBoards = new ArrayList<>();
+
+    public void printCiao() {
+        System.out.println("ciaoooooo!!!!");
+    }
+
+    public void setReceivedBoards(List<Board> boards) {
+        this.receivedBoards = boards;
+        System.out.println("ho passato le board correttamente");
+        System.out.println("la size e: " + receivedBoards.size());
+    }
+
+
+
+    public void showAllBoards(){
 
         switch (receivedBoards.size()){
             case 2:{
@@ -80,25 +100,33 @@ public class BoardSceneController implements Initializable {
             case 4:
         }
 
+        /*
         for(AnchorPane a : boards){
             a.getChildren().clear();
         }
 
+         */
 
-        for(Board b : receivedBoards) {
 
-            ob[receivedBoards.indexOf(b)].setText(b.getNickname());
 
-            seb[receivedBoards.indexOf(b)].getChildren().clear();
-            sdrb[receivedBoards.indexOf(b)].getChildren().clear();
-            tb[receivedBoards.indexOf(b)].getChildren().clear();
+
+        for(int j = 0; j < receivedBoards.size(); j++) {
+
+           ob.get(j).setText(receivedBoards.get(j).getNickname());
+
+            //seb.get(j).getChildren().clear();
+            //sdrb.get(j).getChildren().clear();
+            //tb.get(j).getChildren().clear();
 
             //tower
 
             int row = 0;
             int column = 0;
-            for(int i = 0; i<b.getTowersOnBoard().getNumberOfTowers(); i++){
-                tb[receivedBoards.indexOf(b)].add(new ImageView(tower), column,row);
+            for(int i = 0; i < receivedBoards.get(j).getTowersOnBoard().getNumberOfTowers(); i++){
+                ImageView t = new ImageView(tower);
+                t.setFitHeight(60);
+                t.setFitWidth(60);
+                tb.get(j).add(t, column,row);
                 column++;
                 if(column == 2){
                     column = 0;
@@ -106,27 +134,6 @@ public class BoardSceneController implements Initializable {
                 }
             }
 
-            //professor
-
-            row=0;
-            column = 0;
-            for(int i = 0; i<Constants.NUMBEROFKINGDOMS; i++){
-                if(b.getProfessorsTable().getHasProf(StudsAndProfsColor.values()[i])){
-                  //pb[receivedBoards.indexOf(b)].add(new ImageView(professors[i], column,row);
-                  row++;
-                }
-            }
-
-            //students in dining room
-
-            for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
-                for (int j = 0; j < b.getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]); j++) {
-                    ImageView st = new ImageView(studentsImages[i]);
-                    st.setFitHeight(100);
-                    st.setFitWidth(100);
-                    sdrb[receivedBoards.indexOf(b)].add(st, j, i);
-                }
-            }
 
             //students in entrance
             System.out.println("I should print students in entrance");
@@ -134,18 +141,19 @@ public class BoardSceneController implements Initializable {
             row = 0;
             System.out.println("This board has: ");
             for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
-                System.out.println(b.getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]) + " studs of " + i + "\n");
+                System.out.println(receivedBoards.get(j).getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]) + " studs of " + i + "\n");
             }
             for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
-                for (int j = 0; j < b.getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]); j++) {
+                for (int k = 0; k < receivedBoards.get(j).getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]); k++) {
                     if (row == 0 && column == 0) {
                         column++;
                     }
-                    ImageView st = new ImageView(studentsImages[i]);
+                    ImageView st = new ImageView(students.get(i));
+                    st.setFitWidth(90);
+                    st.setFitHeight(90);
                     System.out.println("Image setted for kingdom " + i);
-                    st.setFitWidth(120);
-                    st.setFitHeight(120);
-                    seb[receivedBoards.indexOf(b)].add(st, column, row);
+
+                    seb.get(j).add(st, column, row);
                     System.out.println("Image added to grid");
                     column++;
                     if (column == 2) {
@@ -154,13 +162,78 @@ public class BoardSceneController implements Initializable {
                     }
                 }
             }
+
+            //professor
+            row=0;
+            column = 0;
+            for(int i = 0; i<Constants.NUMBEROFKINGDOMS; i++){
+                if(receivedBoards.get(j).getProfessorsTable().getHasProf(StudsAndProfsColor.values()[i])){
+                  pb.get(j).add(new ImageView(professors.get(i)), column,row);
+                  row++;
+                }
+            }
+
+            //students in dining room
+
+            for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
+                for (int k = 0; k < receivedBoards.get(j).getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]); k++) {
+                    ImageView st = new ImageView(students.get(i));
+                    st.setFitHeight(100);
+                    st.setFitWidth(100);
+                    sdrb.get(j).add(st, k, i);
+                }
+            }
+
+
+
         }
 
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        tb.add(tb1);
+        tb.add(tb2);
+        tb.add(tb3);
+        tb.add(tb4);
 
+
+        seb.add(seb1);
+        seb.add(seb2);
+        seb.add(seb3);
+        seb.add(seb4);
+
+        sdrb.add(sdrb1);
+        sdrb.add(sdrb2);
+        sdrb.add(sdrb3);
+        sdrb.add(sdrb4);
+
+        pb.add(pb1);
+        pb.add(pb2);
+        pb.add(pb3);
+        pb.add(pb4);
+
+        boards.add(board1);
+        boards.add(board2);
+        boards.add(board3);
+        boards.add(board4);
+
+        ob.add(ob1);
+        ob.add(ob2);
+        ob.add(ob3);
+        ob.add(ob4);
+
+        professors.add(greenProfessor);
+        professors.add(redProfessor);
+        professors.add(yellowProfessor);
+        professors.add(pinkProfessor);
+        professors.add(blueProfessor);
+
+        students.add(greenStudent);
+        students.add(redStudent);
+        students.add(yellowStudent);
+        students.add(pinkStudent);
+        students.add(blueStudent);
 
 
     }

@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="boardsBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" stylesheets="@boardScene.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="boardsBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" stylesheets="@boardScene.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.BoardSceneController">
    <children>
       <AnchorPane id="board1" fx:id="board1" layoutX="14.0" layoutY="25.0" prefHeight="200.0" prefWidth="450.0">
          <children>
-            <GridPane id="seb1" fx:id="seb1" layoutX="-10.0" layoutY="18.0" prefHeight="160.0" prefWidth="61.0">
+            <GridPane id="seb1" fx:id="seb1" layoutX="-10.0" layoutY="23.0" prefHeight="160.0" prefWidth="61.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -46,7 +44,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
-            <GridPane id="tb1" fx:id="tb1" layoutX="351.0" layoutY="31.0" prefHeight="134.0" prefWidth="72.0">
+            <GridPane id="tb1" fx:id="tb1" layoutX="349.0" layoutY="34.0" prefHeight="134.0" prefWidth="72.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -58,15 +56,22 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
-            <ImageView fitHeight="24.0" fitWidth="23.0" layoutX="317.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="24.0" fitWidth="23.0" layoutX="317.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="24.0" fitWidth="23.0" layoutX="317.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="24.0" fitWidth="23.0" layoutX="317.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="24.0" fitWidth="23.0" layoutX="317.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+            <GridPane id="pb1" fx:id="pb1" layoutX="316.0" layoutY="16.0" prefHeight="167.0" prefWidth="23.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
          </children></AnchorPane>
       <AnchorPane id="board2" fx:id="board2" layoutX="536.0" layoutY="25.0" prefHeight="200.0" prefWidth="450.0">
          <children>
-            <GridPane id="seb2" fx:id="seb2" layoutY="20.0" prefHeight="160.0" prefWidth="61.0">
+            <GridPane id="seb2" fx:id="seb2" layoutX="-10.0" layoutY="23.0" prefHeight="160.0" prefWidth="61.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -100,7 +105,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <GridPane id="tb2" fx:id="tb2" layoutX="351.0" layoutY="31.0" prefHeight="134.0" prefWidth="72.0">
+            <GridPane id="tb2" fx:id="tb2" layoutX="349.0" layoutY="34.0" prefHeight="134.0" prefWidth="72.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -112,10 +117,22 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <GridPane id="pb2" fx:id="pb2" layoutX="316.0" layoutY="16.0" prefHeight="167.0" prefWidth="23.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
          </children></AnchorPane>
       <AnchorPane id="board3" fx:id="board3" layoutX="14.0" layoutY="265.0" prefHeight="200.0" prefWidth="450.0">
          <children>
-            <GridPane id="seb3" fx:id="seb3" layoutY="20.0" prefHeight="160.0" prefWidth="61.0">
+            <GridPane id="seb3" fx:id="seb3" layoutX="-10.0" layoutY="23.0" prefHeight="160.0" prefWidth="61.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -149,7 +166,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <GridPane id="tb3" fx:id="tb3" layoutX="351.0" layoutY="31.0" prefHeight="134.0" prefWidth="72.0">
+            <GridPane id="tb3" fx:id="tb3" layoutX="349.0" layoutY="34.0" prefHeight="134.0" prefWidth="72.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -161,10 +178,22 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <GridPane id="pb3" fx:id="pb3" layoutX="316.0" layoutY="16.0" prefHeight="167.0" prefWidth="23.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
          </children></AnchorPane>
       <AnchorPane id="board4" fx:id="board4" layoutX="536.0" layoutY="265.0" prefHeight="200.0" prefWidth="450.0">
          <children>
-            <GridPane id="seb4" fx:id="seb4" layoutY="20.0" prefHeight="160.0" prefWidth="61.0">
+            <GridPane id="seb4" fx:id="seb4" layoutX="-10.0" layoutY="23.0" prefHeight="160.0" prefWidth="61.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -198,7 +227,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <GridPane id="tb4" fx:id="tb4" layoutX="351.0" layoutY="31.0" prefHeight="134.0" prefWidth="72.0">
+            <GridPane id="tb4" fx:id="tb4" layoutX="349.0" layoutY="34.0" prefHeight="134.0" prefWidth="72.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -210,12 +239,22 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <GridPane id="pb4" fx:id="pb4" layoutX="316.0" layoutY="16.0" prefHeight="167.0" prefWidth="23.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
          </children></AnchorPane>
-      <Label id="ob1" layoutX="15.0" layoutY="10.0" text="owner1" />
-      <Label id="ob2" fx:id="ob2" layoutX="536.0" layoutY="10.0" text="owner2" />
-      <Label id="ob3" fx:id="ob3" layoutX="15.0" layoutY="245.0" text="owner3" />
-      <Label id="ob4" fx:id="ob4" layoutX="536.0" layoutY="245.0" text="owner4" />
-      <Button layoutX="906.0" layoutY="469.0" mnemonicParsing="false" text="Return" />
-      <ImageView fitHeight="24.0" fitWidth="23.0" layoutX="327.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" />
+      <Label id="ob1" fx:id="ob1" layoutX="15.0" layoutY="10.0" />
+      <Label id="ob2" fx:id="ob2" layoutX="536.0" layoutY="10.0" />
+      <Label id="ob3" fx:id="ob3" layoutX="15.0" layoutY="245.0" />
+      <Label id="ob4" fx:id="ob4" layoutX="536.0" layoutY="245.0" />
    </children>
 </AnchorPane>

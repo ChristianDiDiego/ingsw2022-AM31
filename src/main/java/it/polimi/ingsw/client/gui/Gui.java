@@ -34,6 +34,7 @@ public class Gui extends Application implements PropertyChangeListener {
     private Scene scene;
     private LoginController loginController;
     private MainSceneController mainSceneController;
+    private BoardSceneController boardSceneController;
 
     private String nickname = null;
     public synchronized boolean isActive() {
@@ -50,7 +51,8 @@ public class Gui extends Application implements PropertyChangeListener {
         this.port = port;
         System.out.println("Received ip " + ip +" port " + port);
     }
-    public Gui(){
+
+    public Gui() {
 
     }
 
@@ -213,6 +215,10 @@ public class Gui extends Application implements PropertyChangeListener {
         Board board = findPlayerBoard(listOfBoards);
         Platform.runLater(()-> {
             mainSceneController.printMyBoard(board);
+            boardSceneController = mainSceneController.getBoardSceneLoader().getController();
+            boardSceneController.setReceivedBoards(listOfBoards.getBoards());
+            boardSceneController.showAllBoards();
+            boardSceneController.printCiao();
         });
     }
 

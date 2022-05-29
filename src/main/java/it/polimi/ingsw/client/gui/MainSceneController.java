@@ -4,19 +4,25 @@ import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utilities.constants.Constants;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 
 import javax.swing.text.html.ListView;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +34,8 @@ public class MainSceneController implements Initializable {
     private List<ImageView> towers = new ArrayList<>();
     private List<ImageView> professors = new ArrayList<>();
     private List<GridPane> clouds = new ArrayList<>();
+
+    private BoardSceneController boardSceneController;
 
     FlowPane[] singleCellArchipelago;
     Image greenStudent = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentgreen.png"));
@@ -106,6 +114,16 @@ public class MainSceneController implements Initializable {
     HashMap<Integer, Integer> firsPositionsAvailableDR = new HashMap<>();
 
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
+
+    private FXMLLoader boardSceneLoader = new FXMLLoader(getClass().getClassLoader().getResource("boardScene.fxml"));
+
+    Parent rootBoard;
+
+
+    public FXMLLoader getBoardSceneLoader() {
+        return boardSceneLoader;
+    }
+
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
@@ -325,6 +343,14 @@ public class MainSceneController implements Initializable {
         });
     }
 
+    public void openBoardScene(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        Scene scene = new Scene(rootBoard);
+        stage.setScene(scene);
+        //stage.setFullScreen(true);
+        stage.show();
+    }
+
     public void printMyBoard(Board receivedBoard) {
 
         studentsInEntrance.getChildren().clear();
@@ -542,6 +568,10 @@ public class MainSceneController implements Initializable {
         }
     }
 
+    public BoardSceneController getBoardSceneController() {
+        return boardSceneController;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image tower = new Image(getClass().getResourceAsStream("/images/tower.png"));
@@ -550,6 +580,7 @@ public class MainSceneController implements Initializable {
         Image yellowProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profyellow.png"));
         Image pinkProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profpink.png"));
         Image blueProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profblue.png"));
+
 
         cards = new ImageView[]{card1, card2, card3, card4, card5, card6, card7, card8, card9, card10};
 
@@ -589,6 +620,11 @@ public class MainSceneController implements Initializable {
         clouds.add(cloud3);
         clouds.add(cloud4);
 
+        try {
+            rootBoard = boardSceneLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -605,5 +641,9 @@ public class MainSceneController implements Initializable {
             case 4 -> {return "B";}
         }
         return null;
+    }
+
+    public void setBoardSceneController(BoardSceneController boardSceneController) {
+        this.boardSceneController = boardSceneController;
     }
 }
