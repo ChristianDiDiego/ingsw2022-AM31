@@ -35,8 +35,6 @@ public class MainSceneController implements Initializable {
     private List<ImageView> professors = new ArrayList<>();
     private List<GridPane> clouds = new ArrayList<>();
 
-    private BoardSceneController boardSceneController;
-
     FlowPane[] singleCellArchipelago;
     Image greenStudent = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentgreen.png"));
     Image redStudent = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentred.png"));
@@ -118,6 +116,7 @@ public class MainSceneController implements Initializable {
     private FXMLLoader boardSceneLoader = new FXMLLoader(getClass().getClassLoader().getResource("boardScene.fxml"));
 
     Parent rootBoard;
+    Scene sceneBoard;
 
 
     public FXMLLoader getBoardSceneLoader() {
@@ -343,14 +342,6 @@ public class MainSceneController implements Initializable {
         });
     }
 
-    public void openBoardScene(ActionEvent event) throws IOException {
-        Stage stage = new Stage();
-        Scene scene = new Scene(rootBoard);
-        stage.setScene(scene);
-        //stage.setFullScreen(true);
-        stage.show();
-    }
-
     public void printMyBoard(Board receivedBoard) {
 
         studentsInEntrance.getChildren().clear();
@@ -568,9 +559,16 @@ public class MainSceneController implements Initializable {
         }
     }
 
-    public BoardSceneController getBoardSceneController() {
-        return boardSceneController;
+    public void openBoardScene(ActionEvent event) throws IOException {
+        //stage.setFullScreen(true);
+        Stage stageBoard = new Stage();
+        if(sceneBoard == null) {
+            sceneBoard = new Scene(rootBoard);
+        }
+        stageBoard.setScene(sceneBoard);
+        stageBoard.show();
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -643,7 +641,4 @@ public class MainSceneController implements Initializable {
         return null;
     }
 
-    public void setBoardSceneController(BoardSceneController boardSceneController) {
-        this.boardSceneController = boardSceneController;
-    }
 }

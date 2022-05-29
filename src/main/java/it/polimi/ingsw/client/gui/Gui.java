@@ -218,7 +218,6 @@ public class Gui extends Application implements PropertyChangeListener {
             boardSceneController = mainSceneController.getBoardSceneLoader().getController();
             boardSceneController.setReceivedBoards(listOfBoards.getBoards());
             boardSceneController.showAllBoards();
-            boardSceneController.printCiao();
         });
     }
 

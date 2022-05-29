@@ -72,10 +72,6 @@ public class BoardSceneController implements Initializable {
 
     private List<Board> receivedBoards = new ArrayList<>();
 
-    public void printCiao() {
-        System.out.println("ciaoooooo!!!!");
-    }
-
     public void setReceivedBoards(List<Board> boards) {
         this.receivedBoards = boards;
         System.out.println("ho passato le board correttamente");
