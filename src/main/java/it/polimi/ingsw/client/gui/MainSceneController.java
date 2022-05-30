@@ -13,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -102,6 +103,9 @@ public class MainSceneController implements Initializable {
     @FXML ImageView card10;
 
     ImageView[] cards;
+
+    @FXML
+    Label messageForUser;
 
     //This variable will store the number of students already moved somewhere from the entrance
     int numberOfMovedStudents = 0;
@@ -744,5 +748,9 @@ public class MainSceneController implements Initializable {
     public void setCardsClickable(boolean isCardClickable){
         System.out.println("card clickable setted to " + isCardClickable);
         this.cardsClickable = isCardClickable;
+    }
+
+    public void setMessageForUserText(String messageForUser){
+        this.messageForUser.setText(messageForUser);
     }
 }

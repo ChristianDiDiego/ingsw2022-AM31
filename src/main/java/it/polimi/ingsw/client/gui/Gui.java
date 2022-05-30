@@ -33,7 +33,7 @@ public class Gui extends Application implements PropertyChangeListener {
 
     private Scene scene;
     private LoginController loginController;
-    private MainSceneController mainSceneController;
+    private MainSceneController mainSceneController = null;
     private BoardSceneController boardSceneController;
 
     private String nickname = null;
@@ -220,6 +220,13 @@ public class Gui extends Application implements PropertyChangeListener {
             mainSceneController.setCardsClickable(false);
             mainSceneController.setMaxNumberOfMovedStudents(maxNOfStudents);
         }
+
+        if(mainSceneController != null){
+            Platform.runLater(()-> {
+                mainSceneController.setMessageForUserText(inputString.split("\n")[0]);
+            });
+        }
+
     }
 
     public static int firstDigit(int n)
