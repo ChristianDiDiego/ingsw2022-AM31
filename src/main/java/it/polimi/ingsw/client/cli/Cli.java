@@ -55,20 +55,15 @@ public class Cli{
                     while (isActive()) {
                         Object inputObject = socketIn.readObject();
                         synchronized (this) {
-                            if (inputObject instanceof String) {
-                                System.out.println((String) inputObject);
-                            } else if (inputObject instanceof ListOfBoards) {
-                                printBoard(((ListOfBoards) inputObject).getBoards());
-                            } else if (inputObject instanceof Deck) {
-                                printMyDeck((Deck) inputObject);
-                            } else if (inputObject instanceof ListOfArchipelagos) {
-                                printArchipelago(((ListOfArchipelagos) inputObject).getArchipelagos());
-                            } else if (inputObject instanceof ListOfClouds) {
-                                printCloud(((ListOfClouds) inputObject).getClouds());
-                            } else if (inputObject instanceof ListOfPlayers) {
-                                printLastUsedCards(((ListOfPlayers) inputObject).getPlayers());
-                            } else {
-                                throw new IllegalArgumentException();
+                            switch (inputObject) {
+                                case String s -> System.out.println(s);
+                                case ListOfBoards listOfBoards -> printBoard(listOfBoards.getBoards());
+                                case Deck deck -> printMyDeck(deck);
+                                case ListOfArchipelagos listOfArchipelagos ->
+                                        printArchipelago(listOfArchipelagos.getArchipelagos());
+                                case ListOfClouds listOfClouds -> printCloud(listOfClouds.getClouds());
+                                case ListOfPlayers listOfPlayers -> printLastUsedCards(listOfPlayers.getPlayers());
+                                case null, default -> throw new IllegalArgumentException();
                             }
                         }
                     }

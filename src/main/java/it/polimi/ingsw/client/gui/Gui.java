@@ -208,7 +208,29 @@ public class Gui extends Application implements PropertyChangeListener {
         }
         else if(inputString.contains("Waiting for other players")){
             loginController.setWaitingForOtherPlayers();
+        }else if(inputString.contains("For this round you can do")){
+            //remove the literals from the string and convert it to an integer
+            // to get the number of steps that mn is allowed to do in this match
+           mainSceneController.setMaxStepsMN(Integer.parseInt(inputString.replaceAll("[\\D]", "")));
+
+        }else if (inputString.contains("of your students from entrance")){
+            int intFromInputString = Integer.parseInt(inputString.replaceAll("[\\D]", ""));
+            //the max number of students will be the first digit received
+            int maxNOfStudents = firstDigit(intFromInputString);
+            mainSceneController.setCardsClickable(false);
+            mainSceneController.setMaxNumberOfMovedStudents(maxNOfStudents);
         }
+    }
+
+    public static int firstDigit(int n)
+    {
+        // Remove last digit from number
+        // till only one digit is left
+        while (n >= 10)
+            n /= 10;
+
+        // return the first digit
+        return n;
     }
 
     private void manageListOfBoards(ListOfBoards listOfBoards){
@@ -245,6 +267,7 @@ public class Gui extends Application implements PropertyChangeListener {
 
     private void manageDeck(Deck deck){
         System.out.println("received deck");
+        mainSceneController.setCardsClickable(true);
         Platform.runLater(()->{
             mainSceneController.printDeck(deck);
         });

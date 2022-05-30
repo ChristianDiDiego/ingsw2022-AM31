@@ -105,11 +105,18 @@ public class MainSceneController implements Initializable {
 
     //This variable will store the number of students already moved somewhere from the entrance
     int numberOfMovedStudents = 0;
+
+    int maxNumberOfMovedStudents = 0;
+
+    int maxStepsMN = 0;
     String movedStudents = "MOVEST ";
 
-    int idArchipelagoMNPosition;
+    private int indexArchipelagoMNPosition;
+    private int numberOfArchipelagos ;
+    private boolean cloudClickable = false;
+    private boolean cardsClickable = true;
     //Contains the first position available for each row of the dining room
-    HashMap<Integer, Integer> firsPositionsAvailableDR = new HashMap<>();
+    HashMap<Integer, Integer> firstPositionsAvailableDR = new HashMap<>();
 
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
@@ -129,6 +136,7 @@ public class MainSceneController implements Initializable {
         support.addPropertyChangeListener(pcl);
     }
 
+    int sizeOldDeck = 0;
 
     public void printArchipelagos(List<Archipelago> listOfArchipelagos) {
         for(FlowPane f : singleCellArchipelago) {
@@ -140,12 +148,14 @@ public class MainSceneController implements Initializable {
         Image studentYellow = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentyellow.png"));
         Image studentPink = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentpink.png"));
         Image studentBlue = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/studentblue.png"));
-        Image[] studentColor = {studentRed, studentGreen, studentYellow, studentPink, studentBlue};
+        Image[] studentColor = {studentGreen, studentRed, studentYellow, studentPink, studentBlue};
         Image whiteTower = new Image(getClass().getResourceAsStream("/images/whitetower.png"));
         Image blackTower = new Image(getClass().getResourceAsStream("/images/blacktower.png"));
         Image greyTower = new Image(getClass().getResourceAsStream("/images/greytower.png"));
         Image[] towerColor = {whiteTower, blackTower, greyTower};
         int k = 0;
+        numberOfArchipelagos = listOfArchipelagos.size();
+
         for(int i = 0; i < listOfArchipelagos.size(); i++) {
             if(listOfArchipelagos.get(i).getIsMNPresent()) {
                 ImageView mn = new ImageView(motherNature);
@@ -153,7 +163,7 @@ public class MainSceneController implements Initializable {
                 mn.setFitWidth(50);
                 singleCellArchipelago[i].getChildren().add(mn);
 
-                idArchipelagoMNPosition = listOfArchipelagos.get(i).getIdArchipelago();
+                indexArchipelagoMNPosition = i;
                 mn.setAccessibleText("mn");
                 setOnDragMNDetected(mn);
                 setOnDragImageDone(mn);
@@ -236,19 +246,41 @@ public class MainSceneController implements Initializable {
     private void setOnDragDroppedOnArchipelago(FlowPane target)
     {
         target.setOnDragDropped((DragEvent event) -> {
+            System.out.println(maxNumberOfMovedStudents);
             /* data dropped */
             System.out.println("onDragDropped");
             boolean success = false;
             try {
                 /* if there is a string data on dragboard, read it and use it */
                 if(event.getDragboard().getString().equals("mn")){
-                    ImageView mn = new ImageView(event.getDragboard().getImage());
-                    mn.setFitHeight(80);
-                    mn.setFitWidth(80);
-                    target.getChildren().add(mn);
-                    playMoveMn(target.getAccessibleText());
+                    if(maxStepsMN == 0){
+                        //If the maxSteps is 0 it means that we are not in moveMN phase
+                        event.setDropCompleted(false);
+                        event.consume();
+                        return;
+                    }
+                    int steps = calculateSteps(target.getAccessibleText());
+                    System.out.println("The max step is " + maxStepsMN + "and it is trying to do " + steps);
+                    if(steps <= maxStepsMN){
+                        ImageView mn = new ImageView(event.getDragboard().getImage());
+                        mn.setFitHeight(80);
+                        mn.setFitWidth(80);
+                        target.getChildren().add(mn);
+                        playMoveMn(steps);
+                        maxStepsMN = 0;
+                        cloudClickable = true;
+                        System.out.println("cloud clickable setted to " + cloudClickable);
+                        event.setDropCompleted(true);
+                    }else {
+                        event.setDropCompleted(false);
+                    }
 
-                    event.setDropCompleted(true);
+                    event.consume();
+                    return;
+                }
+                if(maxNumberOfMovedStudents == 0){
+                    //If the maxSteps is 0 it means that we are not in moveST phase
+                    event.setDropCompleted(false);
                     event.consume();
                     return;
                 }
@@ -263,11 +295,12 @@ public class MainSceneController implements Initializable {
                 movedStudents += colorMoved + "-" + destination;
                 numberOfMovedStudents++;
                 System.out.println(movedStudents);
-                if(numberOfMovedStudents == 3){
+                if(numberOfMovedStudents == maxNumberOfMovedStudents){
 
                     playMoveStudents(movedStudents);
                     movedStudents = "MOVEST ";
                     numberOfMovedStudents = 0;
+                    maxNumberOfMovedStudents = 0;
                 }else{
                     movedStudents +=",";
                 }
@@ -297,19 +330,53 @@ public class MainSceneController implements Initializable {
     private void playMoveStudents(String movedStudents){
         support.firePropertyChange("movedStudents", "", movedStudents );
     }
-    private void playMoveMn(String mnDestination){
-        int idMnDestination = Integer.parseInt(mnDestination);
-        int mnSteps = idMnDestination - idArchipelagoMNPosition;
+
+    private int calculateSteps(String mnDestination){
+        int indexMnDestination = 0;
+        //Find the index of the destination
+        for(indexMnDestination= 0; indexMnDestination< singleCellArchipelago.length; indexMnDestination++){
+            if(singleCellArchipelago[indexMnDestination].getAccessibleText().equals(mnDestination)){
+                break;
+            }
+        }
+
+        int mnSteps;
+        if(indexMnDestination < indexArchipelagoMNPosition){
+            int invisibleArc = 0;
+            //Count the archipelagos that are not visible between the destination and the current position
+            //(They are only at the end of the singlCellArchipelago array
+            for(int i = indexArchipelagoMNPosition; i< singleCellArchipelago.length; i++){
+                    if(!singleCellArchipelago[i].isVisible()) invisibleArc++;
+            }
+            //calculate the distance from the current island to the the one that should be the last island if every island would be displayed
+            //remove from this the number of arc that are not visible
+            //add the index of the destination ( is like if calculating the steps from 0 to the destination)
+            // +1 because the index stars from 0
+            mnSteps = (Constants.NUMBEROFISLANDS - indexArchipelagoMNPosition) - invisibleArc + indexMnDestination +1;
+
+        }else {
+             mnSteps = indexMnDestination - indexArchipelagoMNPosition;
+        }
+
+        return mnSteps;
+    }
+    private void playMoveMn(int mnSteps){
+
         String moveMn = "MOVEMN " + mnSteps;
         support.firePropertyChange("moveMn", "", moveMn );
     }
+
     private void setOnClickCardListener(ImageView card){
         card.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent event) {
                 System.out.println("Card pressed " + card.getAccessibleText());
-                playCard(card.getAccessibleText());
+                System.out.println("Cards clickable status " + cardsClickable);
+                if(cardsClickable){
+                    playCard(card.getAccessibleText());
+                    card.setOpacity(0.5);
+                }
 
                 event.consume();
             }
@@ -381,7 +448,7 @@ public class MainSceneController implements Initializable {
                 st.setFitWidth(100);
                 studentsInDR.add(st, j, i);
             }
-            firsPositionsAvailableDR.put(i, receivedBoard.getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]));
+            firstPositionsAvailableDR.put(i, receivedBoard.getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]));
         };
         //Adding StackPane to every Cell in the GridPane and Adding the Target Events to each StackPane.
         for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
@@ -442,6 +509,12 @@ public class MainSceneController implements Initializable {
             try {
                 /* if there is a string data on dragboard, read it and use it */
                 if(event.getDragboard().hasString()){
+                    if(maxNumberOfMovedStudents == 0){
+                        //If the maxSteps is 0 it means that we are not in moveST phase
+                        event.setDropCompleted(false);
+                        event.consume();
+                        return;
+                    }
 
                     //Getting the coordinate of the target on the diningRoom
                     Integer cIndex = GridPane.getColumnIndex(diningRoomTarget);
@@ -454,10 +527,10 @@ public class MainSceneController implements Initializable {
                     st.setFitWidth(80);
                     int kingdomOfTheStudent = Integer.parseInt(event.getDragboard().getString());
                     //allow the movemnt only if the row is the one of the student
-                    if(kingdomTarget == kingdomOfTheStudent && firsPositionsAvailableDR.get(kingdomTarget) < Constants.MAXSTUDENTSINDINING){
+                    if(kingdomTarget == kingdomOfTheStudent && firstPositionsAvailableDR.get(kingdomTarget) < Constants.MAXSTUDENTSINDINING){
                         //add(whatToAdd, column, row
-                            studentsInDR.add(st, firsPositionsAvailableDR.get(kingdomTarget), kingdomOfTheStudent);
-                            firsPositionsAvailableDR.put(kingdomTarget, firsPositionsAvailableDR.get(kingdomTarget)+1);
+                            studentsInDR.add(st, firstPositionsAvailableDR.get(kingdomTarget), kingdomOfTheStudent);
+                            firstPositionsAvailableDR.put(kingdomTarget, firstPositionsAvailableDR.get(kingdomTarget)+1);
 
                         String colorMoved = convertTextNumberToColor(event.getDragboard().getString());
                         String destination = ""+0;
@@ -469,6 +542,7 @@ public class MainSceneController implements Initializable {
                             playMoveStudents(movedStudents);
                             movedStudents = "MOVEST ";
                             numberOfMovedStudents = 0;
+                            maxNumberOfMovedStudents = 0;
                         }else{
                             movedStudents +=",";
                         }
@@ -540,7 +614,12 @@ public class MainSceneController implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 System.out.println("Cloud pressed " + cloud.getAccessibleText());
-                playCloud(cloud.getAccessibleText());
+                System.out.println("Cloud clickable " + cloudClickable);
+                if(cloudClickable){
+                    playCloud(cloud.getAccessibleText());
+                    cloudClickable = false;
+                    System.out.println("Cloud clickable setted to" + cloudClickable);
+                }
 
                 event.consume();
             }
@@ -553,12 +632,23 @@ public class MainSceneController implements Initializable {
 
     }
     public void printDeck(Deck deck) {
+        for(ImageView card : cards){
+            card.setVisible(false);
+        }
 
         for(Card c : deck.getLeftCards()) {
+            System.out.println("Card power: " + c.getPower());
             cards[deck.getLeftCards().indexOf(c)].setImage(assistants[c.getPower() - 1]);
             cards[deck.getLeftCards().indexOf(c)].setAccessibleText(""+c.getPower());
+            cards[deck.getLeftCards().indexOf(c)].setVisible(true);
             setOnClickCardListener(cards[deck.getLeftCards().indexOf(c)]);
         }
+        if(deck.getLeftCards().size() < sizeOldDeck){
+            for(ImageView card : cards){
+                card.setOpacity(1.0);
+            }
+        }
+        sizeOldDeck = deck.getLeftCards().size();
     }
 
     public void openBoardScene(ActionEvent event) throws IOException {
@@ -583,7 +673,6 @@ public class MainSceneController implements Initializable {
         Image pinkProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profpink.png"));
         Image blueProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profblue.png"));
 
-
         cards = new ImageView[]{card1, card2, card3, card4, card5, card6, card7, card8, card9, card10};
 
         singleCellArchipelago = new FlowPane[]{arch0, arch1, arch2, arch3, arch4, arch5, arch6, arch7, arch8, arch9, arch10, arch11};
@@ -606,10 +695,10 @@ public class MainSceneController implements Initializable {
         towers.add(tower8);
 
         profGreen.setImage(greenProfessor);
-        profRed = new ImageView(redProfessor);
-        profYellow = new ImageView(yellowProfessor);
-        profPink = new ImageView(pinkProfessor);
-        profBlue = new ImageView(blueProfessor);
+        profRed.setImage(redProfessor);
+        profYellow.setImage(yellowProfessor);
+        profPink.setImage(pinkProfessor);
+        profBlue.setImage(blueProfessor);
 
         professors.add(profGreen);
         professors.add(profRed);
@@ -645,4 +734,15 @@ public class MainSceneController implements Initializable {
         return null;
     }
 
+    public void setMaxStepsMN(int maxStepsMN){
+        this.maxStepsMN = maxStepsMN;
+    }
+
+    public void setMaxNumberOfMovedStudents(int maxNumberOfMovedStudents){
+        this.maxNumberOfMovedStudents = maxNumberOfMovedStudents;
+    }
+    public void setCardsClickable(boolean isCardClickable){
+        System.out.println("card clickable setted to " + isCardClickable);
+        this.cardsClickable = isCardClickable;
+    }
 }
