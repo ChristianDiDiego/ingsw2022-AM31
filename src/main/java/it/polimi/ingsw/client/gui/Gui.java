@@ -6,6 +6,7 @@ import it.polimi.ingsw.utilities.ListOfArchipelagos;
 import it.polimi.ingsw.utilities.ListOfBoards;
 import it.polimi.ingsw.utilities.ListOfClouds;
 import it.polimi.ingsw.utilities.ListOfPlayers;
+import it.polimi.ingsw.utilities.constants.Constants;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +23,8 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Gui extends Application implements PropertyChangeListener {
@@ -35,8 +38,12 @@ public class Gui extends Application implements PropertyChangeListener {
     private LoginController loginController;
     private MainSceneController mainSceneController = null;
     private BoardSceneController boardSceneController;
+    private CharacterSceneController characterSceneController;
 
     private String nickname = null;
+
+    private List<Integer> idCharscters = new ArrayList<>();
+    private List<String> charactersDescription = new ArrayList<>();
     public synchronized boolean isActive() {
         return active;
     }
@@ -200,6 +207,8 @@ public class Gui extends Application implements PropertyChangeListener {
             try {
                 mainSceneController = loginController.switchToMainScene();
                 mainSceneController.addPropertyChangeListener(this);
+                boardSceneController = mainSceneController.getBoardSceneLoader().getController();
+                characterSceneController = mainSceneController.getCharacterSceneLoader().getController();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -222,10 +231,16 @@ public class Gui extends Application implements PropertyChangeListener {
         }else if(inputString.contains("Available coins")) {
             String[] input = inputString.split(" ");
             int coin = Integer.parseInt(input[2]);
-            System.out.println("Le tue monete "+ coin);
-            //mainSceneController.printCoin(5);
             manageCoins(coin);
         }else if(inputString.contains("Character:")) {
+            if(idCharscters.size()< Constants.NUMBEROFPLAYABLECHARACTERS){
+                String[] input = inputString.split(" ");
+                idCharscters.add(Integer.parseInt(input[1]));
+                charactersDescription.add(input[3]);
+            }
+            if(idCharscters.size() == Constants.NUMBEROFPLAYABLECHARACTERS){
+                characterSceneController.printCharacters(idCharscters,charactersDescription);
+            }
 
         }
 
@@ -252,7 +267,6 @@ public class Gui extends Application implements PropertyChangeListener {
         Board board = findPlayerBoard(listOfBoards);
         Platform.runLater(()-> {
             mainSceneController.printMyBoard(board);
-            boardSceneController = mainSceneController.getBoardSceneLoader().getController();
             boardSceneController.setReceivedBoards(listOfBoards.getBoards());
             boardSceneController.showAllBoards();
         });

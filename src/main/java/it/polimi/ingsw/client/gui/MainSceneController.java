@@ -130,15 +130,23 @@ public class MainSceneController implements Initializable {
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     private FXMLLoader boardSceneLoader = new FXMLLoader(getClass().getClassLoader().getResource("boardScene.fxml"));
+    private FXMLLoader characterSceneLoader = new FXMLLoader(getClass().getClassLoader().getResource("characterScene.fxml"));
 
     Parent rootBoard;
     Scene sceneBoard;
 
-    private Stage stageBoard;
+    Parent rootCharacter;
+    Scene sceneCharacter;
 
+    private Stage stageBoard;
+    private Stage stageCharacter;
 
     public FXMLLoader getBoardSceneLoader() {
         return boardSceneLoader;
+    }
+
+    public FXMLLoader getCharacterSceneLoader() {
+        return characterSceneLoader;
     }
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
@@ -673,7 +681,14 @@ public class MainSceneController implements Initializable {
     }
 
     public void openCharactersScene(ActionEvent event) {
-
+        if(stageCharacter == null) {
+            stageCharacter = new Stage();
+            sceneBoard = new Scene(rootCharacter);
+            stageCharacter.setScene(sceneBoard);
+        }
+        if(stageCharacter.isShowing() == false) {
+            stageCharacter.show();
+        }
     }
 
     public void printCoin(int coins) {
@@ -733,6 +748,12 @@ public class MainSceneController implements Initializable {
 
         try {
             rootBoard = boardSceneLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            rootCharacter = characterSceneLoader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

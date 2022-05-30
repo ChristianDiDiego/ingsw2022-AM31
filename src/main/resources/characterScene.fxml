@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="charactersBackground" fx:id="charactersBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" stylesheets="@characterScene.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane id="character1Pane" fx:id="character1Pane" layoutX="70.0" layoutY="69.0" prefHeight="262.0" prefWidth="200.0" />
+      <AnchorPane id="character2Pane" fx:id="character2Pane1" layoutX="400.0" layoutY="70.0" prefHeight="262.0" prefWidth="200.0" />
+      <AnchorPane id="character3Pane" fx:id="character3Pane2" layoutX="730.0" layoutY="70.0" prefHeight="262.0" prefWidth="200.0" />
+      <Label layoutX="70.0" layoutY="27.0" text="PLAYABLE CHARACTERS:" />
+      <Label id="character1Label" fx:id="character1Label" layoutX="70.0" layoutY="342.0" prefHeight="140.0" prefWidth="200.0" />
+      <Label id="character2Label" fx:id="character2Label" layoutX="400.0" layoutY="342.0" prefHeight="140.0" prefWidth="200.0" />
+      <Label id="character3Label" fx:id="character3Label" layoutX="730.0" layoutY="342.0" prefHeight="140.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>
