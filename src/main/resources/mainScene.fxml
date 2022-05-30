@@ -159,6 +159,15 @@
             <ImageView fx:id="card10" fitHeight="180.0" fitWidth="120.0" layoutY="360.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
-      <Button id="boardsButton" layoutX="1745.0" layoutY="977.0" mnemonicParsing="false" onAction="#openBoardScene" prefHeight="44.0" prefWidth="91.0" text="Boards" />
+      <Button id="boardsButton" layoutX="1791.0" layoutY="273.0" mnemonicParsing="false" onAction="#openBoardScene" prefHeight="44.0" prefWidth="91.0" text="Boards" />
+      <Button id="charactersButton" fx:id="charactersButton" layoutX="1791.0" layoutY="353.0" mnemonicParsing="false" onAction="#openCharactersScene" prefHeight="44.0" prefWidth="91.0" text="Characters" />
+      <AnchorPane id="coinPane" fx:id="coinPane" layoutX="352.0" layoutY="814.0" prefHeight="107.0" prefWidth="127.0">
+         <children>
+            <Label id="coinLabel" fx:id="coinLabel" layoutX="79.0" layoutY="76.0" prefHeight="52.0" prefWidth="53.0" textAlignment="RIGHT">
+               <font>
+                  <Font size="32.0" />
+               </font>
+            </Label>
+         </children></AnchorPane>
     </children>
 </AnchorPane>

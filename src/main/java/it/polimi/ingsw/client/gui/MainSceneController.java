@@ -13,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -101,6 +102,10 @@ public class MainSceneController implements Initializable {
     @FXML ImageView card8;
     @FXML ImageView card9;
     @FXML ImageView card10;
+
+    @FXML AnchorPane coinPane;
+    @FXML Label coinLabel;
+    @FXML Button charactersButton;
 
     ImageView[] cards;
 
@@ -667,6 +672,17 @@ public class MainSceneController implements Initializable {
         }
     }
 
+    public void openCharactersScene(ActionEvent event) {
+
+    }
+
+    public void printCoin(int coins) {
+        coinPane.setVisible(true);
+        coinLabel.setVisible(true);
+        String coin = Integer.toString(coins);
+        coinLabel.setText("x" + coin);
+        charactersButton.setVisible(true);
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -720,6 +736,10 @@ public class MainSceneController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        coinPane.setVisible(false);
+        coinLabel.setVisible(false);
+        charactersButton.setVisible(false);
     }
 
     /**

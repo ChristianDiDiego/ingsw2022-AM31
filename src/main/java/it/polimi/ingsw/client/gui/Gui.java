@@ -219,6 +219,14 @@ public class Gui extends Application implements PropertyChangeListener {
             int maxNOfStudents = firstDigit(intFromInputString);
             mainSceneController.setCardsClickable(false);
             mainSceneController.setMaxNumberOfMovedStudents(maxNOfStudents);
+        }else if(inputString.contains("Available coins")) {
+            String[] input = inputString.split(" ");
+            int coin = Integer.parseInt(input[2]);
+            System.out.println("Le tue monete "+ coin);
+            //mainSceneController.printCoin(5);
+            manageCoins(coin);
+        }else if(inputString.contains("Character:")) {
+
         }
 
         if(mainSceneController != null){
@@ -265,6 +273,11 @@ public class Gui extends Application implements PropertyChangeListener {
         });
     }
 
+    private void manageCoins(int coin){
+        Platform.runLater(()-> {
+            mainSceneController.printCoin(coin);
+        });
+    }
     private void manageListOfClouds(ListOfClouds listOfClouds){
         System.out.println("received list of clouds");
         Platform.runLater(()->{

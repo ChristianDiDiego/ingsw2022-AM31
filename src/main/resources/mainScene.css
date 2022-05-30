@@ -83,3 +83,8 @@
     -fx-background-image: url(images/archi.png);
     -fx-background-size: stretch;
 }
+
+#coinPane {
+    -fx-background-image: url(images/expertMode/coin.png);
+    -fx-background-size: stretch;
+}
