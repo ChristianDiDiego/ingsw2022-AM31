@@ -23,6 +23,8 @@ public class Eryantis {
                 ClientApp.main(null);
             case 2 ->
                 ServerApp.main(null);
+            case 3 ->
+                ClientAppGui.main(null);
             default ->
                     System.err.println("Invalid argument, please run the executable again with one of these options:\n 2.client");
         }
