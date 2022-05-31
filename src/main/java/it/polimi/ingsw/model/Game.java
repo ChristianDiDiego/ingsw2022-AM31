@@ -7,13 +7,14 @@ import it.polimi.ingsw.view.RemoteView;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Model of the game, menage the actions that require an overview of all the game (e.g. how to assign the professors)
  * and the chagement of the current player / current phase
  */
-public class Game implements Cloneable {
+public class Game implements Cloneable, Serializable {
     private List<Player> listOfPlayers ;
     private List<Archipelago> listOfArchipelagos;
     private List<Cloud> listOfClouds;
@@ -27,7 +28,7 @@ public class Game implements Cloneable {
     private int bank;
     private Characters[] charactersPlayable;
     private boolean expertModeOn;
-    private PropertyChangeSupport support;
+   transient private PropertyChangeSupport support;
 
     public Game(int numberOfPlayers, Player player, boolean expertModeOn){
         this.support = new PropertyChangeSupport(this);

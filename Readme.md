@@ -14,9 +14,9 @@ Professor : Alessandro Margara
 | Socket | 🟢 |
 | GUI | 🟡 |
 | CLI |     🟢     |
-| Multiple games | 🟡 |
+| Multiple games | 🟢 |
 | 4 players | 🟢 |
-| Persistence | 🔴 |
+| Persistence | 🟡 |
 
 key :   
 🟢 Completed     

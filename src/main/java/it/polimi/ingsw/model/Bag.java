@@ -2,12 +2,13 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.utilities.constants.Constants;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Contains the students that needs to be randomly picked
  */
-public class Bag {
+public class Bag implements Serializable {
     private int[] studentsInBag;
     private int numberPlayer;
 

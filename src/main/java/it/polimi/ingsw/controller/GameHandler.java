@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.*;
 import java.awt.image.AreaAveragingScaleFilter;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +15,8 @@ import java.util.List;
  * starts the game if the number of player is reached and
  * set the value of the game parameters
  */
-public class GameHandler {
-    private Controller controller;
+public class GameHandler implements Serializable {
+    transient private Controller controller;
     private Game game;
     private int isStarted;
     private int playersNumber;
@@ -24,7 +25,7 @@ public class GameHandler {
     private int maxStudentsInEntrance;
     private int numberOfStudentsOnCloud;
     private int numberOfMovements;
-    private PropertyChangeSupport support;
+    transient private PropertyChangeSupport support;
 
 
     public GameHandler(Player firstPlayer, int playersNumber, boolean expertMode){

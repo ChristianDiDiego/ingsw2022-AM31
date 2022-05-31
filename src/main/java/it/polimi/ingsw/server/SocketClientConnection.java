@@ -17,16 +17,16 @@ import java.util.Scanner;
 /*
 Instanced by the server, it interacts with a client sending and receiving message from it
  */
-public class SocketClientConnection implements Runnable{
-    private Socket socket;
+public class SocketClientConnection implements Runnable, Serializable{
+    transient private Socket socket;
     private String nickname;
-    private ObjectOutputStream out;
+    transient private ObjectOutputStream out;
 
-    private Scanner inGeneral;
+    transient private Scanner inGeneral;
 
     private boolean playerQuitted = false;
-    private Server server;
-    private PropertyChangeSupport support;
+    transient private Server server;
+    transient private PropertyChangeSupport support;
 
     private boolean active = true;
 
@@ -246,7 +246,7 @@ public class SocketClientConnection implements Runnable{
                             System.out.println("client " + nickname + " is reachable");
                         } else {
                             System.out.println("client " + nickname + " non raggiungibile");
-                            close();
+                           // close();
                         }
                     }
                 } catch (IOException e) {
@@ -276,7 +276,7 @@ public class SocketClientConnection implements Runnable{
                 if(read.equalsIgnoreCase("QUIT")){
                     System.out.println("quit received");
                     //playerQuitted = true;
-                    close();
+                   // close();
                     return;
                 }else{
                     support.firePropertyChange("MessageForParser","aaa", read);
