@@ -112,7 +112,7 @@ public class BoardSceneController implements Initializable {
 
             //seb.get(j).getChildren().clear();
             //sdrb.get(j).getChildren().clear();
-            //tb.get(j).getChildren().clear();
+            tb.get(j).getChildren().clear();
 
             //tower
 
