@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -32,11 +33,11 @@ public class CharacterSceneController implements Initializable {
 
     List<AnchorPane> charactersPane = new ArrayList<>();
 
-    @FXML Label character1Label;
-    @FXML Label character2Label;
-    @FXML Label character3Label;
+    @FXML TextArea character1Label;
+    @FXML TextArea character2Label;
+    @FXML TextArea character3Label;
 
-    List<Label> charactersLabel = new ArrayList<>();
+    List<TextArea> charactersLabel = new ArrayList<>();
 
     public void printCharacters(List<String> id,List<String> description){
         for(int i = 0; i < id.size(); i++){
@@ -67,6 +68,10 @@ public class CharacterSceneController implements Initializable {
         charactersPane.add(character1Pane);
         charactersPane.add(character2Pane);
         charactersPane.add(character3Pane);
+
+        character1Label.setWrapText(true);
+        character2Label.setWrapText(true);
+        character3Label.setWrapText(true);
 
         charactersLabel.add(character1Label);
         charactersLabel.add(character2Label);

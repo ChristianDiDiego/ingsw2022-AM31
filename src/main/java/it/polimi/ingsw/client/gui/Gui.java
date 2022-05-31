@@ -235,10 +235,14 @@ public class Gui extends Application implements PropertyChangeListener {
         }else if(inputString.contains("Character:") && !(inputString.contains("Playable"))) {
             if(idCharacters.size() < Constants.NUMBEROFPLAYABLECHARACTERS){
                 String[] input = inputString.split(" ");
-                //System.out.println(input[1]);
-                //System.out.println(input[3]);
+                String description = new String();
                 idCharacters.add(input[1]);
-                charactersDescription.add(input[3]);
+                int i = 4;
+                while(!(input[i].contains("Price:")) || !(input[i].contains("Usage"))) {
+                    description = description + " " + input[i];
+                    i++;
+                }
+                charactersDescription.add(description);
             }
             if(charactersDescription.size() == Constants.NUMBEROFPLAYABLECHARACTERS){
                 characterSceneController.printCharacters(idCharacters,charactersDescription);
