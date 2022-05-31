@@ -5,49 +5,79 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.LoginController">
+<AnchorPane id="background" prefHeight="400.0" prefWidth="600.0" stylesheets="@login.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.LoginController">
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
-            <TextField fx:id="usernameTextField" layoutX="226.0" layoutY="104.0" />
-            <Label fx:id="usernameText" layoutX="209.0" layoutY="34.0" text="Insert username">
+            <TextField fx:id="usernameTextField" layoutX="226.0" layoutY="155.0" />
+            <Label fx:id="usernameText" layoutX="217.0" layoutY="112.0" text="Insert username" textFill="WHITE">
                <font>
-                  <Font name="Curlz MT" size="28.0" />
+                  <Font name="Curlz MT" size="30.0" />
                </font></Label>
-            <Button fx:id="submitUsername" layoutX="396.0" layoutY="104.0" mnemonicParsing="false" onAction="#submitUsername" text="send" />
-            <RadioButton fx:id="radio2" layoutX="343.0" layoutY="163.0" mnemonicParsing="false" selected="true" text="2">
+            <Button fx:id="submitUsername" layoutX="403.0" layoutY="155.0" mnemonicParsing="false" onAction="#submitUsername" text="send" />
+            <RadioButton fx:id="radio2" layoutX="333.0" layoutY="248.0" mnemonicParsing="false" selected="true" text="2" textFill="WHITE">
                <toggleGroup>
                   <ToggleGroup fx:id="radioNumberOfPlayers" />
                </toggleGroup>
+               <font>
+                  <Font name="Curlz MT" size="13.0" />
+               </font>
             </RadioButton>
-            <Label fx:id="textHowManyPlayers" layoutX="226.0" layoutY="163.0" text="How many players?" />
-            <RadioButton fx:id="radio3" layoutX="382.0" layoutY="163.0" mnemonicParsing="false" text="3" toggleGroup="$radioNumberOfPlayers" />
-            <RadioButton fx:id="radio4" layoutX="423.0" layoutY="163.0" mnemonicParsing="false" text="4" toggleGroup="$radioNumberOfPlayers" />
-            <Button fx:id="submitNumberOfPlayers" layoutX="462.0" layoutY="159.0" mnemonicParsing="false" onAction="#submitNumberOfPlayers" text="send" />
-            <Label fx:id="textMode" layoutX="226.0" layoutY="200.0" text="Mode:" />
-            <RadioButton fx:id="radiostd" layoutX="314.0" layoutY="197.0" mnemonicParsing="false" selected="true" text="standard">
+            <Label id="font" fx:id="textHowManyPlayers" graphicTextGap="5.0" layoutX="135.0" layoutY="234.0" prefHeight="45.0" prefWidth="224.0" stylesheets="@login.css" text="How many players?" textAlignment="CENTER" />
+            <RadioButton fx:id="radio3" layoutX="372.0" layoutY="248.0" mnemonicParsing="false" text="3" textFill="WHITE" toggleGroup="$radioNumberOfPlayers">
+               <font>
+                  <Font name="Curlz MT" size="13.0" />
+               </font></RadioButton>
+            <RadioButton fx:id="radio4" layoutX="413.0" layoutY="248.0" mnemonicParsing="false" text="4" textFill="WHITE" toggleGroup="$radioNumberOfPlayers">
+               <font>
+                  <Font name="Curlz MT" size="13.0" />
+               </font></RadioButton>
+            <Button fx:id="submitNumberOfPlayers" layoutX="452.0" layoutY="244.0" mnemonicParsing="false" onAction="#submitNumberOfPlayers" text="send" />
+            <Label fx:id="textMode" layoutX="216.0" layoutY="285.0" text="Mode:" textFill="WHITE">
+               <font>
+                  <Font name="Curlz MT" size="13.0" />
+               </font></Label>
+            <RadioButton fx:id="radiostd" layoutX="304.0" layoutY="282.0" mnemonicParsing="false" selected="true" text="standard" textFill="WHITE">
                <toggleGroup>
                   <ToggleGroup fx:id="radioMode" />
                </toggleGroup>
+               <font>
+                  <Font name="Curlz MT" size="13.0" />
+               </font>
             </RadioButton>
-            <RadioButton fx:id="radioexp" layoutX="389.0" layoutY="197.0" mnemonicParsing="false" text="expert" toggleGroup="$radioMode" />
-            <Button fx:id="submitMode" layoutX="462.0" layoutY="193.0" mnemonicParsing="false" onAction="#submitMode" text="send" />
-            <Label fx:id="textColor" layoutX="226.0" layoutY="239.0" text="Choose a color:" />
-            <RadioButton fx:id="radioWhite" layoutX="317.0" layoutY="239.0" mnemonicParsing="false" selected="true" text="white">
+            <RadioButton fx:id="radioexp" layoutX="379.0" layoutY="282.0" mnemonicParsing="false" text="expert" textFill="WHITE" toggleGroup="$radioMode">
+               <font>
+                  <Font name="Curlz MT" size="13.0" />
+               </font></RadioButton>
+            <Button fx:id="submitMode" layoutX="452.0" layoutY="278.0" mnemonicParsing="false" onAction="#submitMode" text="send" />
+            <Label fx:id="textColor" layoutX="216.0" layoutY="324.0" text="Choose a color:" textFill="WHITE">
+               <font>
+                  <Font name="Curlz MT" size="13.0" />
+               </font></Label>
+            <RadioButton fx:id="radioWhite" layoutX="307.0" layoutY="324.0" mnemonicParsing="false" selected="true" text="white" textFill="WHITE">
                <toggleGroup>
                   <ToggleGroup fx:id="radioColor" />
                </toggleGroup>
+               <font>
+                  <Font name="Curlz MT" size="13.0" />
+               </font>
             </RadioButton>
-            <RadioButton fx:id="radioGrey" layoutX="429.0" layoutY="239.0" mnemonicParsing="false" text="grey" toggleGroup="$radioColor" />
-            <RadioButton fx:id="radioBlack" layoutX="371.0" layoutY="239.0" mnemonicParsing="false" text="black" toggleGroup="$radioColor" />
-            <Button fx:id="submitColor" layoutX="483.0" layoutY="235.0" mnemonicParsing="false" onAction="#submitColor" text="send" />
-            <Label fx:id="waitingForPlayers" layoutX="238.0" layoutY="321.0" text="Waiting for other players..." />
-            <Button layoutX="87.0" layoutY="305.0" mnemonicParsing="false" onAction="#switchToSceneWithButton" text="Button" />
-            <ImageView fx:id="tower" fitHeight="108.0" fitWidth="46.0" layoutX="58.0" layoutY="118.0" pickOnBounds="true" preserveRatio="true" />
+            <RadioButton fx:id="radioGrey" layoutX="419.0" layoutY="324.0" mnemonicParsing="false" text="grey" textFill="WHITE" toggleGroup="$radioColor">
+               <font>
+                  <Font name="Curlz MT" size="13.0" />
+               </font></RadioButton>
+            <RadioButton fx:id="radioBlack" layoutX="361.0" layoutY="324.0" mnemonicParsing="false" text="black" textFill="WHITE" toggleGroup="$radioColor">
+               <font>
+                  <Font name="Curlz MT" size="13.0" />
+               </font></RadioButton>
+            <Button fx:id="submitColor" layoutX="473.0" layoutY="320.0" mnemonicParsing="false" onAction="#submitColor" text="send" />
+            <Label fx:id="waitingForPlayers" layoutX="222.0" layoutY="353.0" text="Waiting for other players..." textFill="WHITE">
+               <font>
+                  <Font name="Curlz MT" size="16.0" />
+               </font></Label>
            </children>
       </AnchorPane>
    </children>

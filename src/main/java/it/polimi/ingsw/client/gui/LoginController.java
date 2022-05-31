@@ -42,8 +42,6 @@ public class LoginController implements Initializable {
     Button submitColor;
     @FXML
     Label waitingForPlayers;
-    @FXML
-    ImageView tower;
 
     boolean notFirstPlayer = false;
 
@@ -52,8 +50,6 @@ public class LoginController implements Initializable {
     @FXML
     RadioButton radio2,radio3,radio4,radiostd,radioexp,radioWhite,radioBlack,radioGrey;
     String username ;
-    int nOfPlayers, choosedColor;
-    boolean mode;
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
@@ -171,9 +167,6 @@ public class LoginController implements Initializable {
         submitMode.setVisible(false);
         submitColor.setVisible(false);
         waitingForPlayers.setVisible(false);
-
-        Image towerImage = new Image(getClass().getResourceAsStream("/images/tower.png"));
-        tower.setImage(towerImage);
     }
 
     public MainSceneController switchToMainScene() throws IOException {
@@ -182,15 +175,6 @@ public class LoginController implements Initializable {
         Parent root = loader.load();
         usernameText.getScene().setRoot(root);
         return loader.getController();
-    }
-
-    public void switchToSceneWithButton(ActionEvent event) throws IOException{
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainScene.fxml"));
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setFullScreen(true);
-        stage.show();
     }
     public void setWaitingForOtherPlayers(){
         waitingForPlayers.setVisible(true);
