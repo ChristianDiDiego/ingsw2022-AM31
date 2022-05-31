@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 public class CharacterSceneController implements Initializable {
 
@@ -38,11 +38,17 @@ public class CharacterSceneController implements Initializable {
 
     List<Label> charactersLabel = new ArrayList<>();
 
-    public void printCharacters(List<Integer> id,List<String> description){
-        for(int i = 0; i <id.size(); i++){
-            charactersPane.get(i).setStyle("-fx-background-image: url('" + characters.get(id.get(i)) + "'); " + "-fx-background-size: stretch;");
-            charactersLabel.get(i).setText(description.get(i));
+    public void printCharacters(List<String> id,List<String> description){
+        for(int i = 0; i < id.size(); i++){
+            int idCharacter = Integer.parseInt(id.get(i));
 
+            BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
+            BackgroundImage backgroundImage = new BackgroundImage(characters.get(idCharacter - 1), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+            Background background = new Background(backgroundImage);
+            charactersPane.get(i).setBackground(background);
+
+            //charactersPane.get(i).setStyle("-fx-background-image: url('" + characters.get(idCharacter - 1) + "'); " + "-fx-background-size: stretch;");
+            charactersLabel.get(i).setText(description.get(i));
         }
     }
 

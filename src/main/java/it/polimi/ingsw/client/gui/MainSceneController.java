@@ -680,11 +680,11 @@ public class MainSceneController implements Initializable {
         }
     }
 
-    public void openCharactersScene(ActionEvent event) {
+    public void openCharactersScene(ActionEvent event) throws IOException{
         if(stageCharacter == null) {
             stageCharacter = new Stage();
-            sceneBoard = new Scene(rootCharacter);
-            stageCharacter.setScene(sceneBoard);
+            sceneCharacter = new Scene(rootCharacter);
+            stageCharacter.setScene(sceneCharacter);
         }
         if(stageCharacter.isShowing() == false) {
             stageCharacter.show();

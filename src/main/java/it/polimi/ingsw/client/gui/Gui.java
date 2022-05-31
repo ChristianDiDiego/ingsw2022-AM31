@@ -42,7 +42,7 @@ public class Gui extends Application implements PropertyChangeListener {
 
     private String nickname = null;
 
-    private List<Integer> idCharscters = new ArrayList<>();
+    private List<String> idCharacters = new ArrayList<>();
     private List<String> charactersDescription = new ArrayList<>();
     public synchronized boolean isActive() {
         return active;
@@ -232,14 +232,16 @@ public class Gui extends Application implements PropertyChangeListener {
             String[] input = inputString.split(" ");
             int coin = Integer.parseInt(input[2]);
             manageCoins(coin);
-        }else if(inputString.contains("Character:")) {
-            if(idCharscters.size()< Constants.NUMBEROFPLAYABLECHARACTERS){
+        }else if(inputString.contains("Character:") && !(inputString.contains("Playable"))) {
+            if(idCharacters.size() < Constants.NUMBEROFPLAYABLECHARACTERS){
                 String[] input = inputString.split(" ");
-                idCharscters.add(Integer.parseInt(input[1]));
+                //System.out.println(input[1]);
+                //System.out.println(input[3]);
+                idCharacters.add(input[1]);
                 charactersDescription.add(input[3]);
             }
-            if(idCharscters.size() == Constants.NUMBEROFPLAYABLECHARACTERS){
-                characterSceneController.printCharacters(idCharscters,charactersDescription);
+            if(charactersDescription.size() == Constants.NUMBEROFPLAYABLECHARACTERS){
+                characterSceneController.printCharacters(idCharacters,charactersDescription);
             }
 
         }
