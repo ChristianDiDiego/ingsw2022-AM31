@@ -1,14 +1,14 @@
-@font-face {
+/*@font-face {
     font-family: MagicSchool;
     src: url('fonts/MagicSchoolOne.ttf');
 }
+
+#font{
+    -fx-font-family: 'MagicSchool';
+}*/
 
 #background{
     -fx-background-image: url("images/eriantys_login_background.png");
     -fx-background-size: stretch;
     -fx-background-image-opacity: 0.5;
-}
-
-#font{
-    -fx-font-family: 'MagicSchool';
 }

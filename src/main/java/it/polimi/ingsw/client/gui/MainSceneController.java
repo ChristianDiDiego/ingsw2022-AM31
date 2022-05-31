@@ -105,6 +105,7 @@ public class MainSceneController implements Initializable {
 
     @FXML AnchorPane coinPane;
     @FXML Label coinLabel;
+    @FXML Button boardsButton;
     @FXML Button charactersButton;
 
     ImageView[] cards;
@@ -676,7 +677,10 @@ public class MainSceneController implements Initializable {
         }
 
         if(stageBoard.isShowing() == false) {
+            stageBoard.setTitle("Boards");
             stageBoard.show();
+        } else {
+            stageBoard.toFront();
         }
     }
 
@@ -687,7 +691,10 @@ public class MainSceneController implements Initializable {
             stageCharacter.setScene(sceneCharacter);
         }
         if(stageCharacter.isShowing() == false) {
+            stageCharacter.setTitle("Characters");
             stageCharacter.show();
+        } else {
+            stageCharacter.toFront();
         }
     }
 

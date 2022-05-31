@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Eryantis {
     public static void main(String[] args) {
-        System.out.println("1- Client \n2- Server");
+        System.out.println("1- Client \n2- Server \n3- Gui");
         Scanner scanner = new Scanner(System.in);
         int input = 0;
         try {
