@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="background" fx:id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@mainScene.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.MainSceneController">
+<AnchorPane id="background" fx:id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" styleClass="background" stylesheets="@mainScene.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.MainSceneController">
     <children>
-        <GridPane id="gridArchipelagos" fx:id="gridArchipelagos" layoutX="151.0" layoutY="76.0" prefHeight="558.0" prefWidth="1620.0">
+        <GridPane id="gridArchipelagos" fx:id="gridArchipelagos" layoutX="151.0" layoutY="22.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="381.0" prefWidth="909.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -28,7 +28,7 @@
             </rowConstraints>
             <children>
                 <FlowPane fx:id="arch0" prefHeight="200.0" prefWidth="200.0" />
-                <FlowPane fx:id="arch1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                <FlowPane fx:id="arch1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="92.0" prefWidth="76.0" GridPane.columnIndex="1" />
                 <FlowPane fx:id="arch2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
                 <FlowPane fx:id="arch3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" />
                 <FlowPane fx:id="arch4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" />
@@ -39,34 +39,24 @@
                 <FlowPane fx:id="arch9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <FlowPane fx:id="arch10" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
                 <FlowPane fx:id="arch11" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-            <ImageView fitHeight="181.0" fitWidth="965.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <image>
-                  <Image url="@images/backgroundText.png" />
-               </image>
-            </ImageView>
-            <Label fx:id="messageForUser" alignment="TOP_LEFT" prefHeight="97.0" prefWidth="324.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-               <font>
-                  <Font name="Curlz MT" size="32.0" />
-               </font>
-            </Label>
             </children>
         </GridPane>
-        <AnchorPane id="boardPane" fx:id="boardPane" layoutX="538.0" layoutY="668.0" prefHeight="377.0" prefWidth="887.0">
+        <AnchorPane id="boardPane" fx:id="boardPane" layoutX="315.0" layoutY="400.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="277.0" prefWidth="602.0">
             <children>
-                <ImageView id="tower1" fx:id="tower1" fitHeight="52.0" fitWidth="53.0" layoutX="716.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true" />
-                <ImageView fx:id="tower2" fitHeight="52.0" fitWidth="53.0" layoutX="783.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true" />
-                <ImageView fx:id="tower3" fitHeight="52.0" fitWidth="53.0" layoutX="718.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true" />
-                <ImageView fx:id="tower4" fitHeight="52.0" fitWidth="53.0" layoutX="785.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true" />
-                <ImageView fx:id="tower5" fitHeight="52.0" fitWidth="53.0" layoutX="717.0" layoutY="192.0" pickOnBounds="true" preserveRatio="true" />
-                <ImageView fx:id="tower6" fitHeight="52.0" fitWidth="53.0" layoutX="785.0" layoutY="194.0" pickOnBounds="true" preserveRatio="true" />
-                <ImageView fx:id="tower7" fitHeight="52.0" fitWidth="53.0" layoutX="717.0" layoutY="257.0" pickOnBounds="true" preserveRatio="true" />
-                <ImageView fx:id="tower8" fitHeight="52.0" fitWidth="53.0" layoutX="785.0" layoutY="256.0" pickOnBounds="true" preserveRatio="true" />
-                <ImageView fx:id="profGreen" fitHeight="45.0" fitWidth="44.0" layoutX="625.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true" />
-                <ImageView fx:id="profRed" fitHeight="45.0" fitWidth="44.0" layoutX="624.0" layoutY="104.0" pickOnBounds="true" preserveRatio="true" />
-                <ImageView fx:id="profYellow" fitHeight="45.0" fitWidth="44.0" layoutX="626.0" layoutY="166.0" pickOnBounds="true" preserveRatio="true" />
-                <ImageView fx:id="profPink" fitHeight="45.0" fitWidth="44.0" layoutX="626.0" layoutY="228.0" pickOnBounds="true" preserveRatio="true" />
-                <ImageView fx:id="profBlue" fitHeight="45.0" fitWidth="44.0" layoutX="625.0" layoutY="290.0" pickOnBounds="true" preserveRatio="true" />
-                <GridPane fx:id="studentsInEntrance" layoutX="-13.0" layoutY="39.0" prefHeight="299.0" prefWidth="108.0">
+                <ImageView id="tower1" fx:id="tower1" fitHeight="45.0" fitWidth="45.0" layoutX="483.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fx:id="tower2" fitHeight="45.0" fitWidth="45.0" layoutX="529.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fx:id="tower3" fitHeight="45.0" fitWidth="45.0" layoutX="483.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fx:id="tower4" fitHeight="45.0" fitWidth="45.0" layoutX="529.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fx:id="tower5" fitHeight="45.0" fitWidth="45.0" layoutX="483.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fx:id="tower6" fitHeight="45.0" fitWidth="45.0" layoutX="529.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fx:id="tower7" fitHeight="45.0" fitWidth="45.0" layoutX="483.0" layoutY="192.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fx:id="tower8" fitHeight="45.0" fitWidth="45.0" layoutX="529.0" layoutY="192.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fx:id="profGreen" fitHeight="30.0" fitWidth="30.0" layoutX="425.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fx:id="profRed" fitHeight="30.0" fitWidth="30.0" layoutX="425.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fx:id="profYellow" fitHeight="30.0" fitWidth="30.0" layoutX="425.0" layoutY="126.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fx:id="profPink" fitHeight="30.0" fitWidth="30.0" layoutX="425.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fx:id="profBlue" fitHeight="30.0" fitWidth="30.0" layoutX="425.0" layoutY="218.0" pickOnBounds="true" preserveRatio="true" />
+                <GridPane fx:id="studentsInEntrance" layoutX="-23.0" layoutY="31.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="212.0" prefWidth="69.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -79,7 +69,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
-                <GridPane fx:id="studentsInDR" layoutX="129.0" layoutY="35.0" prefHeight="299.0" prefWidth="430.0">
+                <GridPane fx:id="studentsInDR" layoutX="85.0" layoutY="35.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="212.0" prefWidth="302.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -101,9 +91,9 @@
                     </rowConstraints>
                 </GridPane>
             </children></AnchorPane>
-        <AnchorPane id="cloudPane" fx:id="cloudPane" layoutX="1447.0" layoutY="639.0" prefHeight="287.0" prefWidth="455.0">
+        <AnchorPane id="cloudPane" fx:id="cloudPane" layoutX="918.0" layoutY="435.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="167.0" prefWidth="276.0">
             <children>
-                <GridPane fx:id="cloud1" layoutX="1.0" layoutY="4.0" prefHeight="136.0" prefWidth="200.0">
+                <GridPane fx:id="cloud1" layoutX="1.0" layoutY="4.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="130.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -113,7 +103,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
-                <GridPane fx:id="cloud3" layoutX="230.0" layoutY="4.0" prefHeight="136.0" prefWidth="203.0">
+                <GridPane fx:id="cloud3" layoutX="150.0" layoutY="1.0" prefHeight="80.0" prefWidth="130.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -123,7 +113,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
-                <GridPane fx:id="cloud2" layoutX="7.0" layoutY="137.0" prefHeight="144.0" prefWidth="212.0">
+                <GridPane fx:id="cloud2" layoutX="1.0" layoutY="84.0" prefHeight="80.0" prefWidth="130.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -133,7 +123,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
-                <GridPane fx:id="cloud4" layoutX="230.0" layoutY="138.0" prefHeight="144.0" prefWidth="205.0">
+                <GridPane fx:id="cloud4" layoutX="150.0" layoutY="84.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="130.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -145,7 +135,7 @@
                 </GridPane>
             </children>
         </AnchorPane>
-      <AnchorPane layoutX="20.0" layoutY="510.0" prefHeight="540.0" prefWidth="162.0">
+      <AnchorPane layoutX="20.0" layoutY="172.0" prefHeight="540.0" prefWidth="137.0">
          <children>
             <ImageView fx:id="card1" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="card2" fitHeight="180.0" fitWidth="120.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
@@ -159,15 +149,25 @@
             <ImageView fx:id="card10" fitHeight="180.0" fitWidth="120.0" layoutY="360.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
-      <Button id="boardsButton" layoutX="1791.0" layoutY="273.0" mnemonicParsing="false" onAction="#openBoardScene" prefHeight="44.0" prefWidth="91.0" text="Boards" />
-      <Button id="charactersButton" fx:id="charactersButton" layoutX="1791.0" layoutY="353.0" mnemonicParsing="false" onAction="#openCharactersScene" prefHeight="44.0" prefWidth="91.0" text="Characters" />
-      <AnchorPane id="coinPane" fx:id="coinPane" layoutX="352.0" layoutY="814.0" prefHeight="107.0" prefWidth="127.0">
+      <Button id="boardsButton" fx:id="boardsButton" layoutX="1065.0" layoutY="230.0" mnemonicParsing="false" onAction="#openBoardScene" prefHeight="13.0" prefWidth="103.0" text="Boards" />
+      <AnchorPane id="coinPane" fx:id="coinPane" layoutX="187.0" layoutY="495.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="70.0">
          <children>
-            <Label id="coinLabel" fx:id="coinLabel" layoutX="79.0" layoutY="76.0" prefHeight="52.0" prefWidth="53.0" textAlignment="RIGHT">
+            <Label id="coinLabel" fx:id="coinLabel" layoutX="42.0" layoutY="45.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="30.0" textAlignment="RIGHT">
                <font>
-                  <Font size="32.0" />
+                  <Font size="14.0" />
                </font>
             </Label>
          </children></AnchorPane>
+      <Button id="charactersButton" fx:id="charactersButton" layoutX="1065.0" layoutY="187.0" mnemonicParsing="false" onAction="#openCharactersScene" prefHeight="26.0" prefWidth="103.0" text="Characters" />
+      <ImageView fitHeight="108.0" fitWidth="429.0" layoutX="389.0" layoutY="154.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/backgroundText.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="messageForUser" alignment="TOP_LEFT" layoutX="449.0" layoutY="156.0" prefHeight="80.0" prefWidth="323.0">
+         <font>
+            <Font name="Curlz MT" size="32.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

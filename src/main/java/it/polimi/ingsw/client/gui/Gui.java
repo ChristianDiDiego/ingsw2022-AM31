@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.beans.PropertyChangeEvent;
@@ -157,10 +158,11 @@ public class Gui extends Application implements PropertyChangeListener {
             Parent root = loader.load();
             loginController = loader.getController();
             loginController.addPropertyChangeListener(this);
-
-
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setTitle("Eriantys");
+            Image icon = new Image(getClass().getResourceAsStream("/images/eriantys_logo.jpg"));
+            stage.getIcons().add(icon);
             stage.show();
             run();
         }catch (Exception e){
@@ -238,7 +240,8 @@ public class Gui extends Application implements PropertyChangeListener {
                 String description = new String();
                 idCharacters.add(input[1]);
                 int i = 4;
-                while(!(input[i].contains("Price:")) || !(input[i].contains("Usage"))) {
+                //TODO: togliere usage
+                while(!(input[i].contains("Price:"))) {
                     description = description + " " + input[i];
                     i++;
                 }
