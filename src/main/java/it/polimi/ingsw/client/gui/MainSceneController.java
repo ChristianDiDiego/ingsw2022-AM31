@@ -606,8 +606,8 @@ public class MainSceneController implements Initializable {
                     for (int k = 0; k < c.getStudents()[j]; k++) {
                         ImageView st = new ImageView();
                         st.setImage(studentsImages[j]);
-                        st.setFitHeight(150);
-                        st.setFitWidth(150);
+                        st.setFitHeight(100);
+                        st.setFitWidth(100);
                         clouds.get(cloudList.indexOf(c)).add(st, column, row);
                         column++;
                         if(column == 2){
