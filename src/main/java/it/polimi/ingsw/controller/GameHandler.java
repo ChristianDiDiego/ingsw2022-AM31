@@ -25,7 +25,7 @@ public class GameHandler implements Serializable {
     private int maxStudentsInEntrance;
     private int numberOfStudentsOnCloud;
     private int numberOfMovements;
-    transient private PropertyChangeSupport support;
+    private PropertyChangeSupport support;
 
 
     public GameHandler(Player firstPlayer, int playersNumber, boolean expertMode){
@@ -36,6 +36,9 @@ public class GameHandler implements Serializable {
         parametersSwitch(playersNumber, false);
         isStarted = 0;
         this.support = new PropertyChangeSupport(this);
+    }
+    public void setNewController(){
+        this.controller = new Controller(this.game, this);
     }
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {

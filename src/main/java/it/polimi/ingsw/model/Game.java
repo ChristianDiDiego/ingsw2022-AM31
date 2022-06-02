@@ -28,7 +28,7 @@ public class Game implements Cloneable, Serializable {
     private int bank;
     private Characters[] charactersPlayable;
     private boolean expertModeOn;
-   transient private PropertyChangeSupport support;
+    private PropertyChangeSupport support;
 
     public Game(int numberOfPlayers, Player player, boolean expertModeOn){
         this.support = new PropertyChangeSupport(this);

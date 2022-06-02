@@ -38,337 +38,24 @@ public class RemoteView implements PropertyChangeListener{
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if(evt.getPropertyName().equals("EndGame")){
-            synchronized (this){
-                if(evt.getNewValue().equals(player.getTeam())){
-                    System.out.println("sono nella view");
-                    showMessage("The game has ended \n YOU WON");
-                    clientConnection.setPlayerQuitted(true);
-                    try {
-                        TimeUnit.MICROSECONDS.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    clientConnection.closeOnlyThis();
+            endGame(evt.getNewValue().toString());
 
-                }else{
-                    System.out.println("sono nella view");
-                    showMessage("The game has ended \n YOU LOST");
-                    clientConnection.setPlayerQuitted(true);
-                    try {
-                        TimeUnit.MICROSECONDS.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    clientConnection.closeOnlyThis();
-
-                }
-            }
 
         }else if(evt.getPropertyName().equals("currentPlayerChanged")){
-            Object lock2 = new Object();
-            synchronized (lock2){
-                List<Board> boards = new ArrayList<>();
-                for(Player p : currentGame.getListOfPlayer()) {
-                    boards.add(p.getMyBoard());
-                }
-                ListOfBoards boards1 = new ListOfBoards(boards);
-                synchronized (lock){
-                    showMessage(boards1);
-                    try {
-                        TimeUnit.MICROSECONDS.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
+            currentPlayerChanged(evt);
 
-                ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
-                synchronized (lock){
-                    try {
-                        TimeUnit.MICROSECONDS.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    showMessage(archipelagos);
-                    try {
-                        TimeUnit.MICROSECONDS.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-
-                ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
-                synchronized (lock){
-                    try {
-                        TimeUnit.MICROSECONDS.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    showMessage(clouds);
-                    try {
-                        TimeUnit.MICROSECONDS.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-
-
-
-                if(currentGame.getCurrentPlayer() == player){
-                    synchronized (lock){
-                        try {
-                            TimeUnit.MICROSECONDS.sleep(500);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        showMessage(player.getMyDeck());
-                        try {
-                            TimeUnit.MICROSECONDS.sleep(500);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    System.out.println("exmode: " + currentGame.isExpertModeOn());
-                    if(currentGame.isExpertModeOn()){
-                        synchronized (lock){
-                            try {
-                                TimeUnit.MICROSECONDS.sleep(500);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            showMessage("Playable characters: \n");
-
-                            try {
-                                TimeUnit.MICROSECONDS.sleep(500);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-
-                            for(Characters c : currentGame.getCharactersPlayable()){
-                                showMessage("Character: " + c.getId() + " \n Description: " + c.getDescriptionOfPower() + "\n Price:" + c.getPrice() + "\n\n");
-                            }
-                            try {
-                                TimeUnit.MICROSECONDS.sleep(500);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                        synchronized (lock){
-                            try {
-                                TimeUnit.MICROSECONDS.sleep(500);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            showMessage("Available coins: " + currentGame.getCurrentPlayer().getWallet());
-                            try {
-                                TimeUnit.MICROSECONDS.sleep(500);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }
-                }
-            }
-            synchronized (lock2){
-                Object internalLock = new Object();
-                if(player.getNickname().equals(evt.getNewValue())){
-                    ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
-                    synchronized (internalLock){
-                        showMessage(players);
-                        try {
-                            TimeUnit.MICROSECONDS.sleep(500);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    synchronized (internalLock){
-                        System.out.println(evt.getNewValue() + " is your turn!");
-                        showMessage(evt.getNewValue() + " is your turn!");
-                        try {
-                            TimeUnit.MICROSECONDS.sleep(500);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    if(evt.getOldValue().equals("CS")){
-                        synchronized (internalLock){
-                            showMessage(gameMessage.cardSelectionMessage);
-                            try {
-                                TimeUnit.MICROSECONDS.sleep(500);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }
-                }else{
-
-                    try {
-                        TimeUnit.MICROSECONDS.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    System.out.println("is the turn of " + evt.getNewValue());
-                    showMessage("is the turn of " + evt.getNewValue());
-                    try {
-                        TimeUnit.MICROSECONDS.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
         }else if(evt.getPropertyName().equals("MNmove") || evt.getPropertyName().equals("ArchUnified")){
-            ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
-            showMessage(archipelagos);
+            mnMovedArcUnified();
         } else if(evt.getPropertyName().equals("PhaseChanged")){
-            synchronized (this){
-                if(currentGame.getCurrentPlayer() == player){
-                    switch (currentGame.getPhase()){
-                        case CARD_SELECTION ->{
-                            /*
-                            ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
-                            try {
-                                TimeUnit.MICROSECONDS.sleep(500);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            synchronized (lock){
-                                showMessage(players);
-                            }
-
-                             */
-                        }
-
-                            //showMessage(gameMessage.cardSelectionMessage);
-                        case MOVE_STUDENTS ->
-                                showMessage(String.format(gameMessage.studentMovementMessage, actionParser.getActionController().getTurnController().getGameHandler().getNumberOfMovements()));
-                        case MOVE_MN -> {
-                            Object lock = new Object();
-                            Object lock2 = new Object();
-                            synchronized (lock2) {
-                                List<Board> boards = new ArrayList<>();
-                                for (Player p : currentGame.getListOfPlayer()) {
-                                    boards.add(p.getMyBoard());
-                                }
-                                ListOfBoards boards1 = new ListOfBoards(boards);
-                                synchronized (lock) {
-                                    showMessage(boards1);
-                                    try {
-                                        TimeUnit.MICROSECONDS.sleep(500);
-                                    } catch (InterruptedException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                }
-
-
-                                ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
-                                synchronized (lock) {
-                                    showMessage(archipelagos);
-                                    try {
-                                        TimeUnit.MICROSECONDS.sleep(500);
-                                    } catch (InterruptedException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                }
-                            }
-                            try {
-                                TimeUnit.MICROSECONDS.sleep(1000);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            synchronized (lock) {
-                                showMessage(String.format(gameMessage.moveMotherNatureMessage, player.getLastUsedCard().getMaxSteps() + ((player.getUsedCharacter() == null)? 0: player.getUsedCharacter().getBonusSteps())));
-                                try {
-                                    TimeUnit.MICROSECONDS.sleep(500);
-                                } catch (InterruptedException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-                        }case CLOUD_SELECTION -> {
-                            ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
-                            synchronized (lock){
-                                showMessage(clouds);
-                                try {
-                                    TimeUnit.MICROSECONDS.sleep(500);
-                                } catch (InterruptedException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-                            try {
-                                TimeUnit.MICROSECONDS.sleep(500);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            synchronized (lock){
-                                showMessage(gameMessage.chooseCloudMessage);
-                                try {
-                                    TimeUnit.MICROSECONDS.sleep(500);
-                                } catch (InterruptedException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            phaseChanged();
         }else if(evt.getPropertyName().equals("UsedCard")){
-            synchronized (lock){
-                if (currentGame.getCurrentPlayer() == player) {
-                    showMessage(player.getMyDeck());
-                    try {
-                        TimeUnit.MICROSECONDS.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-
-                ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
-                synchronized (lock){
-                    showMessage(players);
-                    try {
-                        TimeUnit.MICROSECONDS.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
+            usedCard();
         }else if (evt.getPropertyName().equals("RemovedStudentFromEntrance")){
-            synchronized (lock) {
-                ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
-                showMessage(archipelagos);
-                try {
-                    TimeUnit.MICROSECONDS.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            synchronized (lock){
-
-                List<Board> boards = new ArrayList<>();
-                for (Player p : currentGame.getListOfPlayer()) {
-                    boards.add(p.getMyBoard());
-                }
-                ListOfBoards boards1 = new ListOfBoards(boards);
-                showMessage(boards1);
-                try {
-                    TimeUnit.MICROSECONDS.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-
-            }
+            sendArchipelagos();
+            sendBoards();
         }else if(evt.getPropertyName().equals("ChangedProfessor")){
             synchronized (lock){
-                List<Board> boards = new ArrayList<>();
-                for (Player p : currentGame.getListOfPlayer()) {
-                    boards.add(p.getMyBoard());
-                }
-                ListOfBoards boards1 = new ListOfBoards(boards);
-                showMessage(boards1);
-                try {
-                    TimeUnit.MICROSECONDS.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+               sendBoards();
             }
         }else if(evt.getPropertyName().equals("MessageForParser")){
             synchronized (this){
@@ -377,40 +64,21 @@ public class RemoteView implements PropertyChangeListener{
             }
         }else if(evt.getPropertyName().equals("ChangedCloudStatus")){
             synchronized (lock){
-                ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
-                showMessage(clouds);
-                try {
-                    TimeUnit.MICROSECONDS.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+               sendClouds();
             }
         }else if(evt.getPropertyName().equals("playedCharacter")){
-            synchronized (lock) {
-                showMessage("Played character: " + evt.getNewValue());
-                try {
-                    TimeUnit.MICROSECONDS.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            playedCharacter(evt);
+
             synchronized (lock){
                 switch (evt.getNewValue().toString()){
                     case "CHARACTER1":
-                        ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
-                        showMessage(archipelagos);
+                        sendArchipelagos();
                         break;
                     case "CHARACTER3":
-                        ListOfArchipelagos archipelagoss = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
-                        showMessage(archipelagoss);
+                        sendArchipelagos();
                         break;
                     case "CHARACTER7":
-                        List<Board> boards = new ArrayList<>();
-                        for (Player p : currentGame.getListOfPlayer()) {
-                            boards.add(p.getMyBoard());
-                        }
-                        ListOfBoards boards1 = new ListOfBoards(boards);
-                        showMessage(boards1);
+                       sendBoards();
                         break;
                 }
                 try {
@@ -462,12 +130,7 @@ public class RemoteView implements PropertyChangeListener{
         }else if(evt.getPropertyName().equals("DeckRequired")){
             System.out.println("im notified");
             if(player.getNickname().equals(evt.getNewValue())){
-                showMessage(player.getMyDeck());
-                try {
-                    TimeUnit.MICROSECONDS.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sendDeck();
             }
         }else if(evt.getPropertyName().equals("AvailableCharactersRequired")){
             if(player.getNickname().equals(evt.getNewValue())){
@@ -482,6 +145,8 @@ public class RemoteView implements PropertyChangeListener{
             }
         }
 
+
+
         /*else if(evt.getPropertyName().equals("EndGame")){
             if(evt.getNewValue().equals(player.getTeam())){
                 showMessage("The game has ended \n YOU WON");
@@ -491,5 +156,308 @@ public class RemoteView implements PropertyChangeListener{
         }
         */
     }
+    private void endGame(String newValue){
+        synchronized (this){
+            if(newValue.equals(player.getTeam())){
+                System.out.println("sono nella view");
+                showMessage("The game has ended \n YOU WON");
+                clientConnection.setPlayerQuitted(true);
+                try {
+                    TimeUnit.MICROSECONDS.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                clientConnection.closeOnlyThis();
+
+            }else{
+                System.out.println("sono nella view");
+                showMessage("The game has ended \n YOU LOST");
+                clientConnection.setPlayerQuitted(true);
+                try {
+                    TimeUnit.MICROSECONDS.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                clientConnection.closeOnlyThis();
+
+            }
+        }
+    }
+
+    private void currentPlayerChanged(PropertyChangeEvent evt){
+        Object lock2 = new Object();
+        synchronized (lock2){
+            sendBoards();
+
+            sendArchipelagos();
+
+            sendClouds();
+
+            if(currentGame.getCurrentPlayer() == player){
+                sendDeck();
+
+                System.out.println("exmode: " + currentGame.isExpertModeOn());
+                if(currentGame.isExpertModeOn()){
+                    synchronized (lock){
+                        try {
+                            TimeUnit.MICROSECONDS.sleep(500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        showMessage("Playable characters: \n");
+
+                        try {
+                            TimeUnit.MICROSECONDS.sleep(500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        for(Characters c : currentGame.getCharactersPlayable()){
+                            showMessage("Character: " + c.getId() + " \n Description: " + c.getDescriptionOfPower() + "\n Price:" + c.getPrice() + "\n\n");
+                        }
+                        try {
+                            TimeUnit.MICROSECONDS.sleep(500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    synchronized (lock){
+                        try {
+                            TimeUnit.MICROSECONDS.sleep(500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        showMessage("Available coins: " + currentGame.getCurrentPlayer().getWallet());
+                        try {
+                            TimeUnit.MICROSECONDS.sleep(500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+        }
+        synchronized (lock2){
+            Object internalLock = new Object();
+            if(player.getNickname().equals(evt.getNewValue())){
+                ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
+                synchronized (internalLock){
+                    showMessage(players);
+                    try {
+                        TimeUnit.MICROSECONDS.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                synchronized (internalLock){
+                    System.out.println(evt.getNewValue() + " is your turn!");
+                    showMessage(evt.getNewValue() + " is your turn!");
+                    try {
+                        TimeUnit.MICROSECONDS.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                if(evt.getOldValue().equals("CS")){
+                    synchronized (internalLock){
+                        showMessage(gameMessage.cardSelectionMessage);
+                        try {
+                            TimeUnit.MICROSECONDS.sleep(500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }else{
+
+                try {
+                    TimeUnit.MICROSECONDS.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                System.out.println("is the turn of " + evt.getNewValue());
+                showMessage("is the turn of " + evt.getNewValue());
+                try {
+                    TimeUnit.MICROSECONDS.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+    private void sendBoards(){
+        List<Board> boards = new ArrayList<>();
+        for(Player p : currentGame.getListOfPlayer()) {
+            boards.add(p.getMyBoard());
+        }
+        ListOfBoards boards1 = new ListOfBoards(boards);
+        synchronized (lock){
+            showMessage(boards1);
+            try {
+                TimeUnit.MICROSECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private void sendArchipelagos(){
+        ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
+        synchronized (lock){
+            try {
+                TimeUnit.MICROSECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            showMessage(archipelagos);
+            try {
+                TimeUnit.MICROSECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private void sendClouds(){
+        ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
+        synchronized (lock){
+            try {
+                TimeUnit.MICROSECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            showMessage(clouds);
+            try {
+                TimeUnit.MICROSECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private void sendDeck(){
+        synchronized (lock){
+            try {
+                TimeUnit.MICROSECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            showMessage(player.getMyDeck());
+            try {
+                TimeUnit.MICROSECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+
+    }
+
+    private void mnMovedArcUnified(){
+        ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
+        showMessage(archipelagos);
+    }
+
+    private void phaseChanged(){
+        synchronized (this){
+            System.out.println("I should send phase " + currentGame.getPhase());
+            if(currentGame.getCurrentPlayer().getNickname().equals(player.getNickname())){
+                switch (currentGame.getPhase()){
+                    case CARD_SELECTION ->{/* cardSelectionPhase */ }
+                    case MOVE_STUDENTS -> showMessage(String.format(gameMessage.studentMovementMessage, actionParser.getActionController().getTurnController().getGameHandler().getNumberOfMovements()));
+                    case MOVE_MN -> {moveMnPhase();}
+                    case CLOUD_SELECTION -> {cloudSelectionPhase();}
+                }
+            }
+        }
+    }
+
+    private void moveMnPhase(){
+        Object lock = new Object();
+        synchronized (lock) {
+            sendBoards();
+            sendArchipelagos();
+        }
+        synchronized (lock) {
+            showMessage(String.format(gameMessage.moveMotherNatureMessage, player.getLastUsedCard().getMaxSteps() + ((player.getUsedCharacter() == null)? 0: player.getUsedCharacter().getBonusSteps())));
+            try {
+                TimeUnit.MICROSECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private void cloudSelectionPhase(){
+        sendClouds();
+        synchronized (lock){
+            showMessage(gameMessage.chooseCloudMessage);
+            try {
+                TimeUnit.MICROSECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    private void usedCard(){
+        synchronized (lock){
+            if (currentGame.getCurrentPlayer() == player) {
+               sendDeck();
+            }
+
+            sendListOfPlayers();
+        }
+    }
+
+    private void sendListOfPlayers(){
+        ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
+        synchronized (lock){
+            showMessage(players);
+            try {
+                TimeUnit.MICROSECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private void playedCharacter(PropertyChangeEvent evt){
+        synchronized (lock) {
+            showMessage("Played character: " + evt.getNewValue());
+            try {
+                TimeUnit.MICROSECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void resendSituation(){
+        //Simulate a change event in the player and phase to re-send all
+        String oldValue = "";
+        if(currentGame.getPhase() == Phase.CARD_SELECTION){
+            oldValue = "CS";
+        }
+        PropertyChangeEvent event = new PropertyChangeEvent("", "currentPlayerChanged", oldValue, currentGame.getCurrentPlayer().getNickname());
+        currentPlayerChanged(event);
+        phaseChanged();
+    }
+
+      /*
+                            cardSelectionPhase:
+                            ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
+                            try {
+                                TimeUnit.MICROSECONDS.sleep(500);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            synchronized (lock){
+                                showMessage(players);
+                            }
+
+                             */
+
 
 }

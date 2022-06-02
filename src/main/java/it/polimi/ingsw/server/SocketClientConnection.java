@@ -279,6 +279,7 @@ public class SocketClientConnection implements Runnable, Serializable{
                    // close();
                     return;
                 }else{
+                    System.out.println("received " + read + "from " + nickname);
                     support.firePropertyChange("MessageForParser","aaa", read);
                 }
             }

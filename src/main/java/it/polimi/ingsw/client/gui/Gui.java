@@ -72,19 +72,22 @@ public class Gui extends Application implements PropertyChangeListener {
                 try {
                     while (isActive()) {
                         Object inputObject = socketIn.readObject();
-                        System.out.println("something received");
+                        if(inputObject !=null){
+                            System.out.println("something received");
 
-                        switch (inputObject) {
-                            case String stringReceived -> manageStringInput(stringReceived);
-                            case ListOfBoards listOfBoards -> manageListOfBoards(listOfBoards);
-                            case Deck deck -> manageDeck(deck);
-                            case ListOfArchipelagos listOfArchipelagos -> manageListOfArchipelagos(listOfArchipelagos);
-                            case ListOfClouds listOfClouds -> manageListOfClouds(listOfClouds);
-                            case ListOfPlayers listOfPlayers-> System.out.println("received list of players");//manageListOfPlayers((ListOfPlayers) inputObject);
-                            default -> System.out.println("Unexpected argument received from the server");
+                            switch (inputObject) {
+                                case String stringReceived -> manageStringInput(stringReceived);
+                                case ListOfBoards listOfBoards -> manageListOfBoards(listOfBoards);
+                                case Deck deck -> manageDeck(deck);
+                                case ListOfArchipelagos listOfArchipelagos -> manageListOfArchipelagos(listOfArchipelagos);
+                                case ListOfClouds listOfClouds -> manageListOfClouds(listOfClouds);
+                                case ListOfPlayers listOfPlayers-> System.out.println("received list of players");//manageListOfPlayers((ListOfPlayers) inputObject);
+                                default -> System.out.println("Unexpected argument received from the server");
+                            }
+
+                            System.out.println("active status " + active);
                         }
 
-                        System.out.println("active status " + active);
                     }
                 } catch (Exception e) {
                     System.out.println("set active to false from read froom socket");
