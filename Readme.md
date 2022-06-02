@@ -16,7 +16,7 @@ Professor : Alessandro Margara
 | CLI |     🟢     |
 | Multiple games | 🟢 |
 | 4 players | 🟢 |
-| Persistence | 🟢 |
+| Persistence | 🟡 |
 
 key :   
 🟢 Completed     
