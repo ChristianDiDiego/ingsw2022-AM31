@@ -2,7 +2,11 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.server.Server;
 
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
@@ -12,9 +16,12 @@ import java.util.concurrent.Executors;
 The server app that the server needs to start
  */
 public class ServerApp {
+    static PrintStream ps = new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8);
+
     public static void main( String[] args )
     {
-        System.out.println("\n" +
+
+        ps.println("\n" +
                 "███████╗██████╗ ██╗   ██╗ █████╗ ███╗   ██╗████████╗██╗███████╗\n" +
                 "██╔════╝██╔══██╗╚██╗ ██╔╝██╔══██╗████╗  ██║╚══██╔══╝██║██╔════╝\n" +
                 "█████╗  ██████╔╝ ╚████╔╝ ███████║██╔██╗ ██║   ██║   ██║███████╗\n" +

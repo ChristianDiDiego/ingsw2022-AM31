@@ -9,10 +9,9 @@ import it.polimi.ingsw.utilities.ListOfPlayers;
 import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.*;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -29,6 +28,8 @@ public class Cli{
     private boolean active = true;
     private Object lockPrint;
     Socket socket;
+    static PrintStream ps = new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8);
+
 
 
     public Cli(String ip, int port) {
@@ -56,7 +57,7 @@ public class Cli{
                         Object inputObject = socketIn.readObject();
                         synchronized (this) {
                             switch (inputObject) {
-                                case String s -> System.out.println(s);
+                                case String s -> ps.println(s);
                                 case ListOfBoards listOfBoards -> printBoard(listOfBoards.getBoards());
                                 case Deck deck -> printMyDeck(deck);
                                 case ListOfArchipelagos listOfArchipelagos ->
@@ -96,7 +97,7 @@ public class Cli{
                             socketOut.println(inputLine);
                             socketOut.flush();
                         }else{
-                            System.out.println("Null input is not valid");
+                            ps.println("Null input is not valid");
                         }
                     }
                 } catch (Exception e) {
@@ -116,7 +117,7 @@ public class Cli{
      */
 
     public void printLogo () {
-        System.out.println("\n" +
+        ps.println("\n" +
                 "███████╗██████╗ ██╗   ██╗ █████╗ ███╗   ██╗████████╗██╗███████╗\n" +
                 "██╔════╝██╔══██╗╚██╗ ██╔╝██╔══██╗████╗  ██║╚══██╔══╝██║██╔════╝\n" +
                 "█████╗  ██████╔╝ ╚████╔╝ ███████║██╔██╗ ██║   ██║   ██║███████╗\n" +
@@ -125,22 +126,22 @@ public class Cli{
                 "╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚══════╝\n" +
                 "                                                               \n");
 
-        System.out.println("\nCreators: Carmine Faino, Christian Di Diego, Federica Di Filippo");
+        ps.println("\nCreators: Carmine Faino, Christian Di Diego, Federica Di Filippo");
     }
 
     public void printMyDeck (Deck deck){
         synchronized (lockPrint){
-            System.out.println("YOUR DECK~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            ps.println("YOUR DECK~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             for (Card c : deck.getLeftCards()) {
-                System.out.println("    Power: " + c.getPower() + " Steps: " + c.getMaxSteps());
+                ps.println("    Power: " + c.getPower() + " Steps: " + c.getMaxSteps());
             }
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+            ps.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         }
     }
 
     public void printLastUsedCards (List<Player> players) {
         synchronized (lockPrint) {
-            System.out.println("\nCARDS PLAYED IN THIS TURN~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            ps.println("\nCARDS PLAYED IN THIS TURN~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             int min = Constants.NUMBEROFCARDSINDECK;
             for (Player p : players) {
                 if (p.getMyDeck().getLeftCards().size() < min) {
@@ -149,18 +150,18 @@ public class Cli{
             }
             for (Player p : players) {
                 if (p.getMyDeck().getLeftCards().size() == min && p.getLastUsedCard() != null) {
-                    System.out.print("    Player " + p.getNickname() + " choose the card:");
-                    System.out.println(" Power: " + p.getLastUsedCard().getPower() + " Steps: " + p.getLastUsedCard().getMaxSteps());
+                    ps.print("    Player " + p.getNickname() + " choose the card:");
+                    ps.println(" Power: " + p.getLastUsedCard().getPower() + " Steps: " + p.getLastUsedCard().getMaxSteps());
                 }
             }
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+            ps.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         }
     }
 
     public void printBoard(List<Board> boards) {
         synchronized (lockPrint) {
             String green, red, yellow, pink, blue;
-            System.out.println("BOARDS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            ps.println("BOARDS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             for (Board b : boards) {
                 int[] nSDN = new int[]{0, 0, 0, 0, 0};
                 int[] nSE = new int[]{0, 0, 0, 0, 0};
@@ -205,9 +206,9 @@ public class Cli{
                     boardString.append(ColorsCli.RESET).append("♜ ").append(ColorsCli.BLACK).append(ColorsCli.RESET);
                 }
                 boardString.append(ColorsCli.RESET).append("\n").append(ColorsCli.RESET);
-                System.out.println(boardString.toString());
+                ps.println(boardString);
             }
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+            ps.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         }
     }
 
@@ -215,7 +216,7 @@ public class Cli{
         synchronized (lockPrint) {
             StringBuilder archipelago = new StringBuilder();
             archipelago.append(ColorsCli.RESET).append("ARCHIPELAGOS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
-            System.out.println(archipelago.toString());
+            ps.println(archipelago.toString());
             for (Archipelago a : archipelagos) {
                 int numberTower = a.getBelongingIslands().size();
                 archipelago = new StringBuilder();
@@ -232,12 +233,12 @@ public class Cli{
                         archipelago.append(ColorsCli.RESET).append("♜ ").append(ColorsCli.RESET);
                     }
                 }
-                System.out.println(archipelago.toString());
+                ps.println(archipelago.toString());
             }
 
             archipelago = new StringBuilder();
             archipelago.append(ColorsCli.RESET).append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n").append(ColorsCli.RESET);
-            System.out.println(archipelago.toString());
+            ps.println(archipelago.toString());
         }
     }
 
@@ -245,7 +246,7 @@ public class Cli{
         synchronized (lockPrint) {
             StringBuilder cloud = new StringBuilder();
             cloud.append(ColorsCli.RESET).append("CLOUDS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
-            System.out.println(cloud.toString());
+            ps.println(cloud.toString());
             for (Cloud c : clouds)
                 if (c.getIsTaken() == false) {
                     cloud = new StringBuilder();
@@ -255,12 +256,12 @@ public class Cli{
                             cloud.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.RESET);
                         }
                     }
-                    System.out.println(cloud.toString());
+                    ps.println(cloud.toString());
                 }
 
             cloud = new StringBuilder();
             cloud.append(ColorsCli.RESET).append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n").append(ColorsCli.RESET);
-            System.out.println(cloud.toString());
+            ps.println(cloud.toString());
         }
     }
 
@@ -272,7 +273,7 @@ public class Cli{
                     while (isActive()) {
                         Thread.sleep(10000);
                         if(!geek.isReachable(5000)) {
-                            System.out.println("The server is unreachable, exiting...");
+                            ps.println("The server is unreachable, exiting...");
                             System.exit(0);
                         }
                     }
@@ -290,7 +291,7 @@ public class Cli{
         socket = new Socket();
         SocketAddress socketAddress = new InetSocketAddress(ip, port);
         socket.connect(socketAddress);
-        System.out.println("Connection established");
+        ps.println("Connection established");
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
         Scanner stdin = new Scanner(System.in);
@@ -309,7 +310,7 @@ public class Cli{
             t1.interrupt();
             t2.interrupt();
         } catch(InterruptedException | NoSuchElementException e){
-            System.out.println("Connection closed from the client side");
+            ps.println("Connection closed from the client side");
         } finally {
             stdin.close();
             socketIn.close();

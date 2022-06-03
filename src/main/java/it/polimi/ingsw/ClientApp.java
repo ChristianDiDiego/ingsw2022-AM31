@@ -3,7 +3,11 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.server.Server;
 
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -12,7 +16,11 @@ The app the client will open, entering the ip and port of the server
  */
 public class ClientApp {
     public static void main(String[] args) {
+        PrintStream ps = new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8);
         System.out.println("Eryantis Client | Welcome!");
+        System.out.println("With system out the tower looks like this " + "♜ ");
+        ps.println("But actually the tower symbol is " + "♜ ");
+
         String ip = "127.0.0.1";
         int port = 5000;
         int input = 1;
