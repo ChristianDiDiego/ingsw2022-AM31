@@ -17,16 +17,17 @@ import java.util.Scanner;
 /*
 Instanced by the server, it interacts with a client sending and receiving message from it
  */
-public class SocketClientConnection implements Runnable, Serializable{
-    transient private Socket socket;
+public class SocketClientConnection implements Runnable{
+    private Socket socket;
     private String nickname;
-    transient private ObjectOutputStream out;
+     private ObjectOutputStream out;
 
     transient private Scanner inGeneral;
 
     private boolean playerQuitted = false;
-    transient private Server server;
-    transient private PropertyChangeSupport support;
+
+    private Server server;
+     private PropertyChangeSupport support;
 
     private boolean active = true;
 
@@ -275,8 +276,8 @@ public class SocketClientConnection implements Runnable, Serializable{
                 read = inGeneral.nextLine();
                 if(read.equalsIgnoreCase("QUIT")){
                     System.out.println("quit received");
-                    //playerQuitted = true;
-                   // close();
+                    playerQuitted = true;
+                    close();
                     return;
                 }else{
                     System.out.println("received " + read + "from " + nickname);
