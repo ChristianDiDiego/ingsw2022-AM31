@@ -60,8 +60,7 @@ public class Cli{
                                 case String s -> ps.println(s);
                                 case ListOfBoards listOfBoards -> printBoard(listOfBoards.getBoards());
                                 case Deck deck -> printMyDeck(deck);
-                                case ListOfArchipelagos listOfArchipelagos ->
-                                        printArchipelago(listOfArchipelagos.getArchipelagos());
+                                case ListOfArchipelagos listOfArchipelagos -> printArchipelago(listOfArchipelagos.getArchipelagos());
                                 case ListOfClouds listOfClouds -> printCloud(listOfClouds.getClouds());
                                 case ListOfPlayers listOfPlayers -> printLastUsedCards(listOfPlayers.getPlayers());
                                 case null, default -> throw new IllegalArgumentException();

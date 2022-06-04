@@ -2,7 +2,7 @@ package it.polimi.ingsw.utilities;
 /*
 This class contains the messages to be sent to the client
  */
-public class gameMessage {
+public class GameMessage {
     public static String notYourTurn = "Is not your turn!";
 
     public static String cardSelectionMessage = "Play a card of your deck \n writing CARD [Number of the card]";

@@ -48,7 +48,7 @@ public class Server {
         String userStartedDisconnection = null;
         for (List<SocketClientConnection> l : listOfConnections) {
             for (SocketClientConnection s : l) {
-                 userStartedDisconnection = c.getNickname();
+                userStartedDisconnection = c.getNickname();
                 System.out.println("I'm confronting " + s.getNickname());
                 if (s == c) {
                     for (SocketClientConnection toRemove : l) {
@@ -81,13 +81,13 @@ public class Server {
         }
 
         GameHandler gameToDelete = null;
-        for(GameHandler g : listOfGames){
-            for(Player p : g.getGame().getListOfPlayer())
-                if(p.getNickname().equals(userStartedDisconnection)){
+        for (GameHandler g : listOfGames) {
+            for (Player p : g.getGame().getListOfPlayer())
+                if (p.getNickname().equals(userStartedDisconnection)) {
                     gameToDelete = g;
                 }
         }
-        if(gameToDelete != null){
+        if (gameToDelete != null) {
             listOfGames.remove(gameToDelete);
         }
     }
@@ -179,8 +179,8 @@ public class Server {
             s.asyncSend("Connected User: " + nickname);
         }
         String nickOfPlayerToWait = "";
-        for(Player p : savedGame.getGame().getListOfPlayer()){
-            if(!mapGameWaitingConnection.get(savedGame).keySet().contains(p)){
+        for (Player p : savedGame.getGame().getListOfPlayer()) {
+            if (!mapGameWaitingConnection.get(savedGame).keySet().contains(p)) {
                 nickOfPlayerToWait += p.getNickname() + " ";
             }
         }
@@ -224,9 +224,14 @@ public class Server {
                 return false;
             }
         }
-        for(GameHandler g : listOfGames){
-            for(Player p: g.getGame().getListOfPlayer()){
-                if(p.getNickname().equalsIgnoreCase(nameToCheck)){
+        /*Use the mapGameRemoteViews because in this way if there was an old match
+         * with a player nickname "nameToCheck", if it has not re-logged yet
+         * it's allowed to do it, otherwise return that the nick is already used
+         */
+
+        for (GameHandler g : mapGameRemoteViews.keySet()) {
+            for (RemoteView r : mapGameRemoteViews.get(g)) {
+                if (r.getPlayer().getNickname().equalsIgnoreCase(nameToCheck)) {
                     return false;
                 }
             }
@@ -446,6 +451,12 @@ public class Server {
         gameHandler.addNewPlayer(player);
     }
 
+    /**
+     * If already exists a saved match with that username, return the gameHandler of that game
+     * @param nickname
+     * @param c
+     * @return
+     */
     private GameHandler checkPlayerAlreadyExists(String nickname, SocketClientConnection c) {
 
         for (GameHandler g : listOfGames) {

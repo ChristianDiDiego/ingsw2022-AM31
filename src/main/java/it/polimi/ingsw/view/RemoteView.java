@@ -260,7 +260,7 @@ public class RemoteView implements PropertyChangeListener{
                 }
                 if(evt.getOldValue().equals("CS")){
                     synchronized (internalLock){
-                        showMessage(gameMessage.cardSelectionMessage);
+                        showMessage(GameMessage.cardSelectionMessage);
                         try {
                             TimeUnit.MICROSECONDS.sleep(500);
                         } catch (InterruptedException e) {
@@ -366,7 +366,7 @@ public class RemoteView implements PropertyChangeListener{
             if(currentGame.getCurrentPlayer().getNickname().equals(player.getNickname())){
                 switch (currentGame.getPhase()){
                     case CARD_SELECTION ->{/* cardSelectionPhase */ }
-                    case MOVE_STUDENTS -> showMessage(String.format(gameMessage.studentMovementMessage, actionParser.getActionController().getTurnController().getGameHandler().getNumberOfMovements()));
+                    case MOVE_STUDENTS -> showMessage(String.format(GameMessage.studentMovementMessage, actionParser.getActionController().getTurnController().getGameHandler().getNumberOfMovements()));
                     case MOVE_MN -> {moveMnPhase();}
                     case CLOUD_SELECTION -> {cloudSelectionPhase();}
                 }
@@ -381,7 +381,7 @@ public class RemoteView implements PropertyChangeListener{
             sendArchipelagos();
         }
         synchronized (lock) {
-            showMessage(String.format(gameMessage.moveMotherNatureMessage, player.getLastUsedCard().getMaxSteps() + ((player.getUsedCharacter() == null)? 0: player.getUsedCharacter().getBonusSteps())));
+            showMessage(String.format(GameMessage.moveMotherNatureMessage, player.getLastUsedCard().getMaxSteps() + ((player.getUsedCharacter() == null)? 0: player.getUsedCharacter().getBonusSteps())));
             try {
                 TimeUnit.MICROSECONDS.sleep(500);
             } catch (InterruptedException e) {
@@ -393,7 +393,7 @@ public class RemoteView implements PropertyChangeListener{
     private void cloudSelectionPhase(){
         sendClouds();
         synchronized (lock){
-            showMessage(gameMessage.chooseCloudMessage);
+            showMessage(GameMessage.chooseCloudMessage);
             try {
                 TimeUnit.MICROSECONDS.sleep(500);
             } catch (InterruptedException e) {
@@ -443,6 +443,10 @@ public class RemoteView implements PropertyChangeListener{
         PropertyChangeEvent event = new PropertyChangeEvent("", "currentPlayerChanged", oldValue, currentGame.getCurrentPlayer().getNickname());
         currentPlayerChanged(event);
         phaseChanged();
+    }
+
+    public Player getPlayer(){
+        return this.player;
     }
 
       /*
