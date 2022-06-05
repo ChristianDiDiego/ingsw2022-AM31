@@ -42,6 +42,12 @@ public class Server {
       and associated to it thanks to mapGameWaitingConnection
      */
     private List<GameHandler> listOfGames = new ArrayList<>();
+    private int port;
+
+    public Server(int port) throws IOException {
+        this.serverSocket = new ServerSocket(port);
+        this.port = port;
+    }
 
     //Deregister connection
     public synchronized void deregisterConnection(SocketClientConnection c) {
@@ -208,10 +214,6 @@ public class Server {
         }
     }
 
-    public Server(int port) throws IOException {
-        this.serverSocket = new ServerSocket(port);
-    }
-
     /**
      * Check if the nickname chosen has already been taken
      *
@@ -261,34 +263,6 @@ public class Server {
 
     public int getNumberOfPlayers() {
         return numberOfPlayers;
-    }
-
-    public void run() {
-
-        Runtime.getRuntime().addShutdownHook(new Thread(this::saveGames));
-
-        int connections = 0;
-        System.out.println("Server is running");
-
-        //If a game has been saved, it will restore it
-        File gamesSaved = new File("gameSavages.dat");
-        if (gamesSaved.isFile()) {
-            restoreGame();
-        }
-
-        while (true) {
-            try {
-                Socket newSocket = serverSocket.accept();
-                connections++;
-                System.out.println("Ready for the new connection - " + connections);
-                SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
-                executor.submit(socketConnection);
-
-                //socketConnection.run();
-            } catch (IOException e) {
-                System.out.println("Connection Error!");
-            }
-        }
     }
 
     private void saveGames() {
@@ -496,6 +470,39 @@ public class Server {
             }
         }
         return null;
+    }
+
+    public void run() {
+
+        Runtime.getRuntime().addShutdownHook(new Thread(this::saveGames));
+
+        int connections = 0;
+        System.out.println("Server is running");
+
+        //If a game has been saved, it will restore it
+        File gamesSaved = new File("gameSavages.dat");
+        if (gamesSaved.isFile()) {
+            restoreGame();
+        }
+
+        while (true) {
+            try {
+                Socket newSocket = serverSocket.accept();
+                if(newSocket.getPort() == 22) {
+                    System.out.println("ping sulla 22");
+                } else {
+                    connections++;
+                    System.out.println("Ready for the new connection - " + connections);
+                    SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
+                    executor.submit(socketConnection);
+                }
+
+
+                //socketConnection.run();
+            } catch (IOException e) {
+                System.out.println("Connection Error!");
+            }
+        }
     }
 
 }

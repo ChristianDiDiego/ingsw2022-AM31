@@ -26,11 +26,12 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Gui extends Application implements PropertyChangeListener {
-    private  String ip = "127.0.0.1";
-    private int port = 5000;
+    //private  String ip;
+    //private int port = 5000;
     Socket socket;
     private boolean active = true;
     PrintWriter socketOut;
@@ -55,8 +56,6 @@ public class Gui extends Application implements PropertyChangeListener {
 
 
     public Gui(String ip, int port) {
-        this.ip = ip;
-        this.port = port;
         System.out.println("Received ip " + ip +" port " + port);
     }
 
@@ -99,30 +98,59 @@ public class Gui extends Application implements PropertyChangeListener {
         return t;
     }
 
-    public Thread pingToServer(InetAddress geek) {
+    public boolean ping(String ip) throws IOException, InterruptedException {
+        String ping;
+        if(System.getProperty("os.name").startsWith("Windows")) {
+            ping = "ping -n 1 " + ip;
+        } else {
+            ping = "ping -c 1 " + ip;
+        }
+
+        Process p1 = java.lang.Runtime.getRuntime().exec(ping);
+        int returnVal = 0;
+        returnVal = p1.waitFor();
+        boolean reachable = (returnVal == 0);
+        return reachable;
+    }
+
+    public Thread pingToServer(String ip) {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     while (isActive()) {
                         Thread.sleep(10000);
-                        if(!geek.isReachable(5000)) {
+                        if(!ping(ip)) {
                             System.out.println("The server is unreachable, exiting...");
                             System.exit(0);
                         }
                     }
                 } catch (Exception e) {
-                    System.out.println("set active to false");
                     setActive(false);
                 }
             }
         });
-       // t.start();
+        //t.start();
         return t;
     }
 
     public void run() throws IOException {
+        Scanner in;
+        String ip = new String();
+        int port = 0;
+        try {
+            in = new Scanner(System.in);
+            System.out.println("Inserire ip: ");
+            String read = in.nextLine();
+            ip = read;
+            System.out.println("Inserire porta: ");
+            read = in.nextLine();
+            port = Integer.parseInt(read);
+        } catch (NoSuchElementException e) {
+            System.err.println("Error! " + e.getMessage());
+        }
         socket = new Socket();
+        System.out.println("Mi connetto a "+ ip + " " + port);
         SocketAddress socketAddress = new InetSocketAddress(ip, port);
         socket.connect(socketAddress);
         System.out.println("Connection established");
@@ -134,7 +162,7 @@ public class Gui extends Application implements PropertyChangeListener {
 
        // try{
             Thread t0 = asyncReadFromSocket(socketIn);
-            Thread t2 = pingToServer(geek);
+            Thread t2 = pingToServer(ip);
 
             t0.start();
             t2.start();
@@ -172,7 +200,7 @@ public class Gui extends Application implements PropertyChangeListener {
             e.printStackTrace();
         }
     }
-    public static void main(String[] args) {
+    public void main(String[] args) {
         launch(args);
         //send args to launch method and start
     }
@@ -180,14 +208,10 @@ public class Gui extends Application implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         //Send the string that are coming from the gui interface (MainSceneController)
-            send(evt.getNewValue().toString());
-            switch(evt.getPropertyName()){
-               case "username" -> setNickname(evt.getNewValue().toString());
-            }
-
-
-
-
+        send(evt.getNewValue().toString());
+        switch(evt.getPropertyName()){
+           case "username" -> setNickname(evt.getNewValue().toString());
+        }
     }
 
     public synchronized void send(String message) {
@@ -318,4 +342,5 @@ public class Gui extends Application implements PropertyChangeListener {
             mainSceneController.printDeck(deck);
         });
     }
+
 }

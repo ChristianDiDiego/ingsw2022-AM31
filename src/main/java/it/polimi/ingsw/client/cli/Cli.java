@@ -12,7 +12,6 @@ import it.polimi.ingsw.model.*;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.List;
@@ -264,16 +263,33 @@ public class Cli{
         }
     }
 
-    public Thread pingToServer(InetAddress geek) {
+    public boolean ping() throws IOException, InterruptedException {
+        String ping = new String();
+        if(System.getProperty("os.name").startsWith("Windows")) {
+            ping = "ping -n 1 " + ip;
+        } else {
+            ping = "ping -c 1 " + ip;
+        }
+
+        Process p1 = java.lang.Runtime.getRuntime().exec(ping);
+        int returnVal = 0;
+        returnVal = p1.waitFor();
+        boolean reachable = (returnVal == 0);
+        return reachable;
+    }
+
+    public Thread pingToServer() {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     while (isActive()) {
                         Thread.sleep(10000);
-                        if(!geek.isReachable(5000)) {
-                            ps.println("The server is unreachable, exiting...");
+                        if(!ping()) {
+                            System.out.println("The server is unreachable, exiting...");
                             System.exit(0);
+                        } else {
+                            System.out.println("Ping di " + ip + " avvenuto con successo");
                         }
                     }
                 } catch (Exception e) {
@@ -285,6 +301,7 @@ public class Cli{
         return t;
     }
 
+
     public void run() throws IOException {
         printLogo();
         socket = new Socket();
@@ -294,13 +311,12 @@ public class Cli{
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
         Scanner stdin = new Scanner(System.in);
-        InetAddress geek = InetAddress.getByName(ip);
 
 
         try{
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(stdin, socketOut);
-            Thread t2 = pingToServer(geek);
+            Thread t2 = pingToServer();
             t0.join();
             t1.join();
             t2.join();
