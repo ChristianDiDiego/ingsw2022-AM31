@@ -289,7 +289,7 @@ public class Cli{
                             System.out.println("The server is unreachable, exiting...");
                             System.exit(0);
                         } else {
-                            System.out.println("Ping di " + ip + " avvenuto con successo");
+                            //System.out.println("Ping di " + ip + " avvenuto con successo");
                         }
                     }
                 } catch (Exception e) {
