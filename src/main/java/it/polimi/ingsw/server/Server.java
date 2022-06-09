@@ -32,6 +32,7 @@ public class Server {
 
     GameHandler gameHandler;
     private List<List<SocketClientConnection>> listOfConnections = new ArrayList<>();
+    private boolean setupAborted;
 
     /*
     listOfGames contains all the gameHandler of the matches that are currently playing
@@ -84,6 +85,7 @@ public class Server {
                     s.closeConnection();
                 }
             }
+            setupAborted = true;
             waitingConnection.clear();
         }
 
@@ -120,6 +122,7 @@ public class Server {
 
     //Wait for another player
     public synchronized void lobby(SocketClientConnection c) {
+        setupAborted = false;
 
         if(!listOfGames.isEmpty()){
             if(!waitingConnection.isEmpty()) {
@@ -138,7 +141,8 @@ public class Server {
 
         //I moved nickname here so when other player connect the others receive his name
         String nickname = c.askNickname();
-        while (!checkNickname(nickname)) {
+        if(nickname.equalsIgnoreCase(Constants.QUIT)) setupAborted = true;
+        while (!setupAborted && !checkNickname(nickname)) {
             c.asyncSend(ErrorMessage.DuplicateNickname);
             try {
                 TimeUnit.MILLISECONDS.sleep(500);
@@ -147,15 +151,18 @@ public class Server {
             }
             nickname = c.askNickname();
         }
-        c.setNickname(nickname);
+        if(!setupAborted){
+            c.setNickname(nickname);
 
-        GameHandler savedGame = checkPlayerAlreadyExists(nickname, c);
+            GameHandler savedGame = checkPlayerAlreadyExists(nickname, c);
 
-        if (savedGame == null) {
-            setupNewMatch(nickname, c);
-        } else {
-            setupOldMatch(nickname, savedGame);
+            if (savedGame == null) {
+                setupNewMatch(nickname, c);
+            } else {
+                setupOldMatch(nickname, savedGame);
+            }
         }
+
 
     }
 
@@ -172,22 +179,24 @@ public class Server {
             }
             registerOtherPlayers(nickname, c);
         }
+        if(!setupAborted){
+            if (waitingConnection.size() < numberOfPlayers) {
+                c.asyncSend(ServerMessage.waitingOtherPlayers);
+            } else if (waitingConnection.size() == numberOfPlayers) {
 
-        if (waitingConnection.size() < numberOfPlayers) {
-            c.asyncSend(ServerMessage.waitingOtherPlayers);
-        } else if (waitingConnection.size() == numberOfPlayers) {
+                System.out.println("Number of player reached! Starting the game... ");
 
-            System.out.println("Number of player reached! Starting the game... ");
+                List<SocketClientConnection> temp = new ArrayList<>();
+                for (Player p : waitingConnection.keySet()) {
+                    temp.add(waitingConnection.get(p));
+                    listOfConnections.add(temp);
+                }
 
-            List<SocketClientConnection> temp = new ArrayList<>();
-            for (Player p : waitingConnection.keySet()) {
-                temp.add(waitingConnection.get(p));
-                listOfConnections.add(temp);
+                listOfGames.add(gameHandler);
+                waitingConnection.clear();
             }
-
-            listOfGames.add(gameHandler);
-            waitingConnection.clear();
         }
+
     }
 
     private void setupOldMatch(String nickname, GameHandler savedGame) {
@@ -330,7 +339,11 @@ public class Server {
     private void registerFirstPlayer(String nickname, SocketClientConnection c) {
         ColorOfTower color = null;
         numberOfPlayers = c.askHowManyPlayers();
-        while (numberOfPlayers <= 0 || numberOfPlayers > Constants.MAXPLAYERS) {
+        if(numberOfPlayers == -2){
+            setupAborted = true;
+            return;
+        }
+        while ((numberOfPlayers <= 0 || numberOfPlayers > Constants.MAXPLAYERS) && !setupAborted) {
             c.asyncSend(ErrorMessage.NumberOfPlayersNotValid);
             try {
                 TimeUnit.MILLISECONDS.sleep(500);
@@ -339,12 +352,11 @@ public class Server {
             }
             numberOfPlayers = c.askHowManyPlayers();
         }
-        ;
 
         int mode = -1;
         mode = c.askMode();
-
-        while (mode == -1) {
+        if(mode == -2) setupAborted = true;
+        while (!setupAborted && mode == -1) {
             c.asyncSend(ErrorMessage.ModeNotValid);
             try {
                 TimeUnit.MILLISECONDS.sleep(500);
@@ -353,8 +365,9 @@ public class Server {
             }
             mode = c.askMode();
         }
+        if(setupAborted) return;
         color = c.askColor();
-        while (color == null) {
+        while (!setupAborted && color == null) {
             c.asyncSend(ErrorMessage.ActionNotValid);
             try {
                 TimeUnit.MILLISECONDS.sleep(500);
@@ -363,6 +376,7 @@ public class Server {
             }
             color = c.askColor();
         }
+        if(setupAborted) return;
         Player player1 = new Player(nickname, color);
         player1.setTeam(0);
 
@@ -383,7 +397,7 @@ public class Server {
         ColorOfTower color = null;
         if (numberOfPlayers != 4 || (waitingConnection.size() + 1) % 2 != 0) {
             color = c.askColor();
-            while (color == null || !checkColorTower(color)) {
+            while ( (color == null || !checkColorTower(color) ) && !setupAborted) {
                 if (color == null) {
                     c.asyncSend(ErrorMessage.ActionNotValid);
                     try {
@@ -402,6 +416,7 @@ public class Server {
                     color = c.askColor();
                 }
             }
+            if(setupAborted) return;
         } else {
             //Only the first member of the team take the towers
             color = null;

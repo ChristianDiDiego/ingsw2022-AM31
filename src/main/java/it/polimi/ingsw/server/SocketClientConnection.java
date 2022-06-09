@@ -72,6 +72,7 @@ public class SocketClientConnection implements Runnable{
             in = new Scanner(socket.getInputStream());
             send(ServerMessage.howManyPlayers); //manda al client
             String read = in.nextLine(); // legge dal client il nome
+            System.out.println("received " + read + "from " + nickname);
             if(read.equalsIgnoreCase(Constants.QUIT)){
                 System.out.println("quit received");
                 //playerQuitted = true;
@@ -97,6 +98,7 @@ public class SocketClientConnection implements Runnable{
             in = new Scanner(socket.getInputStream());
             send(ServerMessage.askNickname); //manda al client
             String read = in.nextLine();
+            System.out.println("received " + read + "from " + nickname);
             if(read.equalsIgnoreCase(Constants.QUIT)){
                 System.out.println("quit received");
                 //playerQuitted = true;
@@ -117,6 +119,7 @@ public class SocketClientConnection implements Runnable{
             in = new Scanner(socket.getInputStream());
             send(ServerMessage.askMode); //manda al client
             String read = in.nextLine();// legge dal client il nome
+            System.out.println("received " + read + "from " + nickname);
             if(read.equalsIgnoreCase(Constants.QUIT)){
                 System.out.println("quit received");
                 //playerQuitted = true;
@@ -153,6 +156,7 @@ public class SocketClientConnection implements Runnable{
             }
 
             String read = in.nextLine(); // legge dal client il nome
+            System.out.println("received " + read + "from " + nickname);
             if(read.equalsIgnoreCase(Constants.QUIT)){
                 System.out.println("quit received");
                 //playerQuitted = true;

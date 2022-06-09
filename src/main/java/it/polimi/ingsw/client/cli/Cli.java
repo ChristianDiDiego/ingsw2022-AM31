@@ -2,10 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 //import com.sun.tools.javac.code.Attribute;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.utilities.ListOfArchipelagos;
-import it.polimi.ingsw.utilities.ListOfBoards;
-import it.polimi.ingsw.utilities.ListOfClouds;
-import it.polimi.ingsw.utilities.ListOfPlayers;
+import it.polimi.ingsw.utilities.*;
 import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.*;
 
@@ -56,7 +53,7 @@ public class Cli{
                         Object inputObject = socketIn.readObject();
                         synchronized (this) {
                             switch (inputObject) {
-                                case String s -> ps.println(s);
+                                case String s -> manageString(s);
                                 case ListOfBoards listOfBoards -> printBoard(listOfBoards.getBoards());
                                 case Deck deck -> printMyDeck(deck);
                                 case ListOfArchipelagos listOfArchipelagos -> printArchipelago(listOfArchipelagos.getArchipelagos());
@@ -301,6 +298,13 @@ public class Cli{
         return t;
     }
 
+    private void manageString(String s){
+        ps.println(s);
+        if(s.equalsIgnoreCase(ServerMessage.connectionClosed)){
+            System.exit(0);
+        }
+    }
+
 
     public void run() throws IOException {
         printLogo();
@@ -327,6 +331,7 @@ public class Cli{
         } catch(InterruptedException | NoSuchElementException e){
             ps.println("Connection closed from the client side");
         } finally {
+            System.out.println("eseguo finally..");
             stdin.close();
             socketIn.close();
             socketOut.close();
