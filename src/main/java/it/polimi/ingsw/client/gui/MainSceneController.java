@@ -226,8 +226,6 @@ public class MainSceneController implements Initializable {
     {
         student.setOnDragDetected((MouseEvent event) -> {
             /* drag was detected, start drag-and-drop gesture*/
-            System.out.println("onDragDetected");
-            System.out.println(student.getAccessibleText());
 
             /* allow any transfer mode */
             Dragboard db = student.startDragAndDrop(TransferMode.MOVE);
@@ -264,9 +262,7 @@ public class MainSceneController implements Initializable {
     private void setOnDragDroppedOnArchipelago(FlowPane target)
     {
         target.setOnDragDropped((DragEvent event) -> {
-            System.out.println(maxNumberOfMovedStudents);
             /* data dropped */
-            System.out.println("onDragDropped");
             boolean success = false;
             try {
                 /* if there is a string data on dragboard, read it and use it */
@@ -278,7 +274,6 @@ public class MainSceneController implements Initializable {
                         return;
                     }
                     int steps = calculateSteps(target.getAccessibleText());
-                    System.out.println("The max step is " + maxStepsMN + "and it is trying to do " + steps);
                     if(steps <= maxStepsMN){
                         ImageView mn = new ImageView(event.getDragboard().getImage());
                         mn.setFitHeight(80);
@@ -287,7 +282,6 @@ public class MainSceneController implements Initializable {
                         playMoveMn(steps);
                         maxStepsMN = 0;
                         cloudClickable = true;
-                        System.out.println("cloud clickable setted to " + cloudClickable);
                         event.setDropCompleted(true);
                     }else {
                         event.setDropCompleted(false);
@@ -312,7 +306,6 @@ public class MainSceneController implements Initializable {
                 String destination = target.getAccessibleText();
                 movedStudents += colorMoved + "-" + destination;
                 numberOfMovedStudents++;
-                System.out.println(movedStudents);
                 if(numberOfMovedStudents == maxNumberOfMovedStudents){
 
                     playMoveStudents(movedStudents);
@@ -389,8 +382,6 @@ public class MainSceneController implements Initializable {
 
             @Override
             public void handle(MouseEvent event) {
-                System.out.println("Card pressed " + card.getAccessibleText());
-                System.out.println("Cards clickable status " + cardsClickable);
                 if(cardsClickable){
                     playCard(card.getAccessibleText());
                     card.setOpacity(0.5);
@@ -411,8 +402,6 @@ public class MainSceneController implements Initializable {
     {
         motherNature.setOnDragDetected((MouseEvent event) -> {
             /* drag was detected, start drag-and-drop gesture*/
-            System.out.println("onDragDetected");
-            System.out.println(motherNature.getAccessibleText());
 
             /* allow any transfer mode */
             Dragboard db = motherNature.startDragAndDrop(TransferMode.ANY);
@@ -520,7 +509,6 @@ public class MainSceneController implements Initializable {
     {
         diningRoomTarget.setOnDragDropped((DragEvent event) -> {
             /* data dropped */
-            System.out.println("onDragDropped");
             boolean success = false;
 
 
@@ -554,7 +542,6 @@ public class MainSceneController implements Initializable {
                         String destination = ""+0;
                         movedStudents += colorMoved + "-" + destination;
                         numberOfMovedStudents++;
-                        System.out.println(movedStudents);
                         if(numberOfMovedStudents == 3){
 
                             playMoveStudents(movedStudents);
@@ -631,12 +618,9 @@ public class MainSceneController implements Initializable {
 
             @Override
             public void handle(MouseEvent event) {
-                System.out.println("Cloud pressed " + cloud.getAccessibleText());
-                System.out.println("Cloud clickable " + cloudClickable);
                 if(cloudClickable){
                     playCloud(cloud.getAccessibleText());
                     cloudClickable = false;
-                    System.out.println("Cloud clickable setted to" + cloudClickable);
                 }
 
                 event.consume();
@@ -655,7 +639,6 @@ public class MainSceneController implements Initializable {
         }
 
         for(Card c : deck.getLeftCards()) {
-            System.out.println("Card power: " + c.getPower());
             cards[deck.getLeftCards().indexOf(c)].setImage(assistants[c.getPower() - 1]);
             cards[deck.getLeftCards().indexOf(c)].setAccessibleText(""+c.getPower());
             cards[deck.getLeftCards().indexOf(c)].setVisible(true);
@@ -794,7 +777,6 @@ public class MainSceneController implements Initializable {
         this.maxNumberOfMovedStudents = maxNumberOfMovedStudents;
     }
     public void setCardsClickable(boolean isCardClickable){
-        System.out.println("card clickable setted to " + isCardClickable);
         this.cardsClickable = isCardClickable;
     }
 

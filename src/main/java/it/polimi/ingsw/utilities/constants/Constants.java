@@ -18,6 +18,10 @@ public class Constants {
     public static final int NUMBEROFCHARACTERS = 8;
     public static final int NUMBEROFPLAYABLECHARACTERS = 3;
 
+    public static final String QUIT = "QUIT";
+
+    public static final String NAMEFILEFORSAVEMATCHES = "gameSavages.dat";
+
     private static String ipServer;
     private static int port;
 

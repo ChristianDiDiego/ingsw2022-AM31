@@ -2,10 +2,7 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.utilities.ListOfArchipelagos;
-import it.polimi.ingsw.utilities.ListOfBoards;
-import it.polimi.ingsw.utilities.ListOfClouds;
-import it.polimi.ingsw.utilities.ListOfPlayers;
+import it.polimi.ingsw.utilities.*;
 import it.polimi.ingsw.utilities.constants.Constants;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -72,7 +69,6 @@ public class Gui extends Application implements PropertyChangeListener {
                     while (isActive()) {
                         Object inputObject = socketIn.readObject();
                         if(inputObject !=null){
-                            System.out.println("something received");
 
                             switch (inputObject) {
                                 case String stringReceived -> manageStringInput(stringReceived);
@@ -84,7 +80,6 @@ public class Gui extends Application implements PropertyChangeListener {
                                 default -> System.out.println("Unexpected argument received from the server");
                             }
 
-                            System.out.println("active status " + active);
                         }
 
                     }
@@ -231,54 +226,29 @@ public class Gui extends Application implements PropertyChangeListener {
     }
 
     private void manageStringInput(String inputString){
+        //NOTE: I cannot use a switch because I need to check if strings CONTAINS a word, not always EQUALS
         System.out.println(inputString);
-        if(inputString.equals("Game is starting...")){
-            try {
-                mainSceneController = loginController.switchToMainScene();
-                mainSceneController.addPropertyChangeListener(this);
-                boardSceneController = mainSceneController.getBoardSceneLoader().getController();
-                characterSceneController = mainSceneController.getCharacterSceneLoader().getController();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }else if(inputString.contains("You are joying in the match with")){
-            loginController.setNotFirstPlayer();
-        }
-        else if(inputString.contains("Waiting for other players")){
-            loginController.setWaitingForOtherPlayers();
-        }else if(inputString.contains("For this round you can do")){
-            //remove the literals from the string and convert it to an integer
-            // to get the number of steps that mn is allowed to do in this match
-           mainSceneController.setMaxStepsMN(Integer.parseInt(inputString.replaceAll("[\\D]", "")));
+        if(inputString.equals(ServerMessage.startingGame)){startingGame();}
 
-        }else if (inputString.contains("of your students from entrance")){
-            int intFromInputString = Integer.parseInt(inputString.replaceAll("[\\D]", ""));
-            //the max number of students will be the first digit received
-            int maxNOfStudents = firstDigit(intFromInputString);
-            mainSceneController.setCardsClickable(false);
-            mainSceneController.setMaxNumberOfMovedStudents(maxNOfStudents);
-        }else if(inputString.contains("Available coins")) {
-            String[] input = inputString.split(" ");
-            int coin = Integer.parseInt(input[2]);
-            manageCoins(coin);
-        }else if(inputString.contains("Character:") && !(inputString.contains("Playable"))) {
-            if(idCharacters.size() < Constants.NUMBEROFPLAYABLECHARACTERS){
-                String[] input = inputString.split(" ");
-                String description = new String();
-                idCharacters.add(input[1]);
-                int i = 4;
-                //TODO: togliere usage
-                while(!(input[i].contains("Price:"))) {
-                    description = description + " " + input[i];
-                    i++;
-                }
-                charactersDescription.add(description);
-            }
-            if(charactersDescription.size() == Constants.NUMBEROFPLAYABLECHARACTERS){
-                characterSceneController.printCharacters(idCharacters,charactersDescription);
-            }
+        else if(inputString.contains(ServerMessage.joiningMessage)){loginController.setNotFirstPlayer();}
 
-        }
+        else if(inputString.equalsIgnoreCase(ServerMessage.askNickname)){Platform.runLater(()-> {loginController.allowSetup();});}
+
+        else if(inputString.equalsIgnoreCase(ErrorMessage.DuplicateNickname)){Platform.runLater(()-> {loginController.usernameAlreadyUsed(inputString);});}
+
+        else if(inputString.equalsIgnoreCase(ErrorMessage.ColorNotValid)){Platform.runLater(()-> {loginController.colorAlreadyUsed(inputString);});}
+
+        else if(inputString.equalsIgnoreCase(ServerMessage.waitingOtherPlayers) || inputString.equalsIgnoreCase(ServerMessage.waitingOldPlayers)){
+            loginController.setWaitingForOtherPlayers();}
+
+        else if(inputString.contains("For this round you can do")){setMaxSteps(inputString);}
+
+        else if (inputString.contains("of your students from entrance")){setMaxStudentsToMove(inputString);}
+
+        else if(inputString.contains("Available coins")) {getCoins(inputString);}
+
+        else if(inputString.contains("Character:") && !(inputString.contains("Playable"))) {getCharacters(inputString);}
+
 
         if(mainSceneController != null){
             Platform.runLater(()-> {
@@ -341,6 +311,55 @@ public class Gui extends Application implements PropertyChangeListener {
         Platform.runLater(()->{
             mainSceneController.printDeck(deck);
         });
+    }
+
+    private void startingGame(){
+        try {
+            mainSceneController = loginController.switchToMainScene();
+            mainSceneController.addPropertyChangeListener(this);
+            boardSceneController = mainSceneController.getBoardSceneLoader().getController();
+            characterSceneController = mainSceneController.getCharacterSceneLoader().getController();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void setMaxStudentsToMove(String inputString){
+        int intFromInputString = Integer.parseInt(inputString.replaceAll("[\\D]", ""));
+        //the max number of students will be the first digit received
+        int maxNOfStudents = firstDigit(intFromInputString);
+        mainSceneController.setCardsClickable(false);
+        mainSceneController.setMaxNumberOfMovedStudents(maxNOfStudents);
+    }
+
+    private void getCoins(String inputString){
+        String[] input = inputString.split(" ");
+        int coin = Integer.parseInt(input[2]);
+        manageCoins(coin);
+    }
+
+    private void getCharacters(String inputString){
+        if(idCharacters.size() < Constants.NUMBEROFPLAYABLECHARACTERS){
+            String[] input = inputString.split(" ");
+            String description = new String();
+            idCharacters.add(input[1]);
+            int i = 4;
+            //TODO: togliere usage
+            while(!(input[i].contains("Price:"))) {
+                description = description + " " + input[i];
+                i++;
+            }
+            charactersDescription.add(description);
+        }
+        if(charactersDescription.size() == Constants.NUMBEROFPLAYABLECHARACTERS){
+            characterSceneController.printCharacters(idCharacters,charactersDescription);
+        }
+    }
+
+    private void setMaxSteps(String inputString){
+        //remove the literals from the string and convert it to an integer
+        // to get the number of steps that mn is allowed to do in this match
+        mainSceneController.setMaxStepsMN(Integer.parseInt(inputString.replaceAll("[\\D]", "")));
     }
 
 }

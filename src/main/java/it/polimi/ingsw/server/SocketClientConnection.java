@@ -3,6 +3,8 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
+import it.polimi.ingsw.utilities.ServerMessage;
+import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.view.RemoteView;
 
 import javax.sound.midi.Soundbank;
@@ -68,9 +70,9 @@ public class SocketClientConnection implements Runnable{
         String number;
         try {
             in = new Scanner(socket.getInputStream());
-            send("How many players?"); //manda al client
+            send(ServerMessage.howManyPlayers); //manda al client
             String read = in.nextLine(); // legge dal client il nome
-            if(read.equalsIgnoreCase("quit")){
+            if(read.equalsIgnoreCase(Constants.QUIT)){
                 System.out.println("quit received");
                 //playerQuitted = true;
                 close();
@@ -93,9 +95,9 @@ public class SocketClientConnection implements Runnable{
         Scanner in;
         try {
             in = new Scanner(socket.getInputStream());
-            send("What is your nickname?"); //manda al client
+            send(ServerMessage.askNickname); //manda al client
             String read = in.nextLine();
-            if(read.equalsIgnoreCase("quit")){
+            if(read.equalsIgnoreCase(Constants.QUIT)){
                 System.out.println("quit received");
                 //playerQuitted = true;
                 close();
@@ -113,9 +115,9 @@ public class SocketClientConnection implements Runnable{
         Scanner in;
         try {
             in = new Scanner(socket.getInputStream());
-            send("Type 0 for normal mode or 1 for expert mode"); //manda al client
+            send(ServerMessage.askMode); //manda al client
             String read = in.nextLine();// legge dal client il nome
-            if(read.equalsIgnoreCase("quit")){
+            if(read.equalsIgnoreCase(Constants.QUIT)){
                 System.out.println("quit received");
                 //playerQuitted = true;
                 close();
@@ -144,14 +146,14 @@ public class SocketClientConnection implements Runnable{
             switch (server.getNumberOfPlayers()){
                 case 2:
                 case 4:
-                    send("Choose a color - write 0 for black, 1 for white"); //manda al client
+                    send(ServerMessage.askColor2_4Players); //manda al client
                     break;
                 case 3:
-                    send("Choose a color - write 0 for black, 1 for white, 2 for grey"); //manda al client
+                    send(ServerMessage.askColor3Players); //manda al client
             }
 
             String read = in.nextLine(); // legge dal client il nome
-            if(read.equalsIgnoreCase("quit")){
+            if(read.equalsIgnoreCase(Constants.QUIT)){
                 System.out.println("quit received");
                 //playerQuitted = true;
                 close();
@@ -178,7 +180,7 @@ public class SocketClientConnection implements Runnable{
     public synchronized void closeConnection() {
         Object lock1 = new Object();
         synchronized (lock1){
-            send("Connection closed!");
+            send(ServerMessage.connectionClosed);
         }
         synchronized (lock1){
             try {
@@ -280,15 +282,15 @@ public class SocketClientConnection implements Runnable{
         try{
             inGeneral = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-            send("Welcome!");
+            send(ServerMessage.welcome);
             InetAddress geek = socket.getInetAddress();
             Thread t0 = pingToClient(geek.getHostAddress());
             t0.start();
             server.lobby(this);
             while(isActive() && inGeneral.hasNextLine()){        //legge dal client tutti i messaggi e notifica il listener della view
-                System.out.println("Entered in while");
+                
                 read = inGeneral.nextLine();
-                if(read.equalsIgnoreCase("QUIT")){
+                if(read.equalsIgnoreCase(Constants.QUIT)){
                     System.out.println("quit received");
                     playerQuitted = true;
                     close();
@@ -298,13 +300,11 @@ public class SocketClientConnection implements Runnable{
                     support.firePropertyChange("MessageForParser","aaa", read);
                 }
             }
-            System.out.println("exit from while");
         } catch(IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage() + getNickname());
         }
 
         if(!playerQuitted) {
-            System.out.println("I'm in the finally of " + getNickname());
             close();
         }
     }

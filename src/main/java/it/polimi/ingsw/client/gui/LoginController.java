@@ -51,6 +51,8 @@ public class LoginController implements Initializable {
     RadioButton radio2,radio3,radio4,radiostd,radioexp,radioWhite,radioBlack,radioGrey;
     String username ;
 
+    @FXML
+    Label errorMessagesLabel;
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
@@ -59,6 +61,7 @@ public class LoginController implements Initializable {
 
 
         try {
+            errorMessagesLabel.setText("");
             username = usernameTextField.getText();
             usernameText.setText("Welcome " + username);
             support.firePropertyChange("username", "", username );
@@ -152,6 +155,9 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        usernameText.setText("There is another player in setup, please wait...");
+        submitUsername.setVisible(false);
+        usernameTextField.setVisible(false);
         textHowManyPlayers.setVisible(false);
         textMode.setVisible(false);
         textColor.setVisible(false);
@@ -184,4 +190,32 @@ public class LoginController implements Initializable {
         notFirstPlayer = true;
     }
 
+    public void allowSetup(){
+        usernameText.setText("Welcome!");
+        submitUsername.setVisible(true);
+        usernameTextField.setVisible(true);
+
+    }
+    public void usernameAlreadyUsed(String message){
+        errorMessagesLabel.setText(message);
+        submitUsername.setVisible(true);
+        usernameTextField.setVisible(true);
+
+        textHowManyPlayers.setVisible(false);
+        radio2.setVisible(false);
+        radio3.setVisible(false);
+        radio4.setVisible(false);
+        submitNumberOfPlayers.setVisible(false);
+
+        textColor.setVisible(false);
+        radioWhite.setVisible(false);
+        radioBlack.setVisible(false);
+        radioGrey.setVisible(false);
+        submitColor.setVisible(false);
+    }
+
+    public void colorAlreadyUsed(String message){
+        errorMessagesLabel.setText(message);
+    }
 }
+

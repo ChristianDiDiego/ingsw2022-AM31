@@ -81,6 +81,7 @@
                <font>
                   <Font name="Curlz MT" size="16.0" />
                </font></Label>
+            <Label fx:id="errorMessagesLabel" layoutX="102.0" layoutY="200.0" prefHeight="18.0" prefWidth="422.0" />
            </children>
       </AnchorPane>
    </children>

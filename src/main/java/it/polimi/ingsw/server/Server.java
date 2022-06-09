@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.utilities.ErrorMessage;
+import it.polimi.ingsw.utilities.ServerMessage;
 import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.controller.GameHandler;
 import it.polimi.ingsw.model.ColorOfTower;
@@ -61,7 +62,7 @@ public class Server {
                         System.out.println("I'm confronting" + toRemove.getNickname());
                         if (!toRemove.getNickname().equals(c.getNickname())) {
                             System.out.println("I'm sending to " + toRemove.getNickname());
-                            toRemove.send("User " + c.getNickname() + " closed the connection. \nExiting from the game...");
+                            toRemove.send(String.format(ServerMessage.userClosedConnection, c.getNickname()));
                             toRemove.setPlayerQuitted(true);
                             toRemove.closeConnection();
                         }
@@ -78,7 +79,7 @@ public class Server {
                 System.out.println("I'm confroning" + s.getNickname());
                 if (s != c) {
                     System.out.println("I'm sending to " + s.getNickname());
-                    s.send("User " + c.getNickname() + " closed the connection. \n Exiting from the game...");
+                    s.send(String.format(ServerMessage.userClosedConnection, c.getNickname()));
                     s.setPlayerQuitted(true);
                     s.closeConnection();
                 }
@@ -120,6 +121,21 @@ public class Server {
     //Wait for another player
     public synchronized void lobby(SocketClientConnection c) {
 
+        if(!listOfGames.isEmpty()){
+            if(!waitingConnection.isEmpty()) {
+                 c.asyncSend(ServerMessage.ongoingMatches + "Otherwise \n");
+            }else{
+                c.asyncSend(ServerMessage.ongoingMatches);
+            }
+        }
+        if (!waitingConnection.isEmpty()) {
+            String nickOfOtherPlayers = ServerMessage.joiningMessage;
+            for (Player p : waitingConnection.keySet()) {
+                nickOfOtherPlayers += p.getNickname() + " ";
+            }
+            c.asyncSend(nickOfOtherPlayers);
+        }
+
         //I moved nickname here so when other player connect the others receive his name
         String nickname = c.askNickname();
         while (!checkNickname(nickname)) {
@@ -145,26 +161,20 @@ public class Server {
 
     private void setupNewMatch(String nickname, SocketClientConnection c) {
         List<Player> keys = new ArrayList<>(waitingConnection.keySet());
-        if (!waitingConnection.isEmpty()) {
-            String nickOfOtherPlayers = "You are joying in the match with ";
-            for (Player p : waitingConnection.keySet()) {
-                nickOfOtherPlayers += p.getNickname() + " ";
-            }
-            c.asyncSend(nickOfOtherPlayers);
-        }
+
 
         if (waitingConnection.size() == 0) {
             registerFirstPlayer(nickname, c);
         } else {
             for (Player p : keys) {
                 SocketClientConnection connection = waitingConnection.get(p);
-                connection.asyncSend("Connected User: " + nickname);
+                connection.asyncSend(ServerMessage.connectedUser + nickname);
             }
             registerOtherPlayers(nickname, c);
         }
 
         if (waitingConnection.size() < numberOfPlayers) {
-            c.asyncSend("Waiting for other players");
+            c.asyncSend(ServerMessage.waitingOtherPlayers);
         } else if (waitingConnection.size() == numberOfPlayers) {
 
             System.out.println("Number of player reached! Starting the game... ");
@@ -182,17 +192,17 @@ public class Server {
 
     private void setupOldMatch(String nickname, GameHandler savedGame) {
         for (SocketClientConnection s : mapGameWaitingConnection.get(savedGame).values()) {
-            s.asyncSend("Connected User: " + nickname);
+            s.asyncSend(ServerMessage.connectedUser + nickname);
         }
         String nickOfPlayerToWait = "";
         for (Player p : savedGame.getGame().getListOfPlayer()) {
-            if (!mapGameWaitingConnection.get(savedGame).keySet().contains(p)) {
+            if (!mapGameWaitingConnection.get(savedGame).containsKey(p)) {
                 nickOfPlayerToWait += p.getNickname() + " ";
             }
         }
         if (mapGameWaitingConnection.get(savedGame).size() < savedGame.getPlayersNumber()) {
             for (SocketClientConnection s : mapGameWaitingConnection.get(savedGame).values()) {
-                s.asyncSend("Waiting for the players: " + nickOfPlayerToWait);
+                s.asyncSend(ServerMessage.waitingOldPlayers + nickOfPlayerToWait);
             }
         } else {
 
@@ -204,7 +214,7 @@ public class Server {
                 listOfConnections.add(temp);
             }
             for (SocketClientConnection s : mapGameWaitingConnection.get(savedGame).values()) {
-                s.send("Game is starting...");
+                s.send(ServerMessage.startingGame);
             }
             for (RemoteView rem : mapGameRemoteViews.get(savedGame)) {
                 rem.resendSituation();
@@ -269,7 +279,7 @@ public class Server {
         System.out.println("shut down...");
         try {
             // Create a file to write game system
-            FileOutputStream out = new FileOutputStream("gameSavages.dat");
+            FileOutputStream out = new FileOutputStream(Constants.NAMEFILEFORSAVEMATCHES);
 
             // Code to write instance of GamingWorld will go here
             // Create an object output stream, linked to out
@@ -290,7 +300,7 @@ public class Server {
         // Create a file input stream
         FileInputStream fin = null;
         try {
-            fin = new FileInputStream("gameSavages.dat");
+            fin = new FileInputStream(Constants.NAMEFILEFORSAVEMATCHES);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -363,9 +373,9 @@ public class Server {
         gameHandler.addPropertyChangeListener(remV1);
         gameHandler.getGame().addPropertyChangeListener(remV1);
         gameHandler.getController().getTurnController().getActionController().addPropertyChangeListener(remV1);
-        System.out.println("devo aggiunger listener al parser");
+
         gameHandler.getController().getTurnController().getActionController().getActionParser().addPropertyChangeListener(remV1);
-        System.out.println("ho aggiunto listener al parser");
+
         gameHandler.getController().getTurnController().addPropertyChangeListener(remV1);
     }
 
@@ -480,7 +490,7 @@ public class Server {
         System.out.println("Server is running");
 
         //If a game has been saved, it will restore it
-        File gamesSaved = new File("gameSavages.dat");
+        File gamesSaved = new File(Constants.NAMEFILEFORSAVEMATCHES);
         if (gamesSaved.isFile()) {
             restoreGame();
         }
