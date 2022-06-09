@@ -1,14 +1,18 @@
 package it.polimi.ingsw.client.gui;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import java.awt.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Label;
@@ -39,6 +43,12 @@ public class CharacterSceneController implements Initializable {
 
     List<TextArea> charactersLabel = new ArrayList<>();
 
+    private PropertyChangeSupport support = new PropertyChangeSupport(this);
+
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
+
     public void printCharacters(List<String> id,List<String> description){
         for(int i = 0; i < id.size(); i++){
             int idCharacter = Integer.parseInt(id.get(i));
@@ -47,10 +57,31 @@ public class CharacterSceneController implements Initializable {
             BackgroundImage backgroundImage = new BackgroundImage(characters.get(idCharacter - 1), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
             Background background = new Background(backgroundImage);
             charactersPane.get(i).setBackground(background);
+            charactersPane.get(i).setOpacity(1.0);
 
             //charactersPane.get(i).setStyle("-fx-background-image: url('" + characters.get(idCharacter - 1) + "'); " + "-fx-background-size: stretch;");
             charactersLabel.get(i).setText(description.get(i));
+
+            charactersPane.get(i).setAccessibleText("" + id.get(i));
+            setOnClickCharacter(charactersPane.get(i));
         }
+    }
+
+    private void setOnClickCharacter(AnchorPane character){
+        character.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                playCharacter(character.getAccessibleText());
+                character.setOpacity(0.5);
+                event.consume();
+            }
+        });
+    }
+
+    private void playCharacter(String cloudSelected){
+        String playSelectedCloud = "CHARACTER " + cloudSelected;
+        support.firePropertyChange("characterPlayed", "", playSelectedCloud);
     }
 
 
