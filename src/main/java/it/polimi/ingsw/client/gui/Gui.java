@@ -314,6 +314,7 @@ public class Gui extends Application implements PropertyChangeListener {
     private void manageListOfArchipelagos(ListOfArchipelagos listOfArchipelagos){
         Platform.runLater(()-> {
             mainSceneController.printArchipelagos(listOfArchipelagos.getArchipelagos());
+            characterSceneController.setArchipelagos(listOfArchipelagos.getArchipelagos());
         });
     }
 

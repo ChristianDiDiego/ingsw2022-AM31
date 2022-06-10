@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
+import it.polimi.ingsw.model.Archipelago;
+import it.polimi.ingsw.utilities.constants.Constants;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,6 +13,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -41,6 +45,20 @@ public class CharacterSceneController implements Initializable {
     @FXML TextArea character2Label;
     @FXML TextArea character3Label;
 
+    @FXML ChoiceBox colorBox;
+    @FXML ChoiceBox archipelagoBox;
+    @FXML Label colorLabel;
+    @FXML Label archipelagoLabel;
+    @FXML ChoiceBox firstEnBox;
+    @FXML ChoiceBox secondEnBox;
+    @FXML ChoiceBox firstDRBox;
+    @FXML ChoiceBox secondDRBox;
+    List<ChoiceBox> switchBox = new ArrayList<>();
+    @FXML Label firstEnLabel;
+    @FXML Label secondEnLabel;
+    @FXML Label firstDRLabel;
+    @FXML Label secondDRLabel;
+    List<Label> switchLabel = new ArrayList<>();
     List<TextArea> charactersLabel = new ArrayList<>();
 
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
@@ -53,13 +71,26 @@ public class CharacterSceneController implements Initializable {
         for(int i = 0; i < id.size(); i++){
             int idCharacter = Integer.parseInt(id.get(i));
 
+            if(idCharacter == 6) {
+                colorBox.setVisible(true);
+                colorLabel.setVisible(true);
+            } else if(idCharacter == 1 || idCharacter == 3) {
+                archipelagoBox.setVisible(true);
+                archipelagoLabel.setVisible(true);
+            } else if(idCharacter == 7) {
+                for(int j = 0; j < switchBox.size(); j++) {
+                    switchBox.get(j).setVisible(true);
+                    switchBox.get(j).getSelectionModel().select(0);
+                    switchLabel.get(j).setVisible(true);
+                }
+            }
+
             BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
             BackgroundImage backgroundImage = new BackgroundImage(characters.get(idCharacter - 1), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
             Background background = new Background(backgroundImage);
             charactersPane.get(i).setBackground(background);
             charactersPane.get(i).setOpacity(1.0);
 
-            //charactersPane.get(i).setStyle("-fx-background-image: url('" + characters.get(idCharacter - 1) + "'); " + "-fx-background-size: stretch;");
             charactersLabel.get(i).setText(description.get(i));
 
             charactersPane.get(i).setAccessibleText("" + id.get(i));
@@ -72,18 +103,55 @@ public class CharacterSceneController implements Initializable {
 
             @Override
             public void handle(MouseEvent event) {
-                playCharacter(character.getAccessibleText());
+                if(character.getAccessibleText().equals("6")) {
+                    playCharacter6(character.getAccessibleText());
+                } else if(character.getAccessibleText().equals("1") || character.getAccessibleText().equals("3")){
+                    playCharacter1or3(character.getAccessibleText());
+                } else if(character.getAccessibleText().equals("7")) {
+                    playCharacter7(character.getAccessibleText());
+                }else {
+                    playSimpleCharacter(character.getAccessibleText());
+                }
                 character.setOpacity(0.5);
                 event.consume();
             }
         });
     }
 
-    private void playCharacter(String cloudSelected){
-        String playSelectedCloud = "CHARACTER " + cloudSelected;
+    public void setArchipelagos(List<Archipelago> listReceived) {
+        archipelagoBox.getItems().clear();
+        for(int i = 0; i < listReceived.size(); i++) {
+            String id = String.valueOf(listReceived.get(i).getIdArchipelago());
+            archipelagoBox.getItems().add(id);
+        }
+        archipelagoBox.getSelectionModel().select(0);
+    }
+
+    private void playSimpleCharacter(String characterSelected){
+        String playSelectedCloud = "CHARACTER " + characterSelected;
         support.firePropertyChange("characterPlayed", "", playSelectedCloud);
     }
 
+    private void playCharacter1or3(String characterSelected) {
+        if(archipelagoBox.getValue() != null) {
+            String playSelectedCloud = "CHARACTER " + characterSelected + " " + archipelagoBox.getValue().toString();
+            support.firePropertyChange("characterPlayed", "", playSelectedCloud);
+        }
+    }
+
+    private void playCharacter6(String characterSelected) {
+        if (colorBox.getValue() != null) {
+            String playSelectedCloud = "CHARACTER " + characterSelected + " " + colorBox.getValue().toString();
+            support.firePropertyChange("characterPlayed", "", playSelectedCloud);
+        }
+    }
+
+    private void playCharacter7(String characterSelected) {
+        if (colorBox.getValue() != null) {
+            String playSelectedCloud = "CHARACTER " + characterSelected + " " + switchBox.get(0).getValue().toString() + "," + switchBox.get(1).getValue().toString() + "," + switchBox.get(2).getValue().toString() + "," + switchBox.get(3).getValue().toString();
+            support.firePropertyChange("characterPlayed", "", playSelectedCloud);
+        }
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -107,5 +175,39 @@ public class CharacterSceneController implements Initializable {
         charactersLabel.add(character1Label);
         charactersLabel.add(character2Label);
         charactersLabel.add(character3Label);
+
+        colorBox.getItems().add("GREEN");
+        colorBox.getItems().add("RED");
+        colorBox.getItems().add("YELLOW");
+        colorBox.getItems().add("PINK");
+        colorBox.getItems().add("BLUE");
+
+        colorBox.getSelectionModel().select(0);
+
+        colorBox.setVisible(false);
+        colorLabel.setVisible(false);
+        archipelagoBox.setVisible(false);
+        archipelagoLabel.setVisible(false);
+
+        switchBox.add(firstEnBox);
+        switchBox.add(secondEnBox);
+        switchBox.add(firstDRBox);
+        switchBox.add(secondDRBox);
+
+        switchLabel.add(firstEnLabel);
+        switchLabel.add(secondEnLabel);
+        switchLabel.add(firstDRLabel);
+        switchLabel.add(secondDRLabel);
+
+        for(int i = 0; i < switchBox.size(); i++) {
+            switchBox.get(i).setVisible(false);
+            switchLabel.get(i).setVisible(false);
+
+            switchBox.get(i).getItems().add("GREEN");
+            switchBox.get(i).getItems().add("RED");
+            switchBox.get(i).getItems().add("YELLOW");
+            switchBox.get(i).getItems().add("PINK");
+            switchBox.get(i).getItems().add("BLUE");
+        }
     }
 }

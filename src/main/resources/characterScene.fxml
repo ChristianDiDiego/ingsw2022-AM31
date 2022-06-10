@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -7,15 +8,27 @@
 
 <AnchorPane id="charactersBackground" fx:id="charactersBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" stylesheets="@characterScene.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.CharacterSceneController">
    <children>
-      <AnchorPane id="character1Pane" fx:id="character1Pane" layoutX="70.0" layoutY="69.0" prefHeight="262.0" prefWidth="200.0" />
-      <AnchorPane id="character2Pane" fx:id="character2Pane" layoutX="400.0" layoutY="70.0" prefHeight="262.0" prefWidth="200.0" />
-      <AnchorPane id="character3Pane" fx:id="character3Pane" layoutX="730.0" layoutY="70.0" prefHeight="262.0" prefWidth="200.0" />
-      <Label layoutX="404.0" layoutY="14.0" prefHeight="33.0" prefWidth="191.0" text="PLAYABLE CHARACTERS">
+      <AnchorPane id="character1Pane" fx:id="character1Pane" layoutX="70.0" layoutY="69.0" prefHeight="262.0" prefWidth="180.0" />
+      <AnchorPane id="character2Pane" fx:id="character2Pane" layoutX="319.0" layoutY="69.0" prefHeight="262.0" prefWidth="180.0" />
+      <AnchorPane id="character3Pane" fx:id="character3Pane" layoutX="569.0" layoutY="69.0" prefHeight="262.0" prefWidth="180.0" />
+      <Label layoutX="313.0" layoutY="14.0" prefHeight="33.0" prefWidth="191.0" text="PLAYABLE CHARACTERS">
          <font>
             <Font name="Curlz MT" size="18.0" />
          </font></Label>
-      <TextArea fx:id="character1Label" editable="false" layoutX="70.0" layoutY="343.0" prefHeight="129.0" prefWidth="200.0" />
-      <TextArea fx:id="character2Label" editable="false" layoutX="400.0" layoutY="347.0" prefHeight="129.0" prefWidth="200.0" />
-      <TextArea fx:id="character3Label" editable="false" layoutX="730.0" layoutY="347.0" prefHeight="129.0" prefWidth="200.0" />
+      <TextArea fx:id="character1Label" editable="false" layoutX="70.0" layoutY="343.0" prefHeight="129.0" prefWidth="180.0" />
+      <TextArea fx:id="character2Label" editable="false" layoutX="319.0" layoutY="343.0" prefHeight="129.0" prefWidth="180.0" />
+      <TextArea fx:id="character3Label" editable="false" layoutX="569.0" layoutY="343.0" prefHeight="129.0" prefWidth="180.0" />
+      <ChoiceBox fx:id="colorBox" layoutX="906.0" layoutY="79.0" prefHeight="25.0" prefWidth="80.0" />
+      <Label fx:id="colorLabel" layoutX="862.0" layoutY="83.0" prefHeight="17.0" prefWidth="43.0" text="Color:" />
+      <ChoiceBox fx:id="archipelagoBox" layoutX="906.0" layoutY="188.0" prefHeight="25.0" prefWidth="80.0" />
+      <Label fx:id="archipelagoLabel" layoutX="828.0" layoutY="192.0" prefHeight="17.0" prefWidth="67.0" text="Archipelago:" />
+      <ChoiceBox fx:id="firstEnBox" layoutX="906.0" layoutY="273.0" prefHeight="25.0" prefWidth="80.0" />
+      <ChoiceBox fx:id="secondEnBox" layoutX="906.0" layoutY="323.0" prefHeight="25.0" prefWidth="80.0" />
+      <ChoiceBox fx:id="firstDRBox" layoutX="906.0" layoutY="378.0" prefHeight="25.0" prefWidth="80.0" />
+      <ChoiceBox fx:id="secondDRBox" layoutX="906.0" layoutY="431.0" prefHeight="25.0" prefWidth="80.0" />
+      <Label fx:id="firstEnLabel" layoutX="851.0" layoutY="256.0" prefHeight="17.0" prefWidth="133.0" text="First student in entrance:" />
+      <Label fx:id="secondEnLabel" layoutX="834.0" layoutY="305.0" prefHeight="17.0" prefWidth="151.0" text="Second student in entrance:" />
+      <Label fx:id="firstDRLabel" layoutX="834.0" layoutY="361.0" prefHeight="17.0" prefWidth="151.0" text="First student in dining room:" />
+      <Label fx:id="secondDRLabel" layoutX="833.0" layoutY="414.0" prefHeight="17.0" prefWidth="151.0" text="Second student in entrance:" />
    </children>
 </AnchorPane>
