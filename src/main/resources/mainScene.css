@@ -3,6 +3,31 @@
     -fx-background-size: stretch;
 }
 
+#profGreen{
+    -fx-background-image: url("images/professorsAndStudents/profgreen.png");
+    -fx-background-size: stretch;
+}
+
+#profRed{
+    -fx-background-image: url("images/professorsAndStudents/profred.png");
+    -fx-background-size: stretch;
+}
+
+#profYellow{
+    -fx-background-image: url("images/professorsAndStudents/profyellow.png");
+    -fx-background-size: stretch;
+}
+
+#profPink{
+    -fx-background-image: url("images/professorsAndStudents/profpink.png");
+    -fx-background-size: stretch;
+}
+
+#profBlue{
+    -fx-background-image: url("images/professorsAndStudents/profblue.png");
+    -fx-background-size: stretch;
+}
+
 #background{
     -fx-background-color:#69bbea;
 }
@@ -17,6 +42,15 @@
 
 #stackPane {
     -fx-background-color: red;
+}
+
+#messageForUser{
+    -fx-text-alignment: center;
+    -fx-background-color: transparent;
+}
+
+.text-area, .text-area .viewport, .text-area .content {
+    -fx-background-color: transparent ;
 }
 
 #cloud1{

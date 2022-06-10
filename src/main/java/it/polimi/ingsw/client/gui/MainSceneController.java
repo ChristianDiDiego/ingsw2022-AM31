@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -34,7 +35,7 @@ import java.util.ResourceBundle;
 
 public class MainSceneController implements Initializable {
     private List<ImageView> towers = new ArrayList<>();
-    private List<ImageView> professors = new ArrayList<>();
+    private List<AnchorPane> professors = new ArrayList<>();
     private List<GridPane> clouds = new ArrayList<>();
 
     FlowPane[] singleCellArchipelago;
@@ -81,11 +82,11 @@ public class MainSceneController implements Initializable {
     @FXML ImageView tower6;
     @FXML ImageView tower7;
     @FXML ImageView tower8;
-    @FXML ImageView profGreen;
-    @FXML ImageView profRed;
-    @FXML ImageView profYellow;
-    @FXML ImageView profPink;
-    @FXML ImageView profBlue;
+    @FXML AnchorPane profGreen;
+    @FXML AnchorPane profRed;
+    @FXML AnchorPane profYellow;
+    @FXML AnchorPane profPink;
+    @FXML AnchorPane profBlue;
     @FXML GridPane studentsInDR;
     @FXML GridPane studentsInEntrance;
     @FXML GridPane cloud1;
@@ -110,8 +111,7 @@ public class MainSceneController implements Initializable {
 
     ImageView[] cards;
 
-    @FXML
-    Label messageForUser;
+    @FXML TextArea messageForUser;
 
     //This variable will store the number of students already moved somewhere from the entrance
     int numberOfMovedStudents = 0;
@@ -177,8 +177,8 @@ public class MainSceneController implements Initializable {
         for(int i = 0; i < listOfArchipelagos.size(); i++) {
             if(listOfArchipelagos.get(i).getIsMNPresent()) {
                 ImageView mn = new ImageView(motherNature);
-                mn.setFitHeight(50);
-                mn.setFitWidth(50);
+                mn.setFitHeight(40);
+                mn.setFitWidth(40);
                 singleCellArchipelago[i].getChildren().add(mn);
 
                 indexArchipelagoMNPosition = i;
@@ -191,8 +191,8 @@ public class MainSceneController implements Initializable {
                 for(int s = 0; s < Constants.NUMBEROFKINGDOMS; s++) {
                     for(int t = 0; t < island.getStudentsByColor(StudsAndProfsColor.values()[s]); t++) {
                         ImageView st = new ImageView(studentColor[s]);
-                        st.setFitHeight(80);
-                        st.setFitWidth(80);
+                        st.setFitHeight(50);
+                        st.setFitWidth(50);
                         singleCellArchipelago[i].getChildren().add(st);
                     }
                 }
@@ -205,8 +205,8 @@ public class MainSceneController implements Initializable {
             if(listOfArchipelagos.get(i).getOwner() != null) {
                 for(int j = 0; j < listOfArchipelagos.get(i).getBelongingIslands().size(); j++) {
                     ImageView tower = new ImageView(towerColor[listOfArchipelagos.get(i).getOwner().getColorOfTowers().ordinal()]);
-                    tower.setFitHeight(40);
-                    tower.setFitWidth(35);
+                    tower.setFitHeight(27);
+                    tower.setFitWidth(22);
                     singleCellArchipelago[i].getChildren().add(tower);
                 }
             }
@@ -276,8 +276,8 @@ public class MainSceneController implements Initializable {
                     int steps = calculateSteps(target.getAccessibleText());
                     if(steps <= maxStepsMN){
                         ImageView mn = new ImageView(event.getDragboard().getImage());
-                        mn.setFitHeight(80);
-                        mn.setFitWidth(80);
+                        mn.setFitHeight(40);
+                        mn.setFitWidth(40);
                         target.getChildren().add(mn);
                         playMoveMn(steps);
                         maxStepsMN = 0;
@@ -298,8 +298,8 @@ public class MainSceneController implements Initializable {
                 }
 
                 ImageView st = new ImageView(event.getDragboard().getImage());
-                st.setFitHeight(80);
-                st.setFitWidth(80);
+                st.setFitHeight(50);
+                st.setFitWidth(50);
                 target.getChildren().add(st);
 
                 String colorMoved = convertTextNumberToColor(event.getDragboard().getString());
@@ -436,7 +436,7 @@ public class MainSceneController implements Initializable {
 
         //professor
         int prof = 0;
-        for(ImageView i : professors){
+        for(AnchorPane i : professors){
             if(receivedBoard.getProfessorsTable().getHasProf(StudsAndProfsColor.values()[prof])){
                 i.setVisible(true);
             }else{
@@ -692,11 +692,11 @@ public class MainSceneController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image tower = new Image(getClass().getResourceAsStream("/images/tower.png"));
-        Image greenProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profgreen.png"));
-        Image redProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profred.png"));
-        Image yellowProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profyellow.png"));
-        Image pinkProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profpink.png"));
-        Image blueProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profblue.png"));
+        profGreen.setVisible(false);
+        profRed.setVisible(false);
+        profYellow.setVisible(false);
+        profPink.setVisible(false);
+        profBlue.setVisible(false);
 
         cards = new ImageView[]{card1, card2, card3, card4, card5, card6, card7, card8, card9, card10};
 
@@ -719,17 +719,12 @@ public class MainSceneController implements Initializable {
         towers.add(tower7);
         towers.add(tower8);
 
-        profGreen.setImage(greenProfessor);
-        profRed.setImage(redProfessor);
-        profYellow.setImage(yellowProfessor);
-        profPink.setImage(pinkProfessor);
-        profBlue.setImage(blueProfessor);
-
         professors.add(profGreen);
         professors.add(profRed);
         professors.add(profYellow);
         professors.add(profPink);
         professors.add(profBlue);
+
 
         clouds.add(cloud1);
         clouds.add(cloud2);
