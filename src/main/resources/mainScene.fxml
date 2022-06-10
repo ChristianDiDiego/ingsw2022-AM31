@@ -165,7 +165,7 @@
             <Image url="@images/backgroundText.png" />
          </image>
       </ImageView>
-      <TextArea id="messageForUser" fx:id="messageForUser" editable="false" layoutX="459.0" layoutY="166.0" prefHeight="30.0" prefWidth="293.0" wrapText="true">
+      <TextArea id="messageForUser" fx:id="messageForUser" editable="false" layoutX="434.0" layoutY="164.0" prefHeight="115.0" prefWidth="335.0" wrapText="true">
          <font>
             <Font name="Curlz MT" size="18.0" />
          </font></TextArea>
