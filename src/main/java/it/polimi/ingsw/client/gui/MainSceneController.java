@@ -211,6 +211,11 @@ public class MainSceneController implements Initializable {
                 }
             }
 
+            if(listOfArchipelagos.get(i).getIsForbidden()) {
+                singleCellArchipelago[i].setStyle("-fx-background-image: url(images/archiforbidden.png); -fx-background-size: 200px 130px; -fx-background-repeat: no-repeat;");
+            } else {
+                singleCellArchipelago[i].setStyle("-fx-background-image: url(images/archi.png); -fx-background-size: 200px 130px; -fx-background-repeat: no-repeat;");
+            }
         }
         for(int i = k; i < Constants.NUMBEROFISLANDS; i++) {
             singleCellArchipelago[i].setVisible(false);
