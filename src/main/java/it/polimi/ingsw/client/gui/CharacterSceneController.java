@@ -61,13 +61,23 @@ public class CharacterSceneController implements Initializable {
     List<Label> switchLabel = new ArrayList<>();
     List<TextArea> charactersLabel = new ArrayList<>();
 
+    @FXML TextArea messageArea;
+    private int wallet = 0;
+    List<String> charactersId = new ArrayList<>();
+    List<Integer> charactersPrice = new ArrayList<>();
+    private int firtsCharacterOfTheTurn = 1;
+
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
 
-    public void printCharacters(List<String> id,List<String> description){
+    public void printCharacters(List<String> id, List<String> description, List<Integer> price){
+        charactersId.clear();
+        charactersPrice.clear();
+        firtsCharacterOfTheTurn = 1;
+        messageArea.setText("To select a character push the corresponding image. If the character's action requires some specifications, there will be a menu on the right");
         for(int i = 0; i < id.size(); i++){
             int idCharacter = Integer.parseInt(id.get(i));
 
@@ -95,6 +105,9 @@ public class CharacterSceneController implements Initializable {
 
             charactersPane.get(i).setAccessibleText("" + id.get(i));
             setOnClickCharacter(charactersPane.get(i));
+
+            charactersId.add(id.get(i));
+            charactersPrice.add(price.get(i));
         }
     }
 
@@ -103,17 +116,35 @@ public class CharacterSceneController implements Initializable {
 
             @Override
             public void handle(MouseEvent event) {
-                if(character.getAccessibleText().equals("6")) {
-                    playCharacter6(character.getAccessibleText());
-                } else if(character.getAccessibleText().equals("1") || character.getAccessibleText().equals("3")){
-                    playCharacter1or3(character.getAccessibleText());
-                } else if(character.getAccessibleText().equals("7")) {
-                    playCharacter7(character.getAccessibleText());
-                }else {
-                    playSimpleCharacter(character.getAccessibleText());
+                int characterNumber = -1;
+                for(int i = 0; i < Constants.NUMBEROFPLAYABLECHARACTERS; i++) {
+                    if(charactersId.get(i).equals(character.getAccessibleText())) {
+                        characterNumber = i;
+                    }
                 }
-                character.setOpacity(0.5);
-                event.consume();
+                if(wallet >= charactersPrice.get(characterNumber) && firtsCharacterOfTheTurn == 1) {
+                    if(character.getAccessibleText().equals("6")) {
+                        playCharacter6(character.getAccessibleText());
+                    } else if(character.getAccessibleText().equals("1") || character.getAccessibleText().equals("3")){
+                        playCharacter1or3(character.getAccessibleText());
+                    } else if(character.getAccessibleText().equals("7")) {
+                        playCharacter7(character.getAccessibleText());
+                    }else {
+                        playSimpleCharacter(character.getAccessibleText());
+                    }
+                    character.setOpacity(0.5);
+                    firtsCharacterOfTheTurn++;
+                    messageArea.setText("You played the character");
+                    event.consume();
+                } else if(firtsCharacterOfTheTurn == 2) {
+                    firtsCharacterOfTheTurn++;
+                    messageArea.setText("You played the character");
+                    event.consume();
+                }else {
+                    messageArea.setText("You don't have enough coins or you already played a character in this turn");
+                    event.consume();
+                }
+
             }
         });
     }
@@ -125,6 +156,10 @@ public class CharacterSceneController implements Initializable {
             archipelagoBox.getItems().add(id);
         }
         archipelagoBox.getSelectionModel().select(0);
+    }
+
+    public void setWallet(int coins) {
+        wallet = coins;
     }
 
     private void playSimpleCharacter(String characterSelected){

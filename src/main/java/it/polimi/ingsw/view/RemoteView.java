@@ -47,6 +47,7 @@ public class RemoteView implements PropertyChangeListener{
         }else if(evt.getPropertyName().equals("MNmove") || evt.getPropertyName().equals("ArchUnified")){
             mnMovedArcUnified();
         } else if(evt.getPropertyName().equals("PhaseChanged")){
+            sendListOfPlayers();
             phaseChanged();
         }else if(evt.getPropertyName().equals("UsedCard")){
             usedCard();
@@ -213,7 +214,7 @@ public class RemoteView implements PropertyChangeListener{
                         }
 
                         for(Characters c : currentGame.getCharactersPlayable()){
-                            showMessage("Character: " + c.getId() + " \n Description: " + c.getDescriptionOfPower() + "\n Price:" + c.getPrice() + "\n\n");
+                            showMessage("Character: " + c.getId() + " \n Description: " + c.getDescriptionOfPower() + "\n Price: " + c.getPrice() + " \n\n");
                         }
                         try {
                             TimeUnit.MICROSECONDS.sleep(500);

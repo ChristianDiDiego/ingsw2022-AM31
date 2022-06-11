@@ -32,6 +32,11 @@
     -fx-background-color:#69bbea;
 }
 
+#flagPane{
+    -fx-background-image: url("images/flag.png");
+    -fx-background-size: stretch;
+}
+
 #cloudPane{
     -fx-background-color:#69bbea;
 }
@@ -50,7 +55,7 @@
 }
 
 .text-area, .text-area .viewport, .text-area .content {
-    -fx-background-color: transparent ;
+    -fx-background-color: transparent;
 }
 
 #cloud1{

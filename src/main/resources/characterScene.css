@@ -1,13 +1,12 @@
-/*
-#character1Pane{
-    -fx-background-size: stretch;
+#messageArea{
+    -fx-text-alignment: center;
+    -fx-background-color: transparent;
 }
 
-#character2Pane{
-    -fx-background-size: stretch;
+#messageArea .viewport{
+    -fx-background-color: transparent;
 }
 
-#character3Pane{
-    -fx-background-size: stretch;
+#messageArea .content{
+    -fx-background-color: transparent;
 }
- */

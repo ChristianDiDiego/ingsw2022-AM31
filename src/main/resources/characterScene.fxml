@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="charactersBackground" fx:id="charactersBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" stylesheets="@characterScene.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.CharacterSceneController">
+<AnchorPane id="charactersBackground" fx:id="charactersBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="569.0" prefWidth="1000.0" stylesheets="@characterScene.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.CharacterSceneController">
    <children>
       <AnchorPane id="character1Pane" fx:id="character1Pane" layoutX="70.0" layoutY="69.0" prefHeight="262.0" prefWidth="180.0" />
       <AnchorPane id="character2Pane" fx:id="character2Pane" layoutX="319.0" layoutY="69.0" prefHeight="262.0" prefWidth="180.0" />
@@ -30,5 +30,6 @@
       <Label fx:id="secondEnLabel" layoutX="834.0" layoutY="305.0" prefHeight="17.0" prefWidth="151.0" text="Second student in entrance:" />
       <Label fx:id="firstDRLabel" layoutX="834.0" layoutY="361.0" prefHeight="17.0" prefWidth="151.0" text="First student in dining room:" />
       <Label fx:id="secondDRLabel" layoutX="833.0" layoutY="414.0" prefHeight="17.0" prefWidth="151.0" text="Second student in entrance:" />
+      <TextArea id="messageArea" fx:id="messageArea" layoutX="69.0" layoutY="492.0" prefHeight="65.0" prefWidth="679.0" />
    </children>
 </AnchorPane>

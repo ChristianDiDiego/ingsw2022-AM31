@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.model.Deck;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utilities.*;
 import it.polimi.ingsw.utilities.constants.Constants;
@@ -45,6 +46,7 @@ public class Gui extends Application implements PropertyChangeListener {
 
     private List<String> idCharacters = new ArrayList<>();
     private List<String> charactersDescription = new ArrayList<>();
+    private List<Integer> charactersPrice = new ArrayList<>();
     public synchronized boolean isActive() {
         return active;
     }
@@ -78,7 +80,7 @@ public class Gui extends Application implements PropertyChangeListener {
                                 case Deck deck -> manageDeck(deck);
                                 case ListOfArchipelagos listOfArchipelagos -> manageListOfArchipelagos(listOfArchipelagos);
                                 case ListOfClouds listOfClouds -> manageListOfClouds(listOfClouds);
-                                case ListOfPlayers listOfPlayers-> System.out.println("received list of players");//manageListOfPlayers((ListOfPlayers) inputObject);
+                                case ListOfPlayers listOfPlayers-> manageListOfPlayers(listOfPlayers);
                                 default -> System.out.println("Unexpected argument received from the server");
                             }
 
@@ -302,6 +304,14 @@ public class Gui extends Application implements PropertyChangeListener {
         });
     }
 
+    private void manageListOfPlayers(ListOfPlayers players) {
+        for(Player p : players.getPlayers()) {
+            if(p.getNickname().equals(nickname)) {
+                manageCoins(p.getWallet());
+            }
+        }
+    }
+
     private Board findPlayerBoard(ListOfBoards listOfBoards){
         for(Board b : listOfBoards.getBoards()){
             if(b.getNickname().equals(nickname)){
@@ -321,6 +331,7 @@ public class Gui extends Application implements PropertyChangeListener {
     private void manageCoins(int coin){
         Platform.runLater(()-> {
             mainSceneController.printCoin(coin);
+            characterSceneController.setWallet(coin);
         });
     }
     private void manageListOfClouds(ListOfClouds listOfClouds){
@@ -376,9 +387,12 @@ public class Gui extends Application implements PropertyChangeListener {
                 i++;
             }
             charactersDescription.add(description);
+            int price = Integer.parseInt(input[i + 1]);
+            //System.out.println("Il prezzo è: " + price);
+            charactersPrice.add(price);
         }
         if(charactersDescription.size() == Constants.NUMBEROFPLAYABLECHARACTERS){
-            characterSceneController.printCharacters(idCharacters,charactersDescription);
+            characterSceneController.printCharacters(idCharacters, charactersDescription, charactersPrice);
         }
     }
 
