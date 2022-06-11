@@ -47,7 +47,7 @@ public class RemoteView implements PropertyChangeListener{
         }else if(evt.getPropertyName().equals("MNmove") || evt.getPropertyName().equals("ArchUnified")){
             mnMovedArcUnified();
         } else if(evt.getPropertyName().equals("PhaseChanged")){
-            sendListOfPlayers();
+            sendCoins();
             phaseChanged();
         }else if(evt.getPropertyName().equals("UsedCard")){
             usedCard();
@@ -352,8 +352,22 @@ public class RemoteView implements PropertyChangeListener{
                 throw new RuntimeException(e);
             }
         }
+    }
 
-
+    private void sendCoins() {
+        synchronized (lock){
+            try {
+                TimeUnit.MICROSECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            showMessage(player.getWallet());
+            try {
+                TimeUnit.MICROSECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private void mnMovedArcUnified(){

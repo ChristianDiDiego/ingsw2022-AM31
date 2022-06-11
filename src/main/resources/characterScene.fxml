@@ -30,6 +30,6 @@
       <Label fx:id="secondEnLabel" layoutX="834.0" layoutY="305.0" prefHeight="17.0" prefWidth="151.0" text="Second student in entrance:" />
       <Label fx:id="firstDRLabel" layoutX="834.0" layoutY="361.0" prefHeight="17.0" prefWidth="151.0" text="First student in dining room:" />
       <Label fx:id="secondDRLabel" layoutX="833.0" layoutY="414.0" prefHeight="17.0" prefWidth="151.0" text="Second student in entrance:" />
-      <TextArea id="messageArea" fx:id="messageArea" layoutX="69.0" layoutY="492.0" prefHeight="65.0" prefWidth="679.0" />
+      <TextArea id="messageArea" fx:id="messageArea" editable="false" layoutX="69.0" layoutY="492.0" prefHeight="65.0" prefWidth="679.0" wrapText="true" />
    </children>
 </AnchorPane>

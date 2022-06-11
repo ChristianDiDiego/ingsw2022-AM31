@@ -65,7 +65,7 @@ public class CharacterSceneController implements Initializable {
     private int wallet = 0;
     List<String> charactersId = new ArrayList<>();
     List<Integer> charactersPrice = new ArrayList<>();
-    private int firtsCharacterOfTheTurn = 1;
+    private boolean firtsCharacterOfTheTurn = true;
 
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
@@ -76,7 +76,7 @@ public class CharacterSceneController implements Initializable {
     public void printCharacters(List<String> id, List<String> description, List<Integer> price){
         charactersId.clear();
         charactersPrice.clear();
-        firtsCharacterOfTheTurn = 1;
+        firtsCharacterOfTheTurn = true;
         messageArea.setText("To select a character push the corresponding image. If the character's action requires some specifications, there will be a menu on the right");
         for(int i = 0; i < id.size(); i++){
             int idCharacter = Integer.parseInt(id.get(i));
@@ -122,29 +122,26 @@ public class CharacterSceneController implements Initializable {
                         characterNumber = i;
                     }
                 }
-                if(wallet >= charactersPrice.get(characterNumber) && firtsCharacterOfTheTurn == 1) {
-                    if(character.getAccessibleText().equals("6")) {
-                        playCharacter6(character.getAccessibleText());
-                    } else if(character.getAccessibleText().equals("1") || character.getAccessibleText().equals("3")){
-                        playCharacter1or3(character.getAccessibleText());
-                    } else if(character.getAccessibleText().equals("7")) {
-                        playCharacter7(character.getAccessibleText());
-                    }else {
-                        playSimpleCharacter(character.getAccessibleText());
+                if(firtsCharacterOfTheTurn) {
+                    if(wallet >= charactersPrice.get(characterNumber)) {
+                        if(character.getAccessibleText().equals("6")) {
+                            playCharacter6(character.getAccessibleText());
+                        } else if(character.getAccessibleText().equals("1") || character.getAccessibleText().equals("3")){
+                            playCharacter1or3(character.getAccessibleText());
+                        } else if(character.getAccessibleText().equals("7")) {
+                            playCharacter7(character.getAccessibleText());
+                        }else {
+                            playSimpleCharacter(character.getAccessibleText());
+                        }
+                        character.setOpacity(0.5);
+                        firtsCharacterOfTheTurn = false;
+                        messageArea.setText("You played the character");
+                        event.consume();
+                    } else {
+                        messageArea.setText("You don't have enough coins");
+                        event.consume();
                     }
-                    character.setOpacity(0.5);
-                    firtsCharacterOfTheTurn++;
-                    messageArea.setText("You played the character");
-                    event.consume();
-                } else if(firtsCharacterOfTheTurn == 2) {
-                    firtsCharacterOfTheTurn++;
-                    messageArea.setText("You played the character");
-                    event.consume();
-                }else {
-                    messageArea.setText("You don't have enough coins or you already played a character in this turn");
-                    event.consume();
                 }
-
             }
         });
     }

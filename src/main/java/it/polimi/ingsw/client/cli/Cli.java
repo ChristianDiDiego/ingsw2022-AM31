@@ -59,6 +59,7 @@ public class Cli{
                                 case ListOfArchipelagos listOfArchipelagos -> printArchipelago(listOfArchipelagos.getArchipelagos());
                                 case ListOfClouds listOfClouds -> printCloud(listOfClouds.getClouds());
                                 case ListOfPlayers listOfPlayers -> printLastUsedCards(listOfPlayers.getPlayers());
+                                case Integer i -> System.out.println("");
                                 case null, default -> throw new IllegalArgumentException();
                             }
                         }
