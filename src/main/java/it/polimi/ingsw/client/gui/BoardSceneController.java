@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utilities.constants.Constants;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -123,6 +124,7 @@ public class BoardSceneController implements Initializable {
                 t.setFitHeight(60);
                 t.setFitWidth(60);
                 tb.get(j).add(t, column,row);
+                GridPane.setHalignment(t, HPos.CENTER);
                 column++;
                 if(column == 2){
                     column = 0;
@@ -150,6 +152,7 @@ public class BoardSceneController implements Initializable {
                     System.out.println("Image setted for kingdom " + i);
 
                     seb.get(j).add(st, column, row);
+                    GridPane.setHalignment(st, HPos.CENTER);
                     System.out.println("Image added to grid");
                     column++;
                     if (column == 2) {
@@ -164,7 +167,9 @@ public class BoardSceneController implements Initializable {
             column = 0;
             for(int i = 0; i<Constants.NUMBEROFKINGDOMS; i++){
                 if(receivedBoards.get(j).getProfessorsTable().getHasProf(StudsAndProfsColor.values()[i])){
-                  pb.get(j).add(new ImageView(professors.get(i)), column,row);
+                  ImageView prof = new ImageView(professors.get(i));
+                  pb.get(j).add(prof, column,row);
+                  GridPane.setHalignment(prof, HPos.CENTER);
                   row++;
                 }
             }
@@ -177,6 +182,8 @@ public class BoardSceneController implements Initializable {
                     st.setFitHeight(100);
                     st.setFitWidth(100);
                     sdrb.get(j).add(st, k, i);
+                    GridPane.setHalignment(st, HPos.CENTER);
+
                 }
             }
 
@@ -188,21 +195,40 @@ public class BoardSceneController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        tb1.setGridLinesVisible(true);
+        tb2.setGridLinesVisible(true);
+        tb3.setGridLinesVisible(true);
+
         tb.add(tb1);
         tb.add(tb2);
         tb.add(tb3);
         tb.add(tb4);
 
+        seb1.setGridLinesVisible(true);
+        seb2.setGridLinesVisible(true);
+        seb3.setGridLinesVisible(true);
+        seb4.setGridLinesVisible(true);
 
         seb.add(seb1);
         seb.add(seb2);
         seb.add(seb3);
         seb.add(seb4);
 
+        sdrb1.setGridLinesVisible(true);
+        sdrb2.setGridLinesVisible(true);
+        sdrb3.setGridLinesVisible(true);
+        sdrb4.setGridLinesVisible(true);
+
+
         sdrb.add(sdrb1);
         sdrb.add(sdrb2);
         sdrb.add(sdrb3);
         sdrb.add(sdrb4);
+
+        pb1.setGridLinesVisible(true);
+        pb2.setGridLinesVisible(true);
+        pb3.setGridLinesVisible(true);
+        pb4.setGridLinesVisible(true);
 
         pb.add(pb1);
         pb.add(pb2);

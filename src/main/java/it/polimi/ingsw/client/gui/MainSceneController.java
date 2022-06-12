@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -451,14 +452,13 @@ public class MainSceneController implements Initializable {
         }
 
         //students in dining room
-
-
         for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
             for(int j = 0; j < receivedBoard.getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]); j++){
                 ImageView st = new ImageView(studentsImages[i]);
                 st.setFitHeight(100);
                 st.setFitWidth(100);
                 studentsInDR.add(st, j, i);
+                GridPane.setHalignment(st, HPos.CENTER);
             }
             firstPositionsAvailableDR.put(i, receivedBoard.getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]));
         };
@@ -488,6 +488,7 @@ public class MainSceneController implements Initializable {
                 setOnDragStudentDetected(st);
                 setOnDragImageDone(st);
                 studentsInEntrance.add(st, column, row);
+                GridPane.setHalignment(st, HPos.CENTER);
                 column++;
                 if(column == 2){
                     column=0;
@@ -602,6 +603,7 @@ public class MainSceneController implements Initializable {
                         st.setFitHeight(100);
                         st.setFitWidth(100);
                         clouds.get(cloudList.indexOf(c)).add(st, column, row);
+                        GridPane.setHalignment(st, HPos.CENTER);
                         column++;
                         if(column == 2){
                             column = 0;
