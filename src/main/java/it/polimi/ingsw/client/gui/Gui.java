@@ -263,6 +263,7 @@ public class Gui extends Application implements PropertyChangeListener {
 
         else if(inputString.equalsIgnoreCase(ErrorMessage.DuplicateNickname)){Platform.runLater(()-> {loginController.usernameAlreadyUsed(inputString);});}
 
+        else if(inputString.equalsIgnoreCase(ServerMessage.connectionClosed)){setActive(false);}
         else if(inputString.equalsIgnoreCase(ErrorMessage.ColorNotValid)){Platform.runLater(()-> {loginController.colorAlreadyUsed(inputString);});}
 
         else if(inputString.equalsIgnoreCase(ServerMessage.waitingOtherPlayers) || inputString.equalsIgnoreCase(ServerMessage.waitingOldPlayers)){

@@ -88,7 +88,11 @@ public class Server {
             setupAborted = true;
             waitingConnection.clear();
         }
+        deleteGameByUser(userStartedDisconnection);
 
+    }
+
+    private void deleteGameByUser(String userStartedDisconnection){
         GameHandler gameToDelete = null;
         for (GameHandler g : listOfGames) {
             for (Player p : g.getGame().getListOfPlayer())
@@ -108,16 +112,23 @@ public class Server {
      * @param c
      */
     public synchronized void checkEmptyGames(SocketClientConnection c) {
-        for (List<SocketClientConnection> l : listOfConnections) {
-            for (SocketClientConnection s : l) {
-                if (s.getNickname().equals(c.getNickname())) {
-                    if (l.size() == 1) {
-                        listOfConnections.remove(l);
+        try {
+            for (List<SocketClientConnection> l : listOfConnections) {
+                for (SocketClientConnection s : l) {
+                    if (s.getNickname().equals(c.getNickname())) {
+                        if (l.size() == 1) {
+                            System.out.println(c.getNickname() + "is the last player");
+                            listOfConnections.remove(l);
+                            deleteGameByUser(c.getNickname());
+                        }
+                        l.remove(s);
+                        return;
                     }
                 }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
     }
 
     //Wait for another player
