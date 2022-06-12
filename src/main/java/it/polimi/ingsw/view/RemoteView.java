@@ -38,7 +38,7 @@ public class RemoteView implements PropertyChangeListener{
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if(evt.getPropertyName().equals("EndGame")){
-            endGame(evt.getNewValue().toString());
+            endGame(evt.getNewValue());
 
 
         }else if(evt.getPropertyName().equals("currentPlayerChanged")){
@@ -147,21 +147,36 @@ public class RemoteView implements PropertyChangeListener{
                 }
             }
         }
-
-
-
-        /*else if(evt.getPropertyName().equals("EndGame")){
+        /*
+        else if(evt.getPropertyName().equals("EndGame")){
             if(evt.getNewValue().equals(player.getTeam())){
                 showMessage("The game has ended \n YOU WON");
+                clientConnection.setPlayerQuitted(true);
+                try {
+                    TimeUnit.MICROSECONDS.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                clientConnection.closeOnlyThis();
             }else{
                 showMessage("The game has ended \n YOU LOST");
+                clientConnection.setPlayerQuitted(true);
+                try {
+                    TimeUnit.MICROSECONDS.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                clientConnection.closeOnlyThis();
             }
         }
-        */
+
+         */
+
     }
-    private void endGame(String newValue){
+
+    private void endGame(Object winnerTeam){
         synchronized (this){
-            if(newValue.equals(player.getTeam())){
+            if(winnerTeam.equals(player.getTeam())){
                 System.out.println("sono nella view");
                 showMessage("The game has ended \n YOU WON");
                 clientConnection.setPlayerQuitted(true);
@@ -186,6 +201,8 @@ public class RemoteView implements PropertyChangeListener{
             }
         }
     }
+
+
 
     private void currentPlayerChanged(PropertyChangeEvent evt){
         Object lock2 = new Object();

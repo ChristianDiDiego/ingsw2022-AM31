@@ -29,7 +29,8 @@
 }
 
 #background{
-    -fx-background-color:#69bbea;
+    -fx-background-image: url("images/backgroundCloud.jpg");
+    -fx-background-size: stretch;
 }
 
 #flagPane{
@@ -37,9 +38,6 @@
     -fx-background-size: stretch;
 }
 
-#cloudPane{
-    -fx-background-color:#69bbea;
-}
 
 #deckPane {
     -fx-background-color: green;
