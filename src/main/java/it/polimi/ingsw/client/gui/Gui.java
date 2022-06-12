@@ -47,6 +47,8 @@ public class Gui extends Application implements PropertyChangeListener {
     private List<String> idCharacters = new ArrayList<>();
     private List<String> charactersDescription = new ArrayList<>();
     private List<Integer> charactersPrice = new ArrayList<>();
+    private String ip;
+    private int port;
     public synchronized boolean isActive() {
         return active;
     }
@@ -135,20 +137,6 @@ public class Gui extends Application implements PropertyChangeListener {
     }
 
     public void run() throws IOException {
-        Scanner in;
-        String ip = new String();
-        int port = 0;
-        try {
-            in = new Scanner(System.in);
-            System.out.println("Inserire ip: ");
-            String read = in.nextLine();
-            ip = read;
-            System.out.println("Inserire porta: ");
-            read = in.nextLine();
-            port = Integer.parseInt(read);
-        } catch (NoSuchElementException e) {
-            System.err.println("Error! " + e.getMessage());
-        }
         socket = new Socket();
         System.out.println("Mi connetto a "+ ip + " " + port);
         SocketAddress socketAddress = new InetSocketAddress(ip, port);
@@ -184,6 +172,18 @@ public class Gui extends Application implements PropertyChangeListener {
 
     @Override
     public void start(Stage stage) throws Exception {
+        Scanner in;
+        try {
+            in = new Scanner(System.in);
+            System.out.println("Inserire ip: ");
+            String read = in.nextLine();
+            ip = read;
+            System.out.println("Inserire porta: ");
+            read = in.nextLine();
+            port = Integer.parseInt(read);
+        } catch (NoSuchElementException e) {
+            System.err.println("Error! " + e.getMessage());
+        }
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("login.fxml"));
             Parent root = loader.load();
