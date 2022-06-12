@@ -150,6 +150,7 @@ public class MainSceneController implements Initializable {
     public FXMLLoader getCharacterSceneLoader() {
         return characterSceneLoader;
     }
+    private boolean endGame = false;
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
@@ -246,6 +247,10 @@ public class MainSceneController implements Initializable {
 
             event.consume();
         });
+    }
+
+    public void setEndGame(boolean status) {
+        this.endGame = status;
     }
 
     /**
@@ -783,6 +788,8 @@ public class MainSceneController implements Initializable {
     }
 
     public void setMessageForUserText(String messageForUser){
-        this.messageForUser.setText(messageForUser);
+        if(!endGame) {
+            this.messageForUser.setText(messageForUser);
+        }
     }
 }
