@@ -47,7 +47,9 @@ public class RemoteView implements PropertyChangeListener{
         }else if(evt.getPropertyName().equals("MNmove") || evt.getPropertyName().equals("ArchUnified")){
             mnMovedArcUnified();
         } else if(evt.getPropertyName().equals("PhaseChanged")){
-            sendCoins();
+            if(currentGame.isExpertModeOn()) {
+                sendCoins();
+            }
             phaseChanged();
         }else if(evt.getPropertyName().equals("UsedCard")){
             usedCard();
