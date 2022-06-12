@@ -23,5 +23,5 @@
  */
 
 #boardsBackground{
-    -fx-background-color: #86c063;
+    -fx-background-image: url("images/backgroundBorderScene.jpg");
 }

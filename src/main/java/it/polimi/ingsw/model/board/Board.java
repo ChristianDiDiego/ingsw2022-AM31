@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Game;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
@@ -19,15 +20,17 @@ public class Board implements Serializable {
     private DiningRoom diningRoom;
     private ProfessorsTable professorsTable;
     private TowersOnBoard towersOnBoard;
+    private ColorOfTower colorOfTower;
     private String nickname;
 
 
-    public Board(String nickname) {
+    public Board(String nickname, ColorOfTower colorOfTower) {
         this.entrance = new Entrance();
         this.diningRoom = new DiningRoom();
         this.professorsTable = new ProfessorsTable();
         this.towersOnBoard = new TowersOnBoard();
         this.nickname = nickname;
+        this.colorOfTower = colorOfTower;
     }
 
     public String getNickname() {
@@ -56,4 +59,7 @@ public class Board implements Serializable {
     }
 
 
+    public ColorOfTower getColorOfTower() {
+        return colorOfTower;
+    }
 }

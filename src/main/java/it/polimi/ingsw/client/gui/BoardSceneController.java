@@ -18,7 +18,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class BoardSceneController implements Initializable {
-    Image tower = new Image(getClass().getResourceAsStream("/images/tower.png"));
+    Image blackTower = new Image(getClass().getResourceAsStream("/images/blacktower.png"));
+    Image whiteTower = new Image(getClass().getResourceAsStream("/images/whitetower.png"));
+    Image greyTower = new Image(getClass().getResourceAsStream("/images/greytower.png"));
+
     Image greenProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profgreen.png"));
     Image redProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profred.png"));
     Image yellowProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profyellow.png"));
@@ -97,32 +100,31 @@ public class BoardSceneController implements Initializable {
             case 4:
         }
 
-        /*
-        for(AnchorPane a : boards){
-            a.getChildren().clear();
-        }
-
-         */
-
-
 
 
         for(int j = 0; j < receivedBoards.size(); j++) {
 
            ob.get(j).setText(receivedBoards.get(j).getNickname());
 
-            //seb.get(j).getChildren().clear();
-            //sdrb.get(j).getChildren().clear();
+            seb.get(j).getChildren().clear();
+            sdrb.get(j).getChildren().clear();
             tb.get(j).getChildren().clear();
+            pb.get(j).getChildren().clear();
 
             //tower
 
             int row = 0;
             int column = 0;
             for(int i = 0; i < receivedBoards.get(j).getTowersOnBoard().getNumberOfTowers(); i++){
-                ImageView t = new ImageView(tower);
-                t.setFitHeight(60);
-                t.setFitWidth(60);
+                ImageView t;
+                switch (receivedBoards.get(j).getColorOfTower()){
+                    case WHITE -> t = new ImageView(whiteTower);
+                    case GREY -> t = new ImageView(greyTower);
+                    default -> t = new ImageView(blackTower);
+
+                }
+                t.setFitHeight(40);
+                t.setFitWidth(40);
                 tb.get(j).add(t, column,row);
                 GridPane.setHalignment(t, HPos.CENTER);
                 column++;
@@ -147,8 +149,8 @@ public class BoardSceneController implements Initializable {
                         column++;
                     }
                     ImageView st = new ImageView(students.get(i));
-                    st.setFitWidth(90);
-                    st.setFitHeight(90);
+                    st.setFitWidth(80);
+                    st.setFitHeight(80);
                     System.out.println("Image setted for kingdom " + i);
 
                     seb.get(j).add(st, column, row);
@@ -168,6 +170,8 @@ public class BoardSceneController implements Initializable {
             for(int i = 0; i<Constants.NUMBEROFKINGDOMS; i++){
                 if(receivedBoards.get(j).getProfessorsTable().getHasProf(StudsAndProfsColor.values()[i])){
                   ImageView prof = new ImageView(professors.get(i));
+                  prof.setFitWidth(80);
+                  prof.setFitHeight(80);
                   pb.get(j).add(prof, column,row);
                   GridPane.setHalignment(prof, HPos.CENTER);
                   row++;
@@ -179,8 +183,8 @@ public class BoardSceneController implements Initializable {
             for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
                 for (int k = 0; k < receivedBoards.get(j).getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]); k++) {
                     ImageView st = new ImageView(students.get(i));
-                    st.setFitHeight(100);
-                    st.setFitWidth(100);
+                    st.setFitHeight(80);
+                    st.setFitWidth(80);
                     sdrb.get(j).add(st, k, i);
                     GridPane.setHalignment(st, HPos.CENTER);
 
@@ -195,29 +199,17 @@ public class BoardSceneController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tb1.setGridLinesVisible(true);
-        tb2.setGridLinesVisible(true);
-        tb3.setGridLinesVisible(true);
 
         tb.add(tb1);
         tb.add(tb2);
         tb.add(tb3);
         tb.add(tb4);
 
-        seb1.setGridLinesVisible(true);
-        seb2.setGridLinesVisible(true);
-        seb3.setGridLinesVisible(true);
-        seb4.setGridLinesVisible(true);
 
         seb.add(seb1);
         seb.add(seb2);
         seb.add(seb3);
         seb.add(seb4);
-
-        sdrb1.setGridLinesVisible(true);
-        sdrb2.setGridLinesVisible(true);
-        sdrb3.setGridLinesVisible(true);
-        sdrb4.setGridLinesVisible(true);
 
 
         sdrb.add(sdrb1);
@@ -225,10 +217,6 @@ public class BoardSceneController implements Initializable {
         sdrb.add(sdrb3);
         sdrb.add(sdrb4);
 
-        pb1.setGridLinesVisible(true);
-        pb2.setGridLinesVisible(true);
-        pb3.setGridLinesVisible(true);
-        pb4.setGridLinesVisible(true);
 
         pb.add(pb1);
         pb.add(pb2);

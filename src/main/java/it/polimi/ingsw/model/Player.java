@@ -23,7 +23,7 @@ public class Player implements Serializable {
     public Player(String nickname, ColorOfTower colorOfTowers){
         this.nickname = nickname;
         this.colorOfTowers = colorOfTowers;
-        this.myBoard = new Board(nickname);
+        this.myBoard = new Board(nickname, colorOfTowers);
         myDeck = new Deck();
         wallet = 0;
         usedCharacter = null;

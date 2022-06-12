@@ -177,6 +177,7 @@ public class MainSceneController implements Initializable {
         numberOfArchipelagos = listOfArchipelagos.size();
 
         for(int i = 0; i < listOfArchipelagos.size(); i++) {
+
             if(listOfArchipelagos.get(i).getIsMNPresent()) {
                 ImageView mn = new ImageView(motherNature);
                 mn.setFitHeight(40);
