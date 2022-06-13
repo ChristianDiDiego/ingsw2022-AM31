@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utilities.constants.Constants;
@@ -11,6 +12,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -74,15 +78,25 @@ public class BoardSceneController implements Initializable {
 
     List<GridPane> pb = new ArrayList<>();
 
+    //Font font = Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 18);
+    Font font = Font.font("Calisto MT", FontPosture.ITALIC, 18);
+
     private List<Board> receivedBoards = new ArrayList<>();
 
     public void setReceivedBoards(List<Board> boards) {
         this.receivedBoards = boards;
-        System.out.println("ho passato le board correttamente");
-        System.out.println("la size e: " + receivedBoards.size());
     }
 
-
+    public void printLastUsedCard(List<Player> players) {
+        for(int i = 0; i < players.size(); i++) {
+            if(players.get(i).getLastUsedCard() != null) {
+                String nickname = ob.get(i).getText();
+                String lastUsedCard = ", last used card: " + players.get(i).getLastUsedCard().getPower() + "   " + players.get(i).getLastUsedCard().getMaxSteps();
+                ob.get(i).setText(nickname + lastUsedCard);
+                ob.get(i).setFont(font);
+            }
+        }
+    }
 
     public void showAllBoards(){
 
@@ -104,7 +118,8 @@ public class BoardSceneController implements Initializable {
 
         for(int j = 0; j < receivedBoards.size(); j++) {
 
-           ob.get(j).setText(receivedBoards.get(j).getNickname());
+            ob.get(j).setText("Player: " + receivedBoards.get(j).getNickname());
+            ob.get(j).setFont(font);
 
             seb.get(j).getChildren().clear();
             sdrb.get(j).getChildren().clear();
@@ -190,11 +205,7 @@ public class BoardSceneController implements Initializable {
 
                 }
             }
-
-
-
         }
-
     }
 
     @Override

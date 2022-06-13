@@ -82,7 +82,7 @@ public class Gui extends Application implements PropertyChangeListener {
                                 case Deck deck -> manageDeck(deck);
                                 case ListOfArchipelagos listOfArchipelagos -> manageListOfArchipelagos(listOfArchipelagos);
                                 case ListOfClouds listOfClouds -> manageListOfClouds(listOfClouds);
-                                case ListOfPlayers listOfPlayers-> System.out.println("");
+                                case ListOfPlayers listOfPlayers-> manageListOfPlayers(listOfPlayers);
                                 case Integer coin -> manageCoins(coin);
                                 default -> System.out.println("Unexpected argument received from the server");
                             }
@@ -311,6 +311,12 @@ public class Gui extends Application implements PropertyChangeListener {
             mainSceneController.printMyBoard(board);
             boardSceneController.setReceivedBoards(listOfBoards.getBoards());
             boardSceneController.showAllBoards();
+        });
+    }
+
+    private void manageListOfPlayers(ListOfPlayers listOfPlayers) {
+        Platform.runLater(()-> {
+            boardSceneController.printLastUsedCard(listOfPlayers.getPlayers());
         });
     }
 

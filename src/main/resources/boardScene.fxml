@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="boardsBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" stylesheets="@boardScene.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.BoardSceneController">
    <children>
@@ -252,9 +253,21 @@
                </rowConstraints>
             </GridPane>
          </children></AnchorPane>
-      <Label id="ob1" fx:id="ob1" layoutX="15.0" layoutY="10.0" />
-      <Label id="ob2" fx:id="ob2" layoutX="536.0" layoutY="10.0" />
-      <Label id="ob3" fx:id="ob3" layoutX="15.0" layoutY="245.0" />
-      <Label id="ob4" fx:id="ob4" layoutX="536.0" layoutY="245.0" />
+      <Label id="ob1" fx:id="ob1" layoutX="15.0" layoutY="1.0" prefHeight="17.0" prefWidth="450.0">
+         <font>
+            <Font name="Calisto MT Italic" size="18.0" />
+         </font></Label>
+      <Label id="ob2" fx:id="ob2" layoutX="536.0" layoutY="2.0" prefHeight="17.0" prefWidth="450.0">
+         <font>
+            <Font name="Calisto MT Italic" size="18.0" />
+         </font></Label>
+      <Label id="ob3" fx:id="ob3" layoutX="15.0" layoutY="245.0" prefHeight="17.0" prefWidth="450.0">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Label id="ob4" fx:id="ob4" layoutX="536.0" layoutY="245.0" prefHeight="17.0" prefWidth="450.0">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
    </children>
 </AnchorPane>
