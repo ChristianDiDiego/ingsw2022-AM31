@@ -28,18 +28,18 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <FlowPane fx:id="arch0" prefHeight="200.0" prefWidth="200.0" />
-                <FlowPane fx:id="arch1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="92.0" prefWidth="76.0" GridPane.columnIndex="1" />
-                <FlowPane fx:id="arch2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
-                <FlowPane fx:id="arch3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" />
-                <FlowPane fx:id="arch4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" />
-                <FlowPane fx:id="arch5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                <FlowPane fx:id="arch6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                <FlowPane fx:id="arch7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                <FlowPane fx:id="arch8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                <FlowPane fx:id="arch9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <FlowPane fx:id="arch10" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
-                <FlowPane fx:id="arch11" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                <FlowPane fx:id="arch0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
+                <FlowPane fx:id="arch1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="127.0" prefWidth="183.0" GridPane.columnIndex="1" />
+                <FlowPane fx:id="arch2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
+                <FlowPane fx:id="arch3" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" />
+                <FlowPane fx:id="arch4" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" />
+                <FlowPane fx:id="arch5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                <FlowPane fx:id="arch6" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                <FlowPane fx:id="arch7" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                <FlowPane fx:id="arch8" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <FlowPane fx:id="arch9" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <FlowPane fx:id="arch10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                <FlowPane fx:id="arch11" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
             </children>
         </GridPane>
         <AnchorPane id="boardPane" fx:id="boardPane" layoutX="315.0" layoutY="400.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="277.0" prefWidth="602.0">
