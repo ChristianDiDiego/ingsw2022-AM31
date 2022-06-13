@@ -52,7 +52,11 @@
     -fx-background-color: transparent;
 }
 
-.text-area, .text-area .viewport, .text-area .content {
+#messageForUser .viewport{
+    -fx-background-color: transparent;
+}
+
+#messageForUser .content{
     -fx-background-color: transparent;
 }
 
