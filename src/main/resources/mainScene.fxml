@@ -86,11 +86,11 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
-            <AnchorPane id="profGreen" fx:id="profGreen" layoutX="398.0" layoutY="2.0" prefHeight="89.0" prefWidth="83.0" />
-            <AnchorPane id="profRed" fx:id="profRed" layoutX="397.0" layoutY="49.0" prefHeight="89.0" prefWidth="83.0" />
-            <AnchorPane id="profYellow" fx:id="profYellow" layoutX="394.0" layoutY="92.0" prefHeight="97.0" prefWidth="90.0" />
-            <AnchorPane id="profPink" fx:id="profPink" layoutX="396.0" layoutY="136.0" prefHeight="97.0" prefWidth="90.0" />
-            <AnchorPane id="profBlue" fx:id="profBlue" layoutX="398.0" layoutY="180.0" prefHeight="97.0" prefWidth="83.0" />
+            <AnchorPane id="profGreen" fx:id="profGreen" layoutX="422.0" layoutY="34.0" prefHeight="30.0" prefWidth="35.0" />
+            <AnchorPane id="profRed" fx:id="profRed" layoutX="422.0" layoutY="79.0" prefHeight="29.0" prefWidth="34.0" />
+            <AnchorPane id="profYellow" fx:id="profYellow" layoutX="422.0" layoutY="124.0" prefHeight="31.0" prefWidth="35.0" />
+            <AnchorPane id="profPink" fx:id="profPink" layoutX="420.0" layoutY="168.0" prefHeight="32.0" prefWidth="38.0" />
+            <AnchorPane id="profBlue" fx:id="profBlue" layoutX="421.0" layoutY="214.0" prefHeight="30.0" prefWidth="37.0" />
             </children></AnchorPane>
         <AnchorPane id="cloudPane" fx:id="cloudPane" layoutX="918.0" layoutY="435.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="167.0" prefWidth="276.0">
             <children>

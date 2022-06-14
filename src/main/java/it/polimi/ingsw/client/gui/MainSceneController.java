@@ -194,8 +194,8 @@ public class MainSceneController implements Initializable {
                 for(int s = 0; s < Constants.NUMBEROFKINGDOMS; s++) {
                     for(int t = 0; t < island.getStudentsByColor(StudsAndProfsColor.values()[s]); t++) {
                         ImageView st = new ImageView(studentColor[s]);
-                        st.setFitHeight(50);
-                        st.setFitWidth(50);
+                        st.setFitHeight(20);
+                        st.setFitWidth(20);
                         singleCellArchipelago[i].getChildren().add(st);
                     }
                 }
@@ -310,8 +310,8 @@ public class MainSceneController implements Initializable {
                 }
 
                 ImageView st = new ImageView(event.getDragboard().getImage());
-                st.setFitHeight(50);
-                st.setFitWidth(50);
+                st.setFitHeight(20);
+                st.setFitWidth(20);
                 target.getChildren().add(st);
 
                 String colorMoved = convertTextNumberToColor(event.getDragboard().getString());
@@ -461,8 +461,8 @@ public class MainSceneController implements Initializable {
         for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
             for(int j = 0; j < receivedBoard.getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]); j++){
                 ImageView st = new ImageView(studentsImages[i]);
-                st.setFitHeight(100);
-                st.setFitWidth(100);
+                st.setFitHeight(30);
+                st.setFitWidth(30);
                 studentsInDR.add(st, j, i);
                 GridPane.setHalignment(st, HPos.CENTER);
             }
@@ -488,8 +488,8 @@ public class MainSceneController implements Initializable {
                     column++;
                 }
                 ImageView st =new ImageView(studentsImages[i]);
-                st.setFitWidth(120);
-                st.setFitHeight(120);
+                st.setFitWidth(30);
+                st.setFitHeight(30);
                 st.setAccessibleText(""+i);
                 setOnDragStudentDetected(st);
                 setOnDragImageDone(st);
@@ -541,8 +541,8 @@ public class MainSceneController implements Initializable {
                     int kingdomTarget = rIndex == null ? 0 : rIndex;
 
                     ImageView st = new ImageView(event.getDragboard().getImage());
-                    st.setFitHeight(80);
-                    st.setFitWidth(80);
+                    st.setFitHeight(30);
+                    st.setFitWidth(30);
                     int kingdomOfTheStudent = Integer.parseInt(event.getDragboard().getString());
                     //allow the movemnt only if the row is the one of the student
                     if(kingdomTarget == kingdomOfTheStudent && firstPositionsAvailableDR.get(kingdomTarget) < Constants.MAXSTUDENTSINDINING){
@@ -606,8 +606,8 @@ public class MainSceneController implements Initializable {
                     for (int k = 0; k < c.getStudents()[j]; k++) {
                         ImageView st = new ImageView();
                         st.setImage(studentsImages[j]);
-                        st.setFitHeight(100);
-                        st.setFitWidth(100);
+                        st.setFitHeight(30);
+                        st.setFitWidth(30);
                         clouds.get(cloudList.indexOf(c)).add(st, column, row);
                         GridPane.setHalignment(st, HPos.CENTER);
                         column++;
@@ -670,6 +670,8 @@ public class MainSceneController implements Initializable {
             stageBoard = new Stage();
             sceneBoard = new Scene(rootBoard);
             stageBoard.setScene(sceneBoard);
+            Image icon = new Image(getClass().getResourceAsStream("/images/board.jpeg"));
+            stageBoard.getIcons().add(icon);
         }
 
         if(stageBoard.isShowing() == false) {
@@ -685,6 +687,8 @@ public class MainSceneController implements Initializable {
             stageCharacter = new Stage();
             sceneCharacter = new Scene(rootCharacter);
             stageCharacter.setScene(sceneCharacter);
+            Image icon = new Image(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front2.jpg"));
+            stageCharacter.getIcons().add(icon);
         }
         if(stageCharacter.isShowing() == false) {
             stageCharacter.setTitle("Characters");

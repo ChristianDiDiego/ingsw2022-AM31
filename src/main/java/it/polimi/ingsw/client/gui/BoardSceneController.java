@@ -164,8 +164,8 @@ public class BoardSceneController implements Initializable {
                         column++;
                     }
                     ImageView st = new ImageView(students.get(i));
-                    st.setFitWidth(80);
-                    st.setFitHeight(80);
+                    st.setFitWidth(25);
+                    st.setFitHeight(25);
                     System.out.println("Image setted for kingdom " + i);
 
                     seb.get(j).add(st, column, row);
@@ -185,8 +185,8 @@ public class BoardSceneController implements Initializable {
             for(int i = 0; i<Constants.NUMBEROFKINGDOMS; i++){
                 if(receivedBoards.get(j).getProfessorsTable().getHasProf(StudsAndProfsColor.values()[i])){
                   ImageView prof = new ImageView(professors.get(i));
-                  prof.setFitWidth(80);
-                  prof.setFitHeight(80);
+                  prof.setFitWidth(25);
+                  prof.setFitHeight(25);
                   pb.get(j).add(prof, column,row);
                   GridPane.setHalignment(prof, HPos.CENTER);
                   row++;
@@ -198,8 +198,8 @@ public class BoardSceneController implements Initializable {
             for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
                 for (int k = 0; k < receivedBoards.get(j).getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]); k++) {
                     ImageView st = new ImageView(students.get(i));
-                    st.setFitHeight(80);
-                    st.setFitWidth(80);
+                    st.setFitHeight(25);
+                    st.setFitWidth(25);
                     sdrb.get(j).add(st, k, i);
                     GridPane.setHalignment(st, HPos.CENTER);
 
