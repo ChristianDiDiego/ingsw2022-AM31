@@ -242,41 +242,24 @@ public class SocketClientConnection implements Runnable{
         this.playerQuitted = playerQuitted;
     }
 
-    public boolean ping(String ip) throws IOException, InterruptedException {
-        String ping;
-        if(System.getProperty("os.name").startsWith("Windows")) {
-            ping = "ping -n 1 " + ip;
-        } else {
-            ping = "ping -c 1 " + ip;
-        }
-
-        Process p1 = java.lang.Runtime.getRuntime().exec(ping);
-        int returnVal = 0;
-        returnVal = p1.waitFor();
-        boolean reachable = (returnVal == 0);
-        return reachable;
-    }
-
-    public Thread pingToClient(String ip) {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (isActive()) {
-                        Thread.sleep(10000);
-                        if(!ping(ip)) {
-                            System.out.println("The client is unreachable, exiting...");
-                            close();
-                        } else {
-                            System.out.println("Ping avvenuto di " + ip + " con successo");
-                        }
+    public Thread pingToClient(InetAddress geek) {
+        Thread t = new Thread(() -> {
+            try {
+                while (isActive()) {
+                    Thread.sleep(15000);
+                    if(geek.isReachable(5000)) {
+                        System.out.println("client " + nickname + " is reachable");
+                    } else {
+                        System.out.println("client " + nickname + " is unreachable, exiting...");
+                        close();
                     }
-                } catch (Exception e) {
-                    //setActive(false);
                 }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         });
-        //t.start();
         return t;
     }
 
@@ -288,7 +271,7 @@ public class SocketClientConnection implements Runnable{
             out = new ObjectOutputStream(socket.getOutputStream());
             send(ServerMessage.welcome);
             InetAddress geek = socket.getInetAddress();
-            Thread t0 = pingToClient(geek.getHostAddress());
+            Thread t0 = pingToClient(geek);
             t0.start();
             server.lobby(this);
             while(isActive() && inGeneral.hasNextLine()){        //legge dal client tutti i messaggi e notifica il listener della view
@@ -312,5 +295,4 @@ public class SocketClientConnection implements Runnable{
             close();
         }
     }
-
 }

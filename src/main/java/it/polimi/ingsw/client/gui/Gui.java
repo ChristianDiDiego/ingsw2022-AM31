@@ -99,40 +99,20 @@ public class Gui extends Application implements PropertyChangeListener {
         });
         return t;
     }
-
-    public boolean ping(String ip) throws IOException, InterruptedException {
-        String ping;
-        if(System.getProperty("os.name").startsWith("Windows")) {
-            ping = "ping -n 1 " + ip;
-        } else {
-            ping = "ping -c 1 " + ip;
-        }
-
-        Process p1 = java.lang.Runtime.getRuntime().exec(ping);
-        int returnVal = 0;
-        returnVal = p1.waitFor();
-        boolean reachable = (returnVal == 0);
-        return reachable;
-    }
-
-    public Thread pingToServer(String ip) {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (isActive()) {
-                        Thread.sleep(10000);
-                        if(!ping(ip)) {
-                            System.out.println("The server is unreachable, exiting...");
-                            System.exit(0);
-                        }
+    public Thread pingToServer(InetAddress geek) {
+        Thread t = new Thread(() -> {
+            try {
+                while (isActive()) {
+                    Thread.sleep(10000);
+                    if(!geek.isReachable(5000)) {
+                        System.out.println("The server is unreachable, exiting...");
+                        System.exit(0);
                     }
-                } catch (Exception e) {
-                    setActive(false);
                 }
+            } catch (Exception e) {
+                setActive(false);
             }
         });
-        //t.start();
         return t;
     }
 
@@ -145,12 +125,12 @@ public class Gui extends Application implements PropertyChangeListener {
 
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         socketOut = new PrintWriter(socket.getOutputStream());
-        InetAddress geek = InetAddress.getByName(ip);
+        InetAddress geek = socket.getInetAddress();
 
 
        // try{
             Thread t0 = asyncReadFromSocket(socketIn);
-            Thread t2 = pingToServer(ip);
+            Thread t2 = pingToServer(geek);
 
             t0.start();
             t2.start();

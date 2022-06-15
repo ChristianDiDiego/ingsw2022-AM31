@@ -261,38 +261,18 @@ public class Cli{
         }
     }
 
-    public boolean ping() throws IOException, InterruptedException {
-        String ping = new String();
-        if(System.getProperty("os.name").startsWith("Windows")) {
-            ping = "ping -n 1 " + ip;
-        } else {
-            ping = "ping -c 1 " + ip;
-        }
-
-        Process p1 = java.lang.Runtime.getRuntime().exec(ping);
-        int returnVal = 0;
-        returnVal = p1.waitFor();
-        boolean reachable = (returnVal == 0);
-        return reachable;
-    }
-
-    public Thread pingToServer() {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (isActive()) {
-                        Thread.sleep(10000);
-                        if(!ping()) {
-                            System.out.println("The server is unreachable, exiting...");
-                            System.exit(0);
-                        } else {
-                            //System.out.println("Ping di " + ip + " avvenuto con successo");
-                        }
+    public Thread pingToServer(InetAddress geek) {
+        Thread t = new Thread(() -> {
+            try {
+                while (isActive()) {
+                    Thread.sleep(10000);
+                    if(!geek.isReachable(5000)) {
+                        System.out.println("The server is unreachable, exiting...");
+                        System.exit(0);
                     }
-                } catch (Exception e) {
-                    setActive(false);
                 }
+            } catch (Exception e) {
+                setActive(false);
             }
         });
         t.start();
@@ -316,12 +296,12 @@ public class Cli{
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
         Scanner stdin = new Scanner(System.in);
-
+        InetAddress geek = socket.getInetAddress();
 
         try{
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(stdin, socketOut);
-            Thread t2 = pingToServer();
+            Thread t2 = pingToServer(geek);
             t0.join();
             t1.join();
             t2.join();
