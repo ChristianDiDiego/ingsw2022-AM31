@@ -62,21 +62,4 @@ public class Entrance implements Serializable {
     public int getStudentsByColor(StudsAndProfsColor studColor){
         return studentsInEntrance[studColor.ordinal()];
     }
-
-
-    /**
-     * Calculate the total number of students in the entrance
-     * @return Total number of students in entrance
-     */
-    /*
-    public int getNumberOfStudentsInEntrance(){
-        int tot = 0;
-        for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
-            tot += studentsInEntrance[i];
-        }
-        return tot;
-    }
-
-    */
-
 }

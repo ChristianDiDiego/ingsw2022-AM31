@@ -50,6 +50,9 @@ public class ProfessorsTable implements Serializable {
         return hasProfessor[profColor.ordinal()];
     }
 
+    /**
+     * @return number of professors on board
+     */
     public int getNumberOfProf(){
         int number = 0;
 

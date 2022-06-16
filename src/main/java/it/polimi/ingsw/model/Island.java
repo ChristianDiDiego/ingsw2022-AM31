@@ -32,6 +32,9 @@ public class Island implements Serializable {
         return idIsland;
     }
 
+    /**
+     * @return array containing the number of students present on the island divided by color
+     */
     public int[] getAllStudents() {
         return studentOnIsland;
     }

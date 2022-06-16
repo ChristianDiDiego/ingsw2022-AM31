@@ -52,6 +52,9 @@ public class Board implements Serializable {
     public TowersOnBoard getTowersOnBoard() {
         return towersOnBoard;
     }
+    public ColorOfTower getColorOfTower() {
+        return colorOfTower;
+    }
 
     @Serial
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
@@ -59,7 +62,4 @@ public class Board implements Serializable {
     }
 
 
-    public ColorOfTower getColorOfTower() {
-        return colorOfTower;
-    }
 }

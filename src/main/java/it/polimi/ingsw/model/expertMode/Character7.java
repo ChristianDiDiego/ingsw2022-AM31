@@ -59,7 +59,10 @@ public class Character7 extends Characters{
     }
 
     public boolean checkStudent(StudsAndProfsColor color1ToAdd, StudsAndProfsColor color2ToAdd, StudsAndProfsColor color1ToRemove, StudsAndProfsColor color2ToRemove) {
-        if(game.getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color1ToAdd) < 1 && game.getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color2ToAdd) < 1 && game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color1ToRemove) < 1 && game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color2ToRemove) < 1) {
+        if(game.getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color1ToAdd) < 1
+                && game.getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color2ToAdd) < 1
+                && game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color1ToRemove) < 1
+                && game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color2ToRemove) < 1) {
             return false;
         } else {
             if(color1ToAdd == color2ToAdd && game.getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color1ToAdd) < 2) {
@@ -70,4 +73,5 @@ public class Character7 extends Characters{
             return true;
         }
     }
+
 }

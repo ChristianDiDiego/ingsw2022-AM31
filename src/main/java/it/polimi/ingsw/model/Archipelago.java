@@ -36,6 +36,9 @@ public class Archipelago implements Serializable {
         return isMNPresent;
     }
 
+    /**
+     * @return the list of island unified in this archipelago
+     */
     public List<Island> getBelongingIslands() {
         return belongingIsland;
     }

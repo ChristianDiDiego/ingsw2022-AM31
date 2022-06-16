@@ -19,7 +19,6 @@ public class DiningRoom implements Serializable {
     }
 
     /**
-     * TODO: listener that add a coin if number of student is multiple of 3
      * Add a student in the dining room
      * @param studColor color of the student that needs to be added
      */

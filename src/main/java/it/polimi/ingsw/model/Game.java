@@ -41,7 +41,6 @@ public class Game implements Cloneable, Serializable {
         orderOfPlayers.add(player);
         this.bag = new Bag(numberOfPlayers);
         this.currentPlayer = player;
-        System.out.println(player.getNickname());
         phase = Phase.START_GAME;
         this.expertModeOn = expertModeOn;
 
@@ -54,6 +53,18 @@ public class Game implements Cloneable, Serializable {
             listOfClouds.add(cloud);
         }
 
+        initializeArchipelagos();
+
+        if(expertModeOn){
+            initializeExpertMode();
+        }
+    }
+
+    /**
+     * put a random student on each island except for the one on which is mother nature
+     * and the opposite one
+     */
+    public void initializeArchipelagos(){
         int[] studentsForIslands = new int[Constants.NUMBEROFKINGDOMS];
         //Place randomly two students of each color on the islands (one student per island)
         //except on the island where MN is present and on the opposite one
@@ -61,6 +72,7 @@ public class Game implements Cloneable, Serializable {
             studentsForIslands[i] = 2;
         }
         Random random = new Random();
+
         for(Archipelago a : this.listOfArchipelagos){
             for(Island i : a.getBelongingIslands()) {
                 if(a.getIdArchipelago() != Constants.IDSTARTINGARCMN && a.getIdArchipelago() !=Constants.IDSTARTINGOPPOSITEARC) {
@@ -74,61 +86,62 @@ public class Game implements Cloneable, Serializable {
                     for(int j = 0; j < Constants.NUMBEROFKINGDOMS; j++){
                     }
                 }
+            }
+        }
+    }
 
+    /**
+     * if expert mode is on, randomly choose 3 special character to be used during game
+     */
+    public void initializeExpertMode(){
+        Random random = new Random();
+        this.bank = 20;
+        //Extract 3 characters that will be available for the game
+        charactersPlayable = new Characters[Constants.NUMBEROFPLAYABLECHARACTERS];
+        int i = 0;
+        while (i < Constants.NUMBEROFPLAYABLECHARACTERS) {
+            //Randomly generate a number between 1 and 8 (random last value is exclusive)
+            int value = random.nextInt(1,Constants.NUMBEROFCHARACTERS+1);
+            boolean found = false;
+            for(Characters c: charactersPlayable){
+                if(c!= null){
+                    if(c.getId() == value){
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            if(!found){
+                switch (value){
+                    case 1:
+                        charactersPlayable[i] = new Character1(this);
+                        break;
+                    case 2:
+                        charactersPlayable[i] = new Character2(this);
+                        break;
+                    case 3:
+                        charactersPlayable[i] = new Character3(this);
+                        break;
+                    case 4:
+                        charactersPlayable[i] = new Character4(this);
+                        break;
+                    case 5:
+                        charactersPlayable[i] = new Character5(this);
+                        break;
+                    case 6:
+                        charactersPlayable[i] = new Character6(this);
+                        break;
+                    case 7:
+                        charactersPlayable[i] = new Character7(this);
+                        break;
+                    case 8:
+                        charactersPlayable[i] = new Character8(this);
+                        break;
+                }
+                i++;
             }
         }
 
-        //EXPERT MODE:
-        if(expertModeOn){
-            this.bank = 20;
-            //Extract 3 characters that will be available for the game
-            charactersPlayable = new Characters[Constants.NUMBEROFPLAYABLECHARACTERS];
-            int i = 0;
-            System.out.println("Im expe mode");
-            while (i < Constants.NUMBEROFPLAYABLECHARACTERS) {
-                //Randomly generate a number between 1 and 8 (random last value is exclusive)
-                int value = random.nextInt(1,Constants.NUMBEROFCHARACTERS+1);
-                boolean found = false;
-                for(Characters c: charactersPlayable){
-                    if(c!= null){
-                        if(c.getId() == value){
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-                if(!found){
-                    switch (value){
-                        case 1:
-                            charactersPlayable[i] = new Character1(this);
-                            break;
-                        case 2:
-                            charactersPlayable[i] = new Character2(this);
-                            break;
-                        case 3:
-                            charactersPlayable[i] = new Character3(this);
-                            break;
-                        case 4:
-                            charactersPlayable[i] = new Character4(this);
-                            break;
-                        case 5:
-                            charactersPlayable[i] = new Character5(this);
-                            break;
-                        case 6:
-                            charactersPlayable[i] = new Character6(this);
-                            break;
-                        case 7:
-                            charactersPlayable[i] = new Character7(this);
-                            break;
-                        case 8:
-                            charactersPlayable[i] = new Character8(this);
-                            break;
-                    }
-                    System.out.println(charactersPlayable[i].getDescriptionOfPower());
-                    i++;
-                }
-            }
-        }
     }
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
@@ -175,7 +188,6 @@ public class Game implements Cloneable, Serializable {
      */
     public void findPlayerOrder(){
         this.currentPlayer = orderOfPlayers.get(1);
-        System.out.println("old player " + currentPlayer.getNickname());
         orderOfPlayers.sort(new Comparator<Player>() {
             @Override
             public int compare(Player o1, Player o2) {
@@ -187,7 +199,6 @@ public class Game implements Cloneable, Serializable {
             }
         });
         this.currentPlayer = orderOfPlayers.get(0);
-        System.out.println("If should notify the curent player with "+ currentPlayer.getNickname());
 
         support.firePropertyChange("currentPlayerChanged", "aaaa", currentPlayer.getNickname());
 
@@ -210,13 +221,10 @@ public class Game implements Cloneable, Serializable {
                 break;
             }
         }
-        System.out.println("index mn before adj: " + index);
         index += steps;
-        System.out.println("index before adj: " + index);
         if(index >= listOfArchipelagos.size()) {
             index = index % listOfArchipelagos.size();
         }
-        System.out.println("index: " + index);
         for(Archipelago arci : listOfArchipelagos){
             if(listOfArchipelagos.indexOf(arci) == index){
                 arci.changeMNPresence();
@@ -243,8 +251,7 @@ public class Game implements Cloneable, Serializable {
         }
         index = index + 1;
         currentPlayer = orderOfPlayers.get(index);
-        support.firePropertyChange("currentPlayerChanged", "aaaa", currentPlayer.getNickname());
-        //    System.out.println(currentPlayer.getNickname() + " is your turn!");
+        support.firePropertyChange("currentPlayerChanged", "", currentPlayer.getNickname());
     }
 
     /**
@@ -265,7 +272,6 @@ public class Game implements Cloneable, Serializable {
         currentPlayer = listOfPlayers.get(index);
         support.firePropertyChange("PhaseChanged", "", Phase.CARD_SELECTION);
         support.firePropertyChange("currentPlayerChanged", "CS", currentPlayer.getNickname());
-        //   System.out.println(currentPlayer.getNickname() + " is your turn!");
     }
 
     /**
@@ -294,7 +300,6 @@ public class Game implements Cloneable, Serializable {
             if(currentPlayer.getMyBoard().getDiningRoom().getStudentsByColor(color) > player.getMyBoard().getDiningRoom().getStudentsByColor(color)){
                 player.getMyBoard().getProfessorsTable().removeProfessor(color);
                 currentPlayer.getMyBoard().getProfessorsTable().addProfessor(color);
-                System.out.println("Ho aggiunto un prof di color " +  color);
             }
         }
         support.firePropertyChange("ChangeProfessor", 0, 1);
@@ -344,7 +349,6 @@ public class Game implements Cloneable, Serializable {
             case CLOUD_SELECTION:
                 if(getCurrentPlayer()==orderOfPlayers.get(orderOfPlayers.size()-1)){
                     phase = Phase.CARD_SELECTION;
-                    System.out.println("Sono entrato nell'if di cloud_selection");
                     support.firePropertyChange("lastTurnPlayer", currentPlayer, orderOfPlayers.get(0));
                     currentPlayer = orderOfPlayers.get(0);
                 }else{
@@ -364,12 +368,16 @@ public class Game implements Cloneable, Serializable {
         return numberOfPlayers;
     }
 
+    /**
+     * if there are enough coins in bank, removes the number of coin from it, else return false
+     * @param coins
+     * @return true if it has correctly removed coins, else false
+     */
     public boolean getCoinFromBank(int coins) {
         if(bank>=coins){
             bank -= coins;
             return true;
         }else{
-            System.out.println("No coins in bank");
             return false;
         }
     }
@@ -390,11 +398,15 @@ public class Game implements Cloneable, Serializable {
     public Characters[] getCharactersPlayable() {
         return charactersPlayable;
     }
+
     //Only for testing purposes:
     public void setCharacterPlayable(Characters c){
         charactersPlayable[0] = c;
     }
 
+    /**
+     * @return true if expert mode is on, else false
+     */
     public boolean isExpertModeOn() {
         return expertModeOn;
     }
@@ -408,6 +420,10 @@ public class Game implements Cloneable, Serializable {
         return null;
     }
 
+    /**
+     * sets the current phase
+     * @param phase
+     */
     public void setPhase(Phase phase){
         this.phase = phase;
     }

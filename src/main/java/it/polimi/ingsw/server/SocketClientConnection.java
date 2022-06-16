@@ -50,7 +50,7 @@ public class SocketClientConnection implements Runnable{
     }
 
     /**
-     * questa send manda il messaggio così com'è senza metterlo in stringa
+     * send message to client
      * @param message
      */
     public synchronized void send(Object message) {
@@ -65,17 +65,20 @@ public class SocketClientConnection implements Runnable{
         }
     }
 
+    /**
+     * asks to the first player how many players he wants the game to be played by
+     * @return number of players or negative number in case of error or quit
+     */
     public int askHowManyPlayers() {
         Scanner in;
         String number;
         try {
             in = new Scanner(socket.getInputStream());
-            send(ServerMessage.howManyPlayers); //manda al client
-            String read = in.nextLine(); // legge dal client il nome
+            send(ServerMessage.howManyPlayers);
+            String read = in.nextLine();
             System.out.println("received " + read + "from " + nickname);
             if(read.equalsIgnoreCase(Constants.QUIT)){
                 System.out.println("quit received");
-                //playerQuitted = true;
                 close();
                 return -2;
             }
@@ -92,16 +95,18 @@ public class SocketClientConnection implements Runnable{
         }
     }
 
+    /**
+     * asks nickname to player
+     * @return nickname or "wrong" in case of error
+     */
     public String askNickname() {
         Scanner in;
         try {
             in = new Scanner(socket.getInputStream());
             send(ServerMessage.askNickname); //manda al client
             String read = in.nextLine();
-            System.out.println("received " + read + "from " + nickname);
             if(read.equalsIgnoreCase(Constants.QUIT)){
                 System.out.println("quit received");
-                //playerQuitted = true;
                 close();
                 return read;
             }
@@ -113,6 +118,11 @@ public class SocketClientConnection implements Runnable{
     }
 
     //TODO: rivedere la return
+
+    /**
+     * asks only to first player if he wants to play in normal or expert mode
+     * @return 0 for normal, 1 for exepert, negative number in case of error
+     */
     public int askMode() {
         Scanner in;
         try {
@@ -141,6 +151,10 @@ public class SocketClientConnection implements Runnable{
         }
     }
 
+    /**
+     * asks color of towers
+     * @return color chosen
+     */
     public ColorOfTower askColor() {
         Scanner in;
         int number;
@@ -149,13 +163,13 @@ public class SocketClientConnection implements Runnable{
             switch (server.getNumberOfPlayers()){
                 case 2:
                 case 4:
-                    send(ServerMessage.askColor2_4Players); //manda al client
+                    send(ServerMessage.askColor2_4Players);
                     break;
                 case 3:
-                    send(ServerMessage.askColor3Players); //manda al client
+                    send(ServerMessage.askColor3Players);
             }
 
-            String read = in.nextLine(); // legge dal client il nome
+            String read = in.nextLine();
             System.out.println("received " + read + "from " + nickname);
             if(read.equalsIgnoreCase(Constants.QUIT)){
                 System.out.println("quit received");
@@ -180,7 +194,9 @@ public class SocketClientConnection implements Runnable{
         }
     }
 
-    //invia il messaggio di chiusura al client
+    /**
+     * sends disconnection message to client and closes connection
+     */
     public synchronized void closeConnection() {
         Object lock1 = new Object();
         synchronized (lock1){
@@ -199,7 +215,7 @@ public class SocketClientConnection implements Runnable{
 
     }
 
-    private void close() { //stampa sul server
+    private void close() {
         server.deregisterConnection(this);
         closeConnection();
         System.out.println("Deregistering client...");

@@ -84,6 +84,5 @@ public class Cloud implements Serializable {
         } else {
             this.isTaken = false;
         }
-      //  support.firePropertyChange("ChangedCloudStatus", 0, 1);
     }
 }
