@@ -28,7 +28,7 @@ public class GameHandler implements Serializable {
     private PropertyChangeSupport support;
 
 
-    public GameHandler(Player firstPlayer, int playersNumber, boolean expertMode){
+    public GameHandler(Player firstPlayer, int playersNumber, boolean expertMode) {
         this.playersNumber = playersNumber;
         this.game = new Game(playersNumber, firstPlayer, expertMode);
         this.controller = new Controller(this.game, this);
@@ -37,7 +37,8 @@ public class GameHandler implements Serializable {
         isStarted = 0;
         this.support = new PropertyChangeSupport(this);
     }
-    public void setNewController(){
+
+    public void setNewController() {
         this.controller = new Controller(this.game, this);
     }
 
@@ -57,31 +58,37 @@ public class GameHandler implements Serializable {
     /**
      * Comunicate to the server that the game is over
      */
-    public void endGameImmediately(Player winner){
+    public void endGameImmediately(Player winner) {
         System.out.println("sono in endGameImmediately");
         support.firePropertyChange("EndGame", 10, winner.getTeam());
         //comunica al server partita finita
     }
 
-    public void endGame(){
+    /*
+    Called when a game ends because:
+    - the number of the archipelagos is less than 4
+    - there are no remaining students in the bag
+
+     */
+    public void endGame() {
         Player winner = game.getListOfPlayer().get(0);
         List<Player> listOfWinners = new ArrayList<Player>();
 
-        for(Player p : game.getListOfPlayer()){
-            if(p.getMyBoard().getTowersOnBoard().getNumberOfTowers() < winner.getMyBoard().getTowersOnBoard().getNumberOfTowers()){
+        for (Player p : game.getListOfPlayer()) {
+            if (p.getMyBoard().getTowersOnBoard().getNumberOfTowers() < winner.getMyBoard().getTowersOnBoard().getNumberOfTowers()) {
                 winner = p;
             }
         }
-        for(Player sameTower : game.getListOfPlayer()){
-            if(sameTower.getMyBoard().getTowersOnBoard().getNumberOfTowers() == winner.getMyBoard().getTowersOnBoard().getNumberOfTowers() && sameTower != winner){
+        for (Player sameTower : game.getListOfPlayer()) {
+            if (sameTower.getMyBoard().getTowersOnBoard().getNumberOfTowers() == winner.getMyBoard().getTowersOnBoard().getNumberOfTowers() && sameTower != winner) {
                 listOfWinners.add(sameTower);
             }
         }
 
         int maxProfs = winner.getMyBoard().getProfessorsTable().getNumberOfProf();
 
-        for(Player p: listOfWinners){
-            if(p.getMyBoard().getProfessorsTable().getNumberOfProf() > maxProfs){
+        for (Player p : listOfWinners) {
+            if (p.getMyBoard().getProfessorsTable().getNumberOfProf() > maxProfs) {
                 winner = p;
                 maxProfs = p.getMyBoard().getProfessorsTable().getNumberOfProf();
             }
@@ -92,21 +99,22 @@ public class GameHandler implements Serializable {
         support.firePropertyChange("EndGame", 10, winner.getTeam());
     }
 
-    public void setIsStarted(int i){
+    public void setIsStarted(int i) {
         this.isStarted = i;
     }
 
-    public int getIsStarted(){
+    public int getIsStarted() {
         return isStarted;
     }
 
     /**
      * Add a new player (since the second one) to the game
      * Set isStarted = 1 when the numberOfPlaers required is reached and call startGame
-     * @param //nickname name chosen by the player
+     *
+     * @param //nickname     name chosen by the player
      * @param //colorOfTower color chosen by the player
      */
-    public void addNewPlayer(Player player){
+    public void addNewPlayer(Player player) {
         game.addPlayer(player);
         if (game.getOrderOfPlayers().size() == game.getNumberOfPlayers()) {
             setIsStarted(1);
@@ -116,22 +124,22 @@ public class GameHandler implements Serializable {
 
 
     /**
-     *  Start the game:
+     * Start the game:
      * Pick n students from the bag and place them to the players' board
      * Add m towers to each player
      * Start the turn
      */
-    public void startGame(){
+    public void startGame() {
 
-        for(Player p : game.getOrderOfPlayers()){
+        for (Player p : game.getOrderOfPlayers()) {
             p.getMyBoard().getEntrance().addStudent(game.getBag().pickStudent(maxStudentsInEntrance));
-            if(p.getColorOfTowers() != null){
-                for(int i = 0; i< maxNumberOfTowers; i++){
+            if (p.getColorOfTowers() != null) {
+                for (int i = 0; i < maxNumberOfTowers; i++) {
                     p.getMyBoard().getTowersOnBoard().addTower();
                 }
             }
-            if(game.isExpertModeOn()){
-                if(game.getCoinFromBank(1)){
+            if (game.isExpertModeOn()) {
+                if (game.getCoinFromBank(1)) {
                     p.addCoinsToWallet(1);
                 }
             }
@@ -144,12 +152,13 @@ public class GameHandler implements Serializable {
 
     /**
      * Set the value of the game parameters according to the number of players and if it is expert mode
+     *
      * @param numberOfPlayers number of the players that are playing the game
-     * @param expertMode 1 if the expert mode has been choosed, 0 otherwise
+     * @param expertMode      1 if the expert mode has been choosed, 0 otherwise
      */
-    private void parametersSwitch(int numberOfPlayers, boolean expertMode){
+    private void parametersSwitch(int numberOfPlayers, boolean expertMode) {
 
-        switch (numberOfPlayers){
+        switch (numberOfPlayers) {
             case 2:
                 numberOfClouds = 2;
                 maxNumberOfTowers = 8;
@@ -182,16 +191,8 @@ public class GameHandler implements Serializable {
         return numberOfClouds;
     }
 
-    public int getMaxStudentsInEntrance() {
-        return maxStudentsInEntrance;
-    }
-
     public int getNumberOfMovements() {
         return numberOfMovements;
-    }
-
-    public int getMaxNumberOfTowers() {
-        return maxNumberOfTowers;
     }
 
     public int getPlayersNumber() {

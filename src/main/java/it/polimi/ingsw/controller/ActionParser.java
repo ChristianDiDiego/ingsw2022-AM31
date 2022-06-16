@@ -25,143 +25,79 @@ public class ActionParser {
     private ActionController actionController;
 
     private PropertyChangeSupport support;
+
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
 
-    public ActionParser(ActionController actionController){
+    public ActionParser(ActionController actionController) {
         this.actionController = actionController;
         this.support = new PropertyChangeSupport(this);
     }
 
     /**
      * Serialize the message arrived from the player recognising him and sending the action to the proper method
+     *
      * @param nickname nick of the player that sent the action
-     * @param message received from the player
+     * @param message  received from the player
      * @return 1 if action valid, 0 if some error occurs
      */
-    public synchronized boolean actionSerializer(String nickname, String message){
+    public synchronized boolean actionSerializer(String nickname, String message) {
         //Every proper action message is composed of phase+action, so if
         //a message does not contain at least a space is not fine
-        if(!message.contains(" ") || message.split(" ").length <=1){
-            if(message.equalsIgnoreCase("SHOWDECK")){
+        if (!message.contains(" ") || message.split(" ").length <= 1) {
+            if (message.equalsIgnoreCase("SHOWDECK")) {
                 System.out.println("I received deck request");
                 support.firePropertyChange("DeckRequired", "", nickname);
                 System.out.println("Fire sent");
                 return true;
-            }else if (message.equalsIgnoreCase("SHOWAVAILABLECHARACTERS")){
-                if(getActionController().getGame().isExpertModeOn()){
+            } else if (message.equalsIgnoreCase("SHOWAVAILABLECHARACTERS")) {
+                if (getActionController().getGame().isExpertModeOn()) {
                     support.firePropertyChange("AvailableCharactersRequired", "", nickname);
                     return true;
                 }
             }
             System.out.println(ErrorMessage.ActionNotValid);
-            support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid );
+            support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid);
             System.out.println("ERRORE INVIATO");
             return false;
-        }else{
+        } else {
             String[] input = message.split(" ");
             String phase = input[0];
             Player player = recognisePlayer(nickname);
             System.out.println("input size:" + input.length);
-            if( player != null){
-                switch (phase.toUpperCase(Locale.ROOT)) {
-                    case "CARD" -> {
-                        Integer cardPower = tryParse(input[1]);
-                        if(cardPower == null){
-                            System.out.println(ErrorMessage.ActionNotValid);
-                            support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
-                            return false;
-                        }
-                        System.out.println("Card " + cardPower + " received");
-                        return actionController.getTurnController().checkActionCard(player, cardPower);
-                    }
-                    case "MOVEST" -> {
-                        if(!input[1].contains(",")){
-                            System.out.println(ErrorMessage.ActionNotValid);
-                            support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
-                            return false;
-                        }
-                        String[] colorDestination = input[1].split(",");
-                        StudsAndProfsColor[] colors = new StudsAndProfsColor[colorDestination.length];
-                        int[] destinations = new int[colorDestination.length];
-                        for (int i = 0; i < colorDestination.length; i++) {
-                            if(!colorDestination[i].contains("-") || colorDestination[i].split("-").length <=1  || colorDestination[i].split("-")[0].isEmpty() || colorDestination[i].split("-")[1].isEmpty()){
-                                System.out.println(ErrorMessage.ActionNotValid);
-                                support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
-                                return false;
-                            }
-                            colors[i] = charToColorEnum(colorDestination[i].split("-")[0].charAt(0));
-                            Integer tempDestination = tryParse(colorDestination[i].split("-")[1]);
-                            if(tempDestination == null || colors[i] == null){
-                                System.out.println(ErrorMessage.ActionNotValid);
-                                support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
-                                return false;
-                            }
-                            destinations[i] = tempDestination;
-                        }
-                        return actionController.checkActionMoveStudent(player, colors, destinations);
-                    }
-                    case "MOVEMN" -> {
-                        Integer mnSteps = tryParse(input[1]);
-                        if(mnSteps == null){
-                            System.out.println(ErrorMessage.ActionNotValid);
-                            support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
-                            return false;
-                        }
-                        return actionController.checkActionMoveMN(player, mnSteps);
-                    }
-                    case "CLOUD" -> {
-                        Integer nOfCloud = tryParse(input[1]);
-                        if(nOfCloud == null){
-                            System.out.println(ErrorMessage.ActionNotValid);
-                            support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
-                            return false;
-                        }
-                        return actionController.checkActionCloud(player, nOfCloud);
-                    }
-                    case "CHARACTER" -> {
-                        Integer idOfCharacter = tryParse(input[1]);
-                        if(idOfCharacter == null){
-                            System.out.println(ErrorMessage.ActionNotValid);
-                            support.firePropertyChange("ErrorMessage" , nickname, ErrorMessage.ActionNotValid );
-                            return false;
-                        }
-                        String action = "";
-                        if(input.length >=3){
-                            action = input[2];
-                        }
-                        //TODO: set in action controller to check
-                        return actionController.checkActionCharacter(player, idOfCharacter, action);
-                    }
-                    case "QUIT" ->{
-
-
-                        return true;
-                    }
-                    default -> {
-                        support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid);
-                        System.out.println("Action not recognised");
-                        return false;
-                    }
-                }
-            }else{
+            if (player != null) {
+                return switch (phase.toUpperCase(Locale.ROOT)) {
+                    case "CARD" -> playCard(input[1], nickname, player);
+                    case "MOVEST" -> moveStudents(input[1], nickname, player);
+                    case "MOVEMN" -> moveMotherNature(input[1], nickname, player);
+                    case "CLOUD" -> chooseCloud(input[1], nickname, player);
+                    case "CHARACTER" -> playCharacter(input, nickname, player);
+                    default -> reportError(nickname);
+                };
+            } else {
                 System.out.println("Player not recognised");
                 return false;
             }
         }
     }
 
-    private Player recognisePlayer(String nickname){
-        for(Player player :actionController.getGame().getOrderOfPlayers()){
-            if(player.getNickname().equals(nickname)) {
+    /*
+    Return the player in the game with the nickname nickname
+     */
+    private Player recognisePlayer(String nickname) {
+        for (Player player : actionController.getGame().getOrderOfPlayers()) {
+            if (player.getNickname().equals(nickname)) {
                 return player;
             }
         }
         return null;
     }
 
-    private StudsAndProfsColor charToColorEnum(char color){
+    /*
+    Convert a char to the corresponding StudsAndProfColor enum
+     */
+    private StudsAndProfsColor charToColorEnum(char color) {
         return switch (Character.toUpperCase(color)) {
             case 'G' -> StudsAndProfsColor.GREEN;
             case 'R' -> StudsAndProfsColor.RED;
@@ -178,6 +114,105 @@ public class ActionParser {
         } catch (NumberFormatException e) {
             return null;
         }
+    }
+
+    /*
+    If the power of the card received is not null, send the power to the controller
+    returnfalse if the cardPower is null
+     */
+    private boolean playCard(String input, String nickname, Player player) {
+        Integer cardPower = tryParse(input);
+        if (cardPower == null) {
+            System.out.println(ErrorMessage.ActionNotValid);
+            support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid);
+            return false;
+        }
+        System.out.println("Card " + cardPower + " received");
+        return actionController.getTurnController().checkActionCard(player, cardPower);
+    }
+
+    /*
+    Get the color of the students to move from the entrance and their destination
+    using the string received
+    return false if the message is not formatted well or if the destination is not valid
+     */
+    private boolean moveStudents(String input, String nickname, Player player) {
+        if (!input.contains(",")) {
+            System.out.println(ErrorMessage.ActionNotValid);
+            support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid);
+            return false;
+        }
+        String[] colorDestination = input.split(",");
+        StudsAndProfsColor[] colors = new StudsAndProfsColor[colorDestination.length];
+        int[] destinations = new int[colorDestination.length];
+        for (int i = 0; i < colorDestination.length; i++) {
+            if (!colorDestination[i].contains("-") || colorDestination[i].split("-").length <= 1 || colorDestination[i].split("-")[0].isEmpty() || colorDestination[i].split("-")[1].isEmpty()) {
+                System.out.println(ErrorMessage.ActionNotValid);
+                support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid);
+                return false;
+            }
+            colors[i] = charToColorEnum(colorDestination[i].split("-")[0].charAt(0));
+            Integer tempDestination = tryParse(colorDestination[i].split("-")[1]);
+            if (tempDestination == null || colors[i] == null) {
+                System.out.println(ErrorMessage.ActionNotValid);
+                support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid);
+                return false;
+            }
+            destinations[i] = tempDestination;
+        }
+        return actionController.checkActionMoveStudent(player, colors, destinations);
+    }
+
+    /*
+    Get the steps of mother nature that the user wants to do and send them to the controller
+     */
+    private boolean moveMotherNature(String input, String nickname, Player player) {
+        Integer mnSteps = tryParse(input);
+        if (mnSteps == null) {
+            System.out.println(ErrorMessage.ActionNotValid);
+            support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid);
+            return false;
+        }
+        return actionController.checkActionMoveMN(player, mnSteps);
+    }
+
+    /*
+    Get the number of the cloud that the user wants to choose and send it to the controller
+     */
+    private boolean chooseCloud(String input, String nickname, Player player) {
+        Integer nOfCloud = tryParse(input);
+        if (nOfCloud == null) {
+            System.out.println(ErrorMessage.ActionNotValid);
+            support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid);
+            return false;
+        }
+        return actionController.checkActionCloud(player, nOfCloud);
+    }
+
+    /*
+    Get the character that the user wants to use and send it to the controller
+     */
+    private boolean playCharacter(String[] input, String nickname, Player player) {
+        Integer idOfCharacter = tryParse(input[1]);
+        if (idOfCharacter == null) {
+            System.out.println(ErrorMessage.ActionNotValid);
+            support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid);
+            return false;
+        }
+        String action = "";
+        if (input.length >= 3) {
+            action = input[2];
+        }
+        return actionController.checkActionCharacter(player, idOfCharacter, action);
+    }
+
+    /*
+    Called if an action is not recognised by the parser
+     */
+    private boolean reportError(String nickname) {
+        support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid);
+        System.out.println("Action not recognised");
+        return false;
     }
 
     public ActionController getActionController() {

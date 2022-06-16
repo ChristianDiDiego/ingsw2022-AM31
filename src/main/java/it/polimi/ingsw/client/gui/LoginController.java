@@ -43,6 +43,8 @@ public class LoginController implements Initializable {
     @FXML
     Label waitingForPlayers;
 
+    int numberOfPlayers;
+
     boolean notFirstPlayer = false;
 
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
@@ -105,6 +107,7 @@ public class LoginController implements Initializable {
         }
 
         support.firePropertyChange("numberOfPlayers", "",  numberOfPlayers );
+        this.numberOfPlayers = Integer.parseInt(numberOfPlayers);
         submitNumberOfPlayers.setVisible(false);
         radio2.setDisable(true);
         radio3.setDisable(true);
@@ -134,7 +137,9 @@ public class LoginController implements Initializable {
         textColor.setVisible(true);
         radioWhite.setVisible(true);
         radioBlack.setVisible(true);
-        radioGrey.setVisible(true);
+        if(numberOfPlayers == 3){
+            radioGrey.setVisible(true);
+        }
         submitColor.setVisible(true);
     }
 

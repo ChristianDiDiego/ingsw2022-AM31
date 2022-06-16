@@ -13,7 +13,7 @@ public class Controller {
 
     public Controller(Game game, GameHandler gameHandler) {
         this.gameHandler = gameHandler;
-        this.game= game;
+        this.game = game;
         this.turnController = new TurnController(this, gameHandler, this.game);
     }
 
