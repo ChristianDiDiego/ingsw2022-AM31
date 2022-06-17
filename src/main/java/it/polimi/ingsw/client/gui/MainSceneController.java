@@ -272,6 +272,11 @@ public class MainSceneController implements Initializable {
         this.endGame = status;
     }
 
+    /**
+     *Set a drag listener on the archipelago target
+     * when a drag is detected, it comunicate that is valid ONLY if the event has a string
+     * @param target archipelago that requires the listener
+     */
     private void setOnDragOverArchipelago(FlowPane target){
         target.setOnDragOver((DragEvent event) -> {
             //data is dragged over the target
@@ -284,6 +289,12 @@ public class MainSceneController implements Initializable {
         });
     }
 
+    /**
+     * Set a drop listener on the archipelago target
+     * if mother nature is detected on a valid position, call moveMN
+     * if a valid movement of a student is detected, create/add the student to the string of the movements
+     * @param target
+     */
     private void setOnDragDroppedOnArchipelago(FlowPane target)
     {
         target.setOnDragDropped((DragEvent event) -> {
@@ -316,7 +327,7 @@ public class MainSceneController implements Initializable {
                     return;
                 }
                 if(maxNumberOfMovedStudents == 0){
-                    //If the maxSteps is 0 it means that we are not in moveST phase
+                    //If the maxNumberOfMovedStudents is 0 it means that we are not in moveST phase
                     event.setDropCompleted(false);
                     event.consume();
                     return;
@@ -351,6 +362,11 @@ public class MainSceneController implements Initializable {
         });
     }
 
+    /**
+     * Set a drag listener on the Imageview image
+     * when image is dragged, it become invisible
+     * @param image
+     */
     private void setOnDragImageDone(ImageView image){
         image.setOnDragDone((DragEvent event) -> {
             /* the drag-and-drop gesture ended */
@@ -592,7 +608,7 @@ public class MainSceneController implements Initializable {
                         String destination = ""+0;
                         movedStudents += colorMoved + "-" + destination;
                         numberOfMovedStudents++;
-                        if(numberOfMovedStudents == 3){
+                        if(numberOfMovedStudents == maxNumberOfMovedStudents){
 
                             playMoveStudents(movedStudents);
                             movedStudents = "MOVEST ";
@@ -668,6 +684,11 @@ public class MainSceneController implements Initializable {
         }
     }
 
+    /**
+     * Add a click event listener on the GridPane cloud
+     * If the player is in the cloud phase, call playCloud
+     * @param cloud
+     */
     private void setOnClickCloud(GridPane cloud){
         cloud.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
