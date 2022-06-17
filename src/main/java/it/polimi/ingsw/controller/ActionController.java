@@ -53,18 +53,19 @@ public class ActionController {
                 System.out.println("played card id " + getCurrentPlayer().getUsedCharacter().getId());
 
                 if (getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER4.ordinal()) {
-                    System.out.println("Char 4 played");
                     Character4 character4 = (Character4) getCurrentPlayer().getUsedCharacter();
                     character4.calculateInfluence();
                 } else if (getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER5.ordinal()) {
                     Character5 character5 = (Character5) getCurrentPlayer().getUsedCharacter();
+                    character5.calculateInfluence();
                 } else if (getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER6.ordinal()) {
                     Character6 character6 = (Character6) getCurrentPlayer().getUsedCharacter();
                     character6.calculateInfluence();
                 }
-            }
+
             checkLessThanThreeArchipelagosOrCheckWinner();
             return;
+            }
         }
         for (Archipelago a : game.getListOfArchipelagos()) {
             //TODO: add message "influence not calculated because forbidden";
