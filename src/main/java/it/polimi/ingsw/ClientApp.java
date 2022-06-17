@@ -24,9 +24,9 @@ public class ClientApp {
         int port = 0;
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Insert ip server");
+        System.out.println("Insert ip server:");
         ip = scanner.nextLine();
-        System.out.println("Insert the port which server will listen on.");
+        System.out.println("Insert the port which server will listen on:");
         try {
             port = scanner.nextInt();
         } catch (InputMismatchException e) {

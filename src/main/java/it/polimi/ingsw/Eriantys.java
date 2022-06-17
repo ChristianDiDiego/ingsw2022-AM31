@@ -6,11 +6,9 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Eryantis {
+public class Eriantys {
     public static void main(String[] args) {
-
         while (!askNumber()) {}
-
     }
 
     private static boolean askNumber() {

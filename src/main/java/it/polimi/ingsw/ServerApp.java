@@ -28,7 +28,7 @@ public class ServerApp {
                 "                                                               \n" +
                 "                                                               ");
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Insert the port which server will listen on.");
+        System.out.println("Insert the port which server will listen on:");
         int port = 0;
 
         try {
