@@ -310,7 +310,7 @@ public class MainSceneController implements Initializable {
                         return;
                     }
                     int steps = calculateSteps(target.getAccessibleText());
-                    if(steps <= maxStepsMN){
+                    if(steps> 0 && steps <= maxStepsMN){
                         ImageView mn = new ImageView(event.getDragboard().getImage());
                         mn.setFitHeight(40);
                         mn.setFitWidth(40);
