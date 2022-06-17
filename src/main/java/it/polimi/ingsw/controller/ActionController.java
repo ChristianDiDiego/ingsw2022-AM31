@@ -51,28 +51,20 @@ public class ActionController {
             if (getCurrentPlayer().getUsedCharacter() != null) {
                 System.out.println("played card " + getCurrentPlayer().getUsedCharacter().getDescriptionOfPower());
                 System.out.println("played card id " + getCurrentPlayer().getUsedCharacter().getId());
-            }
 
-            if (getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER4.ordinal()) {
-                System.out.println("Char 4 played");
-                Character4 character4 = (Character4) getCurrentPlayer().getUsedCharacter();
-                character4.calculateInfluence();
-                return;
-            } else if (getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER5.ordinal()) {
-                Character5 character5 = (Character5) getCurrentPlayer().getUsedCharacter();
-                if (character5.calculateInfluence()) {
-                    turnController.getGameHandler().endGame();
-                } else {
-                    for (Player p : game.getListOfPlayer()) {
-                        checkWinner(p);
-                    }
+                if (getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER4.ordinal()) {
+                    System.out.println("Char 4 played");
+                    Character4 character4 = (Character4) getCurrentPlayer().getUsedCharacter();
+                    character4.calculateInfluence();
+                } else if (getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER5.ordinal()) {
+                    Character5 character5 = (Character5) getCurrentPlayer().getUsedCharacter();
+                } else if (getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER6.ordinal()) {
+                    Character6 character6 = (Character6) getCurrentPlayer().getUsedCharacter();
+                    character6.calculateInfluence();
                 }
-                return;
-            } else if (getCurrentPlayer().getUsedCharacter() != null && getCurrentPlayer().getUsedCharacter().getId() == CharactersEnum.CHARACTER6.ordinal()) {
-                Character6 character6 = (Character6) getCurrentPlayer().getUsedCharacter();
-                character6.calculateInfluence();
-                return;
             }
+            checkLessThanThreeArchipelagosOrCheckWinner();
+            return;
         }
         for (Archipelago a : game.getListOfArchipelagos()) {
             //TODO: add message "influence not calculated because forbidden";
@@ -149,15 +141,11 @@ public class ActionController {
                             if (p.getTeam() == teamMaxInfluence && p.getColorOfTowers() != null) {
                                 p.getMyBoard().getTowersOnBoard().removeTower();
                                 a.changeOwner(p);
-                                checkWinner(p);
                             }
                         }
                     }
                     checkUnification(a);
-                    if (game.getListOfArchipelagos().size() < 4) {
-                        turnController.getGameHandler().endGame();
-                    }
-                    break;
+                    checkLessThanThreeArchipelagosOrCheckWinner();
                 }
             } else if (a.getIsMNPresent() && a.getIsForbidden() == true) {
                 support.firePropertyChange("ErrorMessage", getCurrentPlayer().getNickname(), ErrorMessage.Forbidden);
@@ -428,13 +416,7 @@ public class ActionController {
                 if (character1.usePower(actionToUse)) {
                     playedCharacter = CharactersEnum.CHARACTER1.toString();
                     support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
-                    if (game.getListOfArchipelagos().size() < 4) {
-                        turnController.getGameHandler().endGame();
-                    } else {
-                        for (Player p : game.getListOfPlayer()) {
-                            checkWinner(p);
-                        }
-                    }
+                    checkLessThanThreeArchipelagosOrCheckWinner();
                     player.setUsedCharacter(character1);
                     return true;
                 } else {
@@ -624,5 +606,16 @@ public class ActionController {
             turnController.getGameHandler().endGameImmediately(p);
         }
     }
+
+    public void checkLessThanThreeArchipelagosOrCheckWinner(){
+        if (game.getListOfArchipelagos().size() < 4) {
+            turnController.getGameHandler().endGame();
+        } else {
+            for (Player p : game.getListOfPlayer()) {
+                checkWinner(p);
+            }
+        }
+    }
+
 
 }
