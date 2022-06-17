@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utilities.constants.Constants;
@@ -10,8 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,8 +19,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
-import javax.swing.text.html.ListView;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
@@ -33,7 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
-
+/**
+ * This class contains the controller to manage the principal scene of the game
+ */
 public class MainSceneController implements Initializable {
     private List<ImageView> towers = new ArrayList<>();
     private List<AnchorPane> professors = new ArrayList<>();
@@ -143,21 +140,37 @@ public class MainSceneController implements Initializable {
     private Stage stageBoard;
     private Stage stageCharacter;
 
+    private boolean endGame = false;
+    int sizeOldDeck = 0;
+
+    /**
+     * @return the loader of board scene
+     */
     public FXMLLoader getBoardSceneLoader() {
         return boardSceneLoader;
     }
 
+    /**
+     * @return the loader of character scene
+     */
     public FXMLLoader getCharacterSceneLoader() {
         return characterSceneLoader;
     }
-    private boolean endGame = false;
 
+    /**
+     * Add a listener in this scene
+     *
+     * @param pcl
+     */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
 
-    int sizeOldDeck = 0;
-
+    /**
+     * Receives the list of archipelagos still present and shows it
+     *
+     * @param listOfArchipelagos
+     */
     public void printArchipelagos(List<Archipelago> listOfArchipelagos) {
         for(FlowPane f : singleCellArchipelago) {
             f.getChildren().clear();
@@ -250,22 +263,22 @@ public class MainSceneController implements Initializable {
         });
     }
 
+    /**
+     * set true if the game is finished
+     *
+     * @param status
+     */
     public void setEndGame(boolean status) {
         this.endGame = status;
     }
 
-    /**
-     *
-     * @param target
-     */
     private void setOnDragOverArchipelago(FlowPane target){
         target.setOnDragOver((DragEvent event) -> {
-            /* data is dragged over the target */
-          //  System.out.println("onDragOver");
+            //data is dragged over the target
             if(event.getDragboard().hasString()){
                 event.acceptTransferModes(TransferMode.ANY);
             }
-            /* accept it only if it has a string data */
+            //accept it only if it has a string data
 
             event.consume();
         });
@@ -350,10 +363,22 @@ public class MainSceneController implements Initializable {
         });
     }
 
+    /**
+     * notifies the view that a student has been moved
+     *
+     * @param movedStudents
+     */
     private void playMoveStudents(String movedStudents){
         support.firePropertyChange("movedStudents", "", movedStudents );
     }
 
+    /**
+     * calculates the maximum number of steps of mother nature based
+     * on the card played in the current turn
+     *
+     * @param mnDestination
+     * @return
+     */
     private int calculateSteps(String mnDestination){
         int indexMnDestination = 0;
         //Find the index of the destination
@@ -383,8 +408,13 @@ public class MainSceneController implements Initializable {
 
         return mnSteps;
     }
-    private void playMoveMn(int mnSteps){
 
+    /**
+     * notifies the view that mother nature has been moved
+     *
+     * @param mnSteps
+     */
+    private void playMoveMn(int mnSteps){
         String moveMn = "MOVEMN " + mnSteps;
         support.firePropertyChange("moveMn", "", moveMn );
     }
@@ -404,7 +434,11 @@ public class MainSceneController implements Initializable {
         });
     }
 
-
+    /**
+     * notifies the view that a card has been played
+     *
+     * @param cardPower
+     */
     private void playCard(String cardPower){
         String playSelectedCard = "CARD " + cardPower;
         support.firePropertyChange("cardPlayed", "", playSelectedCard );
@@ -430,6 +464,11 @@ public class MainSceneController implements Initializable {
         });
     }
 
+    /**
+     * Receive this player's board and shows it in main scene
+     *
+     * @param receivedBoard
+     */
     public void printMyBoard(Board receivedBoard) {
 
         studentsInEntrance.getChildren().clear();
@@ -517,8 +556,7 @@ public class MainSceneController implements Initializable {
             event.consume();
         });
     }
-    private void setOnDragDroppedOnDiningRoom(StackPane diningRoomTarget)
-    {
+    private void setOnDragDroppedOnDiningRoom(StackPane diningRoomTarget) {
         diningRoomTarget.setOnDragDropped((DragEvent event) -> {
             /* data dropped */
             boolean success = false;
@@ -581,8 +619,12 @@ public class MainSceneController implements Initializable {
         });
     }
 
+    /**
+     * Receives the list of current turn's clouds and shows it
+     *
+     * @param cloudList
+     */
     public void printClouds(List<Cloud> cloudList){
-
         for(GridPane c : clouds){
             c.getChildren().clear();
         }
@@ -641,11 +683,22 @@ public class MainSceneController implements Initializable {
         });
     }
 
+    /**
+     * notifies the view that a cloud has been chosen by the player
+     *
+     * @param cloudSelected
+     */
     private void playCloud(String cloudSelected){
         String playSelectedCloud = "CLOUD " + cloudSelected;
         support.firePropertyChange("cloudPlayed", "", playSelectedCloud );
 
     }
+
+    /**
+     * Receives this player's deck and shows it in the main scene
+     *
+     * @param deck
+     */
     public void printDeck(Deck deck) {
         for(ImageView card : cards){
             card.setVisible(false);
@@ -665,6 +718,13 @@ public class MainSceneController implements Initializable {
         sizeOldDeck = deck.getLeftCards().size();
     }
 
+    /**
+     * Open the board scene when the board button is pressed.
+     * If the scene is already open puts it in the foreground
+     *
+     * @param event
+     * @throws IOException
+     */
     public void openBoardScene(ActionEvent event) throws IOException {
         if(stageBoard == null) {
             stageBoard = new Stage();
@@ -682,6 +742,13 @@ public class MainSceneController implements Initializable {
         }
     }
 
+    /**
+     * Open the character scene when the board button is pressed.
+     * If the scene is already open puts it in the foreground
+     *
+     * @param event
+     * @throws IOException
+     */
     public void openCharactersScene(ActionEvent event) throws IOException{
         if(stageCharacter == null) {
             stageCharacter = new Stage();
@@ -698,6 +765,11 @@ public class MainSceneController implements Initializable {
         }
     }
 
+    /**
+     * Receive the number of coins of this player and update the coin label
+     *
+     * @param coins
+     */
     public void printCoin(int coins) {
         coinPane.setVisible(true);
         coinLabel.setVisible(true);
@@ -706,6 +778,13 @@ public class MainSceneController implements Initializable {
         charactersButton.setVisible(true);
     }
 
+    /**
+     * Override of the method initialize to set all the components of the scene
+     * according to the game in progress
+     *
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image tower = new Image(getClass().getResourceAsStream("/images/tower.png"));
@@ -781,17 +860,38 @@ public class MainSceneController implements Initializable {
         return null;
     }
 
+    /**
+     * Set max number of moves mother nature can do in the current turn
+     *
+     * @param maxStepsMN
+     */
     public void setMaxStepsMN(int maxStepsMN){
         this.maxStepsMN = maxStepsMN;
     }
 
+    /**
+     * Set max number of students can be moved in this match
+     *
+     * @param maxNumberOfMovedStudents
+     */
     public void setMaxNumberOfMovedStudents(int maxNumberOfMovedStudents){
         this.maxNumberOfMovedStudents = maxNumberOfMovedStudents;
     }
+
+    /**
+     *
+     *
+     * @param isCardClickable
+     */
     public void setCardsClickable(boolean isCardClickable){
         this.cardsClickable = isCardClickable;
     }
 
+    /**
+     * Modify the message label to show the user instructions
+     *
+     * @param messageForUser
+     */
     public void setMessageForUserText(String messageForUser){
         if(!endGame) {
             this.messageForUser.setText(messageForUser);

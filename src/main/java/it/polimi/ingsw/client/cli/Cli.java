@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.cli;
 
-//import com.sun.tools.javac.code.Attribute;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utilities.*;
 import it.polimi.ingsw.utilities.constants.Constants;

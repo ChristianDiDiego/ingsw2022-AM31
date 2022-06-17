@@ -14,13 +14,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * This class contains the controller to manage the board scene
+ */
 public class BoardSceneController implements Initializable {
     Image blackTower = new Image(getClass().getResourceAsStream("/images/blacktower.png"));
     Image whiteTower = new Image(getClass().getResourceAsStream("/images/whitetower.png"));
