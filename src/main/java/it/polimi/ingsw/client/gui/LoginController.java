@@ -55,13 +55,22 @@ public class LoginController implements Initializable {
 
     @FXML
     Label errorMessagesLabel;
+
+    /**
+     * Add a listener to this scene
+     *
+     * @param pcl
+     */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
 
+    /**
+     * Sends to server the nickname chosen by the player
+     *
+     * @param event
+     */
     public void submitUsername(ActionEvent event) {
-
-
         try {
             errorMessagesLabel.setText("");
             username = usernameTextField.getText();
@@ -91,6 +100,11 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Sends to server the number of players the current player wants to play with
+     *
+     * @param event
+     */
     public void submitNumberOfPlayers(ActionEvent event){
         String numberOfPlayers = null;
         if(radio2.isSelected()) {
@@ -119,6 +133,11 @@ public class LoginController implements Initializable {
         submitMode.setVisible(true);
     }
 
+    /**
+     * Sends the mode in which the current player wants to play
+     *
+     * @param event
+     */
     public void submitMode(ActionEvent event){
         String mode = null;
         if(radiostd.isSelected()) {
@@ -143,6 +162,11 @@ public class LoginController implements Initializable {
         submitColor.setVisible(true);
     }
 
+    /**
+     * Sends the color of tower the current player wants to play with
+     *
+     * @param event
+     */
     public void submitColor(ActionEvent event){
         String color = null;
         if(radioWhite.isSelected()) {
@@ -158,6 +182,13 @@ public class LoginController implements Initializable {
         support.firePropertyChange("color", "",  color);
     }
 
+    /**
+     * Override of the method initialize to set all the components of the scene
+     * according to the game in progress
+     *
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         usernameText.setText("There is another player in setup, please wait...");
@@ -180,6 +211,12 @@ public class LoginController implements Initializable {
         waitingForPlayers.setVisible(false);
     }
 
+    /**
+     * Switch from login scene to the game's scene
+     *
+     * @return
+     * @throws IOException
+     */
     public MainSceneController switchToMainScene() throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("mainScene.fxml"));
@@ -187,20 +224,37 @@ public class LoginController implements Initializable {
         usernameText.getScene().setRoot(root);
         return loader.getController();
     }
+
+    /**
+     * If this player isn't the last one, shows the sign which invites
+     * him to wait for other players
+     *
+     */
     public void setWaitingForOtherPlayers(){
         waitingForPlayers.setVisible(true);
     }
 
+    /**
+     * Set true notFirstPlayer if this player isn't the first of the match
+     */
     public void setNotFirstPlayer(){
         notFirstPlayer = true;
     }
 
+    /**
+     * Set the initial window that will be displayed by the player
+     */
     public void allowSetup(){
         usernameText.setText("Welcome!");
         submitUsername.setVisible(true);
         usernameTextField.setVisible(true);
-
     }
+
+    /**
+     * Show a message to the player if the nickname chosen is already used
+     *
+     * @param message
+     */
     public void usernameAlreadyUsed(String message){
         errorMessagesLabel.setText(message);
         submitUsername.setVisible(true);
@@ -219,6 +273,11 @@ public class LoginController implements Initializable {
         submitColor.setVisible(false);
     }
 
+    /**
+     * Show a message to the player if the color chosen is already used
+     *
+     * @param message
+     */
     public void colorAlreadyUsed(String message){
         errorMessagesLabel.setText(message);
     }

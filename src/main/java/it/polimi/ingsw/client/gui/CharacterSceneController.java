@@ -69,10 +69,22 @@ public class CharacterSceneController implements Initializable {
 
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
+    /**
+     * Add a listener to this scene
+     *
+     * @param pcl
+     */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
 
+    /**
+     * Shows the characters of the game if the mode is expert
+     *
+     * @param id
+     * @param description
+     * @param price
+     */
     public void printCharacters(List<String> id, List<String> description, List<Integer> price){
         charactersId.clear();
         charactersPrice.clear();
@@ -80,7 +92,6 @@ public class CharacterSceneController implements Initializable {
         messageArea.setText("To select a character push the corresponding image. If the character's action requires some specifications, there will be a menu on the right");
         for(int i = 0; i < id.size(); i++){
             int idCharacter = Integer.parseInt(id.get(i));
-
             if(idCharacter == 6) {
                 colorBox.setVisible(true);
                 colorLabel.setVisible(true);
@@ -111,9 +122,13 @@ public class CharacterSceneController implements Initializable {
         }
     }
 
+    /**
+     * Add the possibility to click on the characters' image to play them
+     *
+     * @param character
+     */
     private void setOnClickCharacter(AnchorPane character){
         character.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
             @Override
             public void handle(MouseEvent event) {
                 int characterNumber = -1;
@@ -146,6 +161,11 @@ public class CharacterSceneController implements Initializable {
         });
     }
 
+    /**
+     * Shows the menu to select an archipelago in one of the characters needs it
+     *
+     * @param listReceived
+     */
     public void setArchipelagos(List<Archipelago> listReceived) {
         archipelagoBox.getItems().clear();
         for(int i = 0; i < listReceived.size(); i++) {
@@ -155,15 +175,30 @@ public class CharacterSceneController implements Initializable {
         archipelagoBox.getSelectionModel().select(0);
     }
 
+    /**
+     * Sets the wallet to see if the player has enough money to play the character
+     *
+     * @param coins
+     */
     public void setWallet(int coins) {
         wallet = coins;
     }
 
+    /**
+     * Plays a character who doesn't need further specifications
+     *
+     * @param characterSelected
+     */
     private void playSimpleCharacter(String characterSelected){
         String playSelectedCloud = "CHARACTER " + characterSelected;
         support.firePropertyChange("characterPlayed", "", playSelectedCloud);
     }
 
+    /**
+     * Plays the character 1 or 3 that need an archipelago on which to use the power
+     *
+     * @param characterSelected
+     */
     private void playCharacter1or3(String characterSelected) {
         if(archipelagoBox.getValue() != null) {
             String playSelectedCloud = "CHARACTER " + characterSelected + " " + archipelagoBox.getValue().toString();
@@ -171,6 +206,11 @@ public class CharacterSceneController implements Initializable {
         }
     }
 
+    /**
+     * Plays the character 6 who need a color to use the power
+     *
+     * @param characterSelected
+     */
     private void playCharacter6(String characterSelected) {
         if (colorBox.getValue() != null) {
             String playSelectedCloud = "CHARACTER " + characterSelected + " " + colorBox.getValue().toString();
@@ -178,6 +218,11 @@ public class CharacterSceneController implements Initializable {
         }
     }
 
+    /**
+     * Plays the character 7 who need four student for the swap
+     *
+     * @param characterSelected
+     */
     private void playCharacter7(String characterSelected) {
         if (colorBox.getValue() != null) {
             String playSelectedCloud = "CHARACTER " + characterSelected + " " + switchBox.get(0).getValue().toString() + "," + switchBox.get(1).getValue().toString() + "," + switchBox.get(2).getValue().toString() + "," + switchBox.get(3).getValue().toString();
@@ -185,6 +230,13 @@ public class CharacterSceneController implements Initializable {
         }
     }
 
+    /**
+     * Override of the method initialize to set all the components of the scene
+     * according to the game in progress
+     *
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         characters.add(character1);

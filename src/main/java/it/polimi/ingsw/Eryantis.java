@@ -14,15 +14,15 @@ public class Eryantis {
     }
 
     private static boolean askNumber() {
-        System.out.println("1- Client CLI \n2- Server \n3- Client GUI");
+        System.out.println("1- Server \n2- Client CLI \n3- Client GUI");
         Scanner scanner = new Scanner(System.in);
         int input = 0;
         try {
             input = scanner.nextInt();
 
             switch (input) {
-                case 1 -> ClientApp.main(null);
-                case 2 -> ServerApp.main(null);
+                case 1 -> ServerApp.main(null);
+                case 2 -> ClientApp.main(null);
                 case 3 -> ClientAppGui.main(null);
                 default -> throw new InputMismatchException();
             }

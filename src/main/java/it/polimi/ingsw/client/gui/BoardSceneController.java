@@ -25,7 +25,6 @@ public class BoardSceneController implements Initializable {
     Image blackTower = new Image(getClass().getResourceAsStream("/images/blacktower.png"));
     Image whiteTower = new Image(getClass().getResourceAsStream("/images/whitetower.png"));
     Image greyTower = new Image(getClass().getResourceAsStream("/images/greytower.png"));
-
     Image greenProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profgreen.png"));
     Image redProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profred.png"));
     Image yellowProfessor = new Image(getClass().getResourceAsStream("/images/professorsAndStudents/profyellow.png"));
@@ -78,15 +77,24 @@ public class BoardSceneController implements Initializable {
 
     List<GridPane> pb = new ArrayList<>();
 
-    //Font font = Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 18);
     Font font = Font.font("Calisto MT", FontPosture.ITALIC, 18);
 
     private List<Board> receivedBoards = new ArrayList<>();
 
+    /**
+     * Set the boards received from GUI class
+     *
+     * @param boards
+     */
     public void setReceivedBoards(List<Board> boards) {
         this.receivedBoards = boards;
     }
 
+    /**
+     * For all players writes near the name the card used in the current turn
+     *
+     * @param players
+     */
     public void printLastUsedCard(List<Player> players) {
         for(int i = 0; i < players.size(); i++) {
             if(players.get(i).getLastUsedCard() != null) {
@@ -98,6 +106,9 @@ public class BoardSceneController implements Initializable {
         }
     }
 
+    /**
+     * For all player shows the personal board
+     */
     public void showAllBoards(){
 
         switch (receivedBoards.size()){
@@ -114,10 +125,7 @@ public class BoardSceneController implements Initializable {
             case 4:
         }
 
-
-
         for(int j = 0; j < receivedBoards.size(); j++) {
-
             ob.get(j).setText("Player: " + receivedBoards.get(j).getNickname());
             ob.get(j).setFont(font);
 
@@ -126,8 +134,7 @@ public class BoardSceneController implements Initializable {
             tb.get(j).getChildren().clear();
             pb.get(j).getChildren().clear();
 
-            //tower
-
+            //towers
             int row = 0;
             int column = 0;
             for(int i = 0; i < receivedBoards.get(j).getTowersOnBoard().getNumberOfTowers(); i++){
@@ -136,7 +143,6 @@ public class BoardSceneController implements Initializable {
                     case WHITE -> t = new ImageView(whiteTower);
                     case GREY -> t = new ImageView(greyTower);
                     default -> t = new ImageView(blackTower);
-
                 }
                 t.setFitHeight(40);
                 t.setFitWidth(40);
@@ -148,7 +154,6 @@ public class BoardSceneController implements Initializable {
                     row ++;
                 }
             }
-
 
             //students in entrance
             System.out.println("I should print students in entrance");
@@ -179,7 +184,7 @@ public class BoardSceneController implements Initializable {
                 }
             }
 
-            //professor
+            //professors
             row=0;
             column = 0;
             for(int i = 0; i<Constants.NUMBEROFKINGDOMS; i++){
@@ -194,7 +199,6 @@ public class BoardSceneController implements Initializable {
             }
 
             //students in dining room
-
             for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
                 for (int k = 0; k < receivedBoards.get(j).getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]); k++) {
                     ImageView st = new ImageView(students.get(i));
@@ -208,6 +212,13 @@ public class BoardSceneController implements Initializable {
         }
     }
 
+    /**
+     * Override of the method initialize to set all the components of the scene
+     * according to the game in progress
+     *
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -215,7 +226,6 @@ public class BoardSceneController implements Initializable {
         tb.add(tb2);
         tb.add(tb3);
         tb.add(tb4);
-
 
         seb.add(seb1);
         seb.add(seb2);
@@ -227,7 +237,6 @@ public class BoardSceneController implements Initializable {
         sdrb.add(sdrb2);
         sdrb.add(sdrb3);
         sdrb.add(sdrb4);
-
 
         pb.add(pb1);
         pb.add(pb2);
@@ -255,7 +264,5 @@ public class BoardSceneController implements Initializable {
         students.add(yellowStudent);
         students.add(pinkStudent);
         students.add(blueStudent);
-
-
     }
 }
