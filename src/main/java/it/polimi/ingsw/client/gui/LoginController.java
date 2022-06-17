@@ -9,10 +9,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -47,8 +49,8 @@ public class LoginController implements Initializable {
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     @FXML
-    RadioButton radio2,radio3,radio4,radiostd,radioexp,radioWhite,radioBlack,radioGrey;
-    String username ;
+    RadioButton radio2, radio3, radio4, radiostd, radioexp, radioWhite, radioBlack, radioGrey;
+    String username;
 
     @FXML
     Label errorMessagesLabel;
@@ -69,30 +71,31 @@ public class LoginController implements Initializable {
      */
     public void submitUsername(ActionEvent event) {
         try {
-            errorMessagesLabel.setText("");
-            username = usernameTextField.getText();
-            usernameText.setText("Welcome " + username);
-            support.firePropertyChange("username", "", username );
-            submitUsername.setVisible(false);
-            usernameTextField.setVisible(false);
+            if (!Objects.equals(usernameTextField.getText(), "")) {
 
-            if(!notFirstPlayer){
-                textHowManyPlayers.setVisible(true);
-                radio2.setVisible(true);
-                radio3.setVisible(true);
-                radio4.setVisible(true);
-                submitNumberOfPlayers.setVisible(true);
-            }else{
-                textColor.setVisible(true);
-                radioWhite.setVisible(true);
-                radioBlack.setVisible(true);
-                radioGrey.setVisible(true);
-                submitColor.setVisible(true);
+                errorMessagesLabel.setText("");
+                username = usernameTextField.getText();
+                usernameText.setText("Welcome " + username);
+                support.firePropertyChange("username", "", username);
+                submitUsername.setVisible(false);
+                usernameTextField.setVisible(false);
+
+                if (!notFirstPlayer) {
+                    textHowManyPlayers.setVisible(true);
+                    radio2.setVisible(true);
+                    radio3.setVisible(true);
+                    radio4.setVisible(true);
+                    submitNumberOfPlayers.setVisible(true);
+                } else {
+                    textColor.setVisible(true);
+                    radioWhite.setVisible(true);
+                    radioBlack.setVisible(true);
+                    radioGrey.setVisible(true);
+                    submitColor.setVisible(true);
+                }
+
             }
-
-
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             usernameText.setText("error");
         }
     }
@@ -102,22 +105,20 @@ public class LoginController implements Initializable {
      *
      * @param event
      */
-    public void submitNumberOfPlayers(ActionEvent event){
+    public void submitNumberOfPlayers(ActionEvent event) {
         String numberOfPlayers = null;
-        if(radio2.isSelected()) {
+        if (radio2.isSelected()) {
             System.out.println(radio2.getText());
             numberOfPlayers = radio2.getText();
-        }
-        else if(radio3.isSelected()) {
+        } else if (radio3.isSelected()) {
             System.out.println(radio3.getText());
             numberOfPlayers = radio3.getText();
-        }
-        else if(radio4.isSelected()) {
+        } else if (radio4.isSelected()) {
             System.out.println(radio4.getText());
             numberOfPlayers = radio4.getText();
         }
 
-        support.firePropertyChange("numberOfPlayers", "",  numberOfPlayers );
+        support.firePropertyChange("numberOfPlayers", "", numberOfPlayers);
         this.numberOfPlayers = Integer.parseInt(numberOfPlayers);
         submitNumberOfPlayers.setVisible(false);
         radio2.setDisable(true);
@@ -135,17 +136,17 @@ public class LoginController implements Initializable {
      *
      * @param event
      */
-    public void submitMode(ActionEvent event){
+    public void submitMode(ActionEvent event) {
         String mode = null;
-        if(radiostd.isSelected()) {
+        if (radiostd.isSelected()) {
             System.out.println(radiostd.getText());
             mode = "0";
-        } else if(radioexp.isSelected()) {
+        } else if (radioexp.isSelected()) {
             System.out.println(radioexp.getText());
             mode = "1";
         }
 
-        support.firePropertyChange("mode", "",  mode );
+        support.firePropertyChange("mode", "", mode);
         radiostd.setDisable(true);
         radioexp.setDisable(true);
         submitMode.setVisible(false);
@@ -153,7 +154,7 @@ public class LoginController implements Initializable {
         textColor.setVisible(true);
         radioWhite.setVisible(true);
         radioBlack.setVisible(true);
-        if(numberOfPlayers == 3){
+        if (numberOfPlayers == 3) {
             radioGrey.setVisible(true);
         }
         submitColor.setVisible(true);
@@ -164,19 +165,19 @@ public class LoginController implements Initializable {
      *
      * @param event
      */
-    public void submitColor(ActionEvent event){
+    public void submitColor(ActionEvent event) {
         String color = null;
-        if(radioWhite.isSelected()) {
+        if (radioWhite.isSelected()) {
             System.out.println(radioWhite.getText());
             color = "0";
-        } else if(radioBlack.isSelected()) {
+        } else if (radioBlack.isSelected()) {
             System.out.println(radioBlack.getText());
             color = "1";
-        } else if(radioGrey.isSelected()) {
+        } else if (radioGrey.isSelected()) {
             System.out.println(radioGrey.getText());
             color = "2";
         }
-        support.firePropertyChange("color", "",  color);
+        support.firePropertyChange("color", "", color);
     }
 
     /**
@@ -225,23 +226,22 @@ public class LoginController implements Initializable {
     /**
      * If this player isn't the last one, shows the sign which invites
      * him to wait for other players
-     *
      */
-    public void setWaitingForOtherPlayers(){
+    public void setWaitingForOtherPlayers() {
         waitingForPlayers.setVisible(true);
     }
 
     /**
      * Set true notFirstPlayer if this player isn't the first of the match
      */
-    public void setNotFirstPlayer(){
+    public void setNotFirstPlayer() {
         notFirstPlayer = true;
     }
 
     /**
      * Set the initial window that will be displayed by the player
      */
-    public void allowSetup(){
+    public void allowSetup() {
         usernameText.setText("Welcome!");
         submitUsername.setVisible(true);
         usernameTextField.setVisible(true);
@@ -252,7 +252,7 @@ public class LoginController implements Initializable {
      *
      * @param message
      */
-    public void usernameAlreadyUsed(String message){
+    public void usernameAlreadyUsed(String message) {
         errorMessagesLabel.setText(message);
         submitUsername.setVisible(true);
         usernameTextField.setVisible(true);
@@ -275,7 +275,7 @@ public class LoginController implements Initializable {
      *
      * @param message
      */
-    public void colorAlreadyUsed(String message){
+    public void colorAlreadyUsed(String message) {
         errorMessagesLabel.setText(message);
     }
 }
