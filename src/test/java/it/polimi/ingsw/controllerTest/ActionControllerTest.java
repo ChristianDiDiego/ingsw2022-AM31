@@ -9,8 +9,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.expertMode.*;
-import it.polimi.ingsw.utilities.ListOfBoards;
-import it.polimi.ingsw.utilities.constants.Constants;
+import it.polimi.ingsw.utilities.Constants;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

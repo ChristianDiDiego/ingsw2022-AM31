@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.Archipelago;
 import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Island;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.utilities.constants.Constants;
+import it.polimi.ingsw.utilities.Constants;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

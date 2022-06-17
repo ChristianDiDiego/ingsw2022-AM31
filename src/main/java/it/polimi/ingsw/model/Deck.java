@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.utilities.constants.Constants;
-import it.polimi.ingsw.view.RemoteView;
+import it.polimi.ingsw.utilities.Constants;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

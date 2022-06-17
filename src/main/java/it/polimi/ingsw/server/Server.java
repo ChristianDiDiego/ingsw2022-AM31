@@ -2,7 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.utilities.ErrorMessage;
 import it.polimi.ingsw.utilities.ServerMessage;
-import it.polimi.ingsw.utilities.constants.Constants;
+import it.polimi.ingsw.utilities.Constants;
 import it.polimi.ingsw.controller.GameHandler;
 import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Player;

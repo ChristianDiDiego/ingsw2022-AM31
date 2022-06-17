@@ -2,8 +2,12 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utilities.*;
-import it.polimi.ingsw.utilities.constants.Constants;
+import it.polimi.ingsw.utilities.Constants;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.utilities.Lists.ListOfArchipelagos;
+import it.polimi.ingsw.utilities.Lists.ListOfBoards;
+import it.polimi.ingsw.utilities.Lists.ListOfClouds;
+import it.polimi.ingsw.utilities.Lists.ListOfPlayers;
 
 import java.io.*;
 import java.net.*;

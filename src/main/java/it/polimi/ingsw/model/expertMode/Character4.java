@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.expertMode;
 
-import it.polimi.ingsw.utilities.constants.Constants;
+import it.polimi.ingsw.utilities.Constants;
 import it.polimi.ingsw.model.*;
 
 /**

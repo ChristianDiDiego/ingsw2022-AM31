@@ -1,10 +1,7 @@
 package it.polimi.ingsw.model.expertMode;
 
-import it.polimi.ingsw.utilities.constants.Constants;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.StudsAndProfsColor;
-import it.polimi.ingsw.model.board.DiningRoom;
-import it.polimi.ingsw.model.board.Entrance;
 
 /**
  * image 9 in image folder ;

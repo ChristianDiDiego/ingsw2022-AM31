@@ -1,13 +1,9 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.model.ColorOfTower;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.utilities.ServerMessage;
-import it.polimi.ingsw.utilities.constants.Constants;
-import it.polimi.ingsw.view.RemoteView;
+import it.polimi.ingsw.utilities.Constants;
 
-import javax.sound.midi.Soundbank;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.*;

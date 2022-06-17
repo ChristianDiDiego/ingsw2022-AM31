@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.board;
 
-import it.polimi.ingsw.utilities.constants.Constants;
+import it.polimi.ingsw.utilities.Constants;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 
 import java.beans.PropertyChangeListener;

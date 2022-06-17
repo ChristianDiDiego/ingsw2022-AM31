@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.utilities.constants.Constants;
+import it.polimi.ingsw.utilities.Constants;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

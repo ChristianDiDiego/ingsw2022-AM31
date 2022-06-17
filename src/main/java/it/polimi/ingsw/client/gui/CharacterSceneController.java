@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.model.Archipelago;
-import it.polimi.ingsw.utilities.constants.Constants;
+import it.polimi.ingsw.utilities.Constants;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

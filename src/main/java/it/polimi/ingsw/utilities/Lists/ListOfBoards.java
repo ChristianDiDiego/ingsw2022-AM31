@@ -1,4 +1,4 @@
-package it.polimi.ingsw.utilities;
+package it.polimi.ingsw.utilities.Lists;
 
 import it.polimi.ingsw.model.board.Board;
 
