@@ -18,33 +18,30 @@ The server app that the server needs to start
 public class ServerApp {
     static PrintStream ps = new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8);
 
-    public static void main( String[] args )
-    {
-
-        ps.println("\n" +
-                "███████╗██████╗ ██╗   ██╗ █████╗ ███╗   ██╗████████╗██╗███████╗\n" +
-                "██╔════╝██╔══██╗╚██╗ ██╔╝██╔══██╗████╗  ██║╚══██╔══╝██║██╔════╝\n" +
-                "█████╗  ██████╔╝ ╚████╔╝ ███████║██╔██╗ ██║   ██║   ██║███████╗\n" +
-                "██╔══╝  ██╔══██╗  ╚██╔╝  ██╔══██║██║╚██╗██║   ██║   ██║╚════██║\n" +
-                "███████╗██║  ██║   ██║   ██║  ██║██║ ╚████║   ██║   ██║███████║\n" +
-                "╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚══════╝\n" +
-                "                                                               \n");
+    public static void main( String[] args ) {
+        ps.println("" +
+                "███████ ██████  ██  █████  ███    ██ ████████ ██    ██ ███████ \n" +
+                "██      ██   ██ ██ ██   ██ ████   ██    ██     ██  ██  ██      \n" +
+                "█████   ██████  ██ ███████ ██ ██  ██    ██      ████   ███████ \n" +
+                "██      ██   ██ ██ ██   ██ ██  ██ ██    ██       ██         ██ \n" +
+                "███████ ██   ██ ██ ██   ██ ██   ████    ██       ██    ███████ \n" +
+                "                                                               \n" +
+                "                                                               ");
         Scanner scanner = new Scanner(System.in);
-    //    System.out.println(">Insert the port which server will listen on.");
-     //   System.out.print(">");
-        int port = 5000;
-        /*
+        System.out.println("Insert the port which server will listen on.");
+        int port = 0;
+
         try {
             port = scanner.nextInt();
         } catch (InputMismatchException e) {
             System.err.println("Numeric format requested, application will now close...");
             System.exit(-1);
         }
+
         if (port < 0 || (port > 0 && port < 1024)) {
             System.err.println("Error: ports accepted started from 1024! Please insert a new value.");
             main(null);
         }
-        */
 
         Server server = null;
         try {
@@ -54,4 +51,5 @@ public class ServerApp {
             throw new RuntimeException(e);
         }
     }
+
 }

@@ -17,8 +17,6 @@ import java.util.List;
  * This class contains the methods that allow the client to read messages/object from the server and print them
  */
 public class Cli{
-    //private final PrintStream output;
-    //private final Scanner input;
     private final String ip;
     private final int port;
     private boolean active = true;
@@ -34,15 +32,30 @@ public class Cli{
         this.lockPrint = new Object();
     }
 
+    /**
+     * Returns the value of active which indicates whether the cli is still active
+     *
+     * @return active
+     */
     public synchronized boolean isActive() {
         return active;
     }
 
+    /**
+     * Set the value of active
+     *
+     * @param active
+     */
     public synchronized void setActive(boolean active) {
         this.active = active;
     }
 
-
+    /**
+     * Thread that allows to read messages from the socket asynchronously.
+     * based on the type received, invoke a different print method
+     *
+     * @param socketIn
+     */
     public Thread asyncReadFromSocket(final ObjectInputStream socketIn) {
 
         Thread t = new Thread(new Runnable() {
@@ -66,7 +79,6 @@ public class Cli{
                     }
                 } catch (Exception e) {
                     setActive(false);
-                    //termino
                 }
             }
         });
@@ -76,11 +88,10 @@ public class Cli{
 
 
     /**
-     * in modo asincono mando la mia scelta
+     * Thread that allows to send messages asynchronously
      *
      * @param stdin
      * @param socketOut
-     * @return
      */
     public Thread asyncWriteToSocket(final Scanner stdin,final PrintWriter socketOut) {
         Thread t = new Thread(new Runnable() {
@@ -106,25 +117,26 @@ public class Cli{
     }
 
     /**
-     * TODO: add link to full rules
-     * ha un metodo run che chiama il setup del nuovo player, poi chiama riceviInput
-     * ha un metodo riceviInput che è sempre in ascolto e ogni volta
-     * invia tutti i messaggi che riceve al parser
+     * Prints the logo of the game
      */
 
     public void printLogo () {
-        ps.println("\n" +
-                "███████╗██████╗ ██╗   ██╗ █████╗ ███╗   ██╗████████╗██╗███████╗\n" +
-                "██╔════╝██╔══██╗╚██╗ ██╔╝██╔══██╗████╗  ██║╚══██╔══╝██║██╔════╝\n" +
-                "█████╗  ██████╔╝ ╚████╔╝ ███████║██╔██╗ ██║   ██║   ██║███████╗\n" +
-                "██╔══╝  ██╔══██╗  ╚██╔╝  ██╔══██║██║╚██╗██║   ██║   ██║╚════██║\n" +
-                "███████╗██║  ██║   ██║   ██║  ██║██║ ╚████║   ██║   ██║███████║\n" +
-                "╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚══════╝\n" +
-                "                                                               \n");
-
+        ps.println("" +
+                "███████ ██████  ██  █████  ███    ██ ████████ ██    ██ ███████ \n" +
+                "██      ██   ██ ██ ██   ██ ████   ██    ██     ██  ██  ██      \n" +
+                "█████   ██████  ██ ███████ ██ ██  ██    ██      ████   ███████ \n" +
+                "██      ██   ██ ██ ██   ██ ██  ██ ██    ██       ██         ██ \n" +
+                "███████ ██   ██ ██ ██   ██ ██   ████    ██       ██    ███████ \n" +
+                "                                                               \n" +
+                "                                                               ");
         ps.println("\nCreators: Carmine Faino, Christian Di Diego, Federica Di Filippo");
     }
 
+    /**
+     * Receives a deck from asyncReadFromSocket and prints it
+     *
+     * @param deck
+     */
     public void printMyDeck (Deck deck){
         synchronized (lockPrint){
             ps.println("YOUR DECK~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -135,6 +147,11 @@ public class Cli{
         }
     }
 
+    /**
+     * Receives the list of the match's players and print the last card played by each player
+     *
+     * @param players
+     */
     public void printLastUsedCards (List<Player> players) {
         synchronized (lockPrint) {
             ps.println("\nCARDS PLAYED IN THIS TURN~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -154,6 +171,11 @@ public class Cli{
         }
     }
 
+    /**
+     * Receives the list of players' boards and prints each of the boards
+     *
+     * @param boards
+     */
     public void printBoard(List<Board> boards) {
         synchronized (lockPrint) {
             String green, red, yellow, pink, blue;
@@ -170,7 +192,11 @@ public class Cli{
                 }
 
                 StringBuilder boardString = new StringBuilder();
+
+                //print player's nickname
                 boardString.append(ColorsCli.RESET).append("    Board of player: " + b.getNickname() + "\n").append(ColorsCli.RESET);
+
+                //print dining room
                 for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
                     boardString.append(ColorsCli.RESET).append("    ").append(ColorsCli.RESET);
                     for (int k = 0; k < nSDN[j]; k++) {
@@ -191,12 +217,15 @@ public class Cli{
                     boardString.append(ColorsCli.BLACK).append("\n").append(ColorsCli.BLACK);
                 }
 
+                //print entrance room
                 boardString.append(ColorsCli.RESET).append("    Students in entrance: \n    ").append(ColorsCli.RESET);
                 for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
                     for (int k = 0; k < nSE[i]; k++) {
                         boardString.append(ColorsCli.getColorByNumber(i)).append("● ").append(ColorsCli.getColorByNumber(i));
                     }
                 }
+
+                //print towers
                 boardString.append(ColorsCli.RESET).append("\n    Towers on board: \n    ").append(ColorsCli.RESET);
                 for (int i = 0; i < nT; i++) {
                     boardString.append(ColorsCli.RESET).append("♜ ").append(ColorsCli.BLACK).append(ColorsCli.RESET);
@@ -208,6 +237,11 @@ public class Cli{
         }
     }
 
+    /**
+     * Receives the list of archipelagos still present and prints them
+     *
+     * @param archipelagos
+     */
     public void printArchipelago(List<Archipelago> archipelagos) {
         synchronized (lockPrint) {
             StringBuilder archipelago = new StringBuilder();
@@ -238,6 +272,11 @@ public class Cli{
         }
     }
 
+    /**
+     * Receives the list of current turn's clouds and prints them
+     *
+     * @param clouds
+     */
     public void printCloud (List<Cloud> clouds) {
         synchronized (lockPrint) {
             StringBuilder cloud = new StringBuilder();
@@ -261,6 +300,14 @@ public class Cli{
         }
     }
 
+    /**
+     * Thread that every 10 seconds sends a ping to the server and
+     * waits 5 seconds maximum to receive the reply. if the answer does
+     * not arrive it means that the server is offline and the cli will be closed
+     *
+     * @param geek is the ip address of the server
+     * @return
+     */
     public Thread pingToServer(InetAddress geek) {
         Thread t = new Thread(() -> {
             try {
@@ -279,6 +326,12 @@ public class Cli{
         return t;
     }
 
+    /**
+     * Receives a string and prints it. If the string is a string that indicates that
+     * the connection is closed, the cli closes
+     *
+     * @param s
+     */
     private void manageString(String s){
         ps.println(s);
         if(s.equalsIgnoreCase(ServerMessage.connectionClosed)){
@@ -286,7 +339,11 @@ public class Cli{
         }
     }
 
-
+    /**
+     * Run method of the class CLI
+     *
+     * @throws IOException
+     */
     public void run() throws IOException {
         printLogo();
         socket = new Socket();

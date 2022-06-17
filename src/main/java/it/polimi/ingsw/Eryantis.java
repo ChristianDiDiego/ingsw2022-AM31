@@ -14,20 +14,20 @@ public class Eryantis {
     }
 
     private static boolean askNumber() {
-        System.out.println("1- Client \n2- Server \n3- Gui");
+        System.out.println("1- Client CLI \n2- Server \n3- Client GUI");
         Scanner scanner = new Scanner(System.in);
         int input = 0;
         try {
             input = scanner.nextInt();
 
+            switch (input) {
+                case 1 -> ClientApp.main(null);
+                case 2 -> ServerApp.main(null);
+                case 3 -> ClientAppGui.main(null);
+                default -> throw new InputMismatchException();
+            }
 
-        switch (input) {
-            case 1 -> ClientApp.main(null);
-            case 2 -> ServerApp.main(null);
-            case 3 -> ClientAppGui.main(null);
-            default -> throw new InputMismatchException();
-        }
-        return true;
+            return true;
         } catch (InputMismatchException e) {
             System.out.println("Please choice a number...");
             return false;

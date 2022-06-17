@@ -29,9 +29,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * This class contains the methods that allow the client to read messages/object from the server
+ * and shows them in the game's window
+ */
 public class Gui extends Application implements PropertyChangeListener {
-    //private  String ip;
-    //private int port = 5000;
     Socket socket;
     private boolean active = true;
     PrintWriter socketOut;
@@ -57,15 +59,17 @@ public class Gui extends Application implements PropertyChangeListener {
         this.active = active;
     }
 
-
-    public Gui(String ip, int port) {
-        System.out.println("Received ip " + ip +" port " + port);
-    }
-
     public Gui() {
 
     }
 
+    /**
+     * Thread that allows to read messages from the socket asynchronously.
+     * based on the type received, invoke a different print method
+     *
+     * @param socketIn
+     * @return the thread
+     */
     public Thread asyncReadFromSocket(final ObjectInputStream socketIn) {
 
         Thread t = new Thread(new Runnable() {
@@ -99,6 +103,14 @@ public class Gui extends Application implements PropertyChangeListener {
         });
         return t;
     }
+
+    /**
+     * Thread that every 10 seconds sends a ping to the server and
+     * waits 5 seconds maximum to receive the reply. if the answer does
+     * not arrive it means that the server is offline and the cli will be closed
+     *
+     * @param geek is the ip address of the server
+     */
     public Thread pingToServer(InetAddress geek) {
         Thread t = new Thread(() -> {
             try {
@@ -116,6 +128,11 @@ public class Gui extends Application implements PropertyChangeListener {
         return t;
     }
 
+    /**
+     * Run method of the class GUI
+     *
+     * @throws IOException
+     */
     public void run() throws IOException {
         socket = new Socket();
         System.out.println("Mi connetto a "+ ip + " " + port);
@@ -127,29 +144,21 @@ public class Gui extends Application implements PropertyChangeListener {
         socketOut = new PrintWriter(socket.getOutputStream());
         InetAddress geek = socket.getInetAddress();
 
+        Thread t0 = asyncReadFromSocket(socketIn);
+        Thread t2 = pingToServer(geek);
 
-       // try{
-            Thread t0 = asyncReadFromSocket(socketIn);
-            Thread t2 = pingToServer(geek);
-
-            t0.start();
-            t2.start();
-            /*
-            t2.join();
-            while (isActive());
-            t0.interrupt();
-            t2.interrupt();
-        } catch(InterruptedException | NoSuchElementException e){
-            System.out.println("Connection closed from the client side");
-        } finally {
-            socketIn.close();
-           // socketOut.close();
-        }
-
-         */
+        t0.start();
+        t2.start();
     }
 
 
+    /**
+     * Start method for javafx. it also allows to enter
+     * the ip and the port of the server
+     *
+     * @param stage
+     * @throws Exception
+     */
     @Override
     public void start(Stage stage) throws Exception {
         Scanner in;
@@ -187,8 +196,12 @@ public class Gui extends Application implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Allows to quit from game just closing the game's window
+     *
+     * @param stage
+     */
     private void logout(Stage stage){
-
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Logout");
         alert.setHeaderText("You're about to quit!");
@@ -202,20 +215,34 @@ public class Gui extends Application implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Main method of the class
+     *
+     * @param args
+     */
     public void main(String[] args) {
         launch(args);
-        //send args to launch method and start
     }
 
+    /**
+     * Send the string that are coming from the gui interface
+     *
+     * @param evt A PropertyChangeEvent object describing the event source
+     *          and the property that has changed.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        //Send the string that are coming from the gui interface (MainSceneController)
         send(evt.getNewValue().toString());
         switch(evt.getPropertyName()){
            case "username" -> setNickname(evt.getNewValue().toString());
         }
     }
 
+    /**
+     * Allows to send messages through the socket
+     *
+     * @param message
+     */
     public synchronized void send(String message) {
         String toBeSent = message + "\n";
         Scanner scanner = new Scanner(toBeSent);
@@ -224,14 +251,27 @@ public class Gui extends Application implements PropertyChangeListener {
         System.out.println("sent " + message);
     }
 
+    /**
+     * @return the player's nickname
+     */
     public String getNickname() {
         return nickname;
     }
 
+    /**
+     * Set the player's nickname
+     *
+     * @param nickname
+     */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
+    /**
+     * Read a string and switch the correct method
+     *
+     * @param inputString
+     */
     private void manageStringInput(String inputString){
         //NOTE: I cannot use a switch because I need to check if strings CONTAINS a word, not always EQUALS
         System.out.println(inputString);
@@ -246,7 +286,7 @@ public class Gui extends Application implements PropertyChangeListener {
         else if(inputString.equalsIgnoreCase(ServerMessage.connectionClosed)){setActive(false);}
         else if(inputString.equalsIgnoreCase(ErrorMessage.ColorNotValid)){Platform.runLater(()-> {loginController.colorAlreadyUsed(inputString);});}
 
-        else if(inputString.equalsIgnoreCase(ServerMessage.waitingOtherPlayers) || inputString.equalsIgnoreCase(ServerMessage.waitingOldPlayers)){
+        else if(inputString.equalsIgnoreCase(ServerMessage.waitingOtherPlayers) || inputString.contains(ServerMessage.waitingOldPlayers)){
             loginController.setWaitingForOtherPlayers();}
 
         else if(inputString.contains("For this round you can do")){setMaxSteps(inputString);}
@@ -274,17 +314,23 @@ public class Gui extends Application implements PropertyChangeListener {
 
     }
 
-    public static int firstDigit(int n)
-    {
-        // Remove last digit from number
-        // till only one digit is left
+    /**
+     * Remove last digit from number till only one digit is left
+     *
+     * @param n
+     * @return
+     */
+    public static int firstDigit(int n) {
         while (n >= 10)
             n /= 10;
-
-        // return the first digit
         return n;
     }
 
+    /**
+     * Receives the list of players' boards and shows in mainScene each of the them
+     *
+     * @param listOfBoards
+     */
     private void manageListOfBoards(ListOfBoards listOfBoards){
         Board board = findPlayerBoard(listOfBoards);
         Platform.runLater(()-> {
@@ -294,12 +340,25 @@ public class Gui extends Application implements PropertyChangeListener {
         });
     }
 
+    /**
+     * Receives the list of the match's players and shows the last card played by each player
+     * in boardScene
+     *
+     * @param listOfPlayers
+     */
     private void manageListOfPlayers(ListOfPlayers listOfPlayers) {
         Platform.runLater(()-> {
             boardSceneController.printLastUsedCard(listOfPlayers.getPlayers());
         });
     }
 
+    /**
+     * From the list of boards of all player return the board of the player who is using
+     * this GUI
+     *
+     * @param listOfBoards
+     * @return
+     */
     private Board findPlayerBoard(ListOfBoards listOfBoards){
         for(Board b : listOfBoards.getBoards()){
             if(b.getNickname().equals(nickname)){
@@ -309,6 +368,11 @@ public class Gui extends Application implements PropertyChangeListener {
         return null;
     }
 
+    /**
+     * Receives the list of archipelagos still present and shows them in mainScene
+     *
+     * @param listOfArchipelagos
+     */
     private void manageListOfArchipelagos(ListOfArchipelagos listOfArchipelagos){
         Platform.runLater(()-> {
             mainSceneController.printArchipelagos(listOfArchipelagos.getArchipelagos());
@@ -316,12 +380,23 @@ public class Gui extends Application implements PropertyChangeListener {
         });
     }
 
+    /**
+     * Receives the number of coins of this player and shows it in mainScene
+     *
+     * @param coin
+     */
     private void manageCoins(int coin){
         Platform.runLater(()-> {
             mainSceneController.printCoin(coin);
             characterSceneController.setWallet(coin);
         });
     }
+
+    /**
+     * Receives the list of current turn's clouds and shows them in mainScene
+     *
+     * @param listOfClouds
+     */
     private void manageListOfClouds(ListOfClouds listOfClouds){
         System.out.println("received list of clouds");
         Platform.runLater(()->{
@@ -329,6 +404,11 @@ public class Gui extends Application implements PropertyChangeListener {
         });
     }
 
+    /**
+     * Receives the deck of this player and shows it in mainScene
+     *
+     * @param deck
+     */
     private void manageDeck(Deck deck){
         System.out.println("received deck");
         mainSceneController.setCardsClickable(true);
@@ -337,6 +417,9 @@ public class Gui extends Application implements PropertyChangeListener {
         });
     }
 
+    /**
+     * Add listeners to GUI and set the controller of each scene
+     */
     private void startingGame(){
         try {
             mainSceneController = loginController.switchToMainScene();
@@ -349,20 +432,35 @@ public class Gui extends Application implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Based on the number of players, it sets the maximum number of moves
+     * that can be done in each turn
+     *
+     * @param inputString
+     */
     private void setMaxStudentsToMove(String inputString){
         int intFromInputString = Integer.parseInt(inputString.replaceAll("[\\D]", ""));
-        //the max number of students will be the first digit received
         int maxNOfStudents = firstDigit(intFromInputString);
         mainSceneController.setCardsClickable(false);
         mainSceneController.setMaxNumberOfMovedStudents(maxNOfStudents);
     }
 
+    /**
+     * Obtains the number of coins from the string received by the socket
+     *
+     * @param inputString
+     */
     private void getCoins(String inputString){
         String[] input = inputString.split(" ");
         int coin = Integer.parseInt(input[2]);
         manageCoins(coin);
     }
 
+    /**
+     * Obtains the character of this match from the string received by the socket
+     *
+     * @param inputString
+     */
     private void getCharacters(String inputString){
         if(idCharacters.size() < Constants.NUMBEROFPLAYABLECHARACTERS){
             String[] input = inputString.split(" ");
@@ -376,7 +474,6 @@ public class Gui extends Application implements PropertyChangeListener {
             }
             charactersDescription.add(description);
             int price = Integer.parseInt(input[i + 1]);
-            //System.out.println("Il prezzo è: " + price);
             charactersPrice.add(price);
         }
         if(charactersDescription.size() == Constants.NUMBEROFPLAYABLECHARACTERS){
@@ -384,9 +481,13 @@ public class Gui extends Application implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Remove the literals from the string and convert it to an integer
+     * to get the number of steps that mn is allowed to do in this match
+     *
+     * @param inputString
+     */
     private void setMaxSteps(String inputString){
-        //remove the literals from the string and convert it to an integer
-        // to get the number of steps that mn is allowed to do in this match
         mainSceneController.setMaxStepsMN(Integer.parseInt(inputString.replaceAll("[\\D]", "")));
     }
 

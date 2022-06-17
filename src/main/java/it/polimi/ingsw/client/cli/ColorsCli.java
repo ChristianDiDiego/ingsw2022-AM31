@@ -23,6 +23,12 @@ public enum ColorsCli {
         this.toPrint = toPrint;
     }
 
+    /**
+     * returns the color of the corresponding number
+     *
+     * @param n
+     * @return
+     */
     static String getColorByNumber(int n){
         switch (n){
             case 0:
