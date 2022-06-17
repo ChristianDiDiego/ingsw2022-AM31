@@ -97,15 +97,10 @@ public class Character1 extends Characters {
                                 if(p.getTeam() == teamMaxInfluence && p.getColorOfTowers() != null){
                                     p.getMyBoard().getTowersOnBoard().removeTower();
                                     a.changeOwner(p);
-                                //    checkWinner(p);
-                                    //TODO: if the number of towers finish, the game is over
                                 }
                             }
                         }
                         checkUnification(game.getArchipelagoById(idArchipelago));
-                        if(game.getListOfArchipelagos().size() < 4) {
-                        //    turnController.getGameHandler().endGame();
-                        }
                     }
                 } else if (a.getIsMNPresent() && a.getIsForbidden() == true){
                     game.getArchipelagoById(idArchipelago).setIsForbidden(false);

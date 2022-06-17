@@ -2,9 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.expertMode.Characters;
-
 import java.io.Serializable;
-import java.util.Optional;
 
 /**
  * Represents a player of the game with his features and his board, deck, wallet (if in expert mode),..
