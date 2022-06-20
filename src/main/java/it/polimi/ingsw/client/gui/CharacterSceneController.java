@@ -229,6 +229,16 @@ public class CharacterSceneController implements Initializable {
     }
 
     /**
+     * If there is an error while playing a character, set the error message
+     * reset firstCharacterOfTheTurn because it is possible to try again to play a character
+     * @param error
+     */
+    public void setErrorMessage(String error){
+        messageArea.setText(error);
+        firtsCharacterOfTheTurn = true;
+    }
+
+    /**
      * Override of the method initialize to set all the components of the scene
      * according to the game in progress
      *

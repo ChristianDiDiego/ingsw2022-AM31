@@ -26,5 +26,7 @@ public class ErrorMessage {
 
     public static String Forbidden = "this archipelago is forbidden, so influence will not be calculated";
 
+    public static String notEnoughCoinsOrWrongAction = "You do not have enough coins for this move or you cannot do this action (check entered values)";
+
 
 }

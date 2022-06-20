@@ -15,7 +15,6 @@ import java.beans.PropertyChangeListener;
  * are allowed for that client; if yes, perform the action
  */
 public class ActionController {
-    private Phase phase;
     private Game game;
     private ActionParser actionParser;
     private TurnController turnController;
@@ -30,11 +29,6 @@ public class ActionController {
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
-    }
-
-
-    public Phase getPhase() {
-        return phase;
     }
 
     public Game getGame() {
@@ -77,7 +71,7 @@ public class ActionController {
         for (Archipelago a : game.getListOfArchipelagos()) {
             //TODO: add message "influence not calculated because forbidden";
             // calculate influence for 4 players
-            if (a.getIsMNPresent() && a.getIsForbidden() == false) {
+            if (a.getIsMNPresent() && !a.getIsForbidden()) {
                 // PROPOSAL OF NEW CALCULATE INFLUENCE:
                 Player oldOwner;
                 int[] influences = new int[game.getNumberOfPlayers()];
@@ -159,7 +153,7 @@ public class ActionController {
                     }
                     break;
                 }
-            } else if (a.getIsMNPresent() && a.getIsForbidden() == true) {
+            } else if (a.getIsMNPresent() && a.getIsForbidden()) {
                 support.firePropertyChange("ErrorMessage", getCurrentPlayer().getNickname(), ErrorMessage.Forbidden);
                 a.setIsForbidden(false);
                 break;
@@ -212,8 +206,8 @@ public class ActionController {
                         for (int i = 0; i < destinations.length; i++) {
                             color = colors[i];
                             destination = destinations[i];
+                            player.getMyBoard().getEntrance().removeStudent(color);
                             if (destination == 0) {
-                                player.getMyBoard().getEntrance().removeStudent(color);
                                 player.getMyBoard().getDiningRoom().addStudent(color);
                                 if (game.isExpertModeOn()) {
                                     if (player.getMyBoard().getDiningRoom().getStudentsByColor(color) % 3 == 0) {
@@ -227,7 +221,6 @@ public class ActionController {
                                 }
                                 game.assignProfessor(color);
                             } else {
-                                player.getMyBoard().getEntrance().removeStudent(color);
                                 for (Archipelago arc : game.getListOfArchipelagos()) {
                                     for (Island island : arc.getBelongingIslands()) {
                                         if (island.getIdIsland() == destination) {
@@ -273,12 +266,10 @@ public class ActionController {
             if (steps > 0 && steps <= player.getLastUsedCard().getMaxSteps() + (player.getUsedCharacter() != null ? player.getUsedCharacter().getBonusSteps() : 0)) {
                 game.moveMotherNature(steps);
                 calculateInfluence();
-                if (game.getPhase() == Phase.END_GAME) {
-                    return true;
-                } else {
+                if (game.getPhase() != Phase.END_GAME) {
                     game.nextPhase();
-                    return true;
                 }
+                return true;
 
             } else {
                 support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.TooManySteps + player.getLastUsedCard().getMaxSteps() + "steps");
@@ -311,7 +302,7 @@ public class ActionController {
                             game.getCurrentPlayer().setUsedCharacter(null);
 
                             if (player == game.getOrderOfPlayers().get(game.getNumberOfPlayers() - 1)) {
-                                if (turnController.isFinished() == true) {
+                                if (turnController.isFinished()) {
                                     turnController.getGameHandler().endGame();
                                     return true;
                                 }
@@ -375,10 +366,10 @@ public class ActionController {
                                     return useCharacter3(action, player, c);
                                 }
                                 case 4 -> {
-                                    return useCharacter4(c);
+                                    return useCharacter4(player, c);
                                 }
                                 case 5 -> {
-                                    return useCharacter5(c);
+                                    return useCharacter5(player, c);
                                 }
                                 case 6 -> {
                                     return useCharacter6(action, player, c);
@@ -387,7 +378,7 @@ public class ActionController {
                                     return useCharacter7(action, player, c);
                                 }
                                 case 8 -> {
-                                    return useCharacter8(c);
+                                    return useCharacter8(player, c);
                                 }
                                 default -> {
                                     support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.characterNotValid);
@@ -397,19 +388,16 @@ public class ActionController {
                         }
                     }
                     support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.CharacterNotPresent);
-                    return false;
                 } else {
                     support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.AlreadyUsedCharacter);
-                    return false;
                 }
             } else {
                 support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.NotYourTurn);
-                return false;
             }
         } else {
             support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.NotExpertMode);
-            return false;
         }
+        return false;
 
     }
 
@@ -421,6 +409,7 @@ public class ActionController {
             if (actionToUse == null) {
                 System.out.println(ErrorMessage.ActionNotValid);
                 support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
+                support.firePropertyChange("PhaseChanged", 0 , 1);
                 return false;
             }
             if (arc.getIdArchipelago() == actionToUse) {
@@ -436,9 +425,12 @@ public class ActionController {
                         }
                     }
                     player.setUsedCharacter(character1);
+                    support.firePropertyChange("PhaseChanged", 0 , 1);
                     return true;
                 } else {
                     System.out.println("Error in playing character" + playedCharacter);
+                    support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.notEnoughCoinsOrWrongAction);
+                    support.firePropertyChange("PhaseChanged", 0 , 1);
                     return false;
                 }
             }
@@ -453,20 +445,27 @@ public class ActionController {
             playedCharacter = CharactersEnum.CHARACTER2.toString();
             support.firePropertyChange("playedCharacter", "", playedCharacter);
             player.setUsedCharacter(character2);
+            if (game.getPhase().equals(Phase.MOVE_MN)) {
+                support.firePropertyChange("PhaseChanged", "", Phase.MOVE_MN);
+            }
+            support.firePropertyChange("PhaseChanged", 0 , 1);
             return true;
         } else {
             System.out.println("Error in playing character" + playedCharacter);
+            support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.notEnoughCoinsOrWrongAction);
+            support.firePropertyChange("PhaseChanged", 0 , 1);
             return false;
         }
     }
 
     private boolean useCharacter3(String action, Player player, Characters c) {
-        String playedCharacter = "";
+        String playedCharacter;
         for (Archipelago arc : game.getListOfArchipelagos()) {
             Integer actionToUse = tryParseInteger(action);
             if (actionToUse == null) {
                 System.out.println(ErrorMessage.ActionNotValid);
                 support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
+                support.firePropertyChange("PhaseChanged", 0 , 1);
                 return false;
             }
             if (arc.getIdArchipelago() == actionToUse) {
@@ -475,9 +474,12 @@ public class ActionController {
                 if (character3.usePower(actionToUse)) {
                     support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
                     player.setUsedCharacter(character3);
+                    support.firePropertyChange("PhaseChanged", 0 , 1);
                     return true;
                 } else {
                     System.out.println("Error in playing character" + playedCharacter);
+                    support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.notEnoughCoinsOrWrongAction);
+                    support.firePropertyChange("PhaseChanged", 0 , 1);
                     return false;
                 }
             }
@@ -485,34 +487,56 @@ public class ActionController {
         return false;
     }
 
-    private boolean useCharacter4(Characters c) {
+    private boolean useCharacter4(Player player, Characters c) {
         String playedCharacter = CharactersEnum.CHARACTER4.toString();
         Character4 character4 = (Character4) c;
-        character4.usePower();
-        support.firePropertyChange("playedCharacter", "", playedCharacter);
-        return true;
+        if (character4.usePower()) {
+            support.firePropertyChange("playedCharacter", "", playedCharacter);
+            support.firePropertyChange("PhaseChanged", 0 , 1);
+            return true;
+        } else {
+            support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.notEnoughCoinsOrWrongAction);
+            support.firePropertyChange("PhaseChanged", 0 , 1);
+            return false;
+        }
+
     }
 
-    private boolean useCharacter5(Characters c) {
+    private boolean useCharacter5(Player player, Characters c) {
         String playedCharacter = CharactersEnum.CHARACTER5.toString();
         Character5 character5 = (Character5) c;
-        character5.usePower();
-        support.firePropertyChange("playedCharacter", "", playedCharacter);
-        return true;
+        if (character5.usePower()) {
+            support.firePropertyChange("playedCharacter", "", playedCharacter);
+            support.firePropertyChange("PhaseChanged", 0 , 1);
+            return true;
+        } else {
+            support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.notEnoughCoinsOrWrongAction);
+            support.firePropertyChange("PhaseChanged", 0 , 1);
+            return false;
+        }
+
     }
 
     private boolean useCharacter6(String action, Player player, Characters c) {
         String playedCharacter = CharactersEnum.CHARACTER6.toString();
         Character6 character6 = (Character6) c;
         try {
-            character6.usePower(StudsAndProfsColor.valueOf(action));
+            if (character6.usePower(StudsAndProfsColor.valueOf(action))) {
+                support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
+                support.firePropertyChange("PhaseChanged", 0 , 1);
+                return true;
+            } else {
+                support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.notEnoughCoinsOrWrongAction);
+                support.firePropertyChange("PhaseChanged", 0 , 1);
+                return false;
+            }
         } catch (IllegalArgumentException e) {
             System.out.println(ErrorMessage.ActionNotValid);
             support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
+            support.firePropertyChange("PhaseChanged", 0 , 1);
             return false;
         }
-        support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
-        return true;
+
     }
 
     private boolean useCharacter7(String action, Player player, Characters c) {
@@ -521,26 +545,43 @@ public class ActionController {
         if (!action.contains(",")) {
             System.out.println(ErrorMessage.ActionNotValid);
             support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
+            support.firePropertyChange("PhaseChanged", 0 , 1);
             return false;
         }
         String[] colorDestination = action.split(",");
         support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
         try {
-            return character7.usePower(StudsAndProfsColor.valueOf(colorDestination[0]), StudsAndProfsColor.valueOf(colorDestination[1]), StudsAndProfsColor.valueOf(colorDestination[2]), StudsAndProfsColor.valueOf(colorDestination[3]));
+            boolean result = character7.usePower(StudsAndProfsColor.valueOf(colorDestination[0]), StudsAndProfsColor.valueOf(colorDestination[1]), StudsAndProfsColor.valueOf(colorDestination[2]), StudsAndProfsColor.valueOf(colorDestination[3]));
+            if (!result) {
+                support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.notEnoughCoinsOrWrongAction);
+            }else{
+                //Emulate a changing in the professors in order to resend the boards updated
+                support.firePropertyChange("ChangedProfessor", player.getNickname(), "");
+            }
+            support.firePropertyChange("PhaseChanged", 0 , 1);
+            return result;
         } catch (IllegalArgumentException e) {
             System.out.println(ErrorMessage.ActionNotValid);
             support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
+            support.firePropertyChange("PhaseChanged", 0 , 1);
             return false;
         }
     }
 
-    private boolean useCharacter8(Characters c) {
+    private boolean useCharacter8(Player player, Characters c) {
 
         String playedCharacter = CharactersEnum.CHARACTER8.toString();
         Character8 character8 = (Character8) c;
-        character8.usePower();
-        support.firePropertyChange("playedCharacter", "", playedCharacter);
-        return true;
+        if (character8.usePower()) {
+            support.firePropertyChange("playedCharacter", "", playedCharacter);
+            support.firePropertyChange("PhaseChanged", 0 , 1);
+            return true;
+        } else {
+            support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.notEnoughCoinsOrWrongAction);
+            support.firePropertyChange("PhaseChanged", 0 , 1);
+            return false;
+        }
+
     }
 
     public ActionParser getActionParser() {
@@ -551,7 +592,7 @@ public class ActionController {
     Check if the player p has enough player of the colors colors to be moved from the entrance
      */
     public boolean checkColors(Player p, StudsAndProfsColor[] colors) {
-        int studsOfAColorToBeMoved = 0;
+        int studsOfAColorToBeMoved;
         for (StudsAndProfsColor colorToCheck : StudsAndProfsColor.values()) {
             studsOfAColorToBeMoved = 0;
             for (StudsAndProfsColor colorToMove : colors) {

@@ -294,6 +294,7 @@ public class Game implements Cloneable, Serializable {
             }
             if(currentPlayer.getMyBoard().getDiningRoom().getStudentsByColor(color) == player.getMyBoard().getDiningRoom().getStudentsByColor(color)){
                 player.getMyBoard().getProfessorsTable().removeProfessor(color);
+                currentPlayer.getMyBoard().getProfessorsTable().removeProfessor(color);
             }
             if(currentPlayer.getMyBoard().getDiningRoom().getStudentsByColor(color) > player.getMyBoard().getDiningRoom().getStudentsByColor(color)){
                 player.getMyBoard().getProfessorsTable().removeProfessor(color);

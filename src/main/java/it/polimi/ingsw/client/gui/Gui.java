@@ -97,9 +97,7 @@ public class Gui extends Application implements PropertyChangeListener {
 
                     }
                 } catch (Exception e) {
-                    System.out.println("set active to false from read froom socket");
-                    e.printStackTrace();
-                    setActive(false);
+                   setActive(false);
                 }
             }
         });
@@ -299,6 +297,7 @@ public class Gui extends Application implements PropertyChangeListener {
 
         else if(inputString.contains("Character:") && !(inputString.contains("Playable"))) {getCharacters(inputString);}
         else if(inputString.equalsIgnoreCase((ErrorMessage.CardAlreadyTaken))){setCardClickable();}
+        else if(inputString.equalsIgnoreCase(ErrorMessage.notEnoughCoinsOrWrongAction)) {sendErrorCharacters(inputString);}
 
 
         if(mainSceneController != null){
@@ -498,6 +497,16 @@ public class Gui extends Application implements PropertyChangeListener {
      */
     private void setMaxSteps(String inputString){
         mainSceneController.setMaxStepsMN(Integer.parseInt(inputString.replaceAll("[\\D]", "")));
+    }
+
+    /**
+     * Send the error that occured to the character scene
+     * @param error message
+     */
+    private void sendErrorCharacters(String error){
+        Platform.runLater(()->{
+            characterSceneController.setErrorMessage(error);
+        });
     }
 
 }
