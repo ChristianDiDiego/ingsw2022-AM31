@@ -372,7 +372,6 @@ public class Cli{
         } catch(InterruptedException | NoSuchElementException e){
             ps.println("Connection closed from the client side");
         } finally {
-            System.out.println("eseguo finally..");
             stdin.close();
             socketIn.close();
             socketOut.close();

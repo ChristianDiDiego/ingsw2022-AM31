@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.model.Archipelago;
 import it.polimi.ingsw.utilities.Constants;
+import it.polimi.ingsw.utilities.GameMessage;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -87,7 +88,7 @@ public class CharacterSceneController implements Initializable {
         charactersId.clear();
         charactersPrice.clear();
         firtsCharacterOfTheTurn = true;
-        messageArea.setText("To select a character push the corresponding image. If the character's action requires some specifications, there will be a menu on the right");
+        messageArea.setText(GameMessage.characterInstructions);
         for(int i = 0; i < id.size(); i++){
             int idCharacter = Integer.parseInt(id.get(i));
             if(idCharacter == 6) {
