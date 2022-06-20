@@ -42,11 +42,13 @@ public class Character1 extends Characters {
                         oldOwner = a.getOwner();
                     }
 
-                    //Calcola l'influenza di ogni giocatore sull'arcipelago a
-                    //assegna questo valore incrementando il vettore influences alla posizione
-                    //corrispondente al proprio team:
-                    //In tal modo, sia se si sta giocando a squadre che tutti contro tutti
-                    //vengono calcolate correttamente
+                    /*
+                    Calculate the influence of each player on the archipelago a
+                    give this value increasing the influences vector at the position
+                    of the team:
+                    In this way, both if is a game with 2 or 4 players
+                    the influence is correctly calculated
+                    */
                     for(Player p : game.getOrderOfPlayers()){
                         //Se oldowner non è nullo e il suo numero di squadra coincide con il player su cui
                         //stiamo iterando, aggiunge all'influenza del suo team il numero di torri(=numero di isole)
@@ -61,7 +63,7 @@ public class Character1 extends Characters {
                             }
                         }
                     }
-                    //Trova il massimo nel vettore influenza e si salva il team corrispondente
+                    //Find the max in the vector influence and save the team number
                     int maxInfluence = 0;
                     int teamMaxInfluence = 0;
                     for(int i = 0; i< influences.length; i++){
@@ -71,8 +73,7 @@ public class Character1 extends Characters {
                         }
                     }
                     boolean tie = false;
-                    //Controlla se ci sono due giocatori diversi con la stessa influenza:
-                    //in quel caso si ha un pareggio
+                    //Check if there are two different players with the same influence (tie)
                     for(int i = 0; i< influences.length; i++){
                         if(influences[i] == maxInfluence && i != teamMaxInfluence){
                             tie = true;
@@ -80,12 +81,12 @@ public class Character1 extends Characters {
                         }
                     }
 
-                  /*Procede con il cambiamento di torri solo se:
-                  - Almeno un giocatore ha l'influenza su quell'isola (maxInfluence >0)
-                  - l'arcipelago non era di nessuno O è cambia il team proprietario
-                  - non c'è un pareggio
-
-                   */
+                    /*
+                    Change the tower only if these conditions are verified:
+                    - at least 1 player has the influence ont he archipelago (maxInfluence>0)
+                    - the archipelago had no owner or the owner changes
+                    - there is no tie
+                     */
                     if(maxInfluence > 0 && (oldOwner == null || oldOwner.getTeam() != teamMaxInfluence) && !tie){
                         for(int i = 0; i < a.getBelongingIslands().size(); i++) {
                             //Only if the newOwner is different from the oldOwner (or this was null) change the towers

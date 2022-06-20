@@ -89,12 +89,12 @@ public class Character6 extends Characters{
                     }
                 }
 
-              /*Procede con il cambiamento di torri solo se:
-              - Almeno un giocatore ha l'influenza su quell'isola (maxInfluence >0)
-              - l'arcipelago non era di nessuno O è cambia il team proprietario
-              - non c'è un pareggio
-
-               */
+                    /*
+                    Change the tower only if these conditions are verified:
+                    - at least 1 player has the influence ont he archipelago (maxInfluence>0)
+                    - the archipelago had no owner or the owner changes
+                    - there is no tie
+                     */
                 if(maxInfluence > 0 && (oldOwner == null || oldOwner.getTeam() != teamMaxInfluence) && !tie){
                     for(int i = 0; i < a.getBelongingIslands().size(); i++) {
                         //Only if the newOwner is different from the oldOwner (or this was null) change the towers
