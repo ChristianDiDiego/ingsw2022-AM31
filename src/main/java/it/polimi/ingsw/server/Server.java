@@ -51,7 +51,13 @@ public class Server {
         this.port = port;
     }
 
-    //Deregister connection
+
+    /**
+     * Called when a client is disconnected/quit
+     * Notify the other players that the game is over and delete the game from the list of games
+     * If the players where still in the setup, delete the connections from the waiting list
+     * @param c
+     */
     public synchronized void deregisterConnection(SocketClientConnection c) {
         String userStartedDisconnection = null;
         for (List<SocketClientConnection> l : listOfConnections) {
@@ -92,6 +98,11 @@ public class Server {
 
     }
 
+    /**
+     * Find the game of the user that is disconnecting and
+     * delete it from the list of games
+     * @param userStartedDisconnection
+     */
     private void deleteGameByUser(String userStartedDisconnection){
         GameHandler gameToDelete = null;
         for (GameHandler g : listOfGames) {
@@ -131,7 +142,12 @@ public class Server {
         }
     }
 
-    //Wait for another player
+    /**
+     * Called when a new player connects
+     * If the player choose an username of a saved game, call setupOldMatch
+     * Otherwise call setupNewMatch
+     * @param c
+     */
     public synchronized void lobby(SocketClientConnection c) {
         setupAborted = false;
 
@@ -177,6 +193,11 @@ public class Server {
 
     }
 
+    /**
+     * Detect if the connected player is the first or it needs to be added to a match
+     * @param nickname of the player
+     * @param c SocketClientConnection of the player
+     */
     private void setupNewMatch(String nickname, SocketClientConnection c) {
         List<Player> keys = new ArrayList<>(waitingConnection.keySet());
 
@@ -210,6 +231,12 @@ public class Server {
 
     }
 
+    /**
+     * If called, it means that the player used a nickname of a saved game
+     * When all the old players are connected, resend the situation of the game
+     * @param nickname of the player
+     * @param savedGame old game that has been restored
+     */
     private void setupOldMatch(String nickname, GameHandler savedGame) {
         for (SocketClientConnection s : mapGameWaitingConnection.get(savedGame).values()) {
             s.asyncSend(ServerMessage.connectedUser + nickname);
@@ -295,6 +322,9 @@ public class Server {
         return numberOfPlayers;
     }
 
+    /**
+     * Save the games that are currently going on the server
+     */
     private void saveGames() {
         System.out.println("shut down...");
         try {
@@ -316,6 +346,9 @@ public class Server {
         }
     }
 
+    /**
+     * Restore the games saved in the file and put them in the list of games
+     */
     private void restoreGame() {
         // Create a file input stream
         FileInputStream fin = null;
@@ -347,6 +380,12 @@ public class Server {
 
     }
 
+    /**
+     * Called if the connected player is the first of the game, it asks the setup info (number of the players, mode)
+     * Create a new game adding the first player
+     * @param nickname of the first player of the game
+     * @param c SocketClientConnection of the first player of the game
+     */
     private void registerFirstPlayer(String nickname, SocketClientConnection c) {
         ColorOfTower color = null;
         numberOfPlayers = c.askHowManyPlayers();
@@ -404,6 +443,12 @@ public class Server {
         gameHandler.getController().getTurnController().addPropertyChangeListener(remV1);
     }
 
+    /**
+     * Called when the player is logging in a game; assign to the player the number of the team;
+     * add it to the game
+     * @param nickname of the player
+     * @param c of the player
+     */
     private void registerOtherPlayers(String nickname, SocketClientConnection c) {
         ColorOfTower color = null;
         if (numberOfPlayers != 4 || (waitingConnection.size() + 1) % 2 != 0) {
@@ -465,7 +510,7 @@ public class Server {
      * If already exists a saved match with that username, return the gameHandler of that game
      * @param nickname
      * @param c
-     * @return
+     * @return gameHandler of the old game
      */
     private GameHandler checkPlayerAlreadyExists(String nickname, SocketClientConnection c) {
 
@@ -508,6 +553,10 @@ public class Server {
         return null;
     }
 
+    /**
+     * Called when the server is turned on, try to restore the saved games (if they exists)
+     * Wait for the connections
+     */
     public void run() {
 
         Runtime.getRuntime().addShutdownHook(new Thread(this::saveGames));

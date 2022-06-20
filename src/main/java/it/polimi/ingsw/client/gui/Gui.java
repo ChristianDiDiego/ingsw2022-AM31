@@ -298,6 +298,7 @@ public class Gui extends Application implements PropertyChangeListener {
         else if(inputString.contains("Available coins")) {getCoins(inputString);}
 
         else if(inputString.contains("Character:") && !(inputString.contains("Playable"))) {getCharacters(inputString);}
+        else if(inputString.equalsIgnoreCase((ErrorMessage.CardAlreadyTaken))){setCardClickable();}
 
 
         if(mainSceneController != null){
@@ -416,6 +417,12 @@ public class Gui extends Application implements PropertyChangeListener {
         mainSceneController.setCardsClickable(true);
         Platform.runLater(()->{
             mainSceneController.printDeck(deck);
+        });
+    }
+
+    private void setCardClickable(){
+        Platform.runLater(()->{
+            mainSceneController.setCardsClickable(true);
         });
     }
 

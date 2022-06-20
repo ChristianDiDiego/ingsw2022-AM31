@@ -396,6 +396,7 @@ public class MainSceneController implements Initializable {
      * @return
      */
     private int calculateSteps(String mnDestination){
+        System.out.println("Destination: " + mnDestination);
         int indexMnDestination = 0;
         //Find the index of the destination
         for(indexMnDestination= 0; indexMnDestination< singleCellArchipelago.length; indexMnDestination++){
@@ -403,7 +404,8 @@ public class MainSceneController implements Initializable {
                 break;
             }
         }
-
+        System.out.println("index Destination: " + indexMnDestination);
+        System.out.println("index mn now: " + indexArchipelagoMNPosition);
         int mnSteps;
         if(indexMnDestination < indexArchipelagoMNPosition){
             int invisibleArc = 0;
@@ -412,14 +414,16 @@ public class MainSceneController implements Initializable {
             for(int i = indexArchipelagoMNPosition; i< singleCellArchipelago.length; i++){
                     if(!singleCellArchipelago[i].isVisible()) invisibleArc++;
             }
+            System.out.println("number of invisible islands: " + invisibleArc);
             //calculate the distance from the current island to the the one that should be the last island if every island would be displayed
             //remove from this the number of arc that are not visible
             //add the index of the destination ( is like if calculating the steps from 0 to the destination)
-            // +1 because the index stars from 0
-            mnSteps = (Constants.NUMBEROFISLANDS - indexArchipelagoMNPosition) - invisibleArc + indexMnDestination +1;
+            mnSteps = (Constants.NUMBEROFISLANDS - indexArchipelagoMNPosition) - invisibleArc + indexMnDestination;
 
+            System.out.println("steps calculated: " + mnSteps);
         }else {
              mnSteps = indexMnDestination - indexArchipelagoMNPosition;
+            System.out.println("steps calculated: " + mnSteps);
         }
 
         return mnSteps;
@@ -440,6 +444,7 @@ public class MainSceneController implements Initializable {
 
             @Override
             public void handle(MouseEvent event) {
+                System.out.println("clicked card");
                 if(cardsClickable){
                     playCard(card.getAccessibleText());
                     card.setOpacity(0.5);
@@ -458,6 +463,8 @@ public class MainSceneController implements Initializable {
     private void playCard(String cardPower){
         String playSelectedCard = "CARD " + cardPower;
         support.firePropertyChange("cardPlayed", "", playSelectedCard );
+        cardsClickable = false;
+
     }
 
     public void setOnDragMNDetected(ImageView motherNature)
