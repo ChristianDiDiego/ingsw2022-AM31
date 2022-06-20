@@ -169,6 +169,6 @@
          <font>
             <Font name="Curlz MT" size="18.0" />
          </font></TextArea>
-      <AnchorPane id="flagPane" layoutX="136.0" layoutY="55.0" prefHeight="25.0" prefWidth="30.0" />
+      <AnchorPane id="flagPane" layoutX="90.0" layoutY="49.0" prefHeight="45.0" prefWidth="45.0" />
     </children>
 </AnchorPane>

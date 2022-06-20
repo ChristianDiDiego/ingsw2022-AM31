@@ -1,7 +1,7 @@
 package it.polimi.ingsw.utilities;
 
-/*
-This class contains the parameters of the game that do not change according to the number of players
+/**
+ * This class contains the parameters of the game that do not change according to the number of players
  */
 public class Constants {
 

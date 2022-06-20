@@ -1,7 +1,9 @@
 package it.polimi.ingsw.utilities;
 
+/**
+ * this class contains all errors that could be sent to the users
+ */
 public class ErrorMessage {
-    public static String NicknameNotValid = "This nickname is not valid, please try again";
     public static String ModeNotValid = "You inserted a not valid mode, please try again";
     public static String NumberOfPlayersNotValid = "The number of players is not valid, please insert a number between 2 and 4";
     public static String DuplicateNickname = "This nickname is already used, please choose another one";
@@ -27,6 +29,5 @@ public class ErrorMessage {
     public static String Forbidden = "this archipelago is forbidden, so influence will not be calculated";
 
     public static String notEnoughCoinsOrWrongAction = "You do not have enough coins for this move or you cannot do this action (check entered values)";
-
 
 }

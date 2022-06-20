@@ -34,17 +34,8 @@
 }
 
 #flagPane{
-    -fx-background-image: url("images/flag.png");
+    -fx-background-image: url("images/flag1.png");
     -fx-background-size: stretch;
-}
-
-
-#deckPane {
-    -fx-background-color: green;
-}
-
-#stackPane {
-    -fx-background-color: red;
 }
 
 #messageForUser{
@@ -75,66 +66,6 @@
 #cloud4{
     -fx-background-image: url("images/cloud.png");
     -fx-background-size: stretch;
-}
-#arch0{
-    -fx-background-image: url(images/archi.png);
-    -fx-background-size: 200px 130px;
-    -fx-background-repeat: no-repeat;
-}
-#arch1{
-    -fx-background-image: url(images/archi.png);
-    -fx-background-size: 200px 130px;
-    -fx-background-repeat: no-repeat;
-}
-#arch2{
-    -fx-background-image: url(images/archi.png);
-    -fx-background-size: 200px 130px;
-    -fx-background-repeat: no-repeat;
-}
-#arch3{
-    -fx-background-image: url(images/archi.png);
-    -fx-background-size: 200px 130px;
-    -fx-background-repeat: no-repeat;
-}
-#arch4{
-    -fx-background-image: url(images/archi.png);
-    -fx-background-size: 200px 130px;
-    -fx-background-repeat: no-repeat;
-}
-#arch5{
-    -fx-background-image: url(images/archi.png);
-    -fx-background-size: 200px 130px;
-    -fx-background-repeat: no-repeat;
-}
-#arch6{
-    -fx-background-image: url(images/archi.png);
-    -fx-background-size: 200px 130px;
-    -fx-background-repeat: no-repeat;
-}
-#arch7{
-    -fx-background-image: url(images/archi.png);
-    -fx-background-size: 200px 130px;
-    -fx-background-repeat: no-repeat;
-}
-#arch8{
-    -fx-background-image: url(images/archi.png);
-    -fx-background-size: 200px 130px;
-    -fx-background-repeat: no-repeat;
-}
-#arch9{
-    -fx-background-image: url(images/archi.png);
-    -fx-background-size: 200px 130px;
-    -fx-background-repeat: no-repeat;
-}
-#arch10{
-    -fx-background-image: url(images/archi.png);
-    -fx-background-size: 200px 130px;
-    -fx-background-repeat: no-repeat;
-}
-#arch11{
-    -fx-background-image: url(images/archi.png);
-    -fx-background-size: 200px 130px;
-    -fx-background-repeat: no-repeat;
 }
 
 #coinPane {

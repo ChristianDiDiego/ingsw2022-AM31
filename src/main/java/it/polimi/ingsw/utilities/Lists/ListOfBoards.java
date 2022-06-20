@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-Serializable list of boards
+/**
+ * Serializable list of boards
  */
 public class ListOfBoards implements Serializable {
     private List<Board> boards = new ArrayList<>();

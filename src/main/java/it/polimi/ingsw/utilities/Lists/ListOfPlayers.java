@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-Serializable list of players
+/**
+ * Serializable list of players
  */
 public class ListOfPlayers implements Serializable {
     private List<Player> players = new ArrayList<>();

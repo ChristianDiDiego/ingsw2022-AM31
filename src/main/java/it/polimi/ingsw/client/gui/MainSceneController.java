@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -202,10 +201,6 @@ public class MainSceneController implements Initializable {
                 mn.setAccessibleText("mn");
                 setOnDragMNDetected(mn);
                 setOnDragImageDone(mn);
-
-                singleCellArchipelago[i].setPadding(new Insets(5,5,5,5));
-            } else {
-                singleCellArchipelago[i].setPadding(new Insets(20,5,0,5));
             }
 
             //students
@@ -236,9 +231,9 @@ public class MainSceneController implements Initializable {
 
             //forbidden symbol
             if(listOfArchipelagos.get(i).getIsForbidden()) {
-                singleCellArchipelago[i].setStyle("-fx-background-image: url(images/archiforbidden.png); -fx-background-size: 180px 130px; -fx-background-repeat: no-repeat;");
+                singleCellArchipelago[i].setStyle("-fx-background-image: url(images/archiforbidden.png); -fx-background-size: stretch; -fx-background-repeat: no-repeat;");
             } else {
-                singleCellArchipelago[i].setStyle("-fx-background-image: url(images/archi.png); -fx-background-size: 180px 130px; -fx-background-repeat: no-repeat;");
+                singleCellArchipelago[i].setStyle("-fx-background-image: url(images/archi.png); -fx-background-size: stretch; -fx-background-repeat: no-repeat;");
             }
         }
         for(int i = k; i < Constants.NUMBEROFISLANDS; i++) {

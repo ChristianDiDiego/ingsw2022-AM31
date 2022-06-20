@@ -17,8 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-/*
-Remote view: listen the changements from the model and send a message to the client who is associated with it
+/**
+ * This class contains the methods to listen the changes from the model
+ * and send a message to the client who is associated with it
  */
 public class RemoteView implements PropertyChangeListener{
     private final SocketClientConnection clientConnection;
@@ -35,6 +36,10 @@ public class RemoteView implements PropertyChangeListener{
         this.lock = new Object();
     }
 
+    /**
+     * Sent a message to the associated client
+     * @param message
+     */
     protected synchronized void showMessage(Object message) {
         clientConnection.asyncSend(message);
     }
@@ -43,8 +48,6 @@ public class RemoteView implements PropertyChangeListener{
     public void propertyChange(PropertyChangeEvent evt) {
         if(evt.getPropertyName().equals("EndGame")){
             endGame(evt.getNewValue());
-
-
         }else if(evt.getPropertyName().equals("currentPlayerChanged")){
             currentPlayerChanged(evt);
 

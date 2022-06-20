@@ -1,5 +1,8 @@
 package it.polimi.ingsw.utilities;
 
+/**
+ * This class contains the messages to be printed in the server console
+ */
 public class ServerMessage {
     public static String ongoingMatches = "If your game has been interrupted before, please use the same nickname to re-join in it \n";
 
