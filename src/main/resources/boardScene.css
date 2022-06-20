@@ -18,10 +18,22 @@
     -fx-background-size: stretch;
 }
 
-/*
-#86c063
- */
-
 #boardsBackground{
     -fx-background-image: url("images/backgroundBorderScene45.jpg");
+}
+
+#ob1 {
+    -fx-background-color: beige;
+}
+
+#ob2 {
+    -fx-background-color: beige;
+}
+
+#ob3 {
+    -fx-background-color: beige;
+}
+
+#ob4 {
+    -fx-background-color: beige;
 }

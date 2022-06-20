@@ -26,6 +26,10 @@ public class ClientApp {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Insert ip server:");
         ip = scanner.nextLine();
+        while(ip.length() < 1) {
+            System.out.println("Insert ip server:");
+            ip = scanner.nextLine();
+        }
         System.out.println("Insert the port which server will listen on:");
         try {
             port = scanner.nextInt();

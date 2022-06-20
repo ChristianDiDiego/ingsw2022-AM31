@@ -211,6 +211,8 @@ public class RemoteView implements PropertyChangeListener{
     private void currentPlayerChanged(PropertyChangeEvent evt){
         Object lock2 = new Object();
         synchronized (lock2){
+            showMessage(GameMessage.specialCommand);
+
             sendBoards();
 
             sendArchipelagos();

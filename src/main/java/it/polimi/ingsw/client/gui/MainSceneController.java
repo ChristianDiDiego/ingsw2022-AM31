@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -190,7 +191,7 @@ public class MainSceneController implements Initializable {
         numberOfArchipelagos = listOfArchipelagos.size();
 
         for(int i = 0; i < listOfArchipelagos.size(); i++) {
-
+            //mother nature
             if(listOfArchipelagos.get(i).getIsMNPresent()) {
                 ImageView mn = new ImageView(motherNature);
                 mn.setFitHeight(40);
@@ -202,7 +203,12 @@ public class MainSceneController implements Initializable {
                 setOnDragMNDetected(mn);
                 setOnDragImageDone(mn);
 
+                singleCellArchipelago[i].setPadding(new Insets(5,5,5,5));
+            } else {
+                singleCellArchipelago[i].setPadding(new Insets(20,5,0,5));
             }
+
+            //students
             for(Island island : listOfArchipelagos.get(i).getBelongingIslands()) {
                 for(int s = 0; s < Constants.NUMBEROFKINGDOMS; s++) {
                     for(int t = 0; t < island.getStudentsByColor(StudsAndProfsColor.values()[s]); t++) {
@@ -218,6 +224,7 @@ public class MainSceneController implements Initializable {
             setOnDragDroppedOnArchipelago(singleCellArchipelago[i]);
             k++;
 
+            //towers
             if(listOfArchipelagos.get(i).getOwner() != null) {
                 for(int j = 0; j < listOfArchipelagos.get(i).getBelongingIslands().size(); j++) {
                     ImageView tower = new ImageView(towerColor[listOfArchipelagos.get(i).getOwner().getColorOfTowers().ordinal()]);
@@ -227,10 +234,11 @@ public class MainSceneController implements Initializable {
                 }
             }
 
+            //forbidden symbol
             if(listOfArchipelagos.get(i).getIsForbidden()) {
-                singleCellArchipelago[i].setStyle("-fx-background-image: url(images/archiforbidden.png); -fx-background-size: 200px 130px; -fx-background-repeat: no-repeat;");
+                singleCellArchipelago[i].setStyle("-fx-background-image: url(images/archiforbidden.png); -fx-background-size: 180px 130px; -fx-background-repeat: no-repeat;");
             } else {
-                singleCellArchipelago[i].setStyle("-fx-background-image: url(images/archi.png); -fx-background-size: 200px 130px; -fx-background-repeat: no-repeat;");
+                singleCellArchipelago[i].setStyle("-fx-background-image: url(images/archi.png); -fx-background-size: 180px 130px; -fx-background-repeat: no-repeat;");
             }
         }
         for(int i = k; i < Constants.NUMBEROFISLANDS; i++) {
