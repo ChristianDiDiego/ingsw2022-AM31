@@ -24,7 +24,7 @@ public class SocketClientConnection implements Runnable{
     private boolean playerQuitted = false;
 
     private Server server;
-     private PropertyChangeSupport support;
+    private PropertyChangeSupport support;
 
     private boolean active = true;
 
@@ -167,10 +167,9 @@ public class SocketClientConnection implements Runnable{
             }
 
             String read = in.nextLine();
-            System.out.println("received " + read + "from " + nickname);
+            System.out.println("Received " + read + "from " + nickname);
             if(read.equalsIgnoreCase(Constants.QUIT)){
-                System.out.println("quit received");
-                //playerQuitted = true;
+                System.out.println("Quit received");
                 close();
                 return null;
             }

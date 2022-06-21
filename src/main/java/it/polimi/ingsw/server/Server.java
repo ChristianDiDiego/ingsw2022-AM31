@@ -63,19 +63,15 @@ public class Server {
         for (List<SocketClientConnection> l : listOfConnections) {
             for (SocketClientConnection s : l) {
                 userStartedDisconnection = c.getNickname();
-                System.out.println("I'm confronting " + s.getNickname());
                 if (s == c) {
                     for (SocketClientConnection toRemove : l) {
-                        System.out.println("I'm confronting" + toRemove.getNickname());
                         if (!toRemove.getNickname().equals(c.getNickname())) {
-                            System.out.println("I'm sending to " + toRemove.getNickname());
+                            System.out.println("I'm sending message of closing connection to " + toRemove.getNickname());
                             toRemove.send(String.format(ServerMessage.userClosedConnection, c.getNickname()));
                             toRemove.setPlayerQuitted(true);
                             toRemove.closeConnection();
                         }
-
                     }
-
                     listOfConnections.remove(l);
                     break;
                 }
@@ -83,9 +79,8 @@ public class Server {
         }
         if (!waitingConnection.isEmpty()) {
             for (SocketClientConnection s : waitingConnection.values()) {
-                System.out.println("I'm confroning" + s.getNickname());
                 if (s != c) {
-                    System.out.println("I'm sending to " + s.getNickname());
+                    System.out.println("I'm sending message of closing connection to " + s.getNickname());
                     s.send(String.format(ServerMessage.userClosedConnection, c.getNickname()));
                     s.setPlayerQuitted(true);
                     s.closeConnection();
@@ -95,7 +90,6 @@ public class Server {
             waitingConnection.clear();
         }
         deleteGameByUser(userStartedDisconnection);
-
     }
 
     /**
@@ -106,10 +100,11 @@ public class Server {
     private void deleteGameByUser(String userStartedDisconnection){
         GameHandler gameToDelete = null;
         for (GameHandler g : listOfGames) {
-            for (Player p : g.getGame().getListOfPlayer())
+            for (Player p : g.getGame().getListOfPlayer()) {
                 if (p.getNickname().equals(userStartedDisconnection)) {
                     gameToDelete = g;
                 }
+            }
         }
         if (gameToDelete != null) {
             listOfGames.remove(gameToDelete);
@@ -128,7 +123,7 @@ public class Server {
                 for (SocketClientConnection s : l) {
                     if (s.getNickname().equals(c.getNickname())) {
                         if (l.size() == 1) {
-                            System.out.println(c.getNickname() + "is the last player");
+                            System.out.println(c.getNickname() + " is the last player");
                             listOfConnections.remove(l);
                             deleteGameByUser(c.getNickname());
                         }
@@ -144,16 +139,15 @@ public class Server {
 
     /**
      * Called when a new player connects
-     * If the player choose an username of a saved game, call setupOldMatch
+     * If the player chooses a username of a saved game, call setupOldMatch
      * Otherwise call setupNewMatch
      * @param c
      */
     public synchronized void lobby(SocketClientConnection c) {
         setupAborted = false;
-
         if(!listOfGames.isEmpty()){
             if(!waitingConnection.isEmpty()) {
-                 c.asyncSend(ServerMessage.ongoingMatches + "Otherwise \n");
+                 c.asyncSend(ServerMessage.ongoingMatches + " Otherwise \n");
             }else{
                 c.asyncSend(ServerMessage.ongoingMatches);
             }
@@ -200,8 +194,6 @@ public class Server {
      */
     private void setupNewMatch(String nickname, SocketClientConnection c) {
         List<Player> keys = new ArrayList<>(waitingConnection.keySet());
-
-
         if (waitingConnection.size() == 0) {
             registerFirstPlayer(nickname, c);
         } else {
@@ -228,7 +220,6 @@ public class Server {
                 waitingConnection.clear();
             }
         }
-
     }
 
     /**
@@ -283,11 +274,11 @@ public class Server {
                 return false;
             }
         }
+
         /*Use the mapGameRemoteViews because in this way if there was an old match
          * with a player nickname "nameToCheck", if it has not re-logged yet
          * it's allowed to do it, otherwise return that the nick is already used
          */
-
         for (GameHandler g : mapGameRemoteViews.keySet()) {
             for (RemoteView r : mapGameRemoteViews.get(g)) {
                 if (r.getPlayer().getNickname().equalsIgnoreCase(nameToCheck)) {
@@ -335,10 +326,10 @@ public class Server {
             // Create an object output stream, linked to out
             ObjectOutputStream objectOut = new ObjectOutputStream(out);
 
-// Write game system to object store
+            // Write game system to object store
             objectOut.writeObject(listOfGames);
 
-// Close object output stream
+            // Close object output stream
             objectOut.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -376,8 +367,8 @@ public class Server {
         if (!listOfGames.isEmpty()) {
             System.out.println("Games already saved: " + listOfGames.size());
         }
-        // Set the object stream to standard output
 
+        // Set the object stream to standard output
     }
 
     /**
@@ -439,7 +430,6 @@ public class Server {
         gameHandler.getController().getTurnController().getActionController().addPropertyChangeListener(remV1);
 
         gameHandler.getController().getTurnController().getActionController().getActionParser().addPropertyChangeListener(remV1);
-
         gameHandler.getController().getTurnController().addPropertyChangeListener(remV1);
     }
 
@@ -490,11 +480,10 @@ public class Server {
             } else {
                 player.setTeam(1);
             }
-            // player.setTeam(Math.round(waitingConnection.size() / 4));
         } else {
             player.setTeam(waitingConnection.size());
         }
-        //player.setTeam(Math.round(waitingConnection.size() / 4));
+
         waitingConnection.put(player, c);
         RemoteView remV = new RemoteView(player, c, gameHandler.getGame(), gameHandler.getController().getTurnController().getActionController().getActionParser());
         c.addPropertyChangeListener(remV);
@@ -513,7 +502,6 @@ public class Server {
      * @return gameHandler of the old game
      */
     private GameHandler checkPlayerAlreadyExists(String nickname, SocketClientConnection c) {
-
         for (GameHandler g : listOfGames) {
             for (Player p : g.getGame().getListOfPlayer()) {
                 if (p.getNickname().equalsIgnoreCase(nickname)) {
@@ -545,8 +533,6 @@ public class Server {
                     newMap.put(p, c);
                     mapGameWaitingConnection.put(g, newMap);
                     return g;
-
-
                 }
             }
         }
@@ -573,21 +559,13 @@ public class Server {
         while (true) {
             try {
                 Socket newSocket = serverSocket.accept();
-                if(newSocket.getPort() == 22) {
-                    System.out.println("ping sulla 22");
-                } else {
-                    connections++;
-                    System.out.println("Ready for the new connection - " + connections);
-                    SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
-                    executor.submit(socketConnection);
-                }
-
-
-                //socketConnection.run();
+                connections++;
+                System.out.println("Ready for the new connection - " + connections);
+                SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
+                executor.submit(socketConnection);
             } catch (IOException e) {
                 System.out.println("Connection Error!");
             }
         }
     }
-
 }
