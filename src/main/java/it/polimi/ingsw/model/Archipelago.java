@@ -13,8 +13,8 @@ public class Archipelago implements Serializable {
     @Serial
     private static final long serialVersionUID = 7L;
 
-    private int idArchipelago;
-    private List<Island> belongingIsland;
+    private final int idArchipelago;
+    private final List<Island> belongingIsland;
     private boolean isMNPresent;
     private Player owner;
     private boolean isForbidden;
@@ -45,15 +45,17 @@ public class Archipelago implements Serializable {
 
     /**
      * Find who is the owner of an archipelago
+     *
      * @return the player who is the owner of the archipelago
      * @throws NullPointerException if the owner is null
      */
-    public Player getOwner()  {
+    public Player getOwner() {
         return owner;
     }
 
     /**
      * If we merge 2 Archipelagos, add the second Archipelago's islands to this one
+     *
      * @param island to be added to the archipelago
      */
     public void addIsland(Island island) {
@@ -64,16 +66,13 @@ public class Archipelago implements Serializable {
      * change the flag that shows if Mother Nature is on the Archipelago
      */
     public void changeMNPresence() {
-        if (isMNPresent == false) {
-            this.isMNPresent = true;
-        } else {
-            this.isMNPresent = false;
-        }
+        this.isMNPresent = !isMNPresent;
     }
 
     /**
      * if a player conquered the archipelago the method changes the owner
-     * @param newOwner
+     *
+     * @param newOwner of the archipelago
      */
     public void changeOwner(Player newOwner) {
         this.owner = newOwner;

@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.StudsAndProfsColor;
  * When this card is used, assignProfessor assign the professor to the player who use the card
  * also if the number of students in the dining rooms of the two players is the same
  */
-public class Character8 extends Characters{
+public class Character8 extends Characters {
 
     public Character8(Game game) {
         super(2, game);
@@ -19,30 +19,30 @@ public class Character8 extends Characters{
     }
 
     public boolean usePower() {
-        if(payForUse()) {
+        if (payForUse()) {
             game.getCurrentPlayer().setUsedCharacter(this);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
     /**
-     *Assign the professor even if the students are equal in number
+     * Assign the professor even if the students are equal in number
      */
     public void assignProfessor(StudsAndProfsColor color) {
         Player player = game.getCurrentPlayer();
         int max = 0;
-        for(Player p : game.getListOfPlayer()){
-            if(p != game.getCurrentPlayer()){
-                if(p.getMyBoard().getDiningRoom().getStudentsByColor(color) > max){
+        for (Player p : game.getListOfPlayer()) {
+            if (p != game.getCurrentPlayer()) {
+                if (p.getMyBoard().getDiningRoom().getStudentsByColor(color) > max) {
                     player = p;
                     max = p.getMyBoard().getDiningRoom().getStudentsByColor(color);
                 }
             }
         }
 
-        if(game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color) >= player.getMyBoard().getDiningRoom().getStudentsByColor(color)){
+        if (game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color) >= player.getMyBoard().getDiningRoom().getStudentsByColor(color)) {
             player.getMyBoard().getProfessorsTable().removeProfessor(color);
             game.getCurrentPlayer().getMyBoard().getProfessorsTable().addProfessor(color);
         }

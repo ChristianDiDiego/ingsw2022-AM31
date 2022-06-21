@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.gui;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -46,7 +45,7 @@ public class LoginController implements Initializable {
 
     boolean notFirstPlayer = false;
 
-    private PropertyChangeSupport support = new PropertyChangeSupport(this);
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     @FXML
     RadioButton radio2, radio3, radio4, radiostd, radioexp, radioWhite, radioBlack, radioGrey;
@@ -58,7 +57,7 @@ public class LoginController implements Initializable {
     /**
      * Add a listener to this scene
      *
-     * @param pcl
+     * @param pcl listener
      */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
@@ -66,10 +65,8 @@ public class LoginController implements Initializable {
 
     /**
      * Sends to server the nickname chosen by the player
-     *
-     * @param event
      */
-    public void submitUsername(ActionEvent event) {
+    public void submitUsername() {
         try {
             if (!Objects.equals(usernameTextField.getText(), "")) {
 
@@ -102,10 +99,8 @@ public class LoginController implements Initializable {
 
     /**
      * Sends to server the number of players the current player wants to play with
-     *
-     * @param event
      */
-    public void submitNumberOfPlayers(ActionEvent event) {
+    public void submitNumberOfPlayers() {
         String numberOfPlayers = null;
         if (radio2.isSelected()) {
             System.out.println(radio2.getText());
@@ -119,7 +114,9 @@ public class LoginController implements Initializable {
         }
 
         support.firePropertyChange("numberOfPlayers", "", numberOfPlayers);
-        this.numberOfPlayers = Integer.parseInt(numberOfPlayers);
+        if (numberOfPlayers != null) {
+            this.numberOfPlayers = Integer.parseInt(numberOfPlayers);
+        }
         submitNumberOfPlayers.setVisible(false);
         radio2.setDisable(true);
         radio3.setDisable(true);
@@ -133,10 +130,8 @@ public class LoginController implements Initializable {
 
     /**
      * Sends the mode in which the current player wants to play
-     *
-     * @param event
      */
-    public void submitMode(ActionEvent event) {
+    public void submitMode() {
         String mode = null;
         if (radiostd.isSelected()) {
             System.out.println(radiostd.getText());
@@ -162,10 +157,8 @@ public class LoginController implements Initializable {
 
     /**
      * Sends the color of tower the current player wants to play with
-     *
-     * @param event
      */
-    public void submitColor(ActionEvent event) {
+    public void submitColor() {
         String color = null;
         if (radioWhite.isSelected()) {
             System.out.println(radioWhite.getText());
@@ -183,9 +176,6 @@ public class LoginController implements Initializable {
     /**
      * Override of the method initialize to set all the components of the scene
      * according to the game in progress
-     *
-     * @param url
-     * @param resourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -212,8 +202,8 @@ public class LoginController implements Initializable {
     /**
      * Switch from login scene to the game's scene
      *
-     * @return
-     * @throws IOException
+     * @return controller of the mainScene
+     * @throws IOException if exception
      */
     public MainSceneController switchToMainScene() throws IOException {
 
@@ -250,7 +240,7 @@ public class LoginController implements Initializable {
     /**
      * Show a message to the player if the nickname chosen is already used
      *
-     * @param message
+     * @param message error message to be displayed
      */
     public void usernameAlreadyUsed(String message) {
         errorMessagesLabel.setText(message);
@@ -273,7 +263,7 @@ public class LoginController implements Initializable {
     /**
      * Show a message to the player if the color chosen is already used
      *
-     * @param message
+     * @param message to be showed
      */
     public void colorAlreadyUsed(String message) {
         errorMessagesLabel.setText(message);

@@ -2,11 +2,9 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,15 +15,15 @@ import java.util.List;
  */
 public class GameHandler implements Serializable {
     transient private Controller controller;
-    private Game game;
+    private final Game game;
     private int isStarted;
-    private int playersNumber;
+    private final int playersNumber;
     private int numberOfClouds;
     private int maxNumberOfTowers;
     private int maxStudentsInEntrance;
     private int numberOfStudentsOnCloud;
     private int numberOfMovements;
-    private PropertyChangeSupport support;
+    private final PropertyChangeSupport support;
 
 
     public GameHandler(Player firstPlayer, int playersNumber, boolean expertMode) {
@@ -33,7 +31,7 @@ public class GameHandler implements Serializable {
         this.game = new Game(playersNumber, firstPlayer, expertMode);
         this.controller = new Controller(this.game, this);
         //TODO: parse expertMode
-        parametersSwitch(playersNumber, false);
+        parametersSwitch(playersNumber);
         isStarted = 0;
         this.support = new PropertyChangeSupport(this);
     }
@@ -72,7 +70,7 @@ public class GameHandler implements Serializable {
      */
     public void endGame() {
         Player winner = game.getListOfPlayer().get(0);
-        List<Player> listOfWinners = new ArrayList<Player>();
+        List<Player> listOfWinners = new ArrayList<>();
 
         for (Player p : game.getListOfPlayer()) {
             if (p.getMyBoard().getTowersOnBoard().getNumberOfTowers() < winner.getMyBoard().getTowersOnBoard().getNumberOfTowers()) {
@@ -109,10 +107,9 @@ public class GameHandler implements Serializable {
 
     /**
      * Add a new player (since the second one) to the game
-     * Set isStarted = 1 when the numberOfPlaers required is reached and call startGame
+     * Set isStarted = 1 when the numberOfPlayers required is reached and call startGame
      *
-     * @param //nickname     name chosen by the player
-     * @param //colorOfTower color chosen by the player
+     * @param player to be added
      */
     public void addNewPlayer(Player player) {
         game.addPlayer(player);
@@ -154,32 +151,31 @@ public class GameHandler implements Serializable {
      * Set the value of the game parameters according to the number of players and if it is expert mode
      *
      * @param numberOfPlayers number of the players that are playing the game
-     * @param expertMode      1 if the expert mode has been choosed, 0 otherwise
      */
-    private void parametersSwitch(int numberOfPlayers, boolean expertMode) {
+    private void parametersSwitch(int numberOfPlayers) {
 
         switch (numberOfPlayers) {
-            case 2:
+            case 2 -> {
                 numberOfClouds = 2;
                 maxNumberOfTowers = 8;
                 maxStudentsInEntrance = 7;
                 numberOfStudentsOnCloud = 3;
                 numberOfMovements = 3;
-                break;
-            case 3:
+            }
+            case 3 -> {
                 numberOfClouds = 3;
                 maxNumberOfTowers = 6;
                 maxStudentsInEntrance = 9;
                 numberOfStudentsOnCloud = 4;
                 numberOfMovements = 4;
-                break;
-            case 4:
+            }
+            case 4 -> {
                 numberOfClouds = 4;
                 maxNumberOfTowers = 8;
                 maxStudentsInEntrance = 7;
                 numberOfStudentsOnCloud = 3;
                 numberOfMovements = 3;
-                break;
+            }
         }
     }
 

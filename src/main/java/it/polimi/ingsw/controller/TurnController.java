@@ -7,17 +7,15 @@ import it.polimi.ingsw.utilities.Constants;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-// TODO: add cloud choice
-
 /**
  * Menage the turn changements and the pianification phase
  */
 public class TurnController {
-    private Controller controller;
-    private ActionController actionController;
-    private GameHandler gameHandler;
-    private Game game;
-    private PropertyChangeSupport support;
+    private final Controller controller;
+    private final ActionController actionController;
+    private final GameHandler gameHandler;
+    private final Game game;
+    private final PropertyChangeSupport support;
     private boolean isFinished = false;
 
     public TurnController(Controller controller, GameHandler gameHandler, Game game) {
@@ -159,10 +157,8 @@ public class TurnController {
                     return false;
                 }
             }
-            return true;
-        } else {
-            return true;
         }
+        return true;
     }
 
     //TODO: addTest
@@ -185,9 +181,6 @@ public class TurnController {
         return isFinished;
     }
 
-    public void setFinished(boolean finished) {
-        isFinished = finished;
-    }
 }
 
 

@@ -19,14 +19,13 @@ import java.util.List;
 /**
  * This class contains the methods that allow the client to read messages/object from the server and print them
  */
-public class Cli{
+public class Cli {
     private final String ip;
     private final int port;
     private boolean active = true;
-    private Object lockPrint;
+    private final Object lockPrint;
     Socket socket;
     static PrintStream ps = new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8);
-
 
 
     public Cli(String ip, int port) {
@@ -47,7 +46,7 @@ public class Cli{
     /**
      * Set the value of active
      *
-     * @param active
+     * @param active true when the connection is active, false otherwise
      */
     public synchronized void setActive(boolean active) {
         this.active = active;
@@ -57,7 +56,7 @@ public class Cli{
      * Thread that allows to read messages from the socket asynchronously.
      * based on the type received, invoke a different print method
      *
-     * @param socketIn
+     * @param socketIn ObjectInputStream coming from the server
      */
     public Thread asyncReadFromSocket(final ObjectInputStream socketIn) {
 
@@ -72,10 +71,11 @@ public class Cli{
                                 case String s -> manageString(s);
                                 case ListOfBoards listOfBoards -> printBoard(listOfBoards.getBoards());
                                 case Deck deck -> printMyDeck(deck);
-                                case ListOfArchipelagos listOfArchipelagos -> printArchipelago(listOfArchipelagos.getArchipelagos());
+                                case ListOfArchipelagos listOfArchipelagos ->
+                                        printArchipelago(listOfArchipelagos.getArchipelagos());
                                 case ListOfClouds listOfClouds -> printCloud(listOfClouds.getClouds());
                                 case ListOfPlayers listOfPlayers -> printLastUsedCards(listOfPlayers.getPlayers());
-                                case Integer i -> System.out.println("");
+                                case Integer ignored -> doNothing();
                                 case null, default -> throw new IllegalArgumentException();
                             }
                         }
@@ -93,26 +93,23 @@ public class Cli{
     /**
      * Thread that allows to send messages asynchronously
      *
-     * @param stdin
-     * @param socketOut
+     * @param stdin     Scanner of the standard input
+     * @param socketOut PrintWriter of the socket where the message will be sent
      */
-    public Thread asyncWriteToSocket(final Scanner stdin,final PrintWriter socketOut) {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (isActive()) {
-                        String inputLine = stdin.nextLine();
-                        if(inputLine.length() > 0) {
-                            socketOut.println(inputLine);
-                            socketOut.flush();
-                        }else{
-                            ps.println("Null input is not valid");
-                        }
+    public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut) {
+        Thread t = new Thread(() -> {
+            try {
+                while (isActive()) {
+                    String inputLine = stdin.nextLine();
+                    if (inputLine.length() > 0) {
+                        socketOut.println(inputLine);
+                        socketOut.flush();
+                    } else {
+                        ps.println("Null input is not valid");
                     }
-                } catch (Exception e) {
-                    setActive(false);
                 }
+            } catch (Exception e) {
+                setActive(false);
             }
         });
         t.start();
@@ -123,25 +120,25 @@ public class Cli{
      * Prints the logo of the game
      */
 
-    public void printLogo () {
-        ps.println("" +
-                "███████ ██████  ██  █████  ███    ██ ████████ ██    ██ ███████ \n" +
-                "██      ██   ██ ██ ██   ██ ████   ██    ██     ██  ██  ██      \n" +
-                "█████   ██████  ██ ███████ ██ ██  ██    ██      ████   ███████ \n" +
-                "██      ██   ██ ██ ██   ██ ██  ██ ██    ██       ██         ██ \n" +
-                "███████ ██   ██ ██ ██   ██ ██   ████    ██       ██    ███████ \n" +
-                "                                                               \n" +
-                "                                                               ");
+    public void printLogo() {
+        ps.println("""
+                ███████ ██████  ██  █████  ███    ██ ████████ ██    ██ ███████\s
+                ██      ██   ██ ██ ██   ██ ████   ██    ██     ██  ██  ██     \s
+                █████   ██████  ██ ███████ ██ ██  ██    ██      ████   ███████\s
+                ██      ██   ██ ██ ██   ██ ██  ██ ██    ██       ██         ██\s
+                ███████ ██   ██ ██ ██   ██ ██   ████    ██       ██    ███████\s
+                                                                              \s
+                                                                              \s""");
         ps.println("\nCreators: Carmine Faino, Christian Di Diego, Federica Di Filippo");
     }
 
     /**
      * Receives a deck from asyncReadFromSocket and prints it
      *
-     * @param deck
+     * @param deck to be printed
      */
-    public void printMyDeck (Deck deck){
-        synchronized (lockPrint){
+    public void printMyDeck(Deck deck) {
+        synchronized (lockPrint) {
             ps.println("YOUR DECK~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             for (Card c : deck.getLeftCards()) {
                 ps.println("    Power: " + c.getPower() + " Steps: " + c.getMaxSteps());
@@ -153,9 +150,9 @@ public class Cli{
     /**
      * Receives the list of the match's players and print the last card played by each player
      *
-     * @param players
+     * @param players list of the players of the game
      */
-    public void printLastUsedCards (List<Player> players) {
+    public void printLastUsedCards(List<Player> players) {
         synchronized (lockPrint) {
             ps.println("\nCARDS PLAYED IN THIS TURN~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             int min = Constants.NUMBEROFCARDSINDECK;
@@ -177,11 +174,10 @@ public class Cli{
     /**
      * Receives the list of players' boards and prints each of the boards
      *
-     * @param boards
+     * @param boards to be printed
      */
     public void printBoard(List<Board> boards) {
         synchronized (lockPrint) {
-            String green, red, yellow, pink, blue;
             ps.println("BOARDS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             for (Board b : boards) {
                 int[] nSDN = new int[]{0, 0, 0, 0, 0};
@@ -197,7 +193,7 @@ public class Cli{
                 StringBuilder boardString = new StringBuilder();
 
                 //print player's nickname
-                boardString.append(ColorsCli.RESET).append("    Board of player: " + b.getNickname() + "\n").append(ColorsCli.RESET);
+                boardString.append(ColorsCli.RESET).append("    Board of player: ").append(b.getNickname()).append("\n").append(ColorsCli.RESET);
 
                 //print dining room
                 for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
@@ -243,17 +239,21 @@ public class Cli{
     /**
      * Receives the list of archipelagos still present and prints them
      *
-     * @param archipelagos
+     * @param archipelagos to be printed
      */
     public void printArchipelago(List<Archipelago> archipelagos) {
         synchronized (lockPrint) {
             StringBuilder archipelago = new StringBuilder();
             archipelago.append(ColorsCli.RESET).append("ARCHIPELAGOS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
-            ps.println(archipelago.toString());
+            ps.println(archipelago);
             for (Archipelago a : archipelagos) {
                 int numberTower = a.getBelongingIslands().size();
                 archipelago = new StringBuilder();
-                archipelago.append(ColorsCli.RESET).append("    Id archipelago: " + a.getIdArchipelago() + (a.getOwner() == null ? "" : " owner: " + a.getOwner().getNickname() + " team: " + a.getOwner().getTeam()) + (a.getIsMNPresent() == false ? "" : " MN is here") + (a.getIsForbidden() == false ? "" : " \uD83D\uDEAB") + "\n    ").append(ColorsCli.RESET);
+
+                archipelago.append(ColorsCli.RESET).append("    Id archipelago: ").append(a.getIdArchipelago())
+                        .append(a.getOwner() == null ? "" : " owner: " + a.getOwner().getNickname() + " team: " + a.getOwner().getTeam())
+                        .append(!a.getIsMNPresent() ? "" : " MN is here").append(!a.getIsForbidden() ? "" : " \uD83D\uDEAB")
+                        .append("\n    ").append(ColorsCli.RESET);
                 for (Island is : a.getBelongingIslands()) {
                     for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
                         for (int k = 0; k < is.getStudentsByColor(StudsAndProfsColor.values()[j]); k++) {
@@ -266,40 +266,40 @@ public class Cli{
                         archipelago.append(ColorsCli.RESET).append("♜ ").append(ColorsCli.RESET);
                     }
                 }
-                ps.println(archipelago.toString());
+                ps.println(archipelago);
             }
 
             archipelago = new StringBuilder();
             archipelago.append(ColorsCli.RESET).append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n").append(ColorsCli.RESET);
-            ps.println(archipelago.toString());
+            ps.println(archipelago);
         }
     }
 
     /**
      * Receives the list of current turn's clouds and prints them
      *
-     * @param clouds
+     * @param clouds to be printed
      */
-    public void printCloud (List<Cloud> clouds) {
+    public void printCloud(List<Cloud> clouds) {
         synchronized (lockPrint) {
             StringBuilder cloud = new StringBuilder();
             cloud.append(ColorsCli.RESET).append("CLOUDS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~").append(ColorsCli.RESET);
-            ps.println(cloud.toString());
+            ps.println(cloud);
             for (Cloud c : clouds)
-                if (c.getIsTaken() == false) {
+                if (!c.getIsTaken()) {
                     cloud = new StringBuilder();
-                    cloud.append(ColorsCli.RESET).append("    Id cloud: " + c.getIdCloud() + "\n    ").append(ColorsCli.RESET);
+                    cloud.append(ColorsCli.RESET).append("    Id cloud: ").append(c.getIdCloud()).append("\n    ").append(ColorsCli.RESET);
                     for (int j = 0; j < Constants.NUMBEROFKINGDOMS; j++) {
                         for (int k = 0; k < c.getStudents()[j]; k++) {
                             cloud.append(ColorsCli.getColorByNumber(j)).append("● ").append(ColorsCli.RESET);
                         }
                     }
-                    ps.println(cloud.toString());
+                    ps.println(cloud);
                 }
 
             cloud = new StringBuilder();
             cloud.append(ColorsCli.RESET).append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n").append(ColorsCli.RESET);
-            ps.println(cloud.toString());
+            ps.println(cloud);
         }
     }
 
@@ -309,14 +309,15 @@ public class Cli{
      * not arrive it means that the server is offline and the cli will be closed
      *
      * @param geek is the ip address of the server
-     * @return
+     * @return the created thread
      */
     public Thread pingToServer(InetAddress geek) {
         Thread t = new Thread(() -> {
             try {
                 while (isActive()) {
+                    //noinspection BusyWait
                     Thread.sleep(10000);
-                    if(!geek.isReachable(5000)) {
+                    if (!geek.isReachable(5000)) {
                         System.out.println("The server is unreachable, exiting...");
                         System.exit(0);
                     }
@@ -333,19 +334,21 @@ public class Cli{
      * Receives a string and prints it. If the string is a string that indicates that
      * the connection is closed, the cli closes
      *
-     * @param s
+     * @param s string to be printed
      */
-    private void manageString(String s){
+    private void manageString(String s) {
         ps.println(s);
-        if(s.equalsIgnoreCase(ServerMessage.connectionClosed)){
+        if (s.equalsIgnoreCase(ServerMessage.connectionClosed)) {
             System.exit(0);
         }
     }
 
+    private void doNothing(){}
+
     /**
      * Run method of the class CLI
      *
-     * @throws IOException
+     * @throws IOException exception
      */
     public void run() throws IOException {
         printLogo();
@@ -353,28 +356,24 @@ public class Cli{
         SocketAddress socketAddress = new InetSocketAddress(ip, port);
         socket.connect(socketAddress);
         ps.println("Connection established");
-        ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
-        PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
-        Scanner stdin = new Scanner(System.in);
         InetAddress geek = socket.getInetAddress();
 
-        try{
+        try (ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
+             PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
+             Scanner stdin = new Scanner(System.in)) {
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(stdin, socketOut);
             Thread t2 = pingToServer(geek);
             t0.join();
             t1.join();
             t2.join();
-            while (isActive());
+            //noinspection StatementWithEmptyBody
+            while (isActive()) ;
             t0.interrupt();
             t1.interrupt();
             t2.interrupt();
-        } catch(InterruptedException | NoSuchElementException e){
+        } catch (InterruptedException | NoSuchElementException e) {
             ps.println("Connection closed from the client side");
-        } finally {
-            stdin.close();
-            socketIn.close();
-            socketOut.close();
         }
     }
 }

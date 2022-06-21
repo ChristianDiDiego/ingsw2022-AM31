@@ -19,46 +19,49 @@ public class ProfessorsTable implements Serializable {
  */
     @Serial
     private static final long serialVersionUID = 5L;
-    private boolean[] hasProfessor;
+    private final boolean[] hasProfessor;
 
-    public ProfessorsTable(){
+    public ProfessorsTable() {
         this.hasProfessor = new boolean[Constants.NUMBEROFKINGDOMS];
     }
 
     /**
      * Remove a professor from the player's board
+     *
      * @param profColor color of the Professor to be removed
      */
-    public void removeProfessor(StudsAndProfsColor profColor){
+    public void removeProfessor(StudsAndProfsColor profColor) {
         hasProfessor[profColor.ordinal()] = false;
     }
 
     /**
      * Add a professor in the player's board
+     *
      * @param profColor Color of the professor to be added
      */
-    public void addProfessor(StudsAndProfsColor profColor){
+    public void addProfessor(StudsAndProfsColor profColor) {
         hasProfessor[profColor.ordinal()] = true;
     }
 
     /**
      * Check if the player has a professor
+     *
      * @param profColor color of the Professor to be checked
      * @return true if the professor of color profColor is on the board, false otherwise
      */
-    public boolean getHasProf(StudsAndProfsColor profColor){
+    public boolean getHasProf(StudsAndProfsColor profColor) {
         return hasProfessor[profColor.ordinal()];
     }
 
     /**
      * @return number of professors on board
      */
-    public int getNumberOfProf(){
+    public int getNumberOfProf() {
         int number = 0;
 
-        for(int i=0; i<Constants.NUMBEROFKINGDOMS ; i++){
-            if(hasProfessor[i]){
-                number ++;
+        for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
+            if (hasProfessor[i]) {
+                number++;
             }
         }
         return number;

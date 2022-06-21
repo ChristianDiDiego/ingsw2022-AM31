@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.StudsAndProfsColor;
  * card 10 in list of cards ( in game tutorial)
  * The player can switch max 2 students between entrance and dining room
  */
-public class Character7 extends Characters{
+public class Character7 extends Characters {
 
     public Character7(Game game) {
         super(1, game);
@@ -20,17 +20,16 @@ public class Character7 extends Characters{
 
     /**
      * Switch 2 student in the entrance with 2 students in the dining room
-     * @param color1ToAdd student in the entrance
-     * @param color2ToAdd student in the entrance
+     *
+     * @param color1ToAdd    student in the entrance
+     * @param color2ToAdd    student in the entrance
      * @param color1ToRemove student in the dining room
      * @param color2ToRemove student in the dining room
      */
     public boolean usePower(StudsAndProfsColor color1ToAdd, StudsAndProfsColor color2ToAdd, StudsAndProfsColor color1ToRemove, StudsAndProfsColor color2ToRemove) {
-        //Entrance entrance = game.getCurrentPlayer().getMyBoard().getEntrance();
-        //DiningRoom diningRoom = game.getCurrentPlayer().getMyBoard().getDiningRoom();
-        if(checkStudent(color1ToAdd, color2ToAdd, color1ToRemove, color2ToRemove)) {
+        if (checkStudent(color1ToAdd, color2ToAdd, color1ToRemove, color2ToRemove)) {
             if (payForUse()) {
-                int[] toAdd = {0,0,0,0,0};
+                int[] toAdd = {0, 0, 0, 0, 0};
                 toAdd[color1ToRemove.ordinal()] += 1;
                 toAdd[color2ToRemove.ordinal()] += 1;
 
@@ -49,25 +48,23 @@ public class Character7 extends Characters{
             } else {
                 return false;
             }
-        }else {
+        } else {
             System.out.println("You don't have some of these students");
             return false;
         }
     }
 
     public boolean checkStudent(StudsAndProfsColor color1ToAdd, StudsAndProfsColor color2ToAdd, StudsAndProfsColor color1ToRemove, StudsAndProfsColor color2ToRemove) {
-        if(game.getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color1ToAdd) < 1
+        if (game.getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color1ToAdd) < 1
                 && game.getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color2ToAdd) < 1
                 && game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color1ToRemove) < 1
                 && game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color2ToRemove) < 1) {
             return false;
         } else {
-            if(color1ToAdd == color2ToAdd && game.getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color1ToAdd) < 2) {
+            if (color1ToAdd == color2ToAdd && game.getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color1ToAdd) < 2) {
                 return false;
-            } else if(color1ToRemove == color2ToRemove && game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color1ToRemove) < 2) {
-                return false;
-            }
-            return true;
+            } else return color1ToRemove != color2ToRemove ||
+                    game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color1ToRemove) >= 2;
         }
     }
 

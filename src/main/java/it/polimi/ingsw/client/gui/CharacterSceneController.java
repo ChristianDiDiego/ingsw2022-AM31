@@ -3,15 +3,14 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.model.Archipelago;
 import it.polimi.ingsw.utilities.Constants;
 import it.polimi.ingsw.utilities.GameMessage;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -23,55 +22,74 @@ import javafx.scene.control.Label;
  * This class contains the controller to manage the character scene
  */
 public class CharacterSceneController implements Initializable {
-    Image character1 = new Image(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front2.jpg"));
-    Image character2 = new Image(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front3.jpg"));
-    Image character3 = new Image(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front4.jpg"));
-    Image character4 = new Image(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front5.jpg"));
-    Image character5 = new Image(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front7.jpg"));
-    Image character6 = new Image(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front8.jpg"));
-    Image character7 = new Image(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front9.jpg"));
-    Image character8 = new Image(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front12.jpg"));
+    Image character1 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front2.jpg")));
+    Image character2 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front3.jpg")));
+    Image character3 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front4.jpg")));
+    Image character4 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front5.jpg")));
+    Image character5 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front7.jpg")));
+    Image character6 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front8.jpg")));
+    Image character7 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front9.jpg")));
+    Image character8 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front12.jpg")));
 
     List<Image> characters = new ArrayList<>();
 
-    @FXML AnchorPane character1Pane;
-    @FXML AnchorPane character2Pane;
-    @FXML AnchorPane character3Pane;
+    @FXML
+    AnchorPane character1Pane;
+    @FXML
+    AnchorPane character2Pane;
+    @FXML
+    AnchorPane character3Pane;
 
     List<AnchorPane> charactersPane = new ArrayList<>();
 
-    @FXML TextArea character1Label;
-    @FXML TextArea character2Label;
-    @FXML TextArea character3Label;
+    @FXML
+    TextArea character1Label;
+    @FXML
+    TextArea character2Label;
+    @FXML
+    TextArea character3Label;
 
-    @FXML ChoiceBox colorBox;
-    @FXML ChoiceBox archipelagoBox;
-    @FXML Label colorLabel;
-    @FXML Label archipelagoLabel;
-    @FXML ChoiceBox firstEnBox;
-    @FXML ChoiceBox secondEnBox;
-    @FXML ChoiceBox firstDRBox;
-    @FXML ChoiceBox secondDRBox;
-    List<ChoiceBox> switchBox = new ArrayList<>();
-    @FXML Label firstEnLabel;
-    @FXML Label secondEnLabel;
-    @FXML Label firstDRLabel;
-    @FXML Label secondDRLabel;
+    @FXML
+    ChoiceBox<String> colorBox;
+    @FXML
+    ChoiceBox<String> archipelagoBox;
+    @FXML
+    Label colorLabel;
+    @FXML
+    Label archipelagoLabel;
+    @FXML
+    ChoiceBox<String> firstEnBox;
+    @FXML
+    ChoiceBox<String> secondEnBox;
+    @FXML
+    ChoiceBox<String> firstDRBox;
+    @FXML
+    ChoiceBox<String> secondDRBox;
+    List<ChoiceBox<String>> switchBox = new ArrayList<>();
+    @FXML
+    Label firstEnLabel;
+    @FXML
+    Label secondEnLabel;
+    @FXML
+    Label firstDRLabel;
+    @FXML
+    Label secondDRLabel;
     List<Label> switchLabel = new ArrayList<>();
     List<TextArea> charactersLabel = new ArrayList<>();
 
-    @FXML TextArea messageArea;
+    @FXML
+    TextArea messageArea;
     private int wallet = 0;
     List<String> charactersId = new ArrayList<>();
     List<Integer> charactersPrice = new ArrayList<>();
-    private boolean firtsCharacterOfTheTurn = true;
+    private boolean firstCharacterOfTheTurn = true;
 
-    private PropertyChangeSupport support = new PropertyChangeSupport(this);
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     /**
      * Add a listener to this scene
      *
-     * @param pcl
+     * @param pcl listener
      */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
@@ -80,29 +98,34 @@ public class CharacterSceneController implements Initializable {
     /**
      * Shows the characters of the game if the mode is expert
      *
-     * @param id
-     * @param description
-     * @param price
+     * @param id          of the characters
+     * @param description id of the characters
+     * @param price       id of the characters
      */
-    public void printCharacters(List<String> id, List<String> description, List<Integer> price){
+    public void printCharacters(List<String> id, List<String> description, List<Integer> price) {
         charactersId.clear();
         charactersPrice.clear();
-        firtsCharacterOfTheTurn = true;
+        firstCharacterOfTheTurn = true;
         messageArea.setText(GameMessage.characterInstructions);
-        for(int i = 0; i < id.size(); i++){
+        for (int i = 0; i < id.size(); i++) {
             int idCharacter = Integer.parseInt(id.get(i));
-            if(idCharacter == 6) {
-                colorBox.setVisible(true);
-                colorLabel.setVisible(true);
-            } else if(idCharacter == 1 || idCharacter == 3) {
-                archipelagoBox.setVisible(true);
-                archipelagoLabel.setVisible(true);
-            } else if(idCharacter == 7) {
-                for(int j = 0; j < switchBox.size(); j++) {
-                    switchBox.get(j).setVisible(true);
-                    switchBox.get(j).getSelectionModel().select(0);
-                    switchLabel.get(j).setVisible(true);
-                }
+            switch (idCharacter) {
+                case 6:
+                    colorBox.setVisible(true);
+                    colorLabel.setVisible(true);
+                    break;
+                case 1:
+                case 3:
+                    archipelagoBox.setVisible(true);
+                    archipelagoLabel.setVisible(true);
+                    break;
+                case 7:
+                    for (int j = 0; j < switchBox.size(); j++) {
+                        switchBox.get(j).setVisible(true);
+                        switchBox.get(j).getSelectionModel().select(0);
+                        switchLabel.get(j).setVisible(true);
+                    }
+                    break;
             }
 
             BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
@@ -124,38 +147,31 @@ public class CharacterSceneController implements Initializable {
     /**
      * Add the possibility to click on the characters' image to play them
      *
-     * @param character
+     * @param character where the listened will be added
      */
-    private void setOnClickCharacter(AnchorPane character){
-        character.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                int characterNumber = -1;
-                for(int i = 0; i < Constants.NUMBEROFPLAYABLECHARACTERS; i++) {
-                    if(charactersId.get(i).equals(character.getAccessibleText())) {
-                        characterNumber = i;
-                    }
+    private void setOnClickCharacter(AnchorPane character) {
+        character.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            int characterNumber = -1;
+            for (int i = 0; i < Constants.NUMBEROFPLAYABLECHARACTERS; i++) {
+                if (charactersId.get(i).equals(character.getAccessibleText())) {
+                    characterNumber = i;
                 }
-                if(firtsCharacterOfTheTurn) {
-                    if(wallet >= charactersPrice.get(characterNumber)) {
-                        if(character.getAccessibleText().equals("6")) {
-                            playCharacter6(character.getAccessibleText());
-                        } else if(character.getAccessibleText().equals("1") || character.getAccessibleText().equals("3")){
-                            playCharacter1or3(character.getAccessibleText());
-                        } else if(character.getAccessibleText().equals("7")) {
-                            playCharacter7(character.getAccessibleText());
-                        }else {
-                            playSimpleCharacter(character.getAccessibleText());
-                        }
-                        character.setOpacity(0.5);
-                        firtsCharacterOfTheTurn = false;
-                        messageArea.setText("You played the character");
-                        event.consume();
-                    } else {
-                        messageArea.setText("You don't have enough coins");
-                        event.consume();
+            }
+            if (firstCharacterOfTheTurn) {
+                if (wallet >= charactersPrice.get(characterNumber)) {
+                    switch (character.getAccessibleText()) {
+                        case "6" -> playCharacter6(character.getAccessibleText());
+                        case "1", "3" -> playCharacter1or3(character.getAccessibleText());
+                        case "7" -> playCharacter7(character.getAccessibleText());
+                        default -> playSimpleCharacter(character.getAccessibleText());
                     }
+                    character.setOpacity(0.5);
+                    firstCharacterOfTheTurn = false;
+                    messageArea.setText("You played the character");
+                } else {
+                    messageArea.setText("You don't have enough coins");
                 }
+                event.consume();
             }
         });
     }
@@ -163,12 +179,12 @@ public class CharacterSceneController implements Initializable {
     /**
      * Shows the menu to select an archipelago in one of the characters needs it
      *
-     * @param listReceived
+     * @param listReceived list of archipelago from the server
      */
     public void setArchipelagos(List<Archipelago> listReceived) {
         archipelagoBox.getItems().clear();
-        for(int i = 0; i < listReceived.size(); i++) {
-            String id = String.valueOf(listReceived.get(i).getIdArchipelago());
+        for (Archipelago archipelago : listReceived) {
+            String id = String.valueOf(archipelago.getIdArchipelago());
             archipelagoBox.getItems().add(id);
         }
         archipelagoBox.getSelectionModel().select(0);
@@ -177,7 +193,7 @@ public class CharacterSceneController implements Initializable {
     /**
      * Sets the wallet to see if the player has enough money to play the character
      *
-     * @param coins
+     * @param coins of the player
      */
     public void setWallet(int coins) {
         wallet = coins;
@@ -186,9 +202,9 @@ public class CharacterSceneController implements Initializable {
     /**
      * Plays a character who doesn't need further specifications
      *
-     * @param characterSelected
+     * @param characterSelected clicked Character
      */
-    private void playSimpleCharacter(String characterSelected){
+    private void playSimpleCharacter(String characterSelected) {
         String playSelectedCloud = "CHARACTER " + characterSelected;
         support.firePropertyChange("characterPlayed", "", playSelectedCloud);
     }
@@ -196,11 +212,11 @@ public class CharacterSceneController implements Initializable {
     /**
      * Plays the character 1 or 3 that need an archipelago on which to use the power
      *
-     * @param characterSelected
+     * @param characterSelected clicked Character
      */
     private void playCharacter1or3(String characterSelected) {
-        if(archipelagoBox.getValue() != null) {
-            String playSelectedCloud = "CHARACTER " + characterSelected + " " + archipelagoBox.getValue().toString();
+        if (archipelagoBox.getValue() != null) {
+            String playSelectedCloud = "CHARACTER " + characterSelected + " " + archipelagoBox.getValue();
             support.firePropertyChange("characterPlayed", "", playSelectedCloud);
         }
     }
@@ -208,11 +224,11 @@ public class CharacterSceneController implements Initializable {
     /**
      * Plays the character 6 who need a color to use the power
      *
-     * @param characterSelected
+     * @param characterSelected clicked Character
      */
     private void playCharacter6(String characterSelected) {
         if (colorBox.getValue() != null) {
-            String playSelectedCloud = "CHARACTER " + characterSelected + " " + colorBox.getValue().toString();
+            String playSelectedCloud = "CHARACTER " + characterSelected + " " + colorBox.getValue();
             support.firePropertyChange("characterPlayed", "", playSelectedCloud);
         }
     }
@@ -220,11 +236,11 @@ public class CharacterSceneController implements Initializable {
     /**
      * Plays the character 7 who need four student for the swap
      *
-     * @param characterSelected
+     * @param characterSelected clicked Character
      */
     private void playCharacter7(String characterSelected) {
         if (colorBox.getValue() != null) {
-            String playSelectedCloud = "CHARACTER " + characterSelected + " " + switchBox.get(0).getValue().toString() + "," + switchBox.get(1).getValue().toString() + "," + switchBox.get(2).getValue().toString() + "," + switchBox.get(3).getValue().toString();
+            String playSelectedCloud = "CHARACTER " + characterSelected + " " + switchBox.get(0).getValue() + "," + switchBox.get(1).getValue() + "," + switchBox.get(2).getValue() + "," + switchBox.get(3).getValue();
             support.firePropertyChange("characterPlayed", "", playSelectedCloud);
         }
     }
@@ -232,30 +248,21 @@ public class CharacterSceneController implements Initializable {
     /**
      * If there is an error while playing a character, set the error message
      * reset firstCharacterOfTheTurn because it is possible to try again to play a character
-     * @param error
+     *
+     * @param error to be printed
      */
-    public void setErrorMessage(String error){
+    public void setErrorMessage(String error) {
         messageArea.setText(error);
-        firtsCharacterOfTheTurn = true;
+        firstCharacterOfTheTurn = true;
     }
 
     /**
      * Override of the method initialize to set all the components of the scene
      * according to the game in progress
-     *
-     * @param url
-     * @param resourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        characters.add(character1);
-        characters.add(character2);
-        characters.add(character3);
-        characters.add(character4);
-        characters.add(character5);
-        characters.add(character6);
-        characters.add(character7);
-        characters.add(character8);
+        characters.addAll(Arrays.asList(character1, character2, character3, character4, character5, character6, character7, character8));
 
         charactersPane.add(character1Pane);
         charactersPane.add(character2Pane);
@@ -282,17 +289,14 @@ public class CharacterSceneController implements Initializable {
         archipelagoBox.setVisible(false);
         archipelagoLabel.setVisible(false);
 
-        switchBox.add(firstEnBox);
-        switchBox.add(secondEnBox);
-        switchBox.add(firstDRBox);
-        switchBox.add(secondDRBox);
+        switchBox.addAll(Arrays.asList(firstEnBox, secondEnBox, firstDRBox, secondDRBox));
 
         switchLabel.add(firstEnLabel);
         switchLabel.add(secondEnLabel);
         switchLabel.add(firstDRLabel);
         switchLabel.add(secondDRLabel);
 
-        for(int i = 0; i < switchBox.size(); i++) {
+        for (int i = 0; i < switchBox.size(); i++) {
             switchBox.get(i).setVisible(false);
             switchLabel.get(i).setVisible(false);
 

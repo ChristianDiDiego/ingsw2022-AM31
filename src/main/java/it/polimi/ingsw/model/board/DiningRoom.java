@@ -12,14 +12,15 @@ import java.io.Serializable;
 public class DiningRoom implements Serializable {
     @Serial
     private static final long serialVersionUID = 3L;
-    private int[] studentsInDR;
+    private final int[] studentsInDR;
 
-    public DiningRoom(){
+    public DiningRoom() {
         this.studentsInDR = new int[Constants.NUMBEROFKINGDOMS];
     }
 
     /**
      * Add a student in the dining room
+     *
      * @param studColor color of the student that needs to be added
      */
     public void addStudent(StudsAndProfsColor studColor) {
@@ -28,6 +29,7 @@ public class DiningRoom implements Serializable {
 
     /**
      * Remove a student from the dining room
+     *
      * @param studColor color of the student that needs to be removed
      */
     public void removeStudent(StudsAndProfsColor studColor) {
@@ -36,10 +38,11 @@ public class DiningRoom implements Serializable {
 
     /**
      * Return the number of students of a color in the dining room
+     *
      * @param studColor color of the students to be counted
      * @return number of the students of color studColor in the dining room
      */
-    public int getStudentsByColor(StudsAndProfsColor studColor){
+    public int getStudentsByColor(StudsAndProfsColor studColor) {
         return studentsInDR[studColor.ordinal()];
     }
 }

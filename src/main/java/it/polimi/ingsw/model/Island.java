@@ -12,8 +12,8 @@ public class Island implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 8L;
-    private int idIsland;
-    private int[] studentOnIsland = new int[Constants.NUMBEROFKINGDOMS];
+    private final int idIsland;
+    private final int[] studentOnIsland = new int[Constants.NUMBEROFKINGDOMS];
     /*This array contains the number of students for each color depending on the position.
       0 - RED
       1 - GREEN
@@ -24,11 +24,12 @@ public class Island implements Serializable {
 
     public Island(int idIsland) {
         this.idIsland = idIsland;
-        for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
+        for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
             studentOnIsland[i] = 0;
         }
     }
-    public int getIdIsland(){
+
+    public int getIdIsland() {
         return idIsland;
     }
 
@@ -41,6 +42,7 @@ public class Island implements Serializable {
 
     /**
      * Calculate the number of the students of a color present on the island
+     *
      * @param studColor color of the students to be counted
      * @return integer number of the students of studColor on the island
      */
@@ -50,6 +52,7 @@ public class Island implements Serializable {
 
     /**
      * increments the counter of che received student's color in the island
+     *
      * @param studColor color of the student to be added
      */
     public void addStudent(StudsAndProfsColor studColor) {

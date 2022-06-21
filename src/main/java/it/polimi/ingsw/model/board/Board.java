@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.ColorOfTower;
-import it.polimi.ingsw.model.Game;
-import java.beans.PropertyChangeSupport;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serial;
@@ -16,12 +15,12 @@ public class Board implements Serializable {
     @Serial
     private static final long serialVersionUID = 30L;
 
-    private Entrance entrance;
-    private DiningRoom diningRoom;
-    private ProfessorsTable professorsTable;
-    private TowersOnBoard towersOnBoard;
-    private ColorOfTower colorOfTower;
-    private String nickname;
+    private final Entrance entrance;
+    private final DiningRoom diningRoom;
+    private final ProfessorsTable professorsTable;
+    private final TowersOnBoard towersOnBoard;
+    private final ColorOfTower colorOfTower;
+    private final String nickname;
 
 
     public Board(String nickname, ColorOfTower colorOfTower) {
@@ -52,6 +51,7 @@ public class Board implements Serializable {
     public TowersOnBoard getTowersOnBoard() {
         return towersOnBoard;
     }
+
     public ColorOfTower getColorOfTower() {
         return colorOfTower;
     }

@@ -1,14 +1,11 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.controller.ActionController;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.utilities.ErrorMessage;
-import it.polimi.ingsw.view.RemoteView;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -22,9 +19,9 @@ import java.util.Locale;
  */
 
 public class ActionParser {
-    private ActionController actionController;
+    private final ActionController actionController;
 
-    private PropertyChangeSupport support;
+    private final PropertyChangeSupport support;
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);

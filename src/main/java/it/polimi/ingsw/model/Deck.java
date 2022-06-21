@@ -15,9 +15,10 @@ import java.util.List;
 public class Deck implements Serializable {
     @Serial
     private static final long serialVersionUID = 9L;
-    private List<Card> playerCards;
-    private PropertyChangeSupport support;
-    public Deck(){
+    private final List<Card> playerCards;
+    private final PropertyChangeSupport support;
+
+    public Deck() {
         this.playerCards = new ArrayList<>();
         int maxSteps = 1;
         for (int power = 1; power <= Constants.NUMBEROFCARDSINDECK; power++) {
@@ -40,12 +41,13 @@ public class Deck implements Serializable {
 
     /**
      * removes the chosen card from deck
+     *
      * @param cardToUse card to be picked from the deck
      * @return true if the card has been correctly removed, false otherwise
      */
-    public boolean useCard(Card cardToUse){
-        for(Card c : this.getLeftCards()){
-            if(c.getPower() == cardToUse.getPower()){
+    public boolean useCard(Card cardToUse) {
+        for (Card c : this.getLeftCards()) {
+            if (c.getPower() == cardToUse.getPower()) {
                 playerCards.remove(c);
                 support.firePropertyChange("usedCard", 0, 1);
                 return true;

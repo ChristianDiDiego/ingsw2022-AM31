@@ -15,30 +15,31 @@ public class Character1 extends Characters {
         super(3, game);
         id = 1;
         descriptionOfPower = "Choose an island and calculate the influence as if MN is on that island \n " +
-                                "Usage: CHARACTER 1 [IDARCHIPELAGO]";
+                "Usage: CHARACTER 1 [IDARCHIPELAGO]";
     }
 
 
     /**
      * calculates asynch influence in the chosen archipelago
-     * @param idArchipelago
+     *
+     * @param idArchipelago where the calculation will be calculated
      */
     public boolean usePower(int idArchipelago) {
         if (payForUse()) {
             game.getCurrentPlayer().setUsedCharacter(this);
-            if(game.getArchipelagoById(idArchipelago)!= null){
+            if (game.getArchipelagoById(idArchipelago) != null) {
                 Archipelago a = game.getArchipelagoById(idArchipelago);
-                if(a.getIsForbidden() == false){
+                if (!a.getIsForbidden()) {
                     // PROPOSAL OF NEW CALCULATE INFLUENCE:
                     Player oldOwner;
                     int[] influences = new int[game.getNumberOfPlayers()];
-                    for(int i = 0; i< game.getNumberOfPlayers(); i++){
+                    for (int i = 0; i < game.getNumberOfPlayers(); i++) {
                         influences[i] = 0;
                     }
 
-                    if(a.getOwner() == null){
+                    if (a.getOwner() == null) {
                         oldOwner = null;
-                    }else {
+                    } else {
                         oldOwner = a.getOwner();
                     }
 
@@ -49,33 +50,27 @@ public class Character1 extends Characters {
                     In this way, both if is a game with 2 or 4 players
                     the influence is correctly calculated
                     */
-                    for(Player p : game.getOrderOfPlayers()){
+                    for (Player p : game.getOrderOfPlayers()) {
                         //Se oldowner non è nullo e il suo numero di squadra coincide con il player su cui
                         //stiamo iterando, aggiunge all'influenza del suo team il numero di torri(=numero di isole)
-                        if(oldOwner != null && oldOwner.getTeam() == p.getTeam()){
+                        if (oldOwner != null && oldOwner.getTeam() == p.getTeam()) {
                             influences[p.getTeam()] = a.getBelongingIslands().size();
                         }
-                        for(int c = 0; c < Constants.NUMBEROFKINGDOMS; c++){
-                            for(Island i : a.getBelongingIslands()){
-                                if(i.getAllStudents()[c] > 0 && p.getMyBoard().getProfessorsTable().getHasProf(StudsAndProfsColor.values()[c])) {
-                                    influences[p.getTeam()] += i.getAllStudents()[c];
-                                }
-                            }
-                        }
+                        Character4.findInfluence(a, influences, p);
                     }
                     //Find the max in the vector influence and save the team number
                     int maxInfluence = 0;
                     int teamMaxInfluence = 0;
-                    for(int i = 0; i< influences.length; i++){
-                        if(influences[i] > maxInfluence){
+                    for (int i = 0; i < influences.length; i++) {
+                        if (influences[i] > maxInfluence) {
                             maxInfluence = influences[i];
                             teamMaxInfluence = i;
                         }
                     }
                     boolean tie = false;
                     //Check if there are two different players with the same influence (tie)
-                    for(int i = 0; i< influences.length; i++){
-                        if(influences[i] == maxInfluence && i != teamMaxInfluence){
+                    for (int i = 0; i < influences.length; i++) {
+                        if (influences[i] == maxInfluence && i != teamMaxInfluence) {
                             tie = true;
                             break;
                         }
@@ -87,15 +82,15 @@ public class Character1 extends Characters {
                     - the archipelago had no owner or the owner changes
                     - there is no tie
                      */
-                    if(maxInfluence > 0 && (oldOwner == null || oldOwner.getTeam() != teamMaxInfluence) && !tie){
-                        for(int i = 0; i < a.getBelongingIslands().size(); i++) {
+                    if (maxInfluence > 0 && (oldOwner == null || oldOwner.getTeam() != teamMaxInfluence) && !tie) {
+                        for (int i = 0; i < a.getBelongingIslands().size(); i++) {
                             //Only if the newOwner is different from the oldOwner (or this was null) change the towers
 
-                            for(Player p : game.getOrderOfPlayers()){
-                                if(oldOwner != null && oldOwner.getTeam() == p.getTeam() && p.getColorOfTowers() != null){
+                            for (Player p : game.getOrderOfPlayers()) {
+                                if (oldOwner != null && oldOwner.getTeam() == p.getTeam() && p.getColorOfTowers() != null) {
                                     p.getMyBoard().getTowersOnBoard().addTower();
                                 }
-                                if(p.getTeam() == teamMaxInfluence && p.getColorOfTowers() != null){
+                                if (p.getTeam() == teamMaxInfluence && p.getColorOfTowers() != null) {
                                     p.getMyBoard().getTowersOnBoard().removeTower();
                                     a.changeOwner(p);
                                 }
@@ -103,16 +98,16 @@ public class Character1 extends Characters {
                         }
                         checkUnification(game.getArchipelagoById(idArchipelago));
                     }
-                } else if (a.getIsMNPresent() && a.getIsForbidden() == true){
+                } else if (a.getIsMNPresent() && a.getIsForbidden()) {
                     game.getArchipelagoById(idArchipelago).setIsForbidden(false);
                 }
             }
             return true;
-        } else{
+        } else {
             return false;
         }
-        }
-
     }
+
+}
 
 

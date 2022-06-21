@@ -2,23 +2,24 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.expertMode.Characters;
+
 import java.io.Serializable;
 
 /**
  * Represents a player of the game with his features and his board, deck, wallet (if in expert mode),..
  */
 public class Player implements Serializable {
-    private String nickname;
-    private Deck myDeck;
-    private ColorOfTower colorOfTowers;
+    private final String nickname;
+    private final Deck myDeck;
+    private final ColorOfTower colorOfTowers;
     private Card lastUsedCard;
-    private Board myBoard;
+    private final Board myBoard;
     private int wallet;
     private Characters usedCharacter;
     private int team;
 
     //TODO: characterUsed and wallet are optionals
-    public Player(String nickname, ColorOfTower colorOfTowers){
+    public Player(String nickname, ColorOfTower colorOfTowers) {
         this.nickname = nickname;
         this.colorOfTowers = colorOfTowers;
         this.myBoard = new Board(nickname, colorOfTowers);
@@ -35,21 +36,19 @@ public class Player implements Serializable {
         return lastUsedCard;
     }
 
-    public void setLastUsedCard(Card card){
+    public void setLastUsedCard(Card card) {
         this.lastUsedCard = card;
     }
 
     /**
      * receives the card chosen by player and removes it from deck
+     *
      * @param toUse card chosen
      */
-    public boolean chooseCardToUse(Card toUse) {
-       if(myDeck.useCard(toUse)) {
-           lastUsedCard = toUse;
-           return true;
-       }else{
-           return false;
-       }
+    public void chooseCardToUse(Card toUse) {
+        if (myDeck.useCard(toUse)) {
+            lastUsedCard = toUse;
+        }
     }
 
     public Board getMyBoard() {

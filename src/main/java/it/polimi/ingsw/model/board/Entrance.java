@@ -22,10 +22,10 @@ public class Entrance implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 4L;
-    private int[] studentsInEntrance;
-    private PropertyChangeSupport support;
+    private final int[] studentsInEntrance;
+    private final PropertyChangeSupport support;
 
-    public Entrance(){
+    public Entrance() {
         studentsInEntrance = new int[Constants.NUMBEROFKINGDOMS];
         this.support = new PropertyChangeSupport(this);
     }
@@ -36,30 +36,33 @@ public class Entrance implements Serializable {
 
     /**
      * Remove a student from the entrance
+     *
      * @param studColor color of the student to be removed
      */
     public void removeStudent(StudsAndProfsColor studColor) {
-            studentsInEntrance[studColor.ordinal()]--;
-            support.firePropertyChange("RemovedStudentFromEntrance", 0, 1);
+        studentsInEntrance[studColor.ordinal()]--;
+        support.firePropertyChange("RemovedStudentFromEntrance", 0, 1);
     }
 
     /**
      * Add a student in the entrance
+     *
      * @param toAdd array of students to add
      */
-    public void addStudent(int[] toAdd){
-        for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
-           studentsInEntrance[i] += toAdd[i];
+    public void addStudent(int[] toAdd) {
+        for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
+            studentsInEntrance[i] += toAdd[i];
         }
 
     }
 
     /**
      * Return the number of students of a color in the dining room
+     *
      * @param studColor color of the students to be counted
      * @return number of the students of color studColor in the entrance
      */
-    public int getStudentsByColor(StudsAndProfsColor studColor){
+    public int getStudentsByColor(StudsAndProfsColor studColor) {
         return studentsInEntrance[studColor.ordinal()];
     }
 }

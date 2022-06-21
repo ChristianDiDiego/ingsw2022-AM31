@@ -7,7 +7,7 @@ public enum ColorsCli {
     CLEAR("\033[H\033[2J"),
     RESET("\033[0m"); //Color end string, color reset
 
-    public static final String BLACK ="\033[0;30m";   // BLACK
+    public static final String BLACK = "\033[0;30m";   // BLACK
     public static final String GREEN = "\033[0;32m";   // GREEN
     public static final String RED = "\033[0;31m";     // RED
 
@@ -26,24 +26,18 @@ public enum ColorsCli {
     /**
      * returns the color of the corresponding number
      *
-     * @param n
-     * @return
+     * @param n number of the color typed
+     * @return the name of the color
      */
-    static String getColorByNumber(int n){
-        switch (n){
-            case 0:
-                return GREEN;
-            case 1:
-                return RED;
-            case 2:
-                return YELLOW;
-            case 3:
-                return PINK;
-            case 4:
-                return CYAN;
-            default:
-                return BLACK;
-        }
+    static String getColorByNumber(int n) {
+        return switch (n) {
+            case 0 -> GREEN;
+            case 1 -> RED;
+            case 2 -> YELLOW;
+            case 3 -> PINK;
+            case 4 -> CYAN;
+            default -> BLACK;
+        };
     }
 
     @Override

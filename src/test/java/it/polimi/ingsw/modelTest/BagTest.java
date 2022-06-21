@@ -15,13 +15,13 @@ class BagTest {
      */
     @Test
     void getNumberOfLeftStudentsAndPickTest() {
-        Bag bag = new Bag(3);
+        Bag bag = new Bag();
         assertEquals(120, bag.getNumberOfLeftStudents());
 
         bag.pickStudent(4);
         assertEquals(116, bag.getNumberOfLeftStudents());
 
-        Bag bag2 = new Bag(4);
+        Bag bag2 = new Bag();
         assertEquals(120, bag2.getNumberOfLeftStudents());
 
         bag2.pickStudent(3);

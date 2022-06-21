@@ -10,7 +10,8 @@ public class TowersOnBoard implements Serializable {
     @Serial
     private static final long serialVersionUID = 6L;
     private int numberOfTowers;
-    public TowersOnBoard(){
+
+    public TowersOnBoard() {
         this.numberOfTowers = 0;
     }
 
@@ -30,6 +31,7 @@ public class TowersOnBoard implements Serializable {
 
     /**
      * Get the number of towers on the table of the player
+     *
      * @return the number of towers on the table
      */
     public int getNumberOfTowers() {
