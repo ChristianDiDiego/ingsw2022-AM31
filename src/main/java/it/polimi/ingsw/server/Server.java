@@ -259,7 +259,6 @@ public class Server {
             for (SocketClientConnection s : mapGameWaitingConnection.get(savedGame).values()) {
                 s.send(ServerMessage.startingGame);
             }
-            System.out.println("size of map: " + mapGameRemoteViews.get(savedGame).size());
             for (RemoteView rem : mapGameRemoteViews.get(savedGame)) {
                 rem.resendSituation();
             }
@@ -459,7 +458,6 @@ public class Server {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-                    color = c.askColor();
                 } else {
                     c.asyncSend(ErrorMessage.ColorNotValid);
                     try {
@@ -467,8 +465,8 @@ public class Server {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-                    color = c.askColor();
                 }
+                color = c.askColor();
             }
             if (setupAborted) return;
         } else {
@@ -493,13 +491,7 @@ public class Server {
         }
 
         waitingConnection.put(player, c);
-        RemoteView remV = new RemoteView(player, c, gameHandler.getGame(), gameHandler.getController().getTurnController().getActionController().getActionParser());
-        c.addPropertyChangeListener(remV);
-        gameHandler.addPropertyChangeListener(remV);
-        gameHandler.getGame().addPropertyChangeListener(remV);
-        gameHandler.getController().getTurnController().getActionController().addPropertyChangeListener(remV);
-        gameHandler.getController().getTurnController().addPropertyChangeListener(remV);
-        gameHandler.getController().getTurnController().getActionController().getActionParser().addPropertyChangeListener(remV);
+        createRemoteView(c, gameHandler, player);
         gameHandler.addNewPlayer(player);
     }
 
@@ -515,17 +507,10 @@ public class Server {
             for (Player p : g.getGame().getListOfPlayer()) {
                 if (p.getNickname().equalsIgnoreCase(nickname)) {
                     g.setNewController();
-                    RemoteView remV = new RemoteView(p, c, g.getGame(), g.getController().getTurnController().getActionController().getActionParser());
-                    c.addPropertyChangeListener(remV);
-                    g.addPropertyChangeListener(remV);
-                    g.getGame().addPropertyChangeListener(remV);
-                    g.getController().getTurnController().getActionController().addPropertyChangeListener(remV);
-                    g.getController().getTurnController().addPropertyChangeListener(remV);
-                    g.getController().getTurnController().getActionController().getActionParser().addPropertyChangeListener(remV);
+                    RemoteView remV = createRemoteView(c, g, p);
                     boolean gameAlreadyExisting = false;
                     for (GameHandler game : mapGameRemoteViews.keySet()) {
                         if (game.equals(g)) {
-                            System.out.println("game already present in map");
                             mapGameRemoteViews.get(game).add(remV);
                             gameAlreadyExisting = true;
                         }
@@ -533,10 +518,8 @@ public class Server {
                     if (!gameAlreadyExisting) {
                         List<RemoteView> newList = new ArrayList<>();
                         newList.add(remV);
-                        System.out.println("remv added to list");
                         mapGameRemoteViews.put(g, newList);
                     }
-                    System.out.println("map size : " + mapGameRemoteViews.get(g).size());
 
                     for (GameHandler game : mapGameWaitingConnection.keySet()) {
                         if (game.equals(g)) {
@@ -552,6 +535,17 @@ public class Server {
             }
         }
         return null;
+    }
+
+    private RemoteView createRemoteView(SocketClientConnection c, GameHandler g, Player p) {
+        RemoteView remV = new RemoteView(p, c, g.getGame(), g.getController().getTurnController().getActionController().getActionParser());
+        c.addPropertyChangeListener(remV);
+        g.addPropertyChangeListener(remV);
+        g.getGame().addPropertyChangeListener(remV);
+        g.getController().getTurnController().getActionController().addPropertyChangeListener(remV);
+        g.getController().getTurnController().addPropertyChangeListener(remV);
+        g.getController().getTurnController().getActionController().getActionParser().addPropertyChangeListener(remV);
+        return remV;
     }
 
     /**
