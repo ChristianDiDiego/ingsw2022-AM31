@@ -35,6 +35,9 @@ public class RemoteView implements PropertyChangeListener{
         this.actionParser = actionParser;
         this.lock = new Object();
     }
+    public Player getPlayer(){
+        return this.player;
+    }
 
     /**
      * Sent a message to the associated client
@@ -154,37 +157,16 @@ public class RemoteView implements PropertyChangeListener{
                 }
             }
         }
-        /*
-        else if(evt.getPropertyName().equals("EndGame")){
-            if(evt.getNewValue().equals(player.getTeam())){
-                showMessage("The game has ended \n YOU WON");
-                clientConnection.setPlayerQuitted(true);
-                try {
-                    TimeUnit.MICROSECONDS.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                clientConnection.closeOnlyThis();
-            }else{
-                showMessage("The game has ended \n YOU LOST");
-                clientConnection.setPlayerQuitted(true);
-                try {
-                    TimeUnit.MICROSECONDS.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                clientConnection.closeOnlyThis();
-            }
-        }
-
-         */
-
     }
 
+    /**
+     * Sends win or lost messages and closes connections
+     *
+     * @param winnerTeam
+     */
     private void endGame(Object winnerTeam){
         synchronized (this){
             if(winnerTeam.equals(player.getTeam())){
-                System.out.println("sono nella view");
                 showMessage("The game has ended \n YOU WON");
                 clientConnection.setPlayerQuitted(true);
                 try {
@@ -195,7 +177,6 @@ public class RemoteView implements PropertyChangeListener{
                 clientConnection.closeOnlyThis();
 
             }else{
-                System.out.println("sono nella view");
                 showMessage("The game has ended \n YOU LOST");
                 clientConnection.setPlayerQuitted(true);
                 try {
@@ -204,28 +185,26 @@ public class RemoteView implements PropertyChangeListener{
                     throw new RuntimeException(e);
                 }
                 clientConnection.closeOnlyThis();
-
             }
         }
     }
 
-
-
+    /**
+     * Sends updates of the status of the game
+     *
+     * @param evt
+     */
     private void currentPlayerChanged(PropertyChangeEvent evt){
         Object lock2 = new Object();
         synchronized (lock2){
             showMessage(GameMessage.specialCommand);
-
             sendBoards();
-
             sendArchipelagos();
-
             sendClouds();
 
             if(currentGame.getCurrentPlayer() == player){
                 sendDeck();
-
-                System.out.println("exmode: " + currentGame.isExpertModeOn());
+                //sends characters
                 if(currentGame.isExpertModeOn()){
                     synchronized (lock){
                         try {
@@ -298,13 +277,11 @@ public class RemoteView implements PropertyChangeListener{
                     }
                 }
             }else{
-
                 try {
                     TimeUnit.MICROSECONDS.sleep(500);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-
                 System.out.println("is the turn of " + evt.getNewValue());
                 showMessage("is the turn of " + evt.getNewValue());
                 try {
@@ -316,6 +293,9 @@ public class RemoteView implements PropertyChangeListener{
         }
     }
 
+    /**
+     * Sends updated boards
+     */
     private void sendBoards(){
         List<Board> boards = new ArrayList<>();
         for(Player p : currentGame.getListOfPlayer()) {
@@ -332,6 +312,9 @@ public class RemoteView implements PropertyChangeListener{
         }
     }
 
+    /**
+     * Sends updated list of archipelagos
+     */
     private void sendArchipelagos(){
         ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
         synchronized (lock){
@@ -349,6 +332,9 @@ public class RemoteView implements PropertyChangeListener{
         }
     }
 
+    /**
+     * Sends updated clouds
+     */
     private void sendClouds(){
         ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
         synchronized (lock){
@@ -366,6 +352,9 @@ public class RemoteView implements PropertyChangeListener{
         }
     }
 
+    /**
+     * Sends updated personal deck
+     */
     private void sendDeck(){
         synchronized (lock){
             try {
@@ -382,6 +371,9 @@ public class RemoteView implements PropertyChangeListener{
         }
     }
 
+    /**
+     * Sends coins still available
+     */
     private void sendCoins() {
         synchronized (lock){
             try {
@@ -398,11 +390,17 @@ public class RemoteView implements PropertyChangeListener{
         }
     }
 
+    /**
+     * Sends updated archipelagos when two islands are unified
+     */
     private void mnMovedArcUnified(){
         ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
         showMessage(archipelagos);
     }
 
+    /**
+     * Sends messages to explain the current phase
+     */
     private void phaseChanged(){
         synchronized (this){
             System.out.println("I should send phase " + currentGame.getPhase());
@@ -410,13 +408,17 @@ public class RemoteView implements PropertyChangeListener{
                 switch (currentGame.getPhase()){
                     case CARD_SELECTION ->{/* cardSelectionPhase */ }
                     case MOVE_STUDENTS -> showMessage(String.format(GameMessage.studentMovementMessage, actionParser.getActionController().getTurnController().getGameHandler().getNumberOfMovements()));
-                    case MOVE_MN -> {moveMnPhase();}
-                    case CLOUD_SELECTION -> {cloudSelectionPhase();}
+                    case MOVE_MN -> moveMnPhase();
+                    case CLOUD_SELECTION -> cloudSelectionPhase();
                 }
             }
         }
     }
 
+    /**
+     * Sends updated boards and archipelagos
+     * and says how many steps a player can do in the current turn
+     */
     private void moveMnPhase(){
         Object lock = new Object();
         synchronized (lock) {
@@ -433,6 +435,9 @@ public class RemoteView implements PropertyChangeListener{
         }
     }
 
+    /**
+     * Sends clouds still available and the cloudSelectionMessage
+     */
     private void cloudSelectionPhase(){
         sendClouds();
         synchronized (lock){
@@ -444,16 +449,22 @@ public class RemoteView implements PropertyChangeListener{
             }
         }
     }
+
+    /**
+     * Sends updated deck when a card is chosen
+     */
     private void usedCard(){
         synchronized (lock){
             if (currentGame.getCurrentPlayer() == player) {
                sendDeck();
             }
-
             sendListOfPlayers();
         }
     }
 
+    /**
+     * Sends the list of players in order to update last used cards
+     */
     private void sendListOfPlayers(){
         ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
         synchronized (lock){
@@ -466,6 +477,11 @@ public class RemoteView implements PropertyChangeListener{
         }
     }
 
+    /**
+     * Sends a message about the character played
+     *
+     * @param evt
+     */
     private void playedCharacter(PropertyChangeEvent evt){
         synchronized (lock) {
             showMessage("Played character: " + evt.getNewValue());
@@ -477,6 +493,9 @@ public class RemoteView implements PropertyChangeListener{
         }
     }
 
+    /**
+     * Resends situation after a match has been restored (for persistence)
+     */
     public void resendSituation(){
         //Simulate a change event in the player and phase to re-send all
         String oldValue = "";
@@ -487,24 +506,5 @@ public class RemoteView implements PropertyChangeListener{
         currentPlayerChanged(event);
         phaseChanged();
     }
-
-    public Player getPlayer(){
-        return this.player;
-    }
-
-      /*
-                            cardSelectionPhase:
-                            ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
-                            try {
-                                TimeUnit.MICROSECONDS.sleep(500);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            synchronized (lock){
-                                showMessage(players);
-                            }
-
-                             */
-
 
 }
