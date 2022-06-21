@@ -22,16 +22,16 @@ import java.util.concurrent.TimeUnit;
  */
 public class Server {
     private int numberOfPlayers;
-    private ServerSocket serverSocket;
-    private ExecutorService executor = Executors.newFixedThreadPool(128);
-    private Map<Player, SocketClientConnection> waitingConnection = new HashMap<>();
+    private final ServerSocket serverSocket;
+    private final ExecutorService executor = Executors.newFixedThreadPool(128);
+    private final Map<Player, SocketClientConnection> waitingConnection = new HashMap<>();
 
-    private Map<GameHandler, Map<Player, SocketClientConnection>> mapGameWaitingConnection = new HashMap<>();
+    private final Map<GameHandler, Map<Player, SocketClientConnection>> mapGameWaitingConnection = new HashMap<>();
 
-    private Map<GameHandler, List<RemoteView>> mapGameRemoteViews = new HashMap<>();
+    private final Map<GameHandler, List<RemoteView>> mapGameRemoteViews = new HashMap<>();
 
     GameHandler gameHandler;
-    private List<List<SocketClientConnection>> listOfConnections = new ArrayList<>();
+    private final List<List<SocketClientConnection>> listOfConnections = new ArrayList<>();
     private boolean setupAborted;
 
     /*
@@ -44,11 +44,10 @@ public class Server {
       and associated to it thanks to mapGameWaitingConnection
      */
     private List<GameHandler> listOfGames = new ArrayList<>();
-    private int port;
+
 
     public Server(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
-        this.port = port;
     }
 
 
@@ -56,7 +55,8 @@ public class Server {
      * Called when a client is disconnected/quit
      * Notify the other players that the game is over and delete the game from the list of games
      * If the players where still in the setup, delete the connections from the waiting list
-     * @param c
+     *
+     * @param c SocketClientConnection of the player
      */
     public synchronized void deregisterConnection(SocketClientConnection c) {
         String userStartedDisconnection = null;
@@ -95,14 +95,16 @@ public class Server {
     /**
      * Find the game of the user that is disconnecting and
      * delete it from the list of games
-     * @param userStartedDisconnection
+     *
+     * @param userStartedDisconnection nickname
      */
-    private void deleteGameByUser(String userStartedDisconnection){
+    private void deleteGameByUser(String userStartedDisconnection) {
         GameHandler gameToDelete = null;
         for (GameHandler g : listOfGames) {
             for (Player p : g.getGame().getListOfPlayer()) {
                 if (p.getNickname().equals(userStartedDisconnection)) {
                     gameToDelete = g;
+                    break;
                 }
             }
         }
@@ -115,7 +117,7 @@ public class Server {
      * checks if c is the last still active connection, in case
      * removes it from list of active games
      *
-     * @param c
+     * @param c SocketClientConnection of the player
      */
     public synchronized void checkEmptyGames(SocketClientConnection c) {
         try {
@@ -132,7 +134,7 @@ public class Server {
                     }
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -141,28 +143,29 @@ public class Server {
      * Called when a new player connects
      * If the player chooses a username of a saved game, call setupOldMatch
      * Otherwise call setupNewMatch
-     * @param c
+     *
+     * @param c SocketClientConnection of the player
      */
     public synchronized void lobby(SocketClientConnection c) {
         setupAborted = false;
-        if(!listOfGames.isEmpty()){
-            if(!waitingConnection.isEmpty()) {
-                 c.asyncSend(ServerMessage.ongoingMatches + " Otherwise \n");
-            }else{
+        if (!listOfGames.isEmpty()) {
+            if (!waitingConnection.isEmpty()) {
+                c.asyncSend(ServerMessage.ongoingMatches + " Otherwise \n");
+            } else {
                 c.asyncSend(ServerMessage.ongoingMatches);
             }
         }
         if (!waitingConnection.isEmpty()) {
-            String nickOfOtherPlayers = ServerMessage.joiningMessage;
+            StringBuilder nickOfOtherPlayers = new StringBuilder(ServerMessage.joiningMessage);
             for (Player p : waitingConnection.keySet()) {
-                nickOfOtherPlayers += p.getNickname() + " ";
+                nickOfOtherPlayers.append(p.getNickname()).append(" ");
             }
-            c.asyncSend(nickOfOtherPlayers);
+            c.asyncSend(nickOfOtherPlayers.toString());
         }
 
         //I moved nickname here so when other player connect the others receive his name
         String nickname = c.askNickname();
-        if(nickname.equalsIgnoreCase(Constants.QUIT)) setupAborted = true;
+        if (nickname.equalsIgnoreCase(Constants.QUIT)) setupAborted = true;
         while (!setupAborted && !checkNickname(nickname)) {
             c.asyncSend(ErrorMessage.DuplicateNickname);
             try {
@@ -172,7 +175,7 @@ public class Server {
             }
             nickname = c.askNickname();
         }
-        if(!setupAborted){
+        if (!setupAborted) {
             c.setNickname(nickname);
 
             GameHandler savedGame = checkPlayerAlreadyExists(nickname, c);
@@ -189,8 +192,9 @@ public class Server {
 
     /**
      * Detect if the connected player is the first or it needs to be added to a match
+     *
      * @param nickname of the player
-     * @param c SocketClientConnection of the player
+     * @param c        SocketClientConnection of the player
      */
     private void setupNewMatch(String nickname, SocketClientConnection c) {
         List<Player> keys = new ArrayList<>(waitingConnection.keySet());
@@ -203,7 +207,7 @@ public class Server {
             }
             registerOtherPlayers(nickname, c);
         }
-        if(!setupAborted){
+        if (!setupAborted) {
             if (waitingConnection.size() < numberOfPlayers) {
                 c.asyncSend(ServerMessage.waitingOtherPlayers);
             } else if (waitingConnection.size() == numberOfPlayers) {
@@ -225,17 +229,18 @@ public class Server {
     /**
      * If called, it means that the player used a nickname of a saved game
      * When all the old players are connected, resend the situation of the game
-     * @param nickname of the player
+     *
+     * @param nickname  of the player
      * @param savedGame old game that has been restored
      */
     private void setupOldMatch(String nickname, GameHandler savedGame) {
         for (SocketClientConnection s : mapGameWaitingConnection.get(savedGame).values()) {
             s.asyncSend(ServerMessage.connectedUser + nickname);
         }
-        String nickOfPlayerToWait = "";
+        StringBuilder nickOfPlayerToWait = new StringBuilder();
         for (Player p : savedGame.getGame().getListOfPlayer()) {
             if (!mapGameWaitingConnection.get(savedGame).containsKey(p)) {
-                nickOfPlayerToWait += p.getNickname() + " ";
+                nickOfPlayerToWait.append(p.getNickname()).append(" ");
             }
         }
         if (mapGameWaitingConnection.get(savedGame).size() < savedGame.getPlayersNumber()) {
@@ -254,6 +259,7 @@ public class Server {
             for (SocketClientConnection s : mapGameWaitingConnection.get(savedGame).values()) {
                 s.send(ServerMessage.startingGame);
             }
+            System.out.println("size of map: " + mapGameRemoteViews.get(savedGame).size());
             for (RemoteView rem : mapGameRemoteViews.get(savedGame)) {
                 rem.resendSituation();
             }
@@ -374,13 +380,14 @@ public class Server {
     /**
      * Called if the connected player is the first of the game, it asks the setup info (number of the players, mode)
      * Create a new game adding the first player
+     *
      * @param nickname of the first player of the game
-     * @param c SocketClientConnection of the first player of the game
+     * @param c        SocketClientConnection of the first player of the game
      */
     private void registerFirstPlayer(String nickname, SocketClientConnection c) {
         ColorOfTower color = null;
         numberOfPlayers = c.askHowManyPlayers();
-        if(numberOfPlayers == -2){
+        if (numberOfPlayers == -2) {
             setupAborted = true;
             return;
         }
@@ -394,9 +401,9 @@ public class Server {
             numberOfPlayers = c.askHowManyPlayers();
         }
 
-        int mode = -1;
-        mode = c.askMode();
-        if(mode == -2) setupAborted = true;
+
+        int mode = c.askMode();
+        if (mode == -2) setupAborted = true;
         while (!setupAborted && mode == -1) {
             c.asyncSend(ErrorMessage.ModeNotValid);
             try {
@@ -406,7 +413,7 @@ public class Server {
             }
             mode = c.askMode();
         }
-        if(setupAborted) return;
+        if (setupAborted) return;
         color = c.askColor();
         while (!setupAborted && color == null) {
             c.asyncSend(ErrorMessage.ActionNotValid);
@@ -417,7 +424,7 @@ public class Server {
             }
             color = c.askColor();
         }
-        if(setupAborted) return;
+        if (setupAborted) return;
         Player player1 = new Player(nickname, color);
         player1.setTeam(0);
 
@@ -436,14 +443,15 @@ public class Server {
     /**
      * Called when the player is logging in a game; assign to the player the number of the team;
      * add it to the game
+     *
      * @param nickname of the player
-     * @param c of the player
+     * @param c        of the player
      */
     private void registerOtherPlayers(String nickname, SocketClientConnection c) {
         ColorOfTower color = null;
         if (numberOfPlayers != 4 || (waitingConnection.size() + 1) % 2 != 0) {
             color = c.askColor();
-            while ( (color == null || !checkColorTower(color) ) && !setupAborted) {
+            while ((color == null || !checkColorTower(color)) && !setupAborted) {
                 if (color == null) {
                     c.asyncSend(ErrorMessage.ActionNotValid);
                     try {
@@ -462,7 +470,7 @@ public class Server {
                     color = c.askColor();
                 }
             }
-            if(setupAborted) return;
+            if (setupAborted) return;
         } else {
             //Only the first member of the team take the towers
             color = null;
@@ -497,8 +505,9 @@ public class Server {
 
     /**
      * If already exists a saved match with that username, return the gameHandler of that game
-     * @param nickname
-     * @param c
+     *
+     * @param nickname to chekc
+     * @param c        of the player
      * @return gameHandler of the old game
      */
     private GameHandler checkPlayerAlreadyExists(String nickname, SocketClientConnection c) {
@@ -513,15 +522,21 @@ public class Server {
                     g.getController().getTurnController().getActionController().addPropertyChangeListener(remV);
                     g.getController().getTurnController().addPropertyChangeListener(remV);
                     g.getController().getTurnController().getActionController().getActionParser().addPropertyChangeListener(remV);
-
+                    boolean gameAlreadyExisting = false;
                     for (GameHandler game : mapGameRemoteViews.keySet()) {
                         if (game.equals(g)) {
+                            System.out.println("game already present in map");
                             mapGameRemoteViews.get(game).add(remV);
+                            gameAlreadyExisting = true;
                         }
                     }
-                    List<RemoteView> newList = new ArrayList<>();
-                    newList.add(remV);
-                    mapGameRemoteViews.put(g, newList);
+                    if (!gameAlreadyExisting) {
+                        List<RemoteView> newList = new ArrayList<>();
+                        newList.add(remV);
+                        System.out.println("remv added to list");
+                        mapGameRemoteViews.put(g, newList);
+                    }
+                    System.out.println("map size : " + mapGameRemoteViews.get(g).size());
 
                     for (GameHandler game : mapGameWaitingConnection.keySet()) {
                         if (game.equals(g)) {
