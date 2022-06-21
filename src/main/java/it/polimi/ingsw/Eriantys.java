@@ -1,11 +1,11 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.client.cli.Cli;
-
-import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * In this class players choose whether to launch server, cli or gui app
+ */
 public class Eriantys {
     public static void main(String[] args) {
         while (!askNumber()) {}
@@ -20,7 +20,7 @@ public class Eriantys {
 
             switch (input) {
                 case 1 -> ServerApp.main(null);
-                case 2 -> ClientApp.main(null);
+                case 2 -> ClientAppCli.main(null);
                 case 3 -> ClientAppGui.main(null);
                 default -> throw new InputMismatchException();
             }

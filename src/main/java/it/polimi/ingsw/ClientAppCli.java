@@ -12,10 +12,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-/*
-The app the client will open, entering the ip and port of the server
+/**
+ * Launch the CLI with ip and port chosen
  */
-public class ClientApp {
+public class ClientAppCli {
     public static void main(String[] args) {
         PrintStream ps = new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8);
         System.out.println("Eriantys Client | Welcome!");

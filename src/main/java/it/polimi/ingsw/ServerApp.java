@@ -12,8 +12,8 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/*
-The server app that the server needs to start
+/**
+ * Launch server with the port chosen
  */
 public class ServerApp {
     static PrintStream ps = new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8);
