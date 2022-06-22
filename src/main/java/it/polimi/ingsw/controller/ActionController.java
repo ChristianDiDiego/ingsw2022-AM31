@@ -263,7 +263,7 @@ public class ActionController {
                 return true;
 
             } else {
-                support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.TooManySteps + player.getLastUsedCard().getMaxSteps() + "steps");
+                support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.TooManySteps + player.getLastUsedCard().getMaxSteps() + " steps");
                 return false;
             }
 
