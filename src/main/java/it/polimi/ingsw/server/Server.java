@@ -60,20 +60,21 @@ public class Server {
      */
     public synchronized void deregisterConnection(SocketClientConnection c) {
         String userStartedDisconnection = null;
+        out:
         for (List<SocketClientConnection> l : listOfConnections) {
             for (SocketClientConnection s : l) {
                 userStartedDisconnection = c.getNickname();
                 if (s == c) {
                     for (SocketClientConnection toRemove : l) {
-                        if (!toRemove.getNickname().equals(c.getNickname())) {
+                        if (!toRemove.getNickname().equals(userStartedDisconnection)) {
                             System.out.println("I'm sending message of closing connection to " + toRemove.getNickname());
-                            toRemove.send(String.format(ServerMessage.userClosedConnection, c.getNickname()));
+                            toRemove.send(String.format(ServerMessage.userClosedConnection, userStartedDisconnection));
                             toRemove.setPlayerQuitted(true);
                             toRemove.closeConnection();
                         }
                     }
                     listOfConnections.remove(l);
-                    break;
+                    break out;
                 }
             }
         }
@@ -81,7 +82,7 @@ public class Server {
             for (SocketClientConnection s : waitingConnection.values()) {
                 if (s != c) {
                     System.out.println("I'm sending message of closing connection to " + s.getNickname());
-                    s.send(String.format(ServerMessage.userClosedConnection, c.getNickname()));
+                    s.send(String.format(ServerMessage.userClosedConnection, userStartedDisconnection));
                     s.setPlayerQuitted(true);
                     s.closeConnection();
                 }
