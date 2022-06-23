@@ -218,8 +218,8 @@ public class BoardSceneController implements Initializable {
                     prof.setFitHeight(25);
                     pb.get(j).add(prof, column, row);
                     GridPane.setHalignment(prof, HPos.CENTER);
-                    row++;
                 }
+                row++;
             }
 
             //students in dining room
