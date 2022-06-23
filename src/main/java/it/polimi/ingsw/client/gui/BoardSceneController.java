@@ -123,8 +123,12 @@ public class BoardSceneController implements Initializable {
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).getLastUsedCard() != null) {
                 String nickname = ob.get(i).getText();
-                String lastUsedCard = ", last used card: " + players.get(i).getLastUsedCard().getPower() + "   " + players.get(i).getLastUsedCard().getMaxSteps();
-                ob.get(i).setText(nickname + lastUsedCard);
+                String lastUsedCard = ", last used card: " + players.get(i).getLastUsedCard().getPower();
+                if(players.size() == Constants.MAXPLAYERS){
+                    ob.get(i).setText(nickname + ", " + "team: " + players.get(i).getTeam() + lastUsedCard);
+                }else{
+                    ob.get(i).setText(nickname + lastUsedCard);
+                }
                 ob.get(i).setFont(font);
             }
         }
@@ -150,8 +154,16 @@ public class BoardSceneController implements Initializable {
         }
 
         for (int j = 0; j < receivedBoards.size(); j++) {
-            ob.get(j).setText("Player: " + receivedBoards.get(j).getNickname());
-            ob.get(j).setFont(font);
+
+            //owner
+            if (receivedBoards.size() == Constants.MAXPLAYERS){
+                String team = String.valueOf(j/2);
+                ob.get(j).setText("Player: " + receivedBoards.get(j).getNickname() + ", team: " + team);
+                ob.get(j).setFont(font);
+            }else{
+                ob.get(j).setText("Player: " + receivedBoards.get(j).getNickname() );
+                ob.get(j).setFont(font);
+            }
 
             seb.get(j).getChildren().clear();
             sdrb.get(j).getChildren().clear();
