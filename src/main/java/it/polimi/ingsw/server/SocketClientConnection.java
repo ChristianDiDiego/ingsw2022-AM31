@@ -30,6 +30,8 @@ public class SocketClientConnection implements Runnable{
 
     private boolean clientAlive = true;
 
+    private final Object lock = new Object();
+
     public SocketClientConnection(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
@@ -54,14 +56,20 @@ public class SocketClientConnection implements Runnable{
      * @param message
      */
     public synchronized void send(Object message) {
-        try {
-            out.reset();
-            out.writeObject(message);
-            out.flush();
-            System.out.println("sent " + message);
-        } catch(IOException e){
-            System.out.println("error when sending " + message.toString());
-            System.err.println(e.getMessage());
+        synchronized (lock) {
+
+            try {
+                System.out.println("I need to send " + message + " to " + nickname);
+                out.reset();
+                out.writeObject(message);
+                out.flush();
+                System.out.println("sent " + message);
+            } catch (IOException e) {
+                System.out.println("error when sending " + message.toString());
+                System.err.println(e.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -21,12 +21,12 @@ import java.util.concurrent.TimeUnit;
  * This class contains the methods to listen the changes from the model
  * and send a message to the client who is associated with it
  */
-public class RemoteView implements PropertyChangeListener{
+public class RemoteView implements PropertyChangeListener {
     private final SocketClientConnection clientConnection;
     private final Player player;
     private final Game currentGame;
     private final ActionParser actionParser;
-    Object lock;
+    final Object lock;
 
     public RemoteView(Player player, SocketClientConnection c, Game currentGame, ActionParser actionParser) {
         this.player = player;
@@ -35,12 +35,14 @@ public class RemoteView implements PropertyChangeListener{
         this.actionParser = actionParser;
         this.lock = new Object();
     }
-    public Player getPlayer(){
+
+    public Player getPlayer() {
         return this.player;
     }
 
     /**
      * Sent a message to the associated client
+     *
      * @param message
      */
     protected synchronized void showMessage(Object message) {
@@ -49,41 +51,36 @@ public class RemoteView implements PropertyChangeListener{
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if(evt.getPropertyName().equals("EndGame")){
+        if (evt.getPropertyName().equals("EndGame")) {
             endGame(evt.getNewValue());
-        }else if(evt.getPropertyName().equals("currentPlayerChanged")){
+        } else if (evt.getPropertyName().equals("currentPlayerChanged")) {
             currentPlayerChanged(evt);
 
-        }else if(evt.getPropertyName().equals("MNmove") || evt.getPropertyName().equals("ArchUnified")){
-            mnMovedArcUnified();
-        } else if(evt.getPropertyName().equals("PhaseChanged")){
-            if(currentGame.isExpertModeOn()) {
+        } else if (evt.getPropertyName().equals("MNmove") || evt.getPropertyName().equals("ArchUnified")) {
+            sendArchipelagos();
+        } else if (evt.getPropertyName().equals("PhaseChanged")) {
+            if (currentGame.isExpertModeOn()) {
                 sendCoins();
             }
             phaseChanged();
-        }else if(evt.getPropertyName().equals("UsedCard")){
+        } else if (evt.getPropertyName().equals("UsedCard")) {
             usedCard();
-        }else if (evt.getPropertyName().equals("RemovedStudentFromEntrance")){
+        } else if (evt.getPropertyName().equals("RemovedStudentFromEntrance")) {
             sendArchipelagos();
             sendBoards();
-        }else if(evt.getPropertyName().equals("ChangedProfessor")){
-            synchronized (lock){
-               sendBoards();
-            }
-        }else if(evt.getPropertyName().equals("MessageForParser")){
-            synchronized (this){
+        } else if (evt.getPropertyName().equals("ChangedProfessor")) {
+            sendBoards();
+        } else if (evt.getPropertyName().equals("MessageForParser")) {
+            synchronized (this) {
                 //System.out.println("Action to send to parser ");
-                actionParser.actionSerializer(player.getNickname(),(String)evt.getNewValue());
+                actionParser.actionSerializer(player.getNickname(), (String) evt.getNewValue());
             }
-        }else if(evt.getPropertyName().equals("ChangedCloudStatus")){
-            synchronized (lock){
-               sendClouds();
-            }
-        }else if(evt.getPropertyName().equals("playedCharacter")){
+        } else if (evt.getPropertyName().equals("ChangedCloudStatus")) {
+                sendClouds();
+        } else if (evt.getPropertyName().equals("playedCharacter")) {
             playedCharacter(evt);
-
-            synchronized (lock){
-                switch (evt.getNewValue().toString()){
+            synchronized (lock) {
+                switch (evt.getNewValue().toString()) {
                     case "CHARACTER1":
                         sendArchipelagos();
                         break;
@@ -91,7 +88,7 @@ public class RemoteView implements PropertyChangeListener{
                         sendArchipelagos();
                         break;
                     case "CHARACTER7":
-                       sendBoards();
+                        sendBoards();
                         break;
                 }
                 try {
@@ -100,9 +97,9 @@ public class RemoteView implements PropertyChangeListener{
                     throw new RuntimeException(e);
                 }
             }
-        }else if(evt.getPropertyName().equals("ErrorMessage")){
-            synchronized (lock){
-                if(evt.getOldValue().equals(player.getNickname())) {
+        } else if (evt.getPropertyName().equals("ErrorMessage")) {
+            synchronized (lock) {
+                if (evt.getOldValue().equals(player.getNickname())) {
                     showMessage(evt.getNewValue());
                     try {
                         TimeUnit.MICROSECONDS.sleep(500);
@@ -111,7 +108,7 @@ public class RemoteView implements PropertyChangeListener{
                     }
                 }
             }
-        }else if(evt.getPropertyName().equals("StartingGame")) {
+        } else if (evt.getPropertyName().equals("StartingGame")) {
             synchronized (lock) {
                 showMessage(evt.getNewValue());
                 try {
@@ -119,13 +116,13 @@ public class RemoteView implements PropertyChangeListener{
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                if(currentGame.getNumberOfPlayers() == 4) {
+                if (currentGame.getNumberOfPlayers() == 4) {
                     String teammate = new String();
                     String color = new String();
-                    for(Player p : currentGame.getListOfPlayer()){
-                        if(p.getTeam() == player.getTeam() && p != player){
+                    for (Player p : currentGame.getListOfPlayer()) {
+                        if (p.getTeam() == player.getTeam() && p != player) {
                             teammate = p.getNickname();
-                            if(p.getColorOfTowers() != null) {
+                            if (p.getColorOfTowers() != null) {
                                 color = p.getColorOfTowers().toString();
                             } else {
                                 color = player.getColorOfTowers().toString();
@@ -140,14 +137,14 @@ public class RemoteView implements PropertyChangeListener{
                     }
                 }
             }
-        }else if(evt.getPropertyName().equals("DeckRequired")){
+        } else if (evt.getPropertyName().equals("DeckRequired")) {
             System.out.println("im notified");
-            if(player.getNickname().equals(evt.getNewValue())){
+            if (player.getNickname().equals(evt.getNewValue())) {
                 sendDeck();
             }
-        }else if(evt.getPropertyName().equals("AvailableCharactersRequired")){
-            if(player.getNickname().equals(evt.getNewValue())){
-                for(Characters c : currentGame.getCharactersPlayable()){
+        } else if (evt.getPropertyName().equals("AvailableCharactersRequired")) {
+            if (player.getNickname().equals(evt.getNewValue())) {
+                for (Characters c : currentGame.getCharactersPlayable()) {
                     showMessage("Character: " + c.getId() + "\n Description: " + c.getDescriptionOfPower() + "\n Price:" + c.getPrice() + "\n\n");
                     try {
                         TimeUnit.MICROSECONDS.sleep(500);
@@ -164,9 +161,9 @@ public class RemoteView implements PropertyChangeListener{
      *
      * @param winnerTeam
      */
-    private void endGame(Object winnerTeam){
-        synchronized (this){
-            if(winnerTeam.equals(player.getTeam())){
+    private void endGame(Object winnerTeam) {
+        synchronized (lock) {
+            if (winnerTeam.equals(player.getTeam())) {
                 showMessage("The game has ended \n YOU WON");
                 clientConnection.setPlayerQuitted(true);
                 try {
@@ -176,7 +173,7 @@ public class RemoteView implements PropertyChangeListener{
                 }
                 clientConnection.closeOnlyThis();
 
-            }else{
+            } else {
                 showMessage("The game has ended \n YOU LOST");
                 clientConnection.setPlayerQuitted(true);
                 try {
@@ -194,19 +191,19 @@ public class RemoteView implements PropertyChangeListener{
      *
      * @param evt
      */
-    private void currentPlayerChanged(PropertyChangeEvent evt){
-        Object lock2 = new Object();
-        synchronized (lock2){
-            showMessage(GameMessage.specialCommand);
-            sendBoards();
-            sendArchipelagos();
-            sendClouds();
+    private void currentPlayerChanged(PropertyChangeEvent evt) {
+        synchronized (lock) {
+            Object lock2 = new Object();
+            synchronized (lock2) {
+                showMessage(GameMessage.specialCommand);
+                sendBoards();
+                sendArchipelagos();
+                sendClouds();
 
-            if(currentGame.getCurrentPlayer() == player){
-                sendDeck();
-                //sends characters
-                if(currentGame.isExpertModeOn()){
-                    synchronized (lock){
+                if (currentGame.getCurrentPlayer() == player) {
+                    sendDeck();
+                    //sends characters
+                    if (currentGame.isExpertModeOn()) {
                         try {
                             TimeUnit.MICROSECONDS.sleep(500);
                         } catch (InterruptedException e) {
@@ -220,7 +217,7 @@ public class RemoteView implements PropertyChangeListener{
                             throw new RuntimeException(e);
                         }
 
-                        for(Characters c : currentGame.getCharactersPlayable()){
+                        for (Characters c : currentGame.getCharactersPlayable()) {
                             showMessage("Character: " + c.getId() + " \n Description: " + c.getDescriptionOfPower() + "\n Price: " + c.getPrice() + " \n\n");
                         }
                         try {
@@ -228,8 +225,6 @@ public class RemoteView implements PropertyChangeListener{
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
-                    }
-                    synchronized (lock){
                         try {
                             TimeUnit.MICROSECONDS.sleep(500);
                         } catch (InterruptedException e) {
@@ -244,50 +239,50 @@ public class RemoteView implements PropertyChangeListener{
                     }
                 }
             }
-        }
-        synchronized (lock2){
-            Object internalLock = new Object();
-            if(player.getNickname().equals(evt.getNewValue())){
-                ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
-                synchronized (internalLock){
-                    showMessage(players);
-                    try {
-                        TimeUnit.MICROSECONDS.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                synchronized (internalLock){
-                    System.out.println(evt.getNewValue() + " is your turn!");
-                    showMessage(evt.getNewValue() + " is your turn!");
-                    try {
-                        TimeUnit.MICROSECONDS.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                if(evt.getOldValue().equals("CS")){
-                    synchronized (internalLock){
-                        showMessage(GameMessage.cardSelectionMessage);
+            synchronized (lock2) {
+                Object internalLock = new Object();
+                if (player.getNickname().equals(evt.getNewValue())) {
+                    ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
+                    synchronized (internalLock) {
+                        showMessage(players);
                         try {
                             TimeUnit.MICROSECONDS.sleep(500);
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                }
-            }else{
-                try {
-                    TimeUnit.MICROSECONDS.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                System.out.println("is the turn of " + evt.getNewValue());
-                showMessage("is the turn of " + evt.getNewValue());
-                try {
-                    TimeUnit.MICROSECONDS.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    synchronized (internalLock) {
+                        System.out.println(evt.getNewValue() + " is your turn!");
+                        showMessage(evt.getNewValue() + " is your turn!");
+                        try {
+                            TimeUnit.MICROSECONDS.sleep(500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    if (evt.getOldValue().equals("CS")) {
+                        synchronized (internalLock) {
+                            showMessage(GameMessage.cardSelectionMessage);
+                            try {
+                                TimeUnit.MICROSECONDS.sleep(500);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+                } else {
+                    try {
+                        TimeUnit.MICROSECONDS.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    System.out.println("is the turn of " + evt.getNewValue());
+                    showMessage("is the turn of " + evt.getNewValue());
+                    try {
+                        TimeUnit.MICROSECONDS.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }
@@ -296,13 +291,13 @@ public class RemoteView implements PropertyChangeListener{
     /**
      * Sends updated boards
      */
-    private void sendBoards(){
+    private void sendBoards() {
         List<Board> boards = new ArrayList<>();
-        for(Player p : currentGame.getListOfPlayer()) {
+        for (Player p : currentGame.getListOfPlayer()) {
             boards.add(p.getMyBoard());
         }
         ListOfBoards boards1 = new ListOfBoards(boards);
-        synchronized (lock){
+        synchronized (lock) {
             showMessage(boards1);
             try {
                 TimeUnit.MICROSECONDS.sleep(500);
@@ -315,9 +310,9 @@ public class RemoteView implements PropertyChangeListener{
     /**
      * Sends updated list of archipelagos
      */
-    private void sendArchipelagos(){
+    private void sendArchipelagos() {
         ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
-        synchronized (lock){
+        synchronized (lock) {
             try {
                 TimeUnit.MICROSECONDS.sleep(500);
             } catch (InterruptedException e) {
@@ -335,9 +330,9 @@ public class RemoteView implements PropertyChangeListener{
     /**
      * Sends updated clouds
      */
-    private void sendClouds(){
+    private void sendClouds() {
         ListOfClouds clouds = new ListOfClouds(currentGame.getListOfClouds());
-        synchronized (lock){
+        synchronized (lock) {
             try {
                 TimeUnit.MICROSECONDS.sleep(500);
             } catch (InterruptedException e) {
@@ -355,8 +350,8 @@ public class RemoteView implements PropertyChangeListener{
     /**
      * Sends updated personal deck
      */
-    private void sendDeck(){
-        synchronized (lock){
+    private void sendDeck() {
+        synchronized (lock) {
             try {
                 TimeUnit.MICROSECONDS.sleep(500);
             } catch (InterruptedException e) {
@@ -375,7 +370,7 @@ public class RemoteView implements PropertyChangeListener{
      * Sends coins still available
      */
     private void sendCoins() {
-        synchronized (lock){
+        synchronized (lock) {
             try {
                 TimeUnit.MICROSECONDS.sleep(500);
             } catch (InterruptedException e) {
@@ -391,23 +386,16 @@ public class RemoteView implements PropertyChangeListener{
     }
 
     /**
-     * Sends updated archipelagos when two islands are unified
-     */
-    private void mnMovedArcUnified(){
-        ListOfArchipelagos archipelagos = new ListOfArchipelagos(currentGame.getListOfArchipelagos());
-        showMessage(archipelagos);
-    }
-
-    /**
      * Sends messages to explain the current phase
      */
-    private void phaseChanged(){
-        synchronized (this){
+    private void phaseChanged() {
+        synchronized (this) {
             System.out.println("I should send phase " + currentGame.getPhase());
-            if(currentGame.getCurrentPlayer().getNickname().equals(player.getNickname())){
-                switch (currentGame.getPhase()){
-                    case CARD_SELECTION ->{/* cardSelectionPhase */ }
-                    case MOVE_STUDENTS -> showMessage(String.format(GameMessage.studentMovementMessage, actionParser.getActionController().getTurnController().getGameHandler().getNumberOfMovements()));
+            if (currentGame.getCurrentPlayer().getNickname().equals(player.getNickname())) {
+                switch (currentGame.getPhase()) {
+                    case CARD_SELECTION -> {/* cardSelectionPhase */ }
+                    case MOVE_STUDENTS ->
+                            showMessage(String.format(GameMessage.studentMovementMessage, actionParser.getActionController().getTurnController().getGameHandler().getNumberOfMovements()));
                     case MOVE_MN -> moveMnPhase();
                     case CLOUD_SELECTION -> cloudSelectionPhase();
                 }
@@ -419,14 +407,24 @@ public class RemoteView implements PropertyChangeListener{
      * Sends updated boards and archipelagos
      * and says how many steps a player can do in the current turn
      */
-    private void moveMnPhase(){
+    private void moveMnPhase() {
         Object lock = new Object();
         synchronized (lock) {
             sendBoards();
+            try {
+                TimeUnit.MICROSECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             sendArchipelagos();
+            try {
+                TimeUnit.MICROSECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         synchronized (lock) {
-            showMessage(String.format(GameMessage.moveMotherNatureMessage, player.getLastUsedCard().getMaxSteps() + ((player.getUsedCharacter() == null)? 0: player.getUsedCharacter().getBonusSteps())));
+            showMessage(String.format(GameMessage.moveMotherNatureMessage, player.getLastUsedCard().getMaxSteps() + ((player.getUsedCharacter() == null) ? 0 : player.getUsedCharacter().getBonusSteps())));
             try {
                 TimeUnit.MICROSECONDS.sleep(500);
             } catch (InterruptedException e) {
@@ -438,9 +436,9 @@ public class RemoteView implements PropertyChangeListener{
     /**
      * Sends clouds still available and the cloudSelectionMessage
      */
-    private void cloudSelectionPhase(){
+    private void cloudSelectionPhase() {
         sendClouds();
-        synchronized (lock){
+        synchronized (lock) {
             showMessage(GameMessage.chooseCloudMessage);
             try {
                 TimeUnit.MICROSECONDS.sleep(500);
@@ -453,10 +451,10 @@ public class RemoteView implements PropertyChangeListener{
     /**
      * Sends updated deck when a card is chosen
      */
-    private void usedCard(){
-        synchronized (lock){
+    private void usedCard() {
+        synchronized (lock) {
             if (currentGame.getCurrentPlayer() == player) {
-               sendDeck();
+                sendDeck();
             }
             sendListOfPlayers();
         }
@@ -465,9 +463,9 @@ public class RemoteView implements PropertyChangeListener{
     /**
      * Sends the list of players in order to update last used cards
      */
-    private void sendListOfPlayers(){
+    private void sendListOfPlayers() {
         ListOfPlayers players = new ListOfPlayers(currentGame.getListOfPlayer());
-        synchronized (lock){
+        synchronized (lock) {
             showMessage(players);
             try {
                 TimeUnit.MICROSECONDS.sleep(500);
@@ -482,7 +480,7 @@ public class RemoteView implements PropertyChangeListener{
      *
      * @param evt
      */
-    private void playedCharacter(PropertyChangeEvent evt){
+    private void playedCharacter(PropertyChangeEvent evt) {
         synchronized (lock) {
             showMessage("Played character: " + evt.getNewValue());
             try {
@@ -496,10 +494,10 @@ public class RemoteView implements PropertyChangeListener{
     /**
      * Resends situation after a match has been restored (for persistence)
      */
-    public void resendSituation(){
+    public void resendSituation() {
         //Simulate a change event in the player and phase to re-send all
         String oldValue = "";
-        if(currentGame.getPhase() == Phase.CARD_SELECTION){
+        if (currentGame.getPhase() == Phase.CARD_SELECTION) {
             oldValue = "CS";
         }
         PropertyChangeEvent event = new PropertyChangeEvent("", "currentPlayerChanged", oldValue, currentGame.getCurrentPlayer().getNickname());
