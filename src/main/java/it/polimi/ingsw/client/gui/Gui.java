@@ -23,7 +23,6 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -175,10 +174,10 @@ public class Gui extends Application implements PropertyChangeListener {
         Scanner in;
         try {
             in = new Scanner(System.in);
-            System.out.println("Inserire ip: ");
+            System.out.println("Insert ip: ");
             String read = in.nextLine();
             ip = read;
-            System.out.println("Inserire porta: ");
+            System.out.println("Insert port: ");
             read = in.nextLine();
             port = Integer.parseInt(read);
         } catch (NoSuchElementException e) {
@@ -410,7 +409,6 @@ public class Gui extends Application implements PropertyChangeListener {
      * @param listOfClouds from the server
      */
     private void manageListOfClouds(ListOfClouds listOfClouds) {
-        System.out.println("received list of clouds");
         Platform.runLater(() -> mainSceneController.printClouds(listOfClouds.getClouds()));
     }
 
@@ -420,7 +418,6 @@ public class Gui extends Application implements PropertyChangeListener {
      * @param deck to be managed
      */
     private void manageDeck(Deck deck) {
-        System.out.println("received deck");
         mainSceneController.setCardsClickable(true);
         Platform.runLater(() -> mainSceneController.printDeck(deck));
     }

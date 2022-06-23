@@ -180,13 +180,8 @@ public class BoardSceneController implements Initializable {
             }
 
             //students in entrance
-            System.out.println("I should print students in entrance");
             column = 0;
             row = 0;
-            System.out.println("This board has: ");
-            for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
-                System.out.println(receivedBoards.get(j).getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]) + " studs of " + i + "\n");
-            }
             for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
                 for (int k = 0; k < receivedBoards.get(j).getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]); k++) {
                     if (row == 0 && column == 0) {
@@ -195,11 +190,9 @@ public class BoardSceneController implements Initializable {
                     ImageView st = new ImageView(students.get(i));
                     st.setFitWidth(25);
                     st.setFitHeight(25);
-                    System.out.println("Image setted for kingdom " + i);
 
                     seb.get(j).add(st, column, row);
                     GridPane.setHalignment(st, HPos.CENTER);
-                    System.out.println("Image added to grid");
                     column++;
                     if (column == 2) {
                         column = 0;
