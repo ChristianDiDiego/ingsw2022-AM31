@@ -99,19 +99,40 @@ public class Gui extends Application implements PropertyChangeListener {
     }
 
     /**
+     * recognizes the OS in use and sends a ping using the specific command of the OS
+     *
+     * @return true if the ip is still active
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public boolean ping() throws IOException, InterruptedException {
+        String ping = new String();
+        if(System.getProperty("os.name").startsWith("Windows")) {
+            ping = "ping -n 1 " + ip;
+        } else {
+            ping = "ping -c 1 " + ip;
+        }
+
+        Process p1 = java.lang.Runtime.getRuntime().exec(ping);
+        int returnVal = 0;
+        returnVal = p1.waitFor();
+        boolean reachable = (returnVal == 0);
+        return reachable;
+    }
+
+    /**
      * Thread that every 10 seconds sends a ping to the server and
      * waits 5 seconds maximum to receive the reply. if the answer does
      * not arrive it means that the server is offline and the cli will be closed
      *
-     * @param geek is the ip address of the server
+     * @return the created thread
      */
-    public Thread pingToServer(InetAddress geek) {
-        return new Thread(() -> {
+    public Thread pingToServer() {
+        Thread t = new Thread(() -> {
             try {
                 while (isActive()) {
-                    //noinspection BusyWait
                     Thread.sleep(10000);
-                    if (!geek.isReachable(5000)) {
+                    if(!ping()) {
                         System.out.println("The server is unreachable, exiting...");
                         System.exit(0);
                     }
@@ -120,6 +141,7 @@ public class Gui extends Application implements PropertyChangeListener {
                 setActive(false);
             }
         });
+        return t;
     }
 
     /**
@@ -129,17 +151,15 @@ public class Gui extends Application implements PropertyChangeListener {
      */
     public void run() throws IOException {
         socket = new Socket();
-        System.out.println("Mi connetto a " + ip + " " + port);
         SocketAddress socketAddress = new InetSocketAddress(ip, port);
         socket.connect(socketAddress);
         System.out.println("Connection established");
 
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         socketOut = new PrintWriter(socket.getOutputStream());
-        InetAddress geek = socket.getInetAddress();
 
         Thread t0 = asyncReadFromSocket(socketIn);
-        Thread t2 = pingToServer(geek);
+        Thread t2 = pingToServer();
 
         t0.start();
         t2.start();

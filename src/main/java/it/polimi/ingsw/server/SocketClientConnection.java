@@ -257,6 +257,29 @@ public class SocketClientConnection implements Runnable{
     }
 
     /**
+     * recognizes the OS in use and sends a ping using the specific command of the OS
+     *
+     * @param ip
+     * @return true if the ip is still active
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public boolean ping(String ip) throws IOException, InterruptedException {
+        String ping = new String();
+        if(System.getProperty("os.name").startsWith("Windows")) {
+            ping = "ping -n 1 " + ip;
+        } else {
+            ping = "ping -c 1 " + ip;
+        }
+
+        Process p1 = java.lang.Runtime.getRuntime().exec(ping);
+        int returnVal = 0;
+        returnVal = p1.waitFor();
+        boolean reachable = (returnVal == 0);
+        return reachable;
+    }
+
+    /**
      * Thread that every 15 seconds sends a ping to the client and
      * waits 5 seconds maximum to receive the reply. if the answer does
      * not arrive it means that the client is offline and the close will be invoked
@@ -269,7 +292,7 @@ public class SocketClientConnection implements Runnable{
             try {
                 while (isActive()) {
                     Thread.sleep(15000);
-                    if(geek.isReachable(5000)) {
+                    if(ping(geek.getHostAddress())) {
                         System.out.println("client " + nickname + " is reachable");
                     } else {
                         System.out.println("client " + nickname + " is unreachable, exiting...");
@@ -299,7 +322,7 @@ public class SocketClientConnection implements Runnable{
             Thread t0 = pingToClient(geek);
             t0.start();
             server.lobby(this);
-            while(isActive() && inGeneral.hasNextLine()){        //legge dal client tutti i messaggi e notifica il listener della view
+            while(isActive() && inGeneral.hasNextLine()){
                 
                 read = inGeneral.nextLine();
                 if(read.equalsIgnoreCase(Constants.QUIT)){
