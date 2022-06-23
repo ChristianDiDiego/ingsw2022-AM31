@@ -28,7 +28,6 @@ import java.util.*;
  * This class contains the controller to manage the principal scene of the game
  */
 public class MainSceneController implements Initializable {
-    private final List<ImageView> towers = new ArrayList<>();
     private final List<AnchorPane> professors = new ArrayList<>();
     private final List<GridPane> clouds = new ArrayList<>();
 
@@ -39,6 +38,11 @@ public class MainSceneController implements Initializable {
     Image pinkStudent = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/professorsAndStudents/studentpink.png")));
     Image blueStudent = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/professorsAndStudents/studentblue.png")));
     Image[] studentsImages = {greenStudent, redStudent, yellowStudent, pinkStudent, blueStudent};
+
+    Image blackTower = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/blacktower.png")));
+    Image whiteTower = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/whitetower.png")));
+    Image greyTower = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/greytower.png")));
+
 
     Image assistant1 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/assistants/Assistente1.png")));
     Image assistant2 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/assistants/Assistente2.png")));
@@ -82,22 +86,6 @@ public class MainSceneController implements Initializable {
     AnchorPane cloudPane;
 
     //BoardElements
-    @FXML
-    ImageView tower1;
-    @FXML
-    ImageView tower2;
-    @FXML
-    ImageView tower3;
-    @FXML
-    ImageView tower4;
-    @FXML
-    ImageView tower5;
-    @FXML
-    ImageView tower6;
-    @FXML
-    ImageView tower7;
-    @FXML
-    ImageView tower8;
     @FXML
     AnchorPane profGreen;
     @FXML
@@ -154,6 +142,9 @@ public class MainSceneController implements Initializable {
 
     @FXML
     TextArea messageForUser;
+
+    @FXML
+    GridPane tb;
 
     //This variable will store the number of students already moved somewhere from the entrance
     int numberOfMovedStudents = 0;
@@ -523,12 +514,27 @@ public class MainSceneController implements Initializable {
 
         studentsInEntrance.getChildren().clear();
         studentsInDR.getChildren().clear();
+        tb.getChildren().clear();
 
-        //tower
-        int tower = 0;
-        for (ImageView i : towers) {
-            i.setVisible(tower < receivedBoard.getTowersOnBoard().getNumberOfTowers());
-            tower++;
+        //towers
+        int row = 0;
+        int column = 0;
+        for (int i = 0; i < receivedBoard.getTowersOnBoard().getNumberOfTowers(); i++) {
+            ImageView t;
+            switch (receivedBoard.getColorOfTower()) {
+                case WHITE -> t = new ImageView(whiteTower);
+                case GREY -> t = new ImageView(greyTower);
+                default -> t = new ImageView(blackTower);
+            }
+            t.setFitHeight(40);
+            t.setFitWidth(40);
+            tb.add(t, column, row);
+            GridPane.setHalignment(t, HPos.CENTER);
+            column++;
+            if (column == 2) {
+                column = 0;
+                row++;
+            }
         }
 
         //professor
@@ -545,7 +551,6 @@ public class MainSceneController implements Initializable {
                 st.setFitHeight(30);
                 st.setFitWidth(30);
                 studentsInDR.add(st, j, i);
-                GridPane.setHalignment(st, HPos.CENTER);
             }
             firstPositionsAvailableDR.put(i, receivedBoard.getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]));
         }
@@ -561,8 +566,8 @@ public class MainSceneController implements Initializable {
         }
 
         //students in entrance
-        int column = 0;
-        int row = 0;
+        column = 0;
+        row = 0;
         for (int i = 0; i < Constants.NUMBEROFKINGDOMS; i++) {
             for (int j = 0; j < receivedBoard.getEntrance().getStudentsByColor(StudsAndProfsColor.values()[i]); j++) {
                 if (row == 0 && column == 0) {
@@ -575,7 +580,6 @@ public class MainSceneController implements Initializable {
                 setOnDragStudentDetected(st);
                 setOnDragImageDone(st);
                 studentsInEntrance.add(st, column, row);
-                GridPane.setHalignment(st, HPos.CENTER);
                 column++;
                 if (column == 2) {
                     column = 0;
@@ -837,15 +841,6 @@ public class MainSceneController implements Initializable {
 
         singleCellArchipelago = new FlowPane[]{arch0, arch1, arch2, arch3, arch4, arch5, arch6, arch7, arch8, arch9, arch10, arch11};
 
-        tower1.setImage(tower);
-        tower2.setImage(tower);
-        tower3.setImage(tower);
-        tower4.setImage(tower);
-        tower5.setImage(tower);
-        tower6.setImage(tower);
-        tower7.setImage(tower);
-        tower8.setImage(tower);
-        towers.addAll(Arrays.asList(tower1, tower2, tower3, tower4, tower5, tower6, tower7, tower8));
 
         professors.add(profGreen);
         professors.add(profRed);
