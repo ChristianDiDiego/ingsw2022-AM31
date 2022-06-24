@@ -169,7 +169,8 @@ public class Gui extends Application implements PropertyChangeListener {
             System.out.println("Connection refused, application will now close...");
             System.exit(0);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Connection refused, application will now close...");
+            System.exit(0);
         }
 
     }
