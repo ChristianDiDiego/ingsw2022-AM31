@@ -23,9 +23,7 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
+import java.net.*;
 import java.util.*;
 
 /**
@@ -149,19 +147,31 @@ public class Gui extends Application implements PropertyChangeListener {
      * @throws IOException exception
      */
     public void run() throws IOException {
-        socket = new Socket();
-        SocketAddress socketAddress = new InetSocketAddress(ip, port);
-        socket.connect(socketAddress);
-        System.out.println("Connection established");
+        try{
+            socket = new Socket();
+            SocketAddress socketAddress = new InetSocketAddress(ip, port);
+            socket.connect(socketAddress);
+            System.out.println("Connection established");
 
-        ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
-        socketOut = new PrintWriter(socket.getOutputStream());
+            ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
+            socketOut = new PrintWriter(socket.getOutputStream());
 
-        Thread t0 = asyncReadFromSocket(socketIn);
-        Thread t2 = pingToServer();
+            Thread t0 = asyncReadFromSocket(socketIn);
+            Thread t2 = pingToServer();
 
-        t0.start();
-        t2.start();
+            t0.start();
+            t2.start();
+        } catch (ConnectException e) {
+            //host and port combination not valid
+            System.out.println("Connection refused, application will now close...");
+            System.exit(0);
+        } catch (SocketException e) {
+            System.out.println("Connection refused, application will now close...");
+            System.exit(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -177,9 +187,23 @@ public class Gui extends Application implements PropertyChangeListener {
             System.out.println("Insert ip: ");
             String read = in.nextLine();
             ip = read;
+            while(ip.length() < 1) {
+                System.out.println("Ip not valid, try again:");
+                read = in.nextLine();
+                ip = read;
+            }
             System.out.println("Insert port: ");
             read = in.nextLine();
-            port = Integer.parseInt(read);
+            while (read.length() < 2) {
+                System.out.println("Port not valid, try again: ");
+                read = in.nextLine();
+            }
+            try {
+                port = Integer.parseInt(read);
+            } catch (InputMismatchException e) {
+                System.err.println("Numeric format requested, application will now close...");
+                System.exit(-1);
+            }
         } catch (NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
         }

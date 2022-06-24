@@ -27,10 +27,10 @@ public class ClientAppCli {
         System.out.println("Insert ip server:");
         ip = scanner.nextLine();
         while(ip.length() < 1) {
-            System.out.println("Insert ip server:");
+            System.out.println("Ip not valid, try again:");
             ip = scanner.nextLine();
         }
-        System.out.println("Insert the port which server will listen on:");
+        System.out.println("Insert port: ");
         try {
             port = scanner.nextInt();
         } catch (InputMismatchException e) {
