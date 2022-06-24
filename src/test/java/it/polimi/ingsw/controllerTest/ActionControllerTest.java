@@ -3,10 +3,7 @@ package it.polimi.ingsw.controllerTest;
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.controller.ActionController;
 import it.polimi.ingsw.controller.GameHandler;
-import it.polimi.ingsw.model.Card;
-import it.polimi.ingsw.model.ColorOfTower;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.StudsAndProfsColor;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.expertMode.*;
 import it.polimi.ingsw.utilities.Constants;
@@ -256,6 +253,7 @@ class ActionControllerTest {
         assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 9, null));
         assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getListOfPlayer().get(1), 1, null));
         assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 1, null));
+        gameHandler.getGame().setPhase(Phase.MOVE_MN);
         gameHandler.getController().getTurnController().getActionController().getActionParser().actionSerializer(gameHandler.getGame().getCurrentPlayer().getNickname(), "CHARACTER 1 1");
         assertEquals(pl1, gameHandler.getController().getGame().getListOfArchipelagos().get(0).getOwner());
         assertEquals(7,pl1.getMyBoard().getTowersOnBoard().getNumberOfTowers());
@@ -300,6 +298,7 @@ class ActionControllerTest {
         //assertFalse(gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 3, "3"));
 
         gameHandler.getGame().getCurrentPlayer().addCoinsToWallet(20);
+        gameHandler.getGame().setPhase(Phase.MOVE_MN);
         gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 3, "3");
         assertEquals(true, gameHandler.getGame().getListOfArchipelagos().get(2).getIsForbidden());
         gameHandler.getController().getTurnController().getActionController().checkActionCharacter(gameHandler.getGame().getCurrentPlayer(), 3, "3");
@@ -326,6 +325,7 @@ class ActionControllerTest {
         gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.YELLOW);
         gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.YELLOW);
         gameHandler.getController().getGame().getListOfArchipelagos().get(0).getBelongingIslands().get(0).addStudent(StudsAndProfsColor.RED);
+        gameHandler.getGame().setPhase(Phase.MOVE_MN);
         Character4 character4 = new Character4(gameHandler.getGame());
         gameHandler.getGame().setCharacterPlayable(character4);
         gameHandler.getGame().getCurrentPlayer().addCoinsToWallet(20);
@@ -356,6 +356,7 @@ class ActionControllerTest {
         pl2.setTeam(1);
         gameHandler = new GameHandler(pl1, 2, true);
         gameHandler.addNewPlayer(pl2);
+        gameHandler.getGame().setPhase(Phase.MOVE_MN);
         pl1.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.RED);
         pl2.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.YELLOW);
         assertEquals(8,pl1.getMyBoard().getTowersOnBoard().getNumberOfTowers());
@@ -382,13 +383,14 @@ class ActionControllerTest {
         assertEquals(pl1, gameHandler.getGame().getListOfArchipelagos().get(0).getOwner());
 
         //Character6: Choose a color of students that will not be counted for the influence
-        System.out.println("test character 5:");
+        System.out.println("test character 6:");
         pl1 = new Player("leo", ColorOfTower.WHITE);
         pl1.setTeam(0);
         pl2 = new Player("Lisa", ColorOfTower.BLACK);
         pl2.setTeam(1);
         gameHandler = new GameHandler(pl1, 2, true);
         gameHandler.addNewPlayer(pl2);
+        gameHandler.getGame().setPhase(Phase.MOVE_MN);
         pl1.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.RED);
         pl2.getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.YELLOW);
         assertEquals(8,pl1.getMyBoard().getTowersOnBoard().getNumberOfTowers());
@@ -427,6 +429,7 @@ class ActionControllerTest {
         gameHandler = new GameHandler(player1, 2, true);
         gameHandler.addNewPlayer(player2);
 
+        gameHandler.getGame().setPhase(Phase.MOVE_MN);
         Character7 character7 = new Character7(gameHandler.getGame());
         gameHandler.getGame().setCharacterPlayable(character7);
 
@@ -462,6 +465,7 @@ class ActionControllerTest {
         player2.setTeam(1);
         gameHandler = new GameHandler(player1, 2, true);
         gameHandler.addNewPlayer(player2);
+        gameHandler.getGame().setPhase(Phase.MOVE_MN);
 
         Character8 character8 = new Character8(gameHandler.getGame());
         gameHandler.getGame().setCharacterPlayable(character8);
