@@ -40,6 +40,9 @@ public class ServerApp {
         } catch (InputMismatchException e) {
             System.err.println("Numeric format requested, application will now close...");
             System.exit(-1);
+        } catch (NumberFormatException e) {
+            System.err.println("Numeric format requested, application will now close...");
+            System.exit(-1);
         }
 
         if (port < 0 || (port > 0 && port < 1024)) {

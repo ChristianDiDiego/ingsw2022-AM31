@@ -41,6 +41,9 @@ public class ClientAppCli {
         } catch (InputMismatchException e) {
             System.err.println("Numeric format requested, application will now close...");
             System.exit(-1);
+        } catch (NumberFormatException e) {
+            System.err.println("Numeric format requested, application will now close...");
+            System.exit(-1);
         }
 
         Cli client = new Cli(ip, port);
