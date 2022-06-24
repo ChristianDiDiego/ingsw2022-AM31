@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.expertMode;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
+import it.polimi.ingsw.utilities.Constants;
 
 /**
  * image 12 in image folder ;
@@ -20,6 +21,11 @@ public class Character8 extends Characters {
 
     public boolean usePower() {
         if (payForUse()) {
+            for(int i = 0; i < Constants.NUMBEROFKINGDOMS; i++){
+                if(game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.values()[i]) > 0){
+                    assignProfessor(StudsAndProfsColor.values()[i]);
+                }
+            }
             game.getCurrentPlayer().setUsedCharacter(this);
             return true;
         } else {
