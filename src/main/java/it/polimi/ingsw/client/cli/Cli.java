@@ -372,14 +372,19 @@ public class Cli {
      */
     public void run() throws IOException {
         printLogo();
-        socket = new Socket();
-        SocketAddress socketAddress = new InetSocketAddress(ip, port);
-        socket.connect(socketAddress);
-        ps.println("Connection established");
+        try {
+            socket = new Socket();
+            SocketAddress socketAddress = new InetSocketAddress(ip, port);
+            socket.connect(socketAddress);
+            ps.println("Connection established");
+        } catch (Exception e) {
+            System.out.println("Connection refused, application will now close...");
+            System.exit(0);
+        }
+
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
         Scanner stdin = new Scanner(System.in);
-
 
         try{
             Thread t0 = asyncReadFromSocket(socketIn);
@@ -395,7 +400,6 @@ public class Cli {
         } catch(InterruptedException | NoSuchElementException e){
             ps.println("Connection closed from the client side");
         } finally {
-            System.out.println("eseguo finally..");
             stdin.close();
             socketIn.close();
             socketOut.close();

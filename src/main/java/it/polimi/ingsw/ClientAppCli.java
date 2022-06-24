@@ -31,8 +31,13 @@ public class ClientAppCli {
             ip = scanner.nextLine();
         }
         System.out.println("Insert port: ");
+        String read = scanner.nextLine();
+        while (read.length() < 2) {
+            System.out.println("Port not valid, try again: ");
+            read = scanner.nextLine();
+        }
         try {
-            port = scanner.nextInt();
+            port = Integer.parseInt(read);
         } catch (InputMismatchException e) {
             System.err.println("Numeric format requested, application will now close...");
             System.exit(-1);
