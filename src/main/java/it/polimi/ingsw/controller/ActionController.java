@@ -343,44 +343,48 @@ public class ActionController {
     public boolean checkActionCharacter(Player player, int idOfCharacter, String action) {
         if (game.isExpertModeOn()) {
             if (player == game.getCurrentPlayer()) {
-                if (player.getUsedCharacter() == null) {
-                    for (Characters c : game.getCharactersPlayable()) {
-                        if (c.getId() == idOfCharacter) {
-                            switch (idOfCharacter) {
-                                case 1 -> {
-                                    return useCharacter1(action, player, c);
-                                }
-                                case 2 -> {
-                                    return useCharacter2(player, c);
-                                }
-                                case 3 -> {
-                                    return useCharacter3(action, player, c);
-                                }
-                                case 4 -> {
-                                    return useCharacter4(player, c);
-                                }
-                                case 5 -> {
-                                    return useCharacter5(player, c);
-                                }
-                                case 6 -> {
-                                    return useCharacter6(action, player, c);
-                                }
-                                case 7 -> {
-                                    return useCharacter7(action, player, c);
-                                }
-                                case 8 -> {
-                                    return useCharacter8(player, c);
-                                }
-                                default -> {
-                                    support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.characterNotValid);
-                                    return false;
+                if(game.getPhase() != Phase.CARD_SELECTION) {
+                    if (player.getUsedCharacter() == null) {
+                        for (Characters c : game.getCharactersPlayable()) {
+                            if (c.getId() == idOfCharacter) {
+                                switch (idOfCharacter) {
+                                    case 1 -> {
+                                        return useCharacter1(action, player, c);
+                                    }
+                                    case 2 -> {
+                                        return useCharacter2(player, c);
+                                    }
+                                    case 3 -> {
+                                        return useCharacter3(action, player, c);
+                                    }
+                                    case 4 -> {
+                                        return useCharacter4(player, c);
+                                    }
+                                    case 5 -> {
+                                        return useCharacter5(player, c);
+                                    }
+                                    case 6 -> {
+                                        return useCharacter6(action, player, c);
+                                    }
+                                    case 7 -> {
+                                        return useCharacter7(action, player, c);
+                                    }
+                                    case 8 -> {
+                                        return useCharacter8(player, c);
+                                    }
+                                    default -> {
+                                        support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.characterNotValid);
+                                        return false;
+                                    }
                                 }
                             }
                         }
+                        support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.CharacterNotPresent);
+                    } else {
+                        support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.AlreadyUsedCharacter);
                     }
-                    support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.CharacterNotPresent);
                 } else {
-                    support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.AlreadyUsedCharacter);
+                    support.firePropertyChange("ErrorMessage", player.getNickname(),ErrorMessage.wrongPhase + " " + game.getPhase());
                 }
             } else {
                 support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.NotYourTurn);
