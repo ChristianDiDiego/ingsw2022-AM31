@@ -28,8 +28,6 @@ public class SocketClientConnection implements Runnable{
 
     private boolean active = true;
 
-    private boolean clientAlive = true;
-
     private final Object lock = new Object();
 
     public SocketClientConnection(Socket socket, Server server) {
@@ -41,7 +39,7 @@ public class SocketClientConnection implements Runnable{
     /**
      * Add a listener to this class
      *
-     * @param pcl
+     * @param pcl listener
      */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
@@ -53,7 +51,7 @@ public class SocketClientConnection implements Runnable{
 
     /**
      * send message to client
-     * @param message
+     * @param message to be sent
      */
     public synchronized void send(Object message) {
         synchronized (lock) {
@@ -165,13 +163,9 @@ public class SocketClientConnection implements Runnable{
         int number;
         try {
             in = new Scanner(socket.getInputStream());
-            switch (server.getNumberOfPlayers()){
-                case 2:
-                case 4:
-                    send(ServerMessage.askColor2_4Players);
-                    break;
-                case 3:
-                    send(ServerMessage.askColor3Players);
+            switch (server.getNumberOfPlayers()) {
+                case 2, 4 -> send(ServerMessage.askColor2_4Players);
+                case 3 -> send(ServerMessage.askColor3Players);
             }
 
             String read = in.nextLine();
@@ -259,13 +253,13 @@ public class SocketClientConnection implements Runnable{
     /**
      * recognizes the OS in use and sends a ping using the specific command of the OS
      *
-     * @param ip
+     * @param ip of the server
      * @return true if the ip is still active
      * @throws IOException
      * @throws InterruptedException
      */
     public boolean ping(String ip) throws IOException, InterruptedException {
-        String ping = new String();
+        String ping;
         if(System.getProperty("os.name").startsWith("Windows")) {
             ping = "ping -n 1 " + ip;
         } else {
@@ -275,8 +269,7 @@ public class SocketClientConnection implements Runnable{
         Process p1 = java.lang.Runtime.getRuntime().exec(ping);
         int returnVal = 0;
         returnVal = p1.waitFor();
-        boolean reachable = (returnVal == 0);
-        return reachable;
+        return (returnVal == 0);
     }
 
     /**
@@ -299,9 +292,7 @@ public class SocketClientConnection implements Runnable{
                         close();
                     }
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
+            } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
         });

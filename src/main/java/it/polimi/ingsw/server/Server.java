@@ -164,6 +164,7 @@ public class Server {
             c.asyncSend(nickOfOtherPlayers.toString());
         }
 
+
         //I moved nickname here so when other player connect the others receive his name
         String nickname = c.askNickname();
         if (nickname.equalsIgnoreCase(Constants.QUIT)) setupAborted = true;

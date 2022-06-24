@@ -83,12 +83,6 @@ public class LoginController implements Initializable {
                     radio3.setVisible(true);
                     radio4.setVisible(true);
                     submitNumberOfPlayers.setVisible(true);
-                } else {
-                    textColor.setVisible(true);
-                    radioWhite.setVisible(true);
-                    radioBlack.setVisible(true);
-                    radioGrey.setVisible(true);
-                    submitColor.setVisible(true);
                 }
 
             }
@@ -146,15 +140,18 @@ public class LoginController implements Initializable {
         radioexp.setDisable(true);
         submitMode.setVisible(false);
 
+
+    }
+
+    public void showColorChoice(boolean showGrey){
         textColor.setVisible(true);
         radioWhite.setVisible(true);
         radioBlack.setVisible(true);
-        if (numberOfPlayers == 3) {
+        if (showGrey) {
             radioGrey.setVisible(true);
         }
         submitColor.setVisible(true);
     }
-
     /**
      * Sends the color of tower the current player wants to play with
      */
@@ -219,6 +216,11 @@ public class LoginController implements Initializable {
      */
     public void setWaitingForOtherPlayers() {
         waitingForPlayers.setVisible(true);
+        textColor.setVisible(false);
+        radioWhite.setVisible(false);
+        radioBlack.setVisible(false);
+        radioGrey.setVisible(false);
+
     }
 
     /**
@@ -268,5 +270,6 @@ public class LoginController implements Initializable {
     public void colorAlreadyUsed(String message) {
         errorMessagesLabel.setText(message);
     }
+
 }
 

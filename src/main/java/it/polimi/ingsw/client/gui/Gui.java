@@ -280,36 +280,20 @@ public class Gui extends Application implements PropertyChangeListener {
      * @param inputString string arrived from the server
      */
     private void manageStringInput(String inputString) {
-        //NOTE: I cannot use a switch because I need to check if strings CONTAINS a word, not always EQUALS
         System.out.println(inputString);
-        if (inputString.equals(ServerMessage.startingGame)) {
-            startingGame();
-        } else if (inputString.contains(ServerMessage.joiningMessage)) {
-            loginController.setNotFirstPlayer();
-        } else if (inputString.equalsIgnoreCase(ServerMessage.askNickname)) {
-            Platform.runLater(() -> loginController.allowSetup());
-        } else if (inputString.equalsIgnoreCase(ErrorMessage.DuplicateNickname)) {
-            Platform.runLater(() -> loginController.usernameAlreadyUsed(inputString));
-        } else if (inputString.equalsIgnoreCase(ServerMessage.connectionClosed)) {
-            setActive(false);
-        } else if (inputString.equalsIgnoreCase(ErrorMessage.ColorNotValid)) {
-            Platform.runLater(() -> loginController.colorAlreadyUsed(inputString));
-        } else if (inputString.equalsIgnoreCase(ServerMessage.waitingOtherPlayers) || inputString.contains(ServerMessage.waitingOldPlayers)) {
-            loginController.setWaitingForOtherPlayers();
-        } else if (inputString.contains("For this round you can do")) {
-            setMaxSteps(inputString);
-        } else if (inputString.contains("of your students from entrance")) {
-            setMaxStudentsToMove(inputString);
-        } else if (inputString.contains("Available coins")) {
-            getCoins(inputString);
-        } else if (inputString.contains("Character:") && !(inputString.contains("Playable"))) {
-            getCharacters(inputString);
-        } else if (inputString.equalsIgnoreCase((ErrorMessage.CardAlreadyTaken))) {
-            setCardClickable();
-        } else if (inputString.equalsIgnoreCase(ErrorMessage.notEnoughCoinsOrWrongAction)) {
-            sendErrorCharacters(inputString);
+        switch (inputString){
+            case ServerMessage.startingGame -> startingGame();
+            case ServerMessage.askNickname -> Platform.runLater(() -> loginController.allowSetup());
+            case ServerMessage.connectionClosed -> setActive(false);
+            case ServerMessage.askColor2_4Players -> Platform.runLater(()->loginController.showColorChoice(false));
+            case ServerMessage.askColor3Players-> Platform.runLater(()->loginController.showColorChoice(true));
+            case ServerMessage.waitingOtherPlayers, ServerMessage.waitingOldPlayers ->  loginController.setWaitingForOtherPlayers();
+            case ErrorMessage.CardAlreadyTaken -> setCardClickable();
+            case ErrorMessage.notEnoughCoinsOrWrongAction -> sendErrorCharacters(inputString);
+            case ErrorMessage.DuplicateNickname -> Platform.runLater(() -> loginController.usernameAlreadyUsed(inputString));
+            case ErrorMessage.ColorNotValid ->  Platform.runLater(() -> loginController.colorAlreadyUsed(inputString));
+            default -> manageNotSwitchableString(inputString);
         }
-
 
         if (mainSceneController != null) {
             Platform.runLater(() -> {
@@ -325,6 +309,21 @@ public class Gui extends Application implements PropertyChangeListener {
             });
         }
 
+    }
+
+    private void manageNotSwitchableString(String inputString){
+        //NOTE: I cannot use a switch because I need to check if strings CONTAINS a word
+        if (inputString.contains("For this round you can do")) {
+            setMaxSteps(inputString);
+        } else if (inputString.contains("of your students from entrance")) {
+            setMaxStudentsToMove(inputString);
+        } else if (inputString.contains("Available coins")) {
+            getCoins(inputString);
+        } else if (inputString.contains("Character:") && !(inputString.contains("Playable"))) {
+            getCharacters(inputString);
+        } else if (inputString.contains(ServerMessage.joiningMessage)) {
+            loginController.setNotFirstPlayer();
+        }
     }
 
     /**
