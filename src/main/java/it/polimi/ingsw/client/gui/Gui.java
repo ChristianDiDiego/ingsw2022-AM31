@@ -204,6 +204,9 @@ public class Gui extends Application implements PropertyChangeListener {
             } catch (InputMismatchException e) {
                 System.err.println("Numeric format requested, application will now close...");
                 System.exit(-1);
+            } catch (NumberFormatException e) {
+                System.err.println("Numeric format requested, application will now close...");
+                System.exit(-1);
             }
         } catch (NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
