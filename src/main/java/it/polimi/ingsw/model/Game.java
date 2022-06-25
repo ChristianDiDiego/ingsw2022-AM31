@@ -206,7 +206,6 @@ public class Game implements Serializable {
                 break;
             }
         }
-        support.firePropertyChange("MNmove", 0, 1);
     }
 
     public List<Archipelago> getListOfArchipelagos() {

@@ -59,7 +59,6 @@ public class RemoteView implements PropertyChangeListener {
                 currentPlayerChanged(evt);
                 break;
             case EventName.MNmove:
-            case EventName.ArchUnified:
                 sendArchipelagos();
                 break;
             case EventName.PhaseChanged:

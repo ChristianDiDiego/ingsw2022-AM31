@@ -4,6 +4,7 @@ import it.polimi.ingsw.utilities.ErrorMessage;
 import it.polimi.ingsw.utilities.Constants;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.expertMode.*;
+import it.polimi.ingsw.utilities.EventName;
 
 import java.beans.PropertyChangeSupport;
 
@@ -257,6 +258,7 @@ public class ActionController {
             if (steps > 0 && steps <= player.getLastUsedCard().getMaxSteps() + (player.getUsedCharacter() != null ? player.getUsedCharacter().getBonusSteps() : 0)) {
                 game.moveMotherNature(steps);
                 calculateInfluence();
+                support.firePropertyChange(EventName.MNmove, 0, 1);
                 if (game.getPhase() != Phase.END_GAME) {
                     game.nextPhase();
                 }
