@@ -82,7 +82,6 @@
                   <Font name="Curlz MT" size="16.0" />
                </font></Label>
             <Label fx:id="errorMessagesLabel" layoutX="102.0" layoutY="200.0" prefHeight="18.0" prefWidth="422.0" />
-            <Button fx:id="startButton" layoutX="468.0" layoutY="353.0" mnemonicParsing="false" onAction="#switchToMainScene" text="Start" visible="false" />
            </children>
       </AnchorPane>
    </children>

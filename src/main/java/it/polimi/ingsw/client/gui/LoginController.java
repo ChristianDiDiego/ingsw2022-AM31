@@ -55,8 +55,6 @@ public class LoginController implements Initializable {
     String username;
     @FXML
     Label errorMessagesLabel;
-    @FXML
-    Button startButton;
 
     private final FXMLLoader mainSceneLoader = new FXMLLoader(getClass().getClassLoader().getResource("mainScene.fxml"));
     Parent mainRoot;
@@ -219,7 +217,6 @@ public class LoginController implements Initializable {
      * @throws IOException if exception
      */
     public MainSceneController getMainSceneController() throws IOException {
-        startButton.setVisible(true);
         return mainSceneLoader.getController();
     }
 
@@ -233,7 +230,7 @@ public class LoginController implements Initializable {
         mainStage.setMaximized(true);
         mainStage.show();
 
-        Stage stage = (Stage) startButton.getScene().getWindow();
+        Stage stage = (Stage) usernameText.getScene().getWindow();
         stage.close();
     }
 

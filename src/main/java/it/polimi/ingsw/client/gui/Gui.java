@@ -465,6 +465,7 @@ public class Gui extends Application implements PropertyChangeListener {
             boardSceneController = mainSceneController.getBoardSceneLoader().getController();
             characterSceneController = mainSceneController.getCharacterSceneLoader().getController();
             characterSceneController.addPropertyChangeListener(this);
+            Platform.runLater(() -> loginController.switchToMainScene());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
