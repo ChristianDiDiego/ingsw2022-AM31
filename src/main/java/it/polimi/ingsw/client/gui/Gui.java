@@ -47,6 +47,7 @@ public class Gui extends Application implements PropertyChangeListener {
     private final List<Integer> charactersPrice = new ArrayList<>();
     private String ip;
     private int port;
+    private Stage loginStage;
 
     public synchronized boolean isActive() {
         return active;
@@ -217,15 +218,16 @@ public class Gui extends Application implements PropertyChangeListener {
             loginController = loader.getController();
             loginController.addPropertyChangeListener(this);
             Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("Eriantys");
+            loginStage = new Stage();
+            loginStage.setScene(scene);
+            loginStage.setTitle("Eriantys | Login");
             Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/eriantys_logo.jpg")));
-            stage.getIcons().add(icon);
-            stage.show();
+            loginStage.getIcons().add(icon);
+            loginStage.show();
 
-            stage.setOnCloseRequest(event -> {
+            loginStage.setOnCloseRequest(event -> {
                 event.consume();
-                logout(stage);
+                logout(loginStage);
             });
 
             run();
@@ -458,7 +460,7 @@ public class Gui extends Application implements PropertyChangeListener {
      */
     private void startingGame() {
         try {
-            mainSceneController = loginController.switchToMainScene();
+            mainSceneController = loginController.getMainSceneController();
             mainSceneController.addPropertyChangeListener(this);
             boardSceneController = mainSceneController.getBoardSceneLoader().getController();
             characterSceneController = mainSceneController.getCharacterSceneLoader().getController();

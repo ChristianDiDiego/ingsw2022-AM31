@@ -4,10 +4,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -50,9 +53,16 @@ public class LoginController implements Initializable {
     @FXML
     RadioButton radio2, radio3, radio4, radiostd, radioexp, radioWhite, radioBlack, radioGrey;
     String username;
-
     @FXML
     Label errorMessagesLabel;
+    @FXML
+    Button startButton;
+
+    private final FXMLLoader mainSceneLoader = new FXMLLoader(getClass().getClassLoader().getResource("mainScene.fxml"));
+    Parent mainRoot;
+    Scene mainScene;
+    private Stage mainStage;
+
 
     /**
      * Add a listener to this scene
@@ -176,6 +186,12 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            mainRoot = mainSceneLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         usernameText.setText("There is another player in setup, please wait...");
         submitUsername.setVisible(false);
         usernameTextField.setVisible(false);
@@ -202,12 +218,23 @@ public class LoginController implements Initializable {
      * @return controller of the mainScene
      * @throws IOException if exception
      */
-    public MainSceneController switchToMainScene() throws IOException {
+    public MainSceneController getMainSceneController() throws IOException {
+        startButton.setVisible(true);
+        return mainSceneLoader.getController();
+    }
 
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("mainScene.fxml"));
-        Parent root = loader.load();
-        usernameText.getScene().setRoot(root);
-        return loader.getController();
+    public void switchToMainScene() {
+        mainStage = new Stage();
+        mainScene = new Scene(mainRoot);
+        mainStage.setScene(mainScene);
+        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/eriantys_logo.jpg")));
+        mainStage.getIcons().add(icon);
+        mainStage.setTitle("Eriantys");
+        mainStage.setMaximized(true);
+        mainStage.show();
+
+        Stage stage = (Stage) startButton.getScene().getWindow();
+        stage.close();
     }
 
     /**
