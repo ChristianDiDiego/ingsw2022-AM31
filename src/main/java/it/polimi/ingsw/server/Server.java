@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.utilities.ErrorMessage;
+import it.polimi.ingsw.utilities.EventName;
 import it.polimi.ingsw.utilities.ServerMessage;
 import it.polimi.ingsw.utilities.Constants;
 import it.polimi.ingsw.controller.GameHandler;
@@ -8,6 +9,8 @@ import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.view.RemoteView;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -20,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  Manage the connections of the clients and starts configuration of the game
  when the expected number of players is connected
  */
-public class Server {
+public class Server implements PropertyChangeListener {
     private int numberOfPlayers;
     private final ServerSocket serverSocket;
     private final ExecutorService executor = Executors.newFixedThreadPool(128);
@@ -324,7 +327,6 @@ public class Server {
      * Save the games that are currently going on the server
      */
     private void saveGames() {
-        System.out.println("shut down...");
         try {
             // Create a file to write game system
             FileOutputStream out = new FileOutputStream(Constants.NAMEFILEFORSAVEMATCHES);
@@ -435,6 +437,7 @@ public class Server {
         c.addPropertyChangeListener(remV1);
         gameHandler.addPropertyChangeListener(remV1);
         gameHandler.getGame().addPropertyChangeListener(remV1);
+        gameHandler.getGame().addPropertyChangeListener(this);
         gameHandler.getController().getTurnController().getActionController().addPropertyChangeListener(remV1);
 
         gameHandler.getController().getTurnController().getActionController().getActionParser().addPropertyChangeListener(remV1);
@@ -577,6 +580,13 @@ public class Server {
             } catch (IOException e) {
                 System.out.println("Connection Error!");
             }
+        }
+    }
+
+    @Override
+    public synchronized void propertyChange(PropertyChangeEvent evt) {
+        if(evt.getPropertyName().equals(EventName.PhaseChanged)){
+            saveGames();
         }
     }
 }
