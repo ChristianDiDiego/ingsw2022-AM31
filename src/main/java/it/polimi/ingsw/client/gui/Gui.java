@@ -204,15 +204,16 @@ public class Gui extends Application implements PropertyChangeListener {
                 port = Integer.parseInt(read);
             } catch (InputMismatchException e) {
                 System.err.println("Numeric format requested, application will now close...");
-                System.exit(-1);
+                System.exit(0);
             } catch (NumberFormatException e) {
                 System.err.println("Numeric format requested, application will now close...");
-                System.exit(-1);
+                System.exit(0);
             }
         } catch (NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
         }
         try {
+            System.out.println("You selected the GUI interface, have fun!\nStarting...");
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("login.fxml"));
             Parent root = loader.load();
             loginController = loader.getController();
@@ -223,6 +224,7 @@ public class Gui extends Application implements PropertyChangeListener {
             loginStage.setTitle("Eriantys | Login");
             Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/eriantys_logo.jpg")));
             loginStage.getIcons().add(icon);
+            loginStage.setResizable(false);
             loginStage.show();
 
             loginStage.setOnCloseRequest(event -> {
@@ -310,7 +312,6 @@ public class Gui extends Application implements PropertyChangeListener {
      * @param inputString string arrived from the server
      */
     private void manageStringInput(String inputString) {
-        System.out.println(inputString);
         switch (inputString){
             case ServerMessage.startingGame -> startingGame();
             case ServerMessage.askNickname -> Platform.runLater(() -> loginController.allowSetup());

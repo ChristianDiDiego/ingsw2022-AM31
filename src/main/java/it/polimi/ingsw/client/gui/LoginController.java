@@ -226,7 +226,7 @@ public class LoginController implements Initializable {
         mainStage.setScene(mainScene);
         Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/eriantys_logo.jpg")));
         mainStage.getIcons().add(icon);
-        mainStage.setTitle("Eriantys");
+        mainStage.setTitle("Eriantys | " + username);
         mainStage.setMaximized(true);
         mainStage.show();
 

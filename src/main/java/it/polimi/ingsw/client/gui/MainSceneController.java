@@ -310,7 +310,7 @@ public class MainSceneController implements Initializable {
 
     /**
      * Set a drag listener on the archipelago target
-     * when a drag is detected, it comunicate that is valid ONLY if the event has a string
+     * when a drag is detected, it communicates that is valid ONLY if the event has a string
      *
      * @param target archipelago that requires the listener
      */

@@ -40,10 +40,10 @@ public class ClientAppCli {
             port = Integer.parseInt(read);
         } catch (InputMismatchException e) {
             System.err.println("Numeric format requested, application will now close...");
-            System.exit(-1);
+            System.exit(0);
         } catch (NumberFormatException e) {
             System.err.println("Numeric format requested, application will now close...");
-            System.exit(-1);
+            System.exit(0);
         }
 
         Cli client = new Cli(ip, port);
