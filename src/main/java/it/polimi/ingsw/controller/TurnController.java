@@ -75,6 +75,10 @@ public class TurnController {
             }
         }
 
+        for(Player p : game.getListOfPlayer()){
+            p.setLastUsedCard(new Card(0,0));
+        }
+
         game.nextPhase();
         game.setCurrentPlayer(game.getOrderOfPlayers().get(0));
         support.firePropertyChange(EventName.CurrentPlayerChanged, "CS", game.getCurrentPlayer().getNickname());
@@ -156,7 +160,7 @@ public class TurnController {
      */
     private boolean checkCardUsage(Player p, int power) {
         if (p.getMyDeck().getLeftCards().size() > 1) {
-            for (int i = 0; i < game.getOrderOfPlayers().indexOf(p); i++) {
+            for (int i = 0; i < game.getListOfPlayer().size(); i++) {
                 if (game.getOrderOfPlayers().get(i).getLastUsedCard().getPower() == power) {
                     return false;
                 }

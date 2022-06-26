@@ -121,7 +121,7 @@ public class BoardSceneController implements Initializable {
      */
     public void printLastUsedCard(List<Player> players) {
         for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getLastUsedCard() != null) {
+            if (players.get(i).getLastUsedCard() != null && players.get(i).getLastUsedCard().getPower() != 0) {
                 String nickname = ob.get(i).getText();
                 String lastUsedCard = ", last used card: " + players.get(i).getLastUsedCard().getPower();
                 if(players.size() == Constants.MAXPLAYERS){
@@ -201,6 +201,7 @@ public class BoardSceneController implements Initializable {
                     }
                     ImageView st = new ImageView(students.get(i));
                     st.setFitWidth(25);
+                    st.setFitHeight(25);
                     st.setFitHeight(25);
 
                     seb.get(j).add(st, column, row);

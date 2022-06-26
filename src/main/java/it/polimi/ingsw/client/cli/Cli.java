@@ -163,8 +163,10 @@ public class Cli {
             }
             for (Player p : players) {
                 if (p.getMyDeck().getLeftCards().size() == min && p.getLastUsedCard() != null) {
-                    ps.print("    Player " + p.getNickname() + " choose the card:");
-                    ps.println(" Power: " + p.getLastUsedCard().getPower() + " Steps: " + p.getLastUsedCard().getMaxSteps());
+                    if(p.getLastUsedCard().getPower() != 0) {
+                        ps.print("    Player " + p.getNickname() + " choose the card:");
+                        ps.println(" Power: " + p.getLastUsedCard().getPower() + " Steps: " + p.getLastUsedCard().getMaxSteps());
+                    }
                 }
             }
             ps.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
