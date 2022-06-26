@@ -245,7 +245,7 @@ public class LoginController implements Initializable {
         radioWhite.setVisible(false);
         radioBlack.setVisible(false);
         radioGrey.setVisible(false);
-
+        submitColor.setVisible(false);
     }
 
     /**
