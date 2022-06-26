@@ -14,7 +14,7 @@ public class Character7 extends Characters {
         super(1, game);
         id = 7;
         this.descriptionOfPower = "The player can switch max 2 students between entrance and dining room \n" +
-                "Usage CHARACTER 7 [COLOR ENTRANCE],[COLOR ENTRANCE],[COLOR DR],[COLOR DR]";
+                "Usage: CHARACTER 7 [COLOR ENTRANCE],[COLOR ENTRANCE],[COLOR DR],[COLOR DR]";
     }
 
 

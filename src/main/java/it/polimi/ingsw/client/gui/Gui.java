@@ -503,16 +503,21 @@ public class Gui extends Application implements PropertyChangeListener {
      */
     private void getCharacters(String inputString) {
         if (idCharacters.size() < Constants.NUMBEROFPLAYABLECHARACTERS) {
+            boolean read = true;
             String[] input = inputString.split(" ");
-            StringBuilder description = new StringBuilder();
+            String description = new String();
             idCharacters.add(input[1]);
             int i = 4;
-            //TODO: togliere usage
-            while (!(input[i].contains("Price:"))) {
-                description.append(" ").append(input[i]);
+            while (!input[i].contains("Price:")) {
+                if(read) {
+                    description = description + " " + input[i];
+                }
                 i++;
+                if(input[i].contains("Usage")) {
+                    read = false;
+                }
             }
-            charactersDescription.add(description.toString());
+            charactersDescription.add(description);
             int price = Integer.parseInt(input[i + 1]);
             charactersPrice.add(price);
         }

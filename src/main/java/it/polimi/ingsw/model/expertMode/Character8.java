@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.utilities.Constants;
 
 /**
- * image 12 in image folder ;
+ * image 12 in image folder;
  * card 2 in list of cards ( in game tutorial)
  * When this card is used, assignProfessor assign the professor to the player who use the card
  * also if the number of students in the dining rooms of the two players is the same
