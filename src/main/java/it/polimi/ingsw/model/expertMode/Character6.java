@@ -31,13 +31,10 @@ public class Character6 extends Characters {
     /**
      * Calculates the influence without the contribution of the students of the chosen color
      */
-
     public void calculateInfluence() {
         System.out.println("color to be ignored: " + color.toString());
         int value = color.ordinal();
         for (Archipelago a : game.getListOfArchipelagos()) {
-            //TODO: add message "influence not calculated because forbidden";
-            // calculate influence for 4 players
             if (a.getIsMNPresent() && !a.getIsForbidden()) {
                 Player oldOwner;
                 int[] influences = new int[game.getNumberOfPlayers()];
@@ -51,14 +48,17 @@ public class Character6 extends Characters {
                     oldOwner = a.getOwner();
                 }
 
-                //Calcola l'influenza di ogni giocatore sull'arcipelago a
-                //assegna questo valore incrementando il vettore influences alla posizione
-                //corrispondente al proprio team:
-                //In tal modo, sia se si sta giocando a squadre che tutti contro tutti
-                //vengono calcolate correttamente
+                    /*
+                    Calculate the influence of each player on the archipelago a
+                    give this value increasing the influences vector at the position
+                    of the team:
+                    In this way, both if is a game with 2 or 4 players the influence is correctly calculated
+                     */
                 for (Player p : game.getOrderOfPlayers()) {
-                    //Se oldowner non è nullo e il suo numero di squadra coincide con il player su cui
-                    //stiamo iterando, aggiunge all'influenza del suo team il numero di torri(=numero di isole)
+                    /*
+                    if oldOwner is not null and his team's number corresponds with p,
+                    add number of towers to team's influence
+                     */
                     if (oldOwner != null && oldOwner.getTeam() == p.getTeam()) {
                         influences[p.getTeam()] = a.getBelongingIslands().size();
                     }
@@ -70,7 +70,7 @@ public class Character6 extends Characters {
                         }
                     }
                 }
-                //Trova il massimo nel vettore influenza e si salva il team corrispondente
+                //Find the max in the vector influence and save the team number
                 int maxInfluence = 0;
                 int teamMaxInfluence = 0;
                 for (int i = 0; i < influences.length; i++) {
@@ -80,8 +80,7 @@ public class Character6 extends Characters {
                     }
                 }
                 boolean tie = false;
-                //Controlla se ci sono due giocatori diversi con la stessa influenza:
-                //in quel caso si ha un pareggio
+                //Check if there are two different players with the same influence (tie)
                 for (int i = 0; i < influences.length; i++) {
                     if (influences[i] == maxInfluence && i != teamMaxInfluence) {
                         tie = true;
@@ -106,7 +105,6 @@ public class Character6 extends Characters {
                             if (p.getTeam() == teamMaxInfluence && p.getColorOfTowers() != null) {
                                 p.getMyBoard().getTowersOnBoard().removeTower();
                                 a.changeOwner(p);
-                                //TODO: if the number of towers finish, the game is over
                             }
                         }
                     }

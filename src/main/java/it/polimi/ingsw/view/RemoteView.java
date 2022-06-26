@@ -52,10 +52,10 @@ public class RemoteView implements PropertyChangeListener {
     @Override
     public synchronized void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
-            case EventName.endGame:
+            case EventName.EndGame:
                 endGame(evt.getNewValue());
                 break;
-            case EventName.currentPlayerChanged:
+            case EventName.CurrentPlayerChanged:
                 currentPlayerChanged(evt);
                 break;
             case EventName.MNmove:
@@ -498,6 +498,10 @@ public class RemoteView implements PropertyChangeListener {
         phaseChanged();
     }
 
+    /**
+     * sends error messages
+     * @param evt
+     */
     private void sendErrorMessage(PropertyChangeEvent evt){
         try {
             TimeUnit.MICROSECONDS.sleep(500);
@@ -516,6 +520,10 @@ public class RemoteView implements PropertyChangeListener {
         }
     }
 
+    /**
+     * send to each player his color of towers and team
+     * @param evt
+     */
     private void startingGame(PropertyChangeEvent evt){
         try {
             TimeUnit.MICROSECONDS.sleep(500);
@@ -552,6 +560,10 @@ public class RemoteView implements PropertyChangeListener {
         }
     }
 
+    /**
+     * just in expert mode sends the available characters
+     * @param evt
+     */
     private void sendAvailableCharacters(PropertyChangeEvent evt){
         try {
             TimeUnit.MICROSECONDS.sleep(500);

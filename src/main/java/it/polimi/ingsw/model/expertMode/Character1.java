@@ -51,8 +51,10 @@ public class Character1 extends Characters {
                     the influence is correctly calculated
                     */
                     for (Player p : game.getOrderOfPlayers()) {
-                        //Se oldowner non è nullo e il suo numero di squadra coincide con il player su cui
-                        //stiamo iterando, aggiunge all'influenza del suo team il numero di torri(=numero di isole)
+                        /*
+                        if oldOwner is not null and his team's number corresponds with p,
+                        add number of towers to team's influence
+                         */
                         if (oldOwner != null && oldOwner.getTeam() == p.getTeam()) {
                             influences[p.getTeam()] = a.getBelongingIslands().size();
                         }

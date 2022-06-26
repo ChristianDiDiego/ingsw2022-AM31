@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.utilities.EventName;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -25,12 +26,13 @@ public class GameHandler implements Serializable {
     private int numberOfMovements;
     private final PropertyChangeSupport support;
 
+    private int winnerTeam; //this variable is added just for tests
+
 
     public GameHandler(Player firstPlayer, int playersNumber, boolean expertMode) {
         this.playersNumber = playersNumber;
         this.game = new Game(playersNumber, firstPlayer, expertMode);
         this.controller = new Controller(this.game, this);
-        //TODO: parse expertMode
         parametersSwitch(playersNumber);
         isStarted = 0;
         this.support = new PropertyChangeSupport(this);
@@ -58,7 +60,7 @@ public class GameHandler implements Serializable {
      */
     public void endGameImmediately(Player winner) {
         System.out.println("sono in endGameImmediately");
-        support.firePropertyChange("EndGame", 10, winner.getTeam());
+        support.firePropertyChange(EventName.EndGame, 10, winner.getTeam());
         //comunica al server partita finita
     }
 
@@ -90,11 +92,10 @@ public class GameHandler implements Serializable {
                 winner = p;
                 maxProfs = p.getMyBoard().getProfessorsTable().getNumberOfProf();
             }
-
-
         }
         game.setPhase(Phase.END_GAME);
-        support.firePropertyChange("EndGame", 10, winner.getTeam());
+        winnerTeam = winner.getTeam();
+        support.firePropertyChange(EventName.EndGame, 10, winner.getTeam());
     }
 
     public void setIsStarted(int i) {
@@ -193,5 +194,9 @@ public class GameHandler implements Serializable {
 
     public int getPlayersNumber() {
         return playersNumber;
+    }
+
+    public int getWinnerTeam() {
+        return winnerTeam;
     }
 }

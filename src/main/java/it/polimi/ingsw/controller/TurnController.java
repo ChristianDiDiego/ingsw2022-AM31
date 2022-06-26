@@ -3,12 +3,13 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.utilities.ErrorMessage;
 import it.polimi.ingsw.utilities.Constants;
+import it.polimi.ingsw.utilities.EventName;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 /**
- * Menage the turn changements and the pianification phase
+ * Manage the turn changes and the planning phase
  */
 public class TurnController {
     private final Controller controller;
@@ -17,6 +18,8 @@ public class TurnController {
     private final Game game;
     private final PropertyChangeSupport support;
     private boolean isFinished = false;
+
+    private boolean notEnoughStudents = false;
 
     public TurnController(Controller controller, GameHandler gameHandler, Game game) {
         this.controller = controller;
@@ -49,15 +52,18 @@ public class TurnController {
      * Call endGame if the number of the students in the bag is finished
      */
     public void startTurn() {
-        if (game.getBag().getNumberOfLeftStudents() < (gameHandler.getNumberOfStudentsOnCloud() * gameHandler.getNumberOfClouds()) || game.getCurrentPlayer().getMyDeck().getLeftCards().size() == 1) {
+        if (game.getCurrentPlayer().getMyDeck().getLeftCards().size() == 1) {
             isFinished = true;
+        }
+        if(game.getBag().getNumberOfLeftStudents() < (gameHandler.getNumberOfStudentsOnCloud() * gameHandler.getNumberOfClouds())){
+            notEnoughStudents = true;
         }
 
         if (game.getListOfPlayer().get(0).getMyDeck().getLeftCards().size() == Constants.NUMBEROFCARDSINDECK) {
-            support.firePropertyChange("StartingGame", "", "Game is starting...");
+            support.firePropertyChange(EventName.StartingGame, "", "Game is starting...");
         }
 
-        if (!isFinished) {
+        if (!notEnoughStudents) {
             for (Cloud cloud : game.getListOfClouds()) {
                 cloud.addStudents(game.getBag().pickStudent(gameHandler.getNumberOfStudentsOnCloud()));
             }
@@ -71,7 +77,7 @@ public class TurnController {
 
         game.nextPhase();
         game.setCurrentPlayer(game.getOrderOfPlayers().get(0));
-        support.firePropertyChange("currentPlayerChanged", "CS", game.getCurrentPlayer().getNickname());
+        support.firePropertyChange(EventName.CurrentPlayerChanged, "CS", game.getCurrentPlayer().getNickname());
     }
 
     /**
@@ -111,7 +117,7 @@ public class TurnController {
                                 System.out.println("Passo alla fase " + game.getPhase());
                             } else {
                                 game.calculateNextPlayerPianification();
-                                support.firePropertyChange("PhaseChanged", 0, 1);
+                                support.firePropertyChange(EventName.PhaseChanged, 0, 1);
 
                             }
                         }
@@ -141,8 +147,6 @@ public class TurnController {
         }
     }
 
-    //TODO: addTest
-
     /**
      * Check that no one else chose the same card before if the size of the player that send it is >1
      *
@@ -160,8 +164,6 @@ public class TurnController {
         }
         return true;
     }
-
-    //TODO: addTest
 
     /**
      * Check if a card with a power is present in the player's deck
@@ -181,6 +183,9 @@ public class TurnController {
         return isFinished;
     }
 
+    public boolean isNotEnoughStudents() {
+        return notEnoughStudents;
+    }
 }
 
 

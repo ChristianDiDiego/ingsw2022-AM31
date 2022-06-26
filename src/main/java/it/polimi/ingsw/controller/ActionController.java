@@ -92,8 +92,10 @@ public class ActionController {
                     the influence is correctly calculated
                      */
                 for (Player p : game.getOrderOfPlayers()) {
-                    //Se oldowner non è nullo e il suo numero di squadra coincide con il player su cui
-                    //stiamo iterando, aggiunge all'influenza del suo team il numero di torri(=numero di isole)
+                    /*
+                    if oldOwner is not null and his team's number corresponds with p,
+                    add number of towers to team's influence
+                     */
                     if (oldOwner != null && oldOwner.getTeam() == p.getTeam()) {
                         influences[p.getTeam()] = a.getBelongingIslands().size();
                     }
@@ -223,7 +225,7 @@ public class ActionController {
                             }
                         }
                         game.nextPhase();
-                        support.firePropertyChange("moveST", 0, 1);
+                        support.firePropertyChange(EventName.moveStudent, 0, 1);
                         return true;
                     } else {
                         System.out.println("Destination not valid");
@@ -259,9 +261,21 @@ public class ActionController {
                 game.moveMotherNature(steps);
                 calculateInfluence();
                 support.firePropertyChange(EventName.MNmove, 0, 1);
-                if (game.getPhase() != Phase.END_GAME) {
+
+                //if there are not enough students the cloud selection must be skipped
+                if(getTurnController().isNotEnoughStudents()){
+                    if(game.getCurrentPlayer() == game.getOrderOfPlayers().get(game.getNumberOfPlayers() - 1)){
+                        turnController.getGameHandler().endGame();
+                        return true;
+                    }else{
+                        game.calculateNextPlayerAction();
+                        game.setPhase(Phase.MOVE_STUDENTS);
+                        support.firePropertyChange(EventName.PhaseChanged, 0, 1);
+                    }
+                }else if(game.getPhase() != Phase.END_GAME) {
                     game.nextPhase();
                 }
+
                 return true;
 
             } else {
@@ -299,13 +313,11 @@ public class ActionController {
                                     turnController.getGameHandler().endGame();
                                     return true;
                                 }
-                                //game.nextPhase();
                                 turnController.startTurn();
                             } else {
                                 game.nextPhase();
-                            }
 
-                            //game.nextPhase();
+                            };
                             return true;
                         } else {
                             support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.CloudTaken);
@@ -406,7 +418,7 @@ public class ActionController {
             if (actionToUse == null) {
                 System.out.println(ErrorMessage.ActionNotValid);
                 support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
-                support.firePropertyChange("PhaseChanged", 0, 1);
+                support.firePropertyChange(EventName.PhaseChanged, 0, 1);
                 return false;
             }
             if (arc.getIdArchipelago() == actionToUse) {
@@ -422,12 +434,12 @@ public class ActionController {
                         }
                     }
                     player.setUsedCharacter(character1);
-                    support.firePropertyChange("PhaseChanged", 0, 1);
+                    support.firePropertyChange(EventName.PhaseChanged, 0, 1);
                     return true;
                 } else {
                     System.out.println("Error in playing character" + playedCharacter);
                     support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.notEnoughCoinsOrWrongAction);
-                    support.firePropertyChange("PhaseChanged", 0, 1);
+                    support.firePropertyChange(EventName.PhaseChanged, 0, 1);
                     return false;
                 }
             }
@@ -443,14 +455,14 @@ public class ActionController {
             support.firePropertyChange("playedCharacter", "", playedCharacter);
             player.setUsedCharacter(character2);
             if (game.getPhase().equals(Phase.MOVE_MN)) {
-                support.firePropertyChange("PhaseChanged", "", Phase.MOVE_MN);
+                support.firePropertyChange(EventName.PhaseChanged, "", Phase.MOVE_MN);
             }
-            support.firePropertyChange("PhaseChanged", 0, 1);
+            support.firePropertyChange(EventName.PhaseChanged, 0, 1);
             return true;
         } else {
             System.out.println("Error in playing character" + playedCharacter);
             support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.notEnoughCoinsOrWrongAction);
-            support.firePropertyChange("PhaseChanged", 0, 1);
+            support.firePropertyChange(EventName.PhaseChanged, 0, 1);
             return false;
         }
     }
@@ -462,7 +474,7 @@ public class ActionController {
             if (actionToUse == null) {
                 System.out.println(ErrorMessage.ActionNotValid);
                 support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
-                support.firePropertyChange("PhaseChanged", 0, 1);
+                support.firePropertyChange(EventName.PhaseChanged, 0, 1);
                 return false;
             }
             if (arc.getIdArchipelago() == actionToUse) {
@@ -471,12 +483,12 @@ public class ActionController {
                 if (character3.usePower(actionToUse)) {
                     support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
                     player.setUsedCharacter(character3);
-                    support.firePropertyChange("PhaseChanged", 0, 1);
+                    support.firePropertyChange(EventName.PhaseChanged, 0, 1);
                     return true;
                 } else {
                     System.out.println("Error in playing character" + playedCharacter);
                     support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.notEnoughCoinsOrWrongAction);
-                    support.firePropertyChange("PhaseChanged", 0, 1);
+                    support.firePropertyChange(EventName.PhaseChanged, 0, 1);
                     return false;
                 }
             }
@@ -504,17 +516,17 @@ public class ActionController {
         try {
             if (character6.usePower(StudsAndProfsColor.valueOf(action))) {
                 support.firePropertyChange("playedCharacter", player.getNickname(), playedCharacter);
-                support.firePropertyChange("PhaseChanged", 0, 1);
+                support.firePropertyChange(EventName.PhaseChanged, 0, 1);
                 return true;
             } else {
                 support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.notEnoughCoinsOrWrongAction);
-                support.firePropertyChange("PhaseChanged", 0, 1);
+                support.firePropertyChange(EventName.PhaseChanged, 0, 1);
                 return false;
             }
         } catch (IllegalArgumentException e) {
             System.out.println(ErrorMessage.ActionNotValid);
             support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
-            support.firePropertyChange("PhaseChanged", 0, 1);
+            support.firePropertyChange(EventName.PhaseChanged, 0, 1);
             return false;
         }
 
@@ -526,7 +538,7 @@ public class ActionController {
         if (!action.contains(",")) {
             System.out.println(ErrorMessage.ActionNotValid);
             support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
-            support.firePropertyChange("PhaseChanged", 0, 1);
+            support.firePropertyChange(EventName.PhaseChanged, 0, 1);
             return false;
         }
         String[] colorDestination = action.split(",");
@@ -537,14 +549,14 @@ public class ActionController {
                 support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.notEnoughCoinsOrWrongAction);
             } else {
                 //Emulate a changing in the professors in order to resend the boards updated
-                support.firePropertyChange("ChangedProfessor", player.getNickname(), "");
+                support.firePropertyChange(EventName.ChangedProfessor, player.getNickname(), "");
             }
-            support.firePropertyChange("PhaseChanged", 0, 1);
+            support.firePropertyChange(EventName.PhaseChanged, 0, 1);
             return result;
         } catch (IllegalArgumentException e) {
             System.out.println(ErrorMessage.ActionNotValid);
             support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.ActionNotValid);
-            support.firePropertyChange("PhaseChanged", 0, 1);
+            support.firePropertyChange(EventName.PhaseChanged, 0, 1);
             return false;
         }
     }
@@ -560,11 +572,11 @@ public class ActionController {
     private boolean useSimpleCharacter(Player player, String playedCharacter, boolean b) {
         if (b) {
             support.firePropertyChange("playedCharacter", "", playedCharacter);
-            support.firePropertyChange("PhaseChanged", 0, 1);
+            support.firePropertyChange(EventName.PhaseChanged, 0, 1);
             return true;
         } else {
             support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.notEnoughCoinsOrWrongAction);
-            support.firePropertyChange("PhaseChanged", 0, 1);
+            support.firePropertyChange(EventName.PhaseChanged, 0, 1);
             return false;
         }
     }
@@ -593,11 +605,15 @@ public class ActionController {
         return true;
     }
 
-    /*
-    Check if the destination typed by the user is an existing archipelago
-    or if it has place to put the student in the dining room
-     */
 
+    /**
+     * Check if the destination typed by the user is an existing archipelago
+     * or if it has place to put the student in the dining room
+     * @param p
+     * @param colors of student moved
+     * @param destinations where to put students
+     * @return true if the destination is correct
+     */
     private boolean checkDestinations(Player p, StudsAndProfsColor[] colors, int[] destinations) {
         for (int i = 0; i < destinations.length; i++) {
             StudsAndProfsColor color = colors[i];
@@ -617,20 +633,24 @@ public class ActionController {
         return true;
     }
 
-    /*
-    Check if an archipelago exists
+    /**
+     * check if an archipelago exists
+     * @param archipelago to check
+     * @return true if it exists
      */
-    private boolean checkArchipelagoExistence(int d) {
+    private boolean checkArchipelagoExistence(int archipelago) {
         for (Archipelago a : game.getListOfArchipelagos()) {
-            if (a.getIdArchipelago() == d) {
+            if (a.getIdArchipelago() == archipelago) {
                 return true;
             }
         }
         return false;
     }
 
-    /*
-    Parse a string considering the null value
+    /**
+     * Parse a string considering the null value
+     * @param text string to parse
+     * @return integer value or null
      */
     private static Integer tryParseInteger(String text) {
         try {
@@ -640,12 +660,12 @@ public class ActionController {
         }
     }
 
-    /*
-    Check if a player won the game
+    /**
+     * check if a player won the game
+     * @param p is the player to check
      */
     public void checkWinner(Player p) {
         if (p.getMyBoard().getTowersOnBoard().getNumberOfTowers() == 0) {
-            System.out.println(p.getNickname() + " ha vinto, sono in checkwinner");
             game.setPhase(Phase.END_GAME);
             turnController.getGameHandler().endGameImmediately(p);
         }

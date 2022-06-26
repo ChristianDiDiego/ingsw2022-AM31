@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.utilities.ErrorMessage;
+import it.polimi.ingsw.utilities.EventName;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -45,12 +46,12 @@ public class ActionParser {
         if (!message.contains(" ") || message.split(" ").length <= 1) {
             if (message.equalsIgnoreCase("SHOWDECK")) {
                 System.out.println("I received deck request");
-                support.firePropertyChange("DeckRequired", "", nickname);
+                support.firePropertyChange(EventName.DeckRequired, "", nickname);
                 System.out.println("Fire sent");
                 return true;
             } else if (message.equalsIgnoreCase("SHOWAVAILABLECHARACTERS")) {
                 if (getActionController().getGame().isExpertModeOn()) {
-                    support.firePropertyChange("AvailableCharactersRequired", "", nickname);
+                    support.firePropertyChange(EventName.AvailableCharactersRequired, "", nickname);
                     return true;
                 }
             }
@@ -79,8 +80,8 @@ public class ActionParser {
         }
     }
 
-    /*
-    Return the player in the game with the nickname nickname
+    /**
+     * Return the player in the game with the nickname nickname
      */
     private Player recognisePlayer(String nickname) {
         for (Player player : actionController.getGame().getOrderOfPlayers()) {
@@ -91,8 +92,8 @@ public class ActionParser {
         return null;
     }
 
-    /*
-    Convert a char to the corresponding StudsAndProfColor enum
+    /**
+     * Convert a char to the corresponding StudsAndProfColor enum
      */
     private StudsAndProfsColor charToColorEnum(char color) {
         return switch (Character.toUpperCase(color)) {
@@ -113,9 +114,13 @@ public class ActionParser {
         }
     }
 
-    /*
-    If the power of the card received is not null, send the power to the controller
-    returnfalse if the cardPower is null
+    /**
+     * If the power of the card received is not null, send the power to the controller
+     * return false if the cardPower is null
+     * @param input received power of a card
+     * @param nickname
+     * @param player
+     * @return result of checkActionPower if power is not null, else false
      */
     private boolean playCard(String input, String nickname, Player player) {
         Integer cardPower = tryParse(input);
@@ -128,10 +133,13 @@ public class ActionParser {
         return actionController.getTurnController().checkActionCard(player, cardPower);
     }
 
-    /*
-    Get the color of the students to move from the entrance and their destination
-    using the string received
-    return false if the message is not formatted well or if the destination is not valid
+    /**
+     * Get the color of the students to move from the entrance and their destination
+     * using the string received
+     * @param input is the action to do in string format
+     * @param nickname
+     * @param player
+     * @return false if the message is not formatted well or if the destination is not valid
      */
     private boolean moveStudents(String input, String nickname, Player player) {
         if (!input.contains(",")) {
@@ -160,8 +168,12 @@ public class ActionParser {
         return actionController.checkActionMoveStudent(player, colors, destinations);
     }
 
-    /*
-    Get the steps of mother nature that the user wants to do and send them to the controller
+    /**
+     * Get the steps of mother nature that the user wants to do and send them to the controller
+     * @param input number of steps
+     * @param nickname
+     * @param player
+     * @return result of checkActionMoveMn if input is not null, else false
      */
     private boolean moveMotherNature(String input, String nickname, Player player) {
         Integer mnSteps = tryParse(input);
@@ -173,8 +185,13 @@ public class ActionParser {
         return actionController.checkActionMoveMN(player, mnSteps);
     }
 
-    /*
-    Get the number of the cloud that the user wants to choose and send it to the controller
+
+    /**
+     * Get the number of the cloud that the user wants to choose and send it to the controller
+     * @param input id of cloud
+     * @param nickname
+     * @param player
+     * @return result of checkActionCloud if id is not null, else false
      */
     private boolean chooseCloud(String input, String nickname, Player player) {
         Integer nOfCloud = tryParse(input);
@@ -186,8 +203,12 @@ public class ActionParser {
         return actionController.checkActionCloud(player, nOfCloud);
     }
 
-    /*
-    Get the character that the user wants to use and send it to the controller
+    /**
+     * Get the character that the user wants to use and send it to the controller
+     * @param input id of character
+     * @param nickname
+     * @param player
+     * @return result of checkActionCharacter if id is not null, else false
      */
     private boolean playCharacter(String[] input, String nickname, Player player) {
         Integer idOfCharacter = tryParse(input[1]);
@@ -203,8 +224,10 @@ public class ActionParser {
         return actionController.checkActionCharacter(player, idOfCharacter, action);
     }
 
-    /*
-    Called if an action is not recognised by the parser
+    /**
+     * Called if an action is not recognised by the parser
+     * @param nickname
+     * @return false to report error
      */
     private boolean reportError(String nickname) {
         support.firePropertyChange("ErrorMessage", nickname, ErrorMessage.ActionNotValid);

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.expertMode.*;
 import it.polimi.ingsw.utilities.Constants;
+import it.polimi.ingsw.utilities.EventName;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -174,7 +175,7 @@ public class Game implements Serializable {
         });
         this.currentPlayer = orderOfPlayers.get(0);
 
-        support.firePropertyChange("currentPlayerChanged", "aaaa", currentPlayer.getNickname());
+        support.firePropertyChange(EventName.CurrentPlayerChanged, "aaaa", currentPlayer.getNickname());
 
     }
 
@@ -225,7 +226,7 @@ public class Game implements Serializable {
         }
         index = index + 1;
         currentPlayer = orderOfPlayers.get(index);
-        support.firePropertyChange("currentPlayerChanged", "", currentPlayer.getNickname());
+        support.firePropertyChange(EventName.CurrentPlayerChanged, "", currentPlayer.getNickname());
     }
 
     /**
@@ -244,8 +245,8 @@ public class Game implements Serializable {
             index = 0;
         }
         currentPlayer = listOfPlayers.get(index);
-        support.firePropertyChange("PhaseChanged", "", Phase.CARD_SELECTION);
-        support.firePropertyChange("currentPlayerChanged", "CS", currentPlayer.getNickname());
+        support.firePropertyChange(EventName.PhaseChanged, "", Phase.CARD_SELECTION);
+        support.firePropertyChange(EventName.CurrentPlayerChanged, "CS", currentPlayer.getNickname());
     }
 
     /**
@@ -278,6 +279,7 @@ public class Game implements Serializable {
             }
         }
         support.firePropertyChange("ChangeProfessor", 0, 1);
+        //TODO: check usage
 
     }
 
@@ -296,7 +298,7 @@ public class Game implements Serializable {
         }
         listOfArchipelagos.remove(archToBeUnified);
 
-        support.firePropertyChange("ArchUnified", 0, 1);
+        support.firePropertyChange(EventName.ArchUnified, 0, 1);
     }
 
     public Phase getPhase() {
@@ -325,7 +327,7 @@ public class Game implements Serializable {
             case CLOUD_SELECTION:
                 if (getCurrentPlayer() == orderOfPlayers.get(orderOfPlayers.size() - 1)) {
                     phase = Phase.CARD_SELECTION;
-                    support.firePropertyChange("lastTurnPlayer", currentPlayer, orderOfPlayers.get(0));
+                    support.firePropertyChange(EventName.IsLastPlayerOfTurn, currentPlayer, orderOfPlayers.get(0));
                     currentPlayer = orderOfPlayers.get(0);
                 } else {
                     calculateNextPlayerAction();
@@ -333,7 +335,7 @@ public class Game implements Serializable {
                 }
                 break;
         }
-        support.firePropertyChange("PhaseChanged", 0, 1);
+        support.firePropertyChange(EventName.PhaseChanged, 0, 1);
     }
 
     public Bag getBag() {

@@ -272,7 +272,7 @@ public class Gui extends Application implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         send(evt.getNewValue().toString());
-        if ("username".equals(evt.getPropertyName())) {
+        if ("Username".equals(evt.getPropertyName())) {
             setNickname(evt.getNewValue().toString());
         }
     }

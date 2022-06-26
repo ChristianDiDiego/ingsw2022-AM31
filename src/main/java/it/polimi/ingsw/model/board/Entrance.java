@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.utilities.Constants;
 import it.polimi.ingsw.model.StudsAndProfsColor;
+import it.polimi.ingsw.utilities.EventName;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -41,7 +42,7 @@ public class Entrance implements Serializable {
      */
     public void removeStudent(StudsAndProfsColor studColor) {
         studentsInEntrance[studColor.ordinal()]--;
-        support.firePropertyChange("RemovedStudentFromEntrance", 0, 1);
+        support.firePropertyChange(EventName.RemovedStudentFromEntrance, 0, 1);
     }
 
     /**

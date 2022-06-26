@@ -6,9 +6,8 @@ import it.polimi.ingsw.model.Game;
 import java.io.Serializable;
 
 /**
- * Every character has the function usePower which is called by the actionController
+ * Every character has the function usePower which is called by the actionController;
  * ActionController check if a player played a character when a player use a card
- * TODO: turnController set characterUsed of the player to null at the beginning of the turn
  */
 public abstract class Characters implements Serializable {
     Game game;
@@ -27,7 +26,6 @@ public abstract class Characters implements Serializable {
 
     /**
      * checks if player has enough coins in the wallet to pay for Characters
-     *
      * @return true if it has correctly taken coins, else false
      */
     public boolean payForUse() {
@@ -72,7 +70,6 @@ public abstract class Characters implements Serializable {
     /**
      * check if the character has already been used
      * (in case it has, the price to use it is incremented)
-     *
      * @return true if the character has already been used at least once
      */
     public boolean getAlreadyUsed() {
@@ -100,7 +97,6 @@ public abstract class Characters implements Serializable {
         if (a.getOwner() == game.getListOfArchipelagos().get(next).getOwner()) {
             game.unifyArchipelagos(a, game.getListOfArchipelagos().get(next));
         }
-
     }
 }
 

@@ -18,7 +18,6 @@ public class Player implements Serializable {
     private Characters usedCharacter;
     private int team;
 
-    //TODO: characterUsed and wallet are optionals
     public Player(String nickname, ColorOfTower colorOfTowers) {
         this.nickname = nickname;
         this.colorOfTowers = colorOfTowers;

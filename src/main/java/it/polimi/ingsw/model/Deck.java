@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.utilities.Constants;
+import it.polimi.ingsw.utilities.EventName;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -49,7 +50,7 @@ public class Deck implements Serializable {
         for (Card c : this.getLeftCards()) {
             if (c.getPower() == cardToUse.getPower()) {
                 playerCards.remove(c);
-                support.firePropertyChange("usedCard", 0, 1);
+                support.firePropertyChange(EventName.UsedCard, 0, 1);
                 return true;
             }
         }

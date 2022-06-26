@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
+import it.polimi.ingsw.utilities.EventName;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -81,7 +82,7 @@ public class LoginController implements Initializable {
                 errorMessagesLabel.setText("");
                 username = usernameTextField.getText();
                 usernameText.setText("Welcome " + username);
-                support.firePropertyChange("username", "", username);
+                support.firePropertyChange(EventName.InsertedUsername, "", username);
                 submitUsername.setVisible(false);
                 usernameTextField.setVisible(false);
 

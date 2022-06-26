@@ -23,11 +23,8 @@ public class ErrorMessage {
     public static final String characterNotValid = "Character not recognised";
     public static final String AlreadyUsedCharacter = "You already used one character in this turn, so you can't use another one";
     public static final String CharacterNotPresent = "The selected character is not available for this game";
-
     public static final String NotExpertMode = "Game is not in expert mode, so you can't use any character";
-
     public static final String Forbidden = "this archipelago is forbidden, so influence will not be calculated";
-
     public static final String notEnoughCoinsOrWrongAction = "You do not have enough coins for this move or you cannot do this action (check entered values)";
 
 }
