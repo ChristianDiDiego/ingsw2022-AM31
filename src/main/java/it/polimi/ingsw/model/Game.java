@@ -278,9 +278,6 @@ public class Game implements Serializable {
                 currentPlayer.getMyBoard().getProfessorsTable().addProfessor(color);
             }
         }
-        support.firePropertyChange("ChangeProfessor", 0, 1);
-        //TODO: check usage
-
     }
 
     /**
