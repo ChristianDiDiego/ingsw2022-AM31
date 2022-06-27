@@ -122,7 +122,7 @@ public class BoardSceneController implements Initializable {
     public void printLastUsedCard(List<Player> players) {
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).getLastUsedCard() != null && players.get(i).getLastUsedCard().getPower() != 0) {
-                String nickname = ob.get(i).getText();
+                String nickname = "Player: " + players.get(i).getNickname();
                 String lastUsedCard = ", last used card: " + players.get(i).getLastUsedCard().getPower();
                 if(players.size() == Constants.MAXPLAYERS){
                     ob.get(i).setText(nickname + ", " + "team: " + players.get(i).getTeam() + lastUsedCard);
@@ -138,7 +138,6 @@ public class BoardSceneController implements Initializable {
      * For all player shows the personal board
      */
     public void showAllBoards() {
-
         switch (receivedBoards.size()) {
             case 2: {
                 board3.setVisible(false);

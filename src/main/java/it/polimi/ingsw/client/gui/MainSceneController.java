@@ -771,6 +771,7 @@ public class MainSceneController implements Initializable {
             stageBoard.setScene(sceneBoard);
             Image icon = new Image(getClass().getResourceAsStream("/images/board.jpeg"));
             stageBoard.getIcons().add(icon);
+            stageBoard.setResizable(false);
         }
 
         if (stageBoard.isShowing() == false) {
@@ -792,6 +793,7 @@ public class MainSceneController implements Initializable {
             stageCharacter.setScene(sceneCharacter);
             Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front2.jpg")));
             stageCharacter.getIcons().add(icon);
+            stageCharacter.setResizable(false);
         }
         if (!stageCharacter.isShowing()) {
             stageCharacter.setTitle("Characters");
