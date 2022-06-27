@@ -330,10 +330,10 @@ public class Gui extends Application implements PropertyChangeListener {
         if (mainSceneController != null) {
             Platform.runLater(() -> {
                 if (inputString.contains("YOU WON")) {
-                    mainSceneController.setMessageForUserText("End game. You won");
+                    mainSceneController.setMessageForUserText("The game has ended: YOU WON");
                     mainSceneController.setEndGame(true);
                 } else if (inputString.contains("YOU LOST")) {
-                    mainSceneController.setMessageForUserText("End game. You lost");
+                    mainSceneController.setMessageForUserText("The game has ended: YOU LOST");
                     mainSceneController.setEndGame(true);
                 } else {
                     mainSceneController.setMessageForUserText(inputString.split("\n")[0]);
