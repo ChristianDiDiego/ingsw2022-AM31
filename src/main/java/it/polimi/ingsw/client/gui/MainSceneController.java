@@ -618,7 +618,7 @@ public class MainSceneController implements Initializable {
                     st.setFitHeight(30);
                     st.setFitWidth(30);
                     int kingdomOfTheStudent = Integer.parseInt(event.getDragboard().getString());
-                    //allow the movemnt only if the row is the one of the student
+                    //allow the movement only if the row is the one of the student
                     if (kingdomTarget == kingdomOfTheStudent && firstPositionsAvailableDR.get(kingdomTarget) < Constants.MAXSTUDENTSINDINING) {
                         //add(whatToAdd, column, row
                         studentsInDR.add(st, firstPositionsAvailableDR.get(kingdomTarget), kingdomOfTheStudent);
@@ -771,11 +771,11 @@ public class MainSceneController implements Initializable {
             stageBoard.setScene(sceneBoard);
             Image icon = new Image(getClass().getResourceAsStream("/images/board.jpeg"));
             stageBoard.getIcons().add(icon);
-            stageBoard.setResizable(false);
         }
 
         if (stageBoard.isShowing() == false) {
             stageBoard.setTitle("Boards");
+            stageBoard.setResizable(false);
             stageBoard.show();
         } else {
             stageBoard.toFront();
@@ -793,10 +793,10 @@ public class MainSceneController implements Initializable {
             stageCharacter.setScene(sceneCharacter);
             Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front2.jpg")));
             stageCharacter.getIcons().add(icon);
-            stageCharacter.setResizable(false);
         }
         if (!stageCharacter.isShowing()) {
             stageCharacter.setTitle("Characters");
+            stageCharacter.setResizable(false);
             stageCharacter.show();
         } else {
             stageCharacter.toFront();

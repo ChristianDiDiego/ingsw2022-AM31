@@ -345,7 +345,7 @@ public class Gui extends Application implements PropertyChangeListener {
 
     private void manageNotSwitchableString(String inputString){
         //NOTE: I cannot use a switch because I need to check if strings CONTAINS a word
-        if (inputString.contains("For this round you can do")) {
+        if (inputString.contains("for this round you can do")) {
             setMaxSteps(inputString);
         } else if (inputString.contains("of your students from entrance")) {
             setMaxStudentsToMove(inputString);
