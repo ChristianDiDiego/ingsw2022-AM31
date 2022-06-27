@@ -315,14 +315,15 @@ public class Gui extends Application implements PropertyChangeListener {
         switch (inputString){
             case ServerMessage.startingGame -> startingGame();
             case ServerMessage.askNickname -> Platform.runLater(() -> loginController.allowSetup());
-            case ServerMessage.connectionClosed -> setActive(false);
+            case ServerMessage.askHowManyPlayers -> Platform.runLater(() -> loginController.showHowManyPlayers());
+            case ServerMessage.connectionClosed -> connectionClosed();
             case ServerMessage.askColor2_4Players -> Platform.runLater(()->loginController.showColorChoice(false));
             case ServerMessage.askColor3Players-> Platform.runLater(()->loginController.showColorChoice(true));
-            case ServerMessage.waitingOtherPlayers, ServerMessage.waitingOldPlayers ->  loginController.setWaitingForOtherPlayers();
+            case ServerMessage.waitingOtherPlayers ->  Platform.runLater(()->loginController.setWaitingForOtherPlayers(inputString));
             case ErrorMessage.CardAlreadyTaken -> setCardClickable();
             case ErrorMessage.notEnoughCoinsOrWrongAction -> sendErrorCharacters(inputString);
             case ErrorMessage.DuplicateNickname -> Platform.runLater(() -> loginController.usernameAlreadyUsed(inputString));
-            case ErrorMessage.ColorNotValid ->  Platform.runLater(() -> loginController.colorAlreadyUsed(inputString));
+            case ErrorMessage.ColorNotValid ->  Platform.runLater(() -> loginController.printError(inputString));
             default -> manageNotSwitchableString(inputString);
         }
 
@@ -354,7 +355,14 @@ public class Gui extends Application implements PropertyChangeListener {
             getCharacters(inputString);
         } else if (inputString.contains(ServerMessage.joiningMessage)) {
             loginController.setNotFirstPlayer();
+        } else if (inputString.contains(ServerMessage.waitingOldPlayers)){
+            Platform.runLater(()->loginController.setWaitingForOtherPlayers(inputString));
         }
+    }
+
+    private void connectionClosed(){
+        Platform.runLater(() -> loginController.printError(ServerMessage.connectionClosed + ErrorMessage.restartGame));
+        setActive(false);
     }
 
     /**
@@ -462,6 +470,12 @@ public class Gui extends Application implements PropertyChangeListener {
     private void startingGame() {
         try {
             mainSceneController = loginController.getMainSceneController();
+
+            loginController.getMainStage().setOnCloseRequest(event -> {
+                event.consume();
+                logout(loginController.getMainStage());
+            });
+
             mainSceneController.addPropertyChangeListener(this);
             boardSceneController = mainSceneController.getBoardSceneLoader().getController();
             characterSceneController = mainSceneController.getCharacterSceneLoader().getController();

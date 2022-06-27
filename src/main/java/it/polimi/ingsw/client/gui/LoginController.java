@@ -86,18 +86,18 @@ public class LoginController implements Initializable {
                 submitUsername.setVisible(false);
                 usernameTextField.setVisible(false);
 
-                if (!notFirstPlayer) {
-                    textHowManyPlayers.setVisible(true);
-                    radio2.setVisible(true);
-                    radio3.setVisible(true);
-                    radio4.setVisible(true);
-                    submitNumberOfPlayers.setVisible(true);
-                }
-
             }
         } catch (Exception e) {
             usernameText.setText("error");
         }
+    }
+
+    public void showHowManyPlayers(){
+        textHowManyPlayers.setVisible(true);
+        radio2.setVisible(true);
+        radio3.setVisible(true);
+        radio4.setVisible(true);
+        submitNumberOfPlayers.setVisible(true);
     }
 
     /**
@@ -187,6 +187,7 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             mainRoot = mainSceneLoader.load();
+            mainStage = new Stage();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -221,8 +222,11 @@ public class LoginController implements Initializable {
         return mainSceneLoader.getController();
     }
 
+    public Stage getMainStage(){
+        return mainStage;
+    }
+
     public void switchToMainScene() {
-        mainStage = new Stage();
         mainScene = new Scene(mainRoot);
         mainStage.setScene(mainScene);
         Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/eriantys_logo.jpg")));
@@ -239,8 +243,9 @@ public class LoginController implements Initializable {
      * If this player isn't the last one, shows the sign which invites
      * him to wait for other players
      */
-    public void setWaitingForOtherPlayers() {
+    public void setWaitingForOtherPlayers(String waitingPlayers) {
         waitingForPlayers.setVisible(true);
+        waitingForPlayers.setText(waitingPlayers);
         textColor.setVisible(false);
         radioWhite.setVisible(false);
         radioBlack.setVisible(false);
@@ -292,7 +297,7 @@ public class LoginController implements Initializable {
      *
      * @param message to be showed
      */
-    public void colorAlreadyUsed(String message) {
+    public void printError(String message) {
         errorMessagesLabel.setText(message);
     }
 

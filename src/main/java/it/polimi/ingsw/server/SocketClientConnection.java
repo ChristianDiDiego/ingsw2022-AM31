@@ -80,7 +80,7 @@ public class SocketClientConnection implements Runnable{
         String number;
         try {
             in = new Scanner(socket.getInputStream());
-            send(ServerMessage.howManyPlayers);
+            send(ServerMessage.askHowManyPlayers);
             String read = in.nextLine();
             System.out.println("received " + read + "from " + nickname);
             if(read.equalsIgnoreCase(Constants.QUIT)){
