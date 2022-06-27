@@ -1,7 +1,9 @@
 package it.polimi.ingsw.utilities;
 
+/**
+ * Messages that explains events
+ */
 public class EventName {
-
     public static final String EndGame = "EndGame";
     public static final String moveStudent = "moveST";
     public static final String CurrentPlayerChanged = "currentPlayerChanged";

@@ -202,7 +202,7 @@ public class ActionController {
                             color = colors[i];
                             destination = destinations[i];
                             player.getMyBoard().getEntrance().removeStudent(color);
-                            if (destination == 0) {
+                            if (destination == Constants.DININGROOMDESTINATION) {
                                 player.getMyBoard().getDiningRoom().addStudent(color);
                                 if (game.isExpertModeOn()) {
                                     if (player.getMyBoard().getDiningRoom().getStudentsByColor(color) % 3 == 0) {
@@ -618,7 +618,7 @@ public class ActionController {
         for (int i = 0; i < destinations.length; i++) {
             StudsAndProfsColor color = colors[i];
             int destination = destinations[i];
-            if (destination == 0) {
+            if (destination == Constants.DININGROOMDESTINATION) {
                 //Check if the dining room of a color is already full
                 if (p.getMyBoard().getDiningRoom().getStudentsByColor(color) == Constants.MAXSTUDENTSINDINING) {
                     support.firePropertyChange("ErrorMessage", p.getNickname(), ErrorMessage.FullDiningRoom);
