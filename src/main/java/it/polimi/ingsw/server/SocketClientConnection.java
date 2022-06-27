@@ -55,9 +55,7 @@ public class SocketClientConnection implements Runnable{
      */
     public synchronized void send(Object message) {
         synchronized (lock) {
-
             try {
-                System.out.println("I need to send " + message + " to " + nickname);
                 out.reset();
                 out.writeObject(message);
                 out.flush();
@@ -119,6 +117,7 @@ public class SocketClientConnection implements Runnable{
             return read;
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
+            close();
             return "wrong";
         }
     }
@@ -150,6 +149,7 @@ public class SocketClientConnection implements Runnable{
             }
         } catch (IOException | NoSuchElementException e ) {
             System.err.println("Error! " + e.getMessage());
+            close();
             return -1;
         }
     }
@@ -188,6 +188,7 @@ public class SocketClientConnection implements Runnable{
             }
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
+            close();
             return null;
         }
     }
