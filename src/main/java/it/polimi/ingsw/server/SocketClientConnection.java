@@ -329,6 +329,7 @@ public class SocketClientConnection implements Runnable{
             }
         } catch(IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage() + getNickname());
+            close();
         }
 
         if(!playerQuitted) {

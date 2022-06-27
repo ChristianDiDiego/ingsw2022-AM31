@@ -9,7 +9,7 @@ public class ClientAppGui {
     public static void main(String[] args) {
         System.out.println("Eriantys Client | Welcome!");
         Gui gui = new Gui();
-        gui.main(null);
+        gui.main(args);
     }
 
 }

@@ -8,10 +8,10 @@ import java.util.Scanner;
  */
 public class Eriantys {
     public static void main(String[] args) {
-        while (!askNumber()) {}
+        while (!askNumber(args)) {}
     }
 
-    private static boolean askNumber() {
+    private static boolean askNumber(String[] args) {
         System.out.println("1- Server \n2- Client CLI \n3- Client GUI");
         Scanner scanner = new Scanner(System.in);
         int input = 0;
@@ -19,9 +19,9 @@ public class Eriantys {
             input = scanner.nextInt();
 
             switch (input) {
-                case 1 -> ServerApp.main(null);
-                case 2 -> ClientAppCli.main(null);
-                case 3 -> ClientAppGui.main(null);
+                case 1 -> ServerApp.main(args);
+                case 2 -> ClientAppCli.main(args);
+                case 3 -> ClientAppGui.main(args);
                 default -> throw new InputMismatchException();
             }
 
