@@ -12,12 +12,12 @@
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
-            <TextField fx:id="usernameTextField" layoutX="226.0" layoutY="155.0" />
-            <Label fx:id="usernameText" layoutX="217.0" layoutY="112.0" text="Insert username">
+            <TextField fx:id="usernameTextField" layoutX="261.0" layoutY="174.0" />
+            <Label fx:id="welcomeText" alignment="CENTER" layoutX="46.0" layoutY="125.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="541.0" textAlignment="CENTER">
                <font>
-                  <Font name="Curlz MT" size="30.0" />
+                  <Font name="Curlz MT" size="20.0" />
                </font></Label>
-            <Button fx:id="submitUsername" layoutX="403.0" layoutY="155.0" mnemonicParsing="false" onAction="#submitUsername" text="send" />
+            <Button fx:id="submitUsername" layoutX="420.0" layoutY="174.0" mnemonicParsing="false" onAction="#submitUsername" text="send" />
             <RadioButton fx:id="radio2" layoutX="304.0" layoutY="242.0" mnemonicParsing="false" selected="true" text="2">
                <toggleGroup>
                   <ToggleGroup fx:id="radioNumberOfPlayers" />
@@ -81,7 +81,15 @@
                <font>
                   <Font name="Curlz MT" size="16.0" />
                </font></Label>
-            <Label fx:id="errorMessagesLabel" layoutX="102.0" layoutY="200.0" prefHeight="18.0" prefWidth="422.0" />
+            <Label fx:id="errorMessagesLabel" alignment="CENTER" layoutX="96.0" layoutY="212.0" prefHeight="18.0" prefWidth="422.0" textAlignment="CENTER" textFill="#f60101">
+               <font>
+                  <Font name="Curlz MT" size="12.0" />
+               </font></Label>
+            <Label fx:id="usernameText" layoutX="153.0" layoutY="177.0" prefHeight="19.0" prefWidth="93.0" text="Insert username:">
+               <font>
+                  <Font name="Curlz MT" size="13.0" />
+               </font>
+            </Label>
            </children>
       </AnchorPane>
    </children>

@@ -25,6 +25,8 @@ import java.util.ResourceBundle;
  */
 public class LoginController implements Initializable {
     @FXML
+    Label welcomeText;
+    @FXML
     Label usernameText;
     @FXML
     Label textHowManyPlayers;
@@ -78,17 +80,17 @@ public class LoginController implements Initializable {
     public void submitUsername() {
         try {
             if (!Objects.equals(usernameTextField.getText(), "")) {
-
                 errorMessagesLabel.setText("");
                 username = usernameTextField.getText();
-                usernameText.setText("Welcome " + username);
+                welcomeText.setText("Welcome " + username);
                 support.firePropertyChange(EventName.InsertedUsername, "", username);
                 submitUsername.setVisible(false);
                 usernameTextField.setVisible(false);
+                usernameText.setVisible(false);
 
             }
         } catch (Exception e) {
-            usernameText.setText("error");
+            welcomeText.setText("error");
         }
     }
 
@@ -192,7 +194,8 @@ public class LoginController implements Initializable {
             throw new RuntimeException(e);
         }
 
-        usernameText.setText("There is another player in setup, please wait...");
+        welcomeText.setText("There is another player in setup, please wait...");
+        usernameText.setVisible(false);
         submitUsername.setVisible(false);
         usernameTextField.setVisible(false);
         textHowManyPlayers.setVisible(false);
@@ -235,7 +238,7 @@ public class LoginController implements Initializable {
         mainStage.setMaximized(true);
         mainStage.show();
 
-        Stage stage = (Stage) usernameText.getScene().getWindow();
+        Stage stage = (Stage) welcomeText.getScene().getWindow();
         stage.close();
     }
 
@@ -264,7 +267,8 @@ public class LoginController implements Initializable {
      * Set the initial window that will be displayed by the player
      */
     public void allowSetup() {
-        usernameText.setText("Welcome!");
+        welcomeText.setText("Welcome!");
+        usernameText.setVisible(true);
         submitUsername.setVisible(true);
         usernameTextField.setVisible(true);
     }

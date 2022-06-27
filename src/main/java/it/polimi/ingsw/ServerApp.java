@@ -49,7 +49,6 @@ public class ServerApp {
             System.err.println("Error: ports accepted started from 1024! Please insert a new value.");
             main(null);
         }
-
         Server server = null;
         try {
             server = new Server(port);
