@@ -59,7 +59,6 @@ public class Cli {
      * @param socketIn ObjectInputStream coming from the server
      */
     public Thread asyncReadFromSocket(final ObjectInputStream socketIn) {
-
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -119,7 +118,6 @@ public class Cli {
     /**
      * Prints the logo of the game
      */
-
     public void printLogo() {
         ps.println("""
                 ███████ ██████  ██  █████  ███    ██ ████████ ██    ██ ███████\s
