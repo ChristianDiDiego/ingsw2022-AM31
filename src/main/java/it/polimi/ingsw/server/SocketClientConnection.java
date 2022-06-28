@@ -324,7 +324,7 @@ public class SocketClientConnection implements Runnable{
                     return;
                 }else{
                     System.out.println("received " + read + "from " + nickname);
-                    support.firePropertyChange("MessageForParser","aaa", read);
+                    support.firePropertyChange("MessageForParser","", read);
                 }
             }
         } catch(IOException | NoSuchElementException e) {

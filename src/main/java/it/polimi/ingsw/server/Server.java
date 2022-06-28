@@ -584,7 +584,7 @@ public class Server implements PropertyChangeListener {
     }
 
     @Override
-    public synchronized void propertyChange(PropertyChangeEvent evt) {
+    public void propertyChange(PropertyChangeEvent evt) {
         if(evt.getPropertyName().equals(EventName.PhaseChanged)){
             saveGames();
         }
