@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Menage the game status ;
+ * Manage the game status ;
  * starts the game if the number of player is reached and
  * set the value of the game parameters
  */
@@ -26,8 +26,7 @@ public class GameHandler implements Serializable {
     private int numberOfMovements;
     private final PropertyChangeSupport support;
 
-    private int winnerTeam; //this variable is added just for tests
-
+    private int winnerTeam;
 
     public GameHandler(Player firstPlayer, int playersNumber, boolean expertMode) {
         this.playersNumber = playersNumber;
@@ -42,6 +41,11 @@ public class GameHandler implements Serializable {
         this.controller = new Controller(this.game, this);
     }
 
+    /**
+     * Add a listener to this class
+     *
+     * @param pcl
+     */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
@@ -54,21 +58,18 @@ public class GameHandler implements Serializable {
         return controller;
     }
 
-
     /**
-     * Comunicate to the server that the game is over
+     * Communicate to the server that the game is over
      */
     public void endGameImmediately(Player winner) {
         System.out.println("sono in endGameImmediately");
         support.firePropertyChange(EventName.EndGame, 10, winner.getTeam());
-        //comunica al server partita finita
     }
 
-    /*
-    Called when a game ends because:
-    - the number of the archipelagos is less than 4
-    - there are no remaining students in the bag
-
+    /**
+     * Called when a game ends because:
+     * - the number of the archipelagos is less than 4
+     * - there are no remaining students in the bag
      */
     public void endGame() {
         Player winner = game.getListOfPlayer().get(0);
@@ -128,7 +129,6 @@ public class GameHandler implements Serializable {
      * Start the turn
      */
     public void startGame() {
-
         for (Player p : game.getOrderOfPlayers()) {
             p.getMyBoard().getEntrance().addStudent(game.getBag().pickStudent(maxStudentsInEntrance));
             if (p.getColorOfTowers() != null) {
@@ -144,8 +144,6 @@ public class GameHandler implements Serializable {
         }
 
         controller.getTurnController().startTurn();
-
-
     }
 
     /**
@@ -154,7 +152,6 @@ public class GameHandler implements Serializable {
      * @param numberOfPlayers number of the players that are playing the game
      */
     private void parametersSwitch(int numberOfPlayers) {
-
         switch (numberOfPlayers) {
             case 2 -> {
                 numberOfClouds = 2;

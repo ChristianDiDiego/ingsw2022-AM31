@@ -80,6 +80,11 @@ public abstract class Characters implements Serializable {
         return id;
     }
 
+    /**
+     * Check if an archipelago has the requirements to be merged with the previous or the next
+     *
+     * @param a archipelago to check
+     */
     public void checkUnification(Archipelago a) {
         int index = game.getListOfArchipelagos().indexOf(a);
         int previous = index - 1;
@@ -99,4 +104,3 @@ public abstract class Characters implements Serializable {
         }
     }
 }
-

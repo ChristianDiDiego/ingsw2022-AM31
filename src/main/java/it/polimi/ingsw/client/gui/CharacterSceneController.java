@@ -30,7 +30,6 @@ public class CharacterSceneController implements Initializable {
     Image character6 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front8.jpg")));
     Image character7 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front9.jpg")));
     Image character8 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front12.jpg")));
-
     List<Image> characters = new ArrayList<>();
 
     @FXML
@@ -39,7 +38,6 @@ public class CharacterSceneController implements Initializable {
     AnchorPane character2Pane;
     @FXML
     AnchorPane character3Pane;
-
     List<AnchorPane> charactersPane = new ArrayList<>();
 
     @FXML

@@ -47,7 +47,6 @@ public class Character8 extends Characters {
                 }
             }
         }
-
         if (game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color) >= player.getMyBoard().getDiningRoom().getStudentsByColor(color)) {
             player.getMyBoard().getProfessorsTable().removeProfessor(color);
             game.getCurrentPlayer().getMyBoard().getProfessorsTable().addProfessor(color);

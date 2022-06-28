@@ -19,14 +19,16 @@ public class ServerApp {
     static PrintStream ps = new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8);
 
     public static void main( String[] args ) {
-        ps.println("" +
-                "███████ ██████  ██  █████  ███    ██ ████████ ██    ██ ███████ \n" +
-                "██      ██   ██ ██ ██   ██ ████   ██    ██     ██  ██  ██      \n" +
-                "█████   ██████  ██ ███████ ██ ██  ██    ██      ████   ███████ \n" +
-                "██      ██   ██ ██ ██   ██ ██  ██ ██    ██       ██         ██ \n" +
-                "███████ ██   ██ ██ ██   ██ ██   ████    ██       ██    ███████ \n" +
-                "                                                               \n" +
-                "                                                               ");
+        ps.println("""
+                ███████ ██████  ██  █████  ███    ██ ████████ ██    ██ ███████\s
+                ██      ██   ██ ██ ██   ██ ████   ██    ██     ██  ██  ██     \s
+                █████   ██████  ██ ███████ ██ ██  ██    ██      ████   ███████\s
+                ██      ██   ██ ██ ██   ██ ██  ██ ██    ██       ██         ██\s
+                ███████ ██   ██ ██ ██   ██ ██   ████    ██       ██    ███████\s
+                                                                              \s
+                                                                              \s""");
+        ps.println("\nCreators: Carmine Faino, Christian Di Diego, Federica Di Filippo");
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Insert the port which server will listen on:");
         int port = 0;
@@ -57,5 +59,4 @@ public class ServerApp {
             throw new RuntimeException(e);
         }
     }
-
 }

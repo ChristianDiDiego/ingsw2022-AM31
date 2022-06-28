@@ -21,9 +21,13 @@ import java.util.Locale;
 
 public class ActionParser {
     private final ActionController actionController;
-
     private final PropertyChangeSupport support;
 
+    /**
+     * Add a listener to this class
+     *
+     * @param pcl
+     */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
@@ -81,7 +85,7 @@ public class ActionParser {
     }
 
     /**
-     * Return the player in the game with the nickname nickname
+     * Return the player in the game with the nickname given in input
      */
     private Player recognisePlayer(String nickname) {
         for (Player player : actionController.getGame().getOrderOfPlayers()) {
@@ -184,7 +188,6 @@ public class ActionParser {
         }
         return actionController.checkActionMoveMN(player, mnSteps);
     }
-
 
     /**
      * Get the number of the cloud that the user wants to choose and send it to the controller

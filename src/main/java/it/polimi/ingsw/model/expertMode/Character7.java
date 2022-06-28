@@ -17,7 +17,6 @@ public class Character7 extends Characters {
                 "Usage: CHARACTER 7 [COLOR ENTRANCE],[COLOR ENTRANCE],[COLOR DR],[COLOR DR]";
     }
 
-
     /**
      * Switch 2 student in the entrance with 2 students in the dining room
      *
@@ -54,6 +53,15 @@ public class Character7 extends Characters {
         }
     }
 
+    /**
+     * Check if player has the students he wants switch
+     *
+     * @param color1ToAdd
+     * @param color2ToAdd
+     * @param color1ToRemove
+     * @param color2ToRemove
+     * @return
+     */
     public boolean checkStudent(StudsAndProfsColor color1ToAdd, StudsAndProfsColor color2ToAdd, StudsAndProfsColor color1ToRemove, StudsAndProfsColor color2ToRemove) {
         if (game.getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color1ToAdd) < 1
                 && game.getCurrentPlayer().getMyBoard().getEntrance().getStudentsByColor(color2ToAdd) < 1
@@ -67,5 +75,4 @@ public class Character7 extends Characters {
                     game.getCurrentPlayer().getMyBoard().getDiningRoom().getStudentsByColor(color1ToRemove) >= 2;
         }
     }
-
 }

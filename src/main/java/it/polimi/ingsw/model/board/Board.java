@@ -60,6 +60,4 @@ public class Board implements Serializable {
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
     }
-
-
 }

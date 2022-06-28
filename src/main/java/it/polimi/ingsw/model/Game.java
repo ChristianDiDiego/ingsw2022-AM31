@@ -120,9 +120,13 @@ public class Game implements Serializable {
                 i++;
             }
         }
-
     }
 
+    /**
+     * Add a listener to this class and to deck and clouds class
+     *
+     * @param pcl
+     */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
         for (Cloud c : getListOfClouds()) {
@@ -133,7 +137,6 @@ public class Game implements Serializable {
             p.getMyBoard().getEntrance().addPropertyChangeListener(pcl);
         }
     }
-
 
     /**
      * Add a new player to the list of players
@@ -176,7 +179,6 @@ public class Game implements Serializable {
         this.currentPlayer = orderOfPlayers.get(0);
 
         support.firePropertyChange(EventName.CurrentPlayerChanged, "aaaa", currentPlayer.getNickname());
-
     }
 
     public List<Player> getOrderOfPlayers() {
@@ -371,12 +373,10 @@ public class Game implements Serializable {
         bank += coins;
     }
 
-
     public Characters[] getCharactersPlayable() {
         return charactersPlayable;
     }
 
-    //Only for testing purposes:
     public void setCharacterPlayable(Characters c) {
         charactersPlayable[0] = c;
     }

@@ -47,6 +47,7 @@ public class BoardSceneController implements Initializable {
     AnchorPane board4;
     List<AnchorPane> boards = new ArrayList<>();
 
+    //students in entrance
     @FXML
     GridPane seb1;
     @FXML
@@ -57,7 +58,7 @@ public class BoardSceneController implements Initializable {
     GridPane seb4;
     List<GridPane> seb = new ArrayList<>();
 
-
+    //students in dining room
     @FXML
     GridPane sdrb1;
     @FXML
@@ -68,6 +69,7 @@ public class BoardSceneController implements Initializable {
     GridPane sdrb4;
     List<GridPane> sdrb = new ArrayList<>();
 
+    //towers
     @FXML
     GridPane tb1;
     @FXML
@@ -76,9 +78,9 @@ public class BoardSceneController implements Initializable {
     GridPane tb3;
     @FXML
     GridPane tb4;
-
     List<GridPane> tb = new ArrayList<>();
 
+    //Label with player's nickname and other info
     @FXML
     Label ob1;
     @FXML
@@ -87,9 +89,9 @@ public class BoardSceneController implements Initializable {
     Label ob3;
     @FXML
     Label ob4;
-
     List<Label> ob = new ArrayList<>();
 
+    //professors
     @FXML
     GridPane pb1;
     @FXML
@@ -98,7 +100,6 @@ public class BoardSceneController implements Initializable {
     GridPane pb3;
     @FXML
     GridPane pb4;
-
     List<GridPane> pb = new ArrayList<>();
 
     Font font = Font.font("Calisto MT", FontPosture.ITALIC, 18);
@@ -247,19 +248,12 @@ public class BoardSceneController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         tb.addAll(Arrays.asList(tb1, tb2, tb3, tb4));
-
         seb.addAll(Arrays.asList(seb1, seb2, seb3, seb4));
-
         sdrb.addAll(Arrays.asList(sdrb1, sdrb2, sdrb3, sdrb4));
-
         pb.addAll(Arrays.asList(pb1, pb2, pb3, pb4));
-
         boards.addAll(Arrays.asList(board1, board2, board3, board4));
-
         ob.addAll(Arrays.asList(ob1, ob2, ob3, ob4));
-
         professors.addAll(Arrays.asList(greenProfessor, redProfessor, yellowProfessor, pinkProfessor, blueProfessor));
 
         students.add(greenStudent);

@@ -31,7 +31,10 @@ public class MainSceneController implements Initializable {
     private final List<AnchorPane> professors = new ArrayList<>();
     private final List<GridPane> clouds = new ArrayList<>();
 
+    //archipelagos cells
     FlowPane[] singleCellArchipelago;
+
+    //students' images
     Image greenStudent = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/professorsAndStudents/studentgreen.png")));
     Image redStudent = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/professorsAndStudents/studentred.png")));
     Image yellowStudent = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/professorsAndStudents/studentyellow.png")));
@@ -39,11 +42,12 @@ public class MainSceneController implements Initializable {
     Image blueStudent = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/professorsAndStudents/studentblue.png")));
     Image[] studentsImages = {greenStudent, redStudent, yellowStudent, pinkStudent, blueStudent};
 
+    //towers' images
     Image blackTower = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/blacktower.png")));
     Image whiteTower = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/whitetower.png")));
     Image greyTower = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/greytower.png")));
 
-
+    //assistants' images
     Image assistant1 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/assistants/Assistente1.png")));
     Image assistant2 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/assistants/Assistente2.png")));
     Image assistant3 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/assistants/Assistente3.png")));
@@ -56,6 +60,7 @@ public class MainSceneController implements Initializable {
     Image assistant10 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/assistants/Assistente10.png")));
     Image[] assistants = {assistant1, assistant2, assistant3, assistant4, assistant5, assistant6, assistant7, assistant8, assistant9, assistant10};
 
+    //archipelagos
     @FXML
     GridPane gridArchipelagos;
     @FXML
@@ -100,6 +105,8 @@ public class MainSceneController implements Initializable {
     GridPane studentsInDR;
     @FXML
     GridPane studentsInEntrance;
+
+    //clouds
     @FXML
     GridPane cloud1;
     @FXML
@@ -108,6 +115,8 @@ public class MainSceneController implements Initializable {
     GridPane cloud3;
     @FXML
     GridPane cloud4;
+
+    //cards
     @FXML
     ImageView card1;
     @FXML
@@ -129,6 +138,7 @@ public class MainSceneController implements Initializable {
     @FXML
     ImageView card10;
 
+    //coins
     @FXML
     AnchorPane coinPane;
     @FXML
@@ -272,7 +282,6 @@ public class MainSceneController implements Initializable {
         for (int i = k; i < Constants.NUMBEROFISLANDS; i++) {
             singleCellArchipelago[i].setVisible(false);
         }
-
     }
 
     /**
@@ -397,7 +406,6 @@ public class MainSceneController implements Initializable {
             if (event.getTransferMode() == TransferMode.MOVE) {
                 image.setVisible(false);
             }
-
             event.consume();
         });
     }
@@ -463,7 +471,6 @@ public class MainSceneController implements Initializable {
                 playCard(card.getAccessibleText());
                 card.setOpacity(0.5);
             }
-
             event.consume();
         });
     }
@@ -477,7 +484,6 @@ public class MainSceneController implements Initializable {
         String playSelectedCard = "CARD " + cardPower;
         support.firePropertyChange("cardPlayed", "", playSelectedCard);
         cardsClickable = false;
-
     }
 
     public void setOnDragMNDetected(ImageView motherNature) {
@@ -505,7 +511,6 @@ public class MainSceneController implements Initializable {
      * @param receivedBoard board received
      */
     public void printMyBoard(Board receivedBoard) {
-
         studentsInEntrance.getChildren().clear();
         studentsInDR.getChildren().clear();
         tb.getChildren().clear();
@@ -581,7 +586,6 @@ public class MainSceneController implements Initializable {
                 }
             }
         }
-
     }
 
     private void setOnDragOverDiningRoom(StackPane diningRoom) {
@@ -632,14 +636,11 @@ public class MainSceneController implements Initializable {
                         event.setDropCompleted(false);
                         event.consume();
                     }
-
-
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         });
     }
 
@@ -647,7 +648,6 @@ public class MainSceneController implements Initializable {
         movedStudents += colorMoved + "-" + destination;
         numberOfMovedStudents++;
         if (numberOfMovedStudents == maxNumberOfMovedStudents) {
-
             playMoveStudents(movedStudents);
             movedStudents = "MOVEST ";
             numberOfMovedStudents = 0;
@@ -668,7 +668,6 @@ public class MainSceneController implements Initializable {
         for (GridPane c : clouds) {
             c.getChildren().clear();
         }
-
         switch (cloudList.size()) {
             case 2: {
                 cloud3.setVisible(false);
@@ -720,7 +719,6 @@ public class MainSceneController implements Initializable {
                 playCloud(cloud.getAccessibleText());
                 cloudClickable = false;
             }
-
             event.consume();
         });
     }
@@ -733,7 +731,6 @@ public class MainSceneController implements Initializable {
     private void playCloud(String cloudSelected) {
         String playSelectedCloud = "CLOUD " + cloudSelected;
         support.firePropertyChange("cloudPlayed", "", playSelectedCloud);
-
     }
 
     /**
@@ -745,7 +742,6 @@ public class MainSceneController implements Initializable {
         for (ImageView card : cards) {
             card.setVisible(false);
         }
-
         for (Card c : deck.getLeftCards()) {
             cards[deck.getLeftCards().indexOf(c)].setImage(assistants[c.getPower() - 1]);
             cards[deck.getLeftCards().indexOf(c)].setAccessibleText("" + c.getPower());
@@ -832,16 +828,13 @@ public class MainSceneController implements Initializable {
         profBlue.setVisible(false);
 
         cards = new ImageView[]{card1, card2, card3, card4, card5, card6, card7, card8, card9, card10};
-
         singleCellArchipelago = new FlowPane[]{arch0, arch1, arch2, arch3, arch4, arch5, arch6, arch7, arch8, arch9, arch10, arch11};
-
 
         professors.add(profGreen);
         professors.add(profRed);
         professors.add(profYellow);
         professors.add(profPink);
         professors.add(profBlue);
-
 
         clouds.add(cloud1);
         clouds.add(cloud2);
@@ -869,7 +862,6 @@ public class MainSceneController implements Initializable {
      * Convert the number of the color of the student provided to the initial letter of the color
      */
     private String convertTextNumberToColor(String textNumberOfTheColor) {
-
         int numberOfTheColor = Integer.parseInt(textNumberOfTheColor);
         switch (numberOfTheColor) {
             case 0 -> {

@@ -11,12 +11,13 @@ import java.io.Serializable;
  */
 public class ProfessorsTable implements Serializable {
     /*This array contains the status of the prof for each color depending on the position.
-  0 - RED
-  1 - GREEN
-  2 - YELLOW
-  3 - PINK
-  4 - BLUE
- */
+    0 - RED
+    1 - GREEN
+    2 - YELLOW
+    3 - PINK
+    4 - BLUE
+     */
+
     @Serial
     private static final long serialVersionUID = 5L;
     private final boolean[] hasProfessor;

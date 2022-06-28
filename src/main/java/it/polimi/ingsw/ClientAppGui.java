@@ -11,5 +11,4 @@ public class ClientAppGui {
         Gui gui = new Gui();
         gui.main(args);
     }
-
 }

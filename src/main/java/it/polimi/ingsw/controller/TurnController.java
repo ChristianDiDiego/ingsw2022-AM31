@@ -30,6 +30,11 @@ public class TurnController {
 
     }
 
+    /**
+     * Add a listener to this class
+     *
+     * @param pcl
+     */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
@@ -191,5 +196,3 @@ public class TurnController {
         return notEnoughStudents;
     }
 }
-
-

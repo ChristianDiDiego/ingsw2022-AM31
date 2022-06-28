@@ -10,7 +10,6 @@ import java.beans.PropertyChangeSupport;
 
 import java.beans.PropertyChangeListener;
 
-
 /**
  * Contains the methods to check that the action received from the Client via ActionParser
  * are allowed for that client; if yes, perform the action
@@ -28,6 +27,11 @@ public class ActionController {
         this.support = new PropertyChangeSupport(this);
     }
 
+    /**
+     * Add a listener to this class
+     *
+     * @param pcl
+     */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
@@ -38,12 +42,11 @@ public class ActionController {
 
     /**
      * Calculate the influence on the archipelago where MN is present
-     * Menage the tower situation of an archipelago and of the players after that
+     * Manage the tower situation of an archipelago and of the players after that
      * Call checkUnification to check if the archipelago needs to be unified to another one
      */
     public void calculateInfluence() {
         if (game.isExpertModeOn()) {
-
             if (getCurrentPlayer().getUsedCharacter() != null) {
                 switch (getCurrentPlayer().getUsedCharacter()) {
                     case Character4 character4 -> {
@@ -84,13 +87,13 @@ public class ActionController {
                     oldOwner = a.getOwner();
                 }
 
-                    /*
-                    Calculate the influence of each player on the archipelago a
-                    give this value increasing the influences vector at the position
-                    of the team:
-                    In this way, both if is a game with 2 or 4 players
-                    the influence is correctly calculated
-                     */
+                /*
+                Calculate the influence of each player on the archipelago a
+                give this value increasing the influences vector at the position
+                of the team:
+                In this way, both if is a game with 2 or 4 players
+                the influence is correctly calculated
+                 */
                 for (Player p : game.getOrderOfPlayers()) {
                     /*
                     if oldOwner is not null and his team's number corresponds with p,
@@ -111,9 +114,8 @@ public class ActionController {
                     }
                 }
                 boolean tie = false;
-                    /*
-                    Check if there are two different players with the same influence (tie)
-                     */
+
+                //Check if there are two different players with the same influence (tie)
                 for (int i = 0; i < influences.length; i++) {
                     if (influences[i] == maxInfluence && i != teamMaxInfluence) {
                         tie = true;
@@ -121,12 +123,12 @@ public class ActionController {
                     }
                 }
 
-                    /*
-                    Change the tower only if these conditions are verified:
-                    - at least 1 player has the influence ont he archipelago (maxInfluence>0)
-                    - the archipelago had no owner or the owner changes
-                    - there is no tie
-                     */
+                /*
+                Change the tower only if these conditions are verified:
+                - at least 1 player has the influence ont he archipelago (maxInfluence>0)
+                - the archipelago had no owner or the owner changes
+                - there is no tie
+                 */
                 if (maxInfluence > 0 && (oldOwner == null || oldOwner.getTeam() != teamMaxInfluence) && !tie) {
                     for (int i = 0; i < a.getBelongingIslands().size(); i++) {
                         //Only if the newOwner is different from the oldOwner (or this was null) change the towers
@@ -180,7 +182,6 @@ public class ActionController {
         if (a.getOwner() == game.getListOfArchipelagos().get(next).getOwner()) {
             game.unifyArchipelagos(a, game.getListOfArchipelagos().get(next));
         }
-
     }
 
     /**
@@ -275,7 +276,6 @@ public class ActionController {
                 }else if(game.getPhase() != Phase.END_GAME) {
                     game.nextPhase();
                 }
-
                 return true;
 
             } else {
@@ -407,10 +407,16 @@ public class ActionController {
             support.firePropertyChange("ErrorMessage", player.getNickname(), ErrorMessage.NotExpertMode);
         }
         return false;
-
     }
 
-
+    /**
+     * If the players has the requirements, plays the character 1
+     *
+     * @param action
+     * @param player
+     * @param c
+     * @return
+     */
     private boolean useCharacter1(String action, Player player, Characters c) {
         String playedCharacter = "";
         for (Archipelago arc : game.getListOfArchipelagos()) {
@@ -447,6 +453,13 @@ public class ActionController {
         return false;
     }
 
+    /**
+     * If the players has the requirements, plays the character 2
+     *
+     * @param player
+     * @param c
+     * @return
+     */
     private boolean useCharacter2(Player player, Characters c) {
         String playedCharacter = "";
         Character2 character2 = (Character2) c;
@@ -467,6 +480,14 @@ public class ActionController {
         }
     }
 
+    /**
+     * If the players has the requirements, plays the character 3
+     *
+     * @param action
+     * @param player
+     * @param c
+     * @return
+     */
     private boolean useCharacter3(String action, Player player, Characters c) {
         String playedCharacter;
         for (Archipelago arc : game.getListOfArchipelagos()) {
@@ -496,20 +517,40 @@ public class ActionController {
         return false;
     }
 
+    /**
+     * If the players has the requirements, plays the character 4
+     *
+     * @param player
+     * @param c
+     * @return
+     */
     private boolean useCharacter4(Player player, Characters c) {
         String playedCharacter = CharactersEnum.CHARACTER4.toString();
         Character4 character4 = (Character4) c;
         return useSimpleCharacter(player, playedCharacter, character4.usePower());
-
     }
 
+    /**
+     * If the players has the requirements, plays the character 5
+     *
+     * @param player
+     * @param c
+     * @return
+     */
     private boolean useCharacter5(Player player, Characters c) {
         String playedCharacter = CharactersEnum.CHARACTER5.toString();
         Character5 character5 = (Character5) c;
         return useSimpleCharacter(player, playedCharacter, character5.usePower());
-
     }
 
+    /**
+     * If the players has the requirements, plays the character 6
+     *
+     * @param action
+     * @param player
+     * @param c
+     * @return
+     */
     private boolean useCharacter6(String action, Player player, Characters c) {
         String playedCharacter = CharactersEnum.CHARACTER6.toString();
         Character6 character6 = (Character6) c;
@@ -529,9 +570,16 @@ public class ActionController {
             support.firePropertyChange(EventName.PhaseChanged, 0, 1);
             return false;
         }
-
     }
 
+    /**
+     * If the players has the requirements, plays the character 7
+     *
+     * @param action
+     * @param player
+     * @param c
+     * @return
+     */
     private boolean useCharacter7(String action, Player player, Characters c) {
         String playedCharacter = CharactersEnum.CHARACTER7.toString();
         Character7 character7 = (Character7) c;
@@ -561,14 +609,27 @@ public class ActionController {
         }
     }
 
+    /**
+     * If the players has the requirements, plays the character 8
+     *
+     * @param player
+     * @param c
+     * @return
+     */
     private boolean useCharacter8(Player player, Characters c) {
-
         String playedCharacter = CharactersEnum.CHARACTER8.toString();
         Character8 character8 = (Character8) c;
         return useSimpleCharacter(player, playedCharacter, character8.usePower());
-
     }
 
+    /**
+     * Plays a character who doesn't need other specifications
+     *
+     * @param player
+     * @param playedCharacter
+     * @param b
+     * @return
+     */
     private boolean useSimpleCharacter(Player player, String playedCharacter, boolean b) {
         if (b) {
             support.firePropertyChange("playedCharacter", "", playedCharacter);
@@ -585,8 +646,12 @@ public class ActionController {
         return actionParser;
     }
 
-    /*
-    Check if the player p has enough player of the colors colors to be moved from the entrance
+    /**
+     * Check if the player p has enough player of the colors to be moved from the entrance
+     *
+     * @param p the player
+     * @param colors the colors to check
+     * @return
      */
     public boolean checkColors(Player p, StudsAndProfsColor[] colors) {
         int studsOfAColorToBeMoved;
@@ -597,14 +662,12 @@ public class ActionController {
                     studsOfAColorToBeMoved++;
                 }
             }
-
             if (studsOfAColorToBeMoved != 0 && p.getMyBoard().getEntrance().getStudentsByColor(colorToCheck) < studsOfAColorToBeMoved) {
                 return false;
             }
         }
         return true;
     }
-
 
     /**
      * Check if the destination typed by the user is an existing archipelago
@@ -670,5 +733,4 @@ public class ActionController {
             turnController.getGameHandler().endGameImmediately(p);
         }
     }
-
 }

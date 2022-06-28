@@ -27,7 +27,6 @@ public class Cli {
     Socket socket;
     static PrintStream ps = new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8);
 
-
     public Cli(String ip, int port) {
         this.ip = ip;
         this.port = port;

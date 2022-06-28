@@ -582,10 +582,14 @@ public class RemoteView implements PropertyChangeListener {
         }
     }
 
+    /**
+     * send a string which the parser will translate into a move
+     *
+     * @param evt
+     */
     private void sendMessageToParser(PropertyChangeEvent evt){
         synchronized (this) {
             actionParser.actionSerializer(player.getNickname(), (String) evt.getNewValue());
         }
     }
-
 }

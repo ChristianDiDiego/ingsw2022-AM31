@@ -331,10 +331,8 @@ public class SocketClientConnection implements Runnable{
             System.err.println("Error! " + e.getMessage() + getNickname());
             close();
         }
-
         if(!playerQuitted) {
             close();
         }
     }
-
 }

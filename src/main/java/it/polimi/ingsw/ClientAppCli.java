@@ -1,8 +1,6 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.cli.Cli;
-import it.polimi.ingsw.server.Server;
-import it.polimi.ingsw.utilities.GameMessage;
 
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
@@ -53,6 +51,5 @@ public class ClientAppCli {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-
     }
 }

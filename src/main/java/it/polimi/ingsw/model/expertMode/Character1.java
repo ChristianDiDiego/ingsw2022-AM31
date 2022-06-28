@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.expertMode;
 
-import it.polimi.ingsw.utilities.Constants;
 import it.polimi.ingsw.model.*;
 
 /**
@@ -9,7 +8,6 @@ import it.polimi.ingsw.model.*;
  * Choose an island and calculate the influence as if MN is on that island
  */
 public class Character1 extends Characters {
-
 
     public Character1(Game game) {
         super(3, game);
@@ -109,7 +107,4 @@ public class Character1 extends Characters {
             return false;
         }
     }
-
 }
-
-

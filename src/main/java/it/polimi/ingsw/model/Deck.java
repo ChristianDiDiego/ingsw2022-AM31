@@ -57,8 +57,12 @@ public class Deck implements Serializable {
         return false;
     }
 
+    /**
+     * Add a listener to this class
+     *
+     * @param pcl
+     */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
-
 }

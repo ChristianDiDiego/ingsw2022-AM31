@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.expertMode;
 
-
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Phase;
 
@@ -33,6 +32,4 @@ public class Character2 extends Characters {
             return false;
         }
     }
-
-
 }

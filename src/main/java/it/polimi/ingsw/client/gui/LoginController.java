@@ -48,9 +48,7 @@ public class LoginController implements Initializable {
     Label waitingForPlayers;
 
     int numberOfPlayers;
-
     boolean notFirstPlayer = false;
-
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     @FXML
@@ -87,13 +85,15 @@ public class LoginController implements Initializable {
                 submitUsername.setVisible(false);
                 usernameTextField.setVisible(false);
                 usernameText.setVisible(false);
-
             }
         } catch (Exception e) {
             welcomeText.setText("error");
         }
     }
 
+    /**
+     * Show the buttons to choose the number of players
+     */
     public void showHowManyPlayers(){
         textHowManyPlayers.setVisible(true);
         radio2.setVisible(true);
@@ -150,8 +150,6 @@ public class LoginController implements Initializable {
         radiostd.setDisable(true);
         radioexp.setDisable(true);
         submitMode.setVisible(false);
-
-
     }
 
     public void showColorChoice(boolean showGrey){
@@ -163,6 +161,7 @@ public class LoginController implements Initializable {
         }
         submitColor.setVisible(true);
     }
+
     /**
      * Sends the color of tower the current player wants to play with
      */
@@ -229,6 +228,9 @@ public class LoginController implements Initializable {
         return mainStage;
     }
 
+    /**
+     * Allows to switch from loginScene to mainScene
+     */
     public void switchToMainScene() {
         mainScene = new Scene(mainRoot);
         mainStage.setScene(mainScene);
@@ -304,6 +306,5 @@ public class LoginController implements Initializable {
     public void printError(String message) {
         errorMessagesLabel.setText(message);
     }
-
 }
 

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.expertMode;
 
-
 import it.polimi.ingsw.model.Archipelago;
 import it.polimi.ingsw.model.Game;
 
@@ -15,7 +14,6 @@ public class Character3 extends Characters {
     private int forbiddenSigns;
 
     public Character3(Game game) {
-
         super(2, game);
         id = 3;
         descriptionOfPower = "Set a forbidden sign to an archipelago to do not allow the calculate of the influence on that island" +
@@ -44,7 +42,5 @@ public class Character3 extends Characters {
             }
         }
         return false;
-
     }
-
 }

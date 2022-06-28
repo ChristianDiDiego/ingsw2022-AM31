@@ -35,6 +35,7 @@ public class Gui extends Application implements PropertyChangeListener {
     private boolean active = true;
     PrintWriter socketOut;
 
+    //controllers of all scenes
     private LoginController loginController;
     private MainSceneController mainSceneController = null;
     private BoardSceneController boardSceneController;
@@ -174,7 +175,6 @@ public class Gui extends Application implements PropertyChangeListener {
             System.out.println("Connection refused, application will now close...");
             System.exit(0);
         }
-
     }
 
 
@@ -341,7 +341,6 @@ public class Gui extends Application implements PropertyChangeListener {
                 }
             });
         }
-
     }
 
     private void manageNotSwitchableString(String inputString){
@@ -461,6 +460,9 @@ public class Gui extends Application implements PropertyChangeListener {
         Platform.runLater(() -> mainSceneController.printDeck(deck));
     }
 
+    /**
+     * Method that makes cards clickable
+     */
     private void setCardClickable() {
         Platform.runLater(() -> mainSceneController.setCardsClickable(true));
     }
@@ -471,7 +473,6 @@ public class Gui extends Application implements PropertyChangeListener {
     private void startingGame() {
         try {
             mainSceneController = loginController.getMainSceneController();
-
             loginController.getMainStage().setOnCloseRequest(event -> {
                 event.consume();
                 logout(loginController.getMainStage());
@@ -559,5 +560,4 @@ public class Gui extends Application implements PropertyChangeListener {
     private void sendErrorCharacters(String error) {
         Platform.runLater(() -> characterSceneController.setErrorMessage(error));
     }
-
 }

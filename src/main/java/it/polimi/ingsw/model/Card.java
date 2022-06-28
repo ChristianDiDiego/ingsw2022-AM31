@@ -38,6 +38,4 @@ public class Card implements Comparable<Card>, Serializable {
     public int compareTo(Card card) {
         return Integer.compare(getPower(), card.getPower());
     }
-
-
 }

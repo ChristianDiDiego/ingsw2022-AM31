@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model.expertMode;
 
+/**
+ * Enum of the characters
+ */
 public enum CharactersEnum {
     NULLCHARACTER,
     CHARACTER1,
@@ -10,5 +13,4 @@ public enum CharactersEnum {
     CHARACTER6,
     CHARACTER7,
     CHARACTER8
-
 }

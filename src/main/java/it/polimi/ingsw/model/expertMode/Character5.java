@@ -28,7 +28,6 @@ public class Character5 extends Characters {
     /**
      * Calculate the influence with the 2 additional points;
      */
-
     public boolean calculateInfluence() {
         for (Archipelago a : game.getListOfArchipelagos()) {
             if (a.getIsMNPresent() && !a.getIsForbidden()) {
@@ -82,16 +81,15 @@ public class Character5 extends Characters {
                     }
                 }
 
-                    /*
-                    Change the tower only if these conditions are verified:
-                    - at least 1 player has the influence ont he archipelago (maxInfluence>0)
-                    - the archipelago had no owner or the owner changes
-                    - there is no tie
-                     */
+                /*
+                Change the tower only if these conditions are verified:
+                - at least 1 player has the influence ont he archipelago (maxInfluence>0)
+                - the archipelago had no owner or the owner changes
+                - there is no tie
+                 */
                 if (maxInfluence > 0 && (oldOwner == null || oldOwner.getTeam() != teamMaxInfluence) && !tie) {
                     for (int i = 0; i < a.getBelongingIslands().size(); i++) {
                         //Only if the newOwner is different from the oldOwner (or this was null) change the towers
-
                         for (Player p : game.getOrderOfPlayers()) {
                             if (oldOwner != null && oldOwner.getTeam() == p.getTeam() && p.getColorOfTowers() != null) {
                                 p.getMyBoard().getTowersOnBoard().addTower();
@@ -115,5 +113,4 @@ public class Character5 extends Characters {
         }
         return false;
     }
-
 }

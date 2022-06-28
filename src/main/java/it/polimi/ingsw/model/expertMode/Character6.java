@@ -48,12 +48,12 @@ public class Character6 extends Characters {
                     oldOwner = a.getOwner();
                 }
 
-                    /*
-                    Calculate the influence of each player on the archipelago a
-                    give this value increasing the influences vector at the position
-                    of the team:
-                    In this way, both if is a game with 2 or 4 players the influence is correctly calculated
-                     */
+                /*
+                Calculate the influence of each player on the archipelago a
+                give this value increasing the influences vector at the position
+                of the team:
+                In this way, both if is a game with 2 or 4 players the influence is correctly calculated
+                 */
                 for (Player p : game.getOrderOfPlayers()) {
                     /*
                     if oldOwner is not null and his team's number corresponds with p,
@@ -88,12 +88,12 @@ public class Character6 extends Characters {
                     }
                 }
 
-                    /*
-                    Change the tower only if these conditions are verified:
-                    - at least 1 player has the influence ont he archipelago (maxInfluence>0)
-                    - the archipelago had no owner or the owner changes
-                    - there is no tie
-                     */
+                /*
+                Change the tower only if these conditions are verified:
+                - at least 1 player has the influence ont he archipelago (maxInfluence>0)
+                - the archipelago had no owner or the owner changes
+                - there is no tie
+                 */
                 if (maxInfluence > 0 && (oldOwner == null || oldOwner.getTeam() != teamMaxInfluence) && !tie) {
                     for (int i = 0; i < a.getBelongingIslands().size(); i++) {
                         //Only if the newOwner is different from the oldOwner (or this was null) change the towers
@@ -120,5 +120,4 @@ public class Character6 extends Characters {
             }
         }
     }
-
 }

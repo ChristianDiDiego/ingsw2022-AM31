@@ -4,7 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * Represents the towers table of a player allowing to remove or add them
+ * Represents the towers' table of a player allowing to remove or add them
  */
 public class TowersOnBoard implements Serializable {
     @Serial

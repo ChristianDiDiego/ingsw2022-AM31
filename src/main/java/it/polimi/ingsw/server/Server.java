@@ -19,9 +19,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-/*
- Manage the connections of the clients and starts configuration of the game
- when the expected number of players is connected
+/**
+ * Manage the connections of the clients and starts configuration of the game
+ * when the expected number of players is connected
  */
 public class Server implements PropertyChangeListener {
     private int numberOfPlayers;
@@ -37,22 +37,20 @@ public class Server implements PropertyChangeListener {
     private final List<List<SocketClientConnection>> listOfConnections = new ArrayList<>();
     private boolean setupAborted;
 
-    /*
-    listOfGames contains all the gameHandler of the matches that are currently playing
-    when the server is turned off, they are all saved on a file
-    when the server is turned on again and someone connect:
-    - if the username used by the player is NOT contained in any saved matches,
-        starts a new match in the usual way
-    - if the user is contained in one of the old matches, a new waitingConnection is created for that game
-      and associated to it thanks to mapGameWaitingConnection
+    /**
+     * listOfGames contains all the gameHandler of the matches that are currently playing
+     * when the server is turned off, they are all saved on a file
+     * when the server is turned on again and someone connects:
+     *  - if the username used by the player is NOT contained in any saved matches,
+     *    starts a new match in the usual way
+     *  - if the user is contained in one of the old matches, a new waitingConnection is created for that game
+     *    and associated to it thanks to mapGameWaitingConnection
      */
     private List<GameHandler> listOfGames = new ArrayList<>();
-
 
     public Server(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
     }
-
 
     /**
      * Called when a client is disconnected/quit
@@ -167,7 +165,6 @@ public class Server implements PropertyChangeListener {
             c.asyncSend(nickOfOtherPlayers.toString());
         }
 
-
         //I moved nickname here so when other player connect the others receive his name
         String nickname = c.askNickname();
         if (nickname.equalsIgnoreCase(Constants.QUIT)) setupAborted = true;
@@ -191,8 +188,6 @@ public class Server implements PropertyChangeListener {
                 setupOldMatch(nickname, savedGame);
             }
         }
-
-
     }
 
     /**
@@ -224,7 +219,6 @@ public class Server implements PropertyChangeListener {
                     temp.add(waitingConnection.get(p));
                     listOfConnections.add(temp);
                 }
-
                 listOfGames.add(gameHandler);
                 waitingConnection.clear();
             }
@@ -285,7 +279,8 @@ public class Server implements PropertyChangeListener {
             }
         }
 
-        /*Use the mapGameRemoteViews because in this way if there was an old match
+        /*
+         * Use the mapGameRemoteViews because in this way if there was an old match
          * with a player nickname "nameToCheck", if it has not re-logged yet
          * it's allowed to do it, otherwise return that the nick is already used
          */
@@ -404,7 +399,6 @@ public class Server implements PropertyChangeListener {
             numberOfPlayers = c.askHowManyPlayers();
         }
 
-
         int mode = c.askMode();
         if (mode == -2) setupAborted = true;
         while (!setupAborted && mode == -1) {
@@ -481,9 +475,9 @@ public class Server implements PropertyChangeListener {
 
         Player player = new Player(nickname, color);
             /*
-            if 4 players:
-            if size 1--> 0; 2 --> 1 ; 3--> 1
-            else for 2,3 players team is a progressive number
+             * if 4 players:
+             * if size 1--> 0; 2 --> 1 ; 3--> 1
+             * else for 2,3 players team is a progressive number
              */
         if (numberOfPlayers == 4) {
             if (waitingConnection.size() == 1) {
@@ -558,7 +552,6 @@ public class Server implements PropertyChangeListener {
      * Wait for the connections
      */
     public void run() {
-
         Runtime.getRuntime().addShutdownHook(new Thread(this::saveGames));
 
         int connections = 0;
