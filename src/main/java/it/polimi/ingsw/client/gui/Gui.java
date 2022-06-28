@@ -203,10 +203,7 @@ public class Gui extends Application implements PropertyChangeListener {
             }
             try {
                 port = Integer.parseInt(read);
-            } catch (InputMismatchException e) {
-                System.err.println("Numeric format requested, application will now close...");
-                System.exit(0);
-            } catch (NumberFormatException e) {
+            } catch (InputMismatchException | NumberFormatException e) {
                 System.err.println("Numeric format requested, application will now close...");
                 System.exit(0);
             }

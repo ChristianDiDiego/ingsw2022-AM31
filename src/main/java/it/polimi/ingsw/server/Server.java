@@ -389,7 +389,7 @@ public class Server implements PropertyChangeListener {
             setupAborted = true;
             return;
         }
-        while ((numberOfPlayers <= 0 || numberOfPlayers > Constants.MAXPLAYERS) && !setupAborted) {
+        while ((numberOfPlayers <= 1 || numberOfPlayers > Constants.MAXPLAYERS) && !setupAborted) {
             c.asyncSend(ErrorMessage.NumberOfPlayersNotValid);
             try {
                 TimeUnit.MILLISECONDS.sleep(500);
