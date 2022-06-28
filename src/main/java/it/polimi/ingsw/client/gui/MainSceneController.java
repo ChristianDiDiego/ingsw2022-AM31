@@ -771,11 +771,10 @@ public class MainSceneController implements Initializable {
             stageBoard.setScene(sceneBoard);
             Image icon = new Image(getClass().getResourceAsStream("/images/board.jpeg"));
             stageBoard.getIcons().add(icon);
-        }
-
-        if (stageBoard.isShowing() == false) {
             stageBoard.setTitle("Boards");
             stageBoard.setResizable(false);
+        }
+        if (!stageBoard.isShowing()) {
             stageBoard.show();
         } else {
             stageBoard.toFront();
@@ -793,10 +792,10 @@ public class MainSceneController implements Initializable {
             stageCharacter.setScene(sceneCharacter);
             Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/expertMode/CarteTOT_front2.jpg")));
             stageCharacter.getIcons().add(icon);
-        }
-        if (!stageCharacter.isShowing()) {
             stageCharacter.setTitle("Characters");
             stageCharacter.setResizable(false);
+        }
+        if (!stageCharacter.isShowing()) {
             stageCharacter.show();
         } else {
             stageCharacter.toFront();
