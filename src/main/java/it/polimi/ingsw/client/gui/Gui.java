@@ -69,13 +69,11 @@ public class Gui extends Application implements PropertyChangeListener {
      * @return the thread
      */
     public Thread asyncReadFromSocket(final ObjectInputStream socketIn) {
-
         return new Thread(() -> {
             try {
                 while (isActive()) {
                     Object inputObject = socketIn.readObject();
                     if (inputObject != null) {
-
                         switch (inputObject) {
                             case String stringReceived -> manageStringInput(stringReceived);
                             case ListOfBoards listOfBoards -> manageListOfBoards(listOfBoards);
@@ -86,12 +84,15 @@ public class Gui extends Application implements PropertyChangeListener {
                             case Integer coin -> manageCoins(coin);
                             default -> System.out.println("Unexpected argument received from the server");
                         }
-
                     }
-
                 }
             } catch (Exception e) {
                 setActive(false);
+                if(mainSceneController != null) {
+                    mainSceneController.setMessageForUserText("Server is unreachable, please close the game");
+                } else {
+                    Platform.runLater(() -> loginController.printError("Server is unreachable, please close the game"));
+                }
             }
         });
     }

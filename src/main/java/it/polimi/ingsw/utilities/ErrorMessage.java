@@ -18,7 +18,7 @@ public class ErrorMessage {
     public static final String NotYourTurn = "It's not your turn, please wait";
     public static final String wrongPhase = "It's not the correct phase for this action, the current phase is:";
     public static final String ActionNotValid = "This action is not valid";
-    public static final String CloudTaken = "This cloud is alreay taken, please choose another one";
+    public static final String CloudTaken = "This cloud is already taken, please choose another one";
     public static final String TooManySteps = "The card that you played does not allow you to do these steps! You can do max ";
     public static final String characterNotValid = "Character not recognised";
     public static final String AlreadyUsedCharacter = "You already used one character in this turn, so you can't use another one";

@@ -81,6 +81,7 @@ public class Cli {
                     }
                 } catch (Exception e) {
                     setActive(false);
+                    System.out.println("Server unreachable, press enter to exit from the game");
                 }
             }
         });
