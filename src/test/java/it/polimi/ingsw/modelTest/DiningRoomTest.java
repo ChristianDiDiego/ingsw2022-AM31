@@ -2,10 +2,9 @@ package it.polimi.ingsw.modelTest;
 
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.model.board.DiningRoom;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
 
 /**
  * Check if the methods of DiningRoom class work

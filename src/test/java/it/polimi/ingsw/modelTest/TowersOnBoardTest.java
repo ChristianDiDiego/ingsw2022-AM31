@@ -1,8 +1,9 @@
 package it.polimi.ingsw.modelTest;
 
 import it.polimi.ingsw.model.board.TowersOnBoard;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Check if the methods of TowersOnBoard class work

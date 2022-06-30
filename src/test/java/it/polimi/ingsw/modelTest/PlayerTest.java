@@ -3,7 +3,6 @@ package it.polimi.ingsw.modelTest;
 import it.polimi.ingsw.model.Card;
 import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.board.Board;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

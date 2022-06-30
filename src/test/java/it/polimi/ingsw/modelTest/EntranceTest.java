@@ -2,9 +2,9 @@ package it.polimi.ingsw.modelTest;
 
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import it.polimi.ingsw.model.board.Entrance;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Check if the methods of Entrance class work

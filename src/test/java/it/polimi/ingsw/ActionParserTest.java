@@ -3,13 +3,11 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.controller.GameHandler;
 import it.polimi.ingsw.model.ColorOfTower;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
