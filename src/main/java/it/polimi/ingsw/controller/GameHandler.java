@@ -44,7 +44,7 @@ public class GameHandler implements Serializable {
     /**
      * Add a listener to this class
      *
-     * @param pcl
+     * @param pcl listener
      */
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
