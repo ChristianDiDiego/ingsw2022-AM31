@@ -42,7 +42,7 @@ note: the method missing in controller tests is always the addPropertyChangeList
 Open a terminal and go to the project target directory (which has to be previously built with maven). Once there, execute this command:
 
 ```
-java --enable-preview -jar AM31-1.0-SNAPSHOT-jar-with-dependencies.jar-jar AM31-1.0-SNAPSHOT-jar-with-dependencies.jar
+java --enable-preview -jar AM31-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 You'll have to choose if you want to launch server, CLI client or GUI client by typing the option number on your keyboard.
 
