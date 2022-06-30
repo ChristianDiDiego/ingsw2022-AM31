@@ -14,7 +14,7 @@ public class Character6 extends Characters {
     public Character6(Game game) {
         super(3, game);
         id = 6;
-        this.descriptionOfPower = "Choose a color of students that will not be counted for the influence" +
+        this.descriptionOfPower = "Choose a color of students that will not be counted for the influence " +
                 "Usage: CHARACTER 6 [COLOR]";
     }
 
