@@ -59,7 +59,7 @@ public class SocketClientConnection implements Runnable{
                 out.reset();
                 out.writeObject(message);
                 out.flush();
-                System.out.println("sent " + message);
+                System.out.println("sent " + message +" to " + nickname);
             } catch (IOException e) {
                 System.out.println("error when sending " + message.toString());
                 System.err.println(e.getMessage());

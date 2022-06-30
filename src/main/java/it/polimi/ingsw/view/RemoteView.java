@@ -51,6 +51,7 @@ public class RemoteView implements PropertyChangeListener {
 
     @Override
     public synchronized void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("remv of " + player.getNickname() + "received evt" + evt.getPropertyName());
         switch (evt.getPropertyName()) {
             case EventName.EndGame:
                 endGame(evt.getNewValue());
@@ -352,7 +353,7 @@ public class RemoteView implements PropertyChangeListener {
             if (currentGame.isExpertModeOn()) {
                 sendCoins();
             }
-            System.out.println("I should send phase " + currentGame.getPhase());
+            System.out.println("I should send phase " + currentGame.getPhase() + "to " + player.getNickname());
             if (currentGame.getCurrentPlayer().getNickname().equals(player.getNickname())) {
                 switch (currentGame.getPhase()) {
                     case CARD_SELECTION -> {/* cardSelectionPhase */ }

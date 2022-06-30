@@ -505,19 +505,23 @@ public class Server implements PropertyChangeListener {
         for (GameHandler g : listOfGames) {
             for (Player p : g.getGame().getListOfPlayer()) {
                 if (p.getNickname().equalsIgnoreCase(nickname)) {
-                    g.setNewController();
-                    RemoteView remV = createRemoteView(c, g, p);
                     boolean gameAlreadyExisting = false;
                     for (GameHandler game : mapGameRemoteViews.keySet()) {
                         if (game.equals(g)) {
-                            mapGameRemoteViews.get(game).add(remV);
                             gameAlreadyExisting = true;
+                            break;
                         }
                     }
+
                     if (!gameAlreadyExisting) {
+                        g.setNewController();
+                        RemoteView remV = createRemoteView(c, g, p);
                         List<RemoteView> newList = new ArrayList<>();
                         newList.add(remV);
                         mapGameRemoteViews.put(g, newList);
+                    }else{
+                        RemoteView remV = createRemoteView(c, g, p);
+                        mapGameRemoteViews.get(g).add(remV);
                     }
 
                     for (GameHandler game : mapGameWaitingConnection.keySet()) {
