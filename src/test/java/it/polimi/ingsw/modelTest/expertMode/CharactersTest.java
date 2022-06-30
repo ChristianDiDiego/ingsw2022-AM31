@@ -46,7 +46,7 @@ class CharactersTest {
      */
     @Test
     void getDescriptionOfPower() {
-        String string = "When you calculate the influence, the player who play this card has 2 additional points";
+        String string = "When you calculate the influence, the player who play this card has 2 additional points ";
         assertEquals(string, character5.getDescriptionOfPower());
     }
 
