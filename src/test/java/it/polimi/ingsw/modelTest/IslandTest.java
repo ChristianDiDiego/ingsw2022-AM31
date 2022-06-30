@@ -1,8 +1,6 @@
 package it.polimi.ingsw.modelTest;
 
-import it.polimi.ingsw.model.ColorOfTower;
 import it.polimi.ingsw.model.Island;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.StudsAndProfsColor;
 import org.junit.jupiter.api.Test;
 
