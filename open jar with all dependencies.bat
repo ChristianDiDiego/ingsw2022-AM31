@@ -1,1 +1,0 @@
-START cmd /k java --enable-preview --module-path "src\main\resources\dependencies" --add-modules javafx.controls,javafx.base,javafx.graphics,javafx.fxml -jar target\.\AM31-1.0-SNAPSHOT-jar-with-dependencies.jar
