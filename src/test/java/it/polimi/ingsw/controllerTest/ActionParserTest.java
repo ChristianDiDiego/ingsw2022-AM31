@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.controllerTest;
 
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.controller.GameHandler;
@@ -31,6 +31,7 @@ public class ActionParserTest {
         gameHandler.getGame().nextPhase();
         System.out.println(gameHandler.getGame().getCurrentPlayer().getNickname());
         System.out.println(gameHandler.getGame().getPhase());
+        assertEquals(gameHandler.getController().getTurnController().getActionController(), gameHandler.getController().getTurnController().getActionController().getActionParser().getActionController());
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.BLUE));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.RED));
         assertEquals(0, recognisePlayer("carmine").getMyBoard().getDiningRoom().getStudentsByColor(StudsAndProfsColor.GREEN));

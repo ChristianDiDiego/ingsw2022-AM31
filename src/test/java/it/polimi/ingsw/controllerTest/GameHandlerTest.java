@@ -21,6 +21,8 @@ class GameHandlerTest {
         gameHandler = new GameHandler(pl1, 3,false);
         Player pl2 = new Player("chri", ColorOfTower.BLACK);
         Player pl3 = new Player("fede", ColorOfTower.GREY);
+        assertEquals(3, gameHandler.getPlayersNumber());
+        gameHandler.setNewController();
         gameHandler.addNewPlayer(pl2);
         gameHandler.addNewPlayer(pl3);
         assertEquals(3, gameHandler.getGame().getOrderOfPlayers().size());
@@ -84,7 +86,13 @@ class GameHandlerTest {
         assertEquals(Phase.END_GAME, gameHandler.getGame().getPhase());
         assertEquals(0, gameHandler.getWinnerTeam());
 
-
+        //case same number of towers but different number of professors but with end Immediately
+        gameHandler = new GameHandler(pl1, 3,false);
+        gameHandler.addNewPlayer(pl2);
+        gameHandler.addNewPlayer(pl3);
+        gameHandler.getGame().getCurrentPlayer().getMyBoard().getProfessorsTable().addProfessor(StudsAndProfsColor.RED);
+        gameHandler.endGameImmediately(pl1);
+        assertEquals(0, gameHandler.getWinnerTeam());
     }
 
 }
