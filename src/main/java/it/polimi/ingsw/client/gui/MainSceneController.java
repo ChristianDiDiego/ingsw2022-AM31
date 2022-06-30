@@ -724,13 +724,22 @@ public class MainSceneController implements Initializable {
     }
 
     /**
-     * notifies the view that a cloud has been chosen by the player
+     * Notifies the view that a cloud has been chosen by the player
      *
      * @param cloudSelected
      */
     private void playCloud(String cloudSelected) {
         String playSelectedCloud = "CLOUD " + cloudSelected;
         support.firePropertyChange("cloudPlayed", "", playSelectedCloud);
+    }
+
+    /**
+     * Set clouds clickable or not
+     *
+     * @param areCloudClickable
+     */
+    public void setCloudsClickable(boolean areCloudClickable) {
+        this.cloudClickable = areCloudClickable;
     }
 
     /**
