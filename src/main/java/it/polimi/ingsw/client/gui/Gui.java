@@ -340,6 +340,10 @@ public class Gui extends Application implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Manage the behaviour for the received string that require a "contains" check
+     * @param inputString received from the server
+     */
     private void manageNotSwitchableString(String inputString){
         //NOTE: I cannot use a switch because I need to check if strings CONTAINS a word
         if (inputString.contains("for this round you can do")) {

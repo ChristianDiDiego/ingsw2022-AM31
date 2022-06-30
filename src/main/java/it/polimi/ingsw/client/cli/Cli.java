@@ -12,6 +12,7 @@ import it.polimi.ingsw.utilities.Lists.ListOfPlayers;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.List;
@@ -20,16 +21,14 @@ import java.util.List;
  * This class contains the methods that allow the client to read messages/object from the server and print them
  */
 public class Cli {
-    private final String ip;
-    private final int port;
+    private String ip;
+    private int port;
     private boolean active = true;
     private final Object lockPrint;
     Socket socket;
     static PrintStream ps = new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8);
 
-    public Cli(String ip, int port) {
-        this.ip = ip;
-        this.port = port;
+    public Cli() {
         this.lockPrint = new Object();
     }
 
@@ -372,6 +371,33 @@ public class Cli {
      */
     public void run() throws IOException {
         printLogo();
+
+        PrintStream ps = new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8);
+        System.out.println("Eriantys Client | Welcome!");
+
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Insert ip server:");
+        ip = scanner.nextLine();
+        while(ip.length() < 1) {
+            System.out.println("Ip not valid, try again:");
+            ip = scanner.nextLine();
+        }
+        System.out.println("Insert port: ");
+        String read = scanner.nextLine();
+        while (read.length() < 2) {
+            System.out.println("Port not valid, try again: ");
+            read = scanner.nextLine();
+        }
+        try {
+            port = Integer.parseInt(read);
+        } catch (InputMismatchException e) {
+            System.err.println("Numeric format requested, application will now close...");
+            System.exit(0);
+        } catch (NumberFormatException e) {
+            System.err.println("Numeric format requested, application will now close...");
+            System.exit(0);
+        }
         try {
             socket = new Socket();
             SocketAddress socketAddress = new InetSocketAddress(ip, port);

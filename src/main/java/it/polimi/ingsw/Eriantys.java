@@ -1,5 +1,10 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.client.cli.Cli;
+import it.polimi.ingsw.client.gui.Gui;
+import it.polimi.ingsw.server.ServerApp;
+
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -19,9 +24,9 @@ public class Eriantys {
             input = scanner.nextInt();
 
             switch (input) {
-                case 1 -> ServerApp.main(args);
-                case 2 -> ClientAppCli.main(args);
-                case 3 -> ClientAppGui.main(args);
+                case 1 -> startServer(args);
+                case 2 -> startCli(args);
+                case 3 -> startGui(args);
                 default -> throw new InputMismatchException();
             }
 
@@ -30,5 +35,22 @@ public class Eriantys {
             System.out.println("Please choice a number...");
             return false;
         }
+    }
+
+    private static void startServer(String[] args){
+        ServerApp.main(args);
+    }
+
+    private static void startCli(String[] args){
+        Cli cli = new Cli();
+        try {
+            cli.run();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+    private static void startGui(String[] args){
+        Gui gui = new Gui();
+        gui.main(args);
     }
 }

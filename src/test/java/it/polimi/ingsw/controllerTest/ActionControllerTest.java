@@ -108,7 +108,7 @@ class ActionControllerTest {
 
     @Test
     void checkActionMoveStudent(){
-        Cli cli = new Cli("127.0.0.1", 5000);
+        Cli cli = new Cli();
         Player pl1 = new Player("carmine", ColorOfTower.WHITE);
         gameHandler = new GameHandler(pl1, 3,true);
         //other players login
