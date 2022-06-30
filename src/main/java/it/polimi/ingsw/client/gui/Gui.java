@@ -319,6 +319,7 @@ public class Gui extends Application implements PropertyChangeListener {
             case ServerMessage.askColor3Players-> Platform.runLater(()->loginController.showColorChoice(true));
             case ServerMessage.waitingOtherPlayers ->  Platform.runLater(()->loginController.setWaitingForOtherPlayers(inputString));
             case ErrorMessage.CardAlreadyTaken -> setCardClickable();
+            case ErrorMessage.CloudTaken -> setCloudsClickable();
             case ErrorMessage.notEnoughCoinsOrWrongAction -> sendErrorCharacters(inputString);
             case ErrorMessage.DuplicateNickname -> Platform.runLater(() -> loginController.usernameAlreadyUsed(inputString));
             case ErrorMessage.ColorNotValid ->  Platform.runLater(() -> loginController.printError(inputString));
@@ -466,6 +467,13 @@ public class Gui extends Application implements PropertyChangeListener {
      */
     private void setCardClickable() {
         Platform.runLater(() -> mainSceneController.setCardsClickable(true));
+    }
+
+    /**
+     * Method that makes clouds clickable
+     */
+    private void setCloudsClickable() {
+        Platform.runLater(() -> mainSceneController.setCloudsClickable(true));
     }
 
     /**
