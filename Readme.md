@@ -27,12 +27,13 @@ key :
 
 The global class coverage is 100%.
 
-| Package | Class | Method Coverage| Line Coverage|
-| model | global | 95% (139/145) | 90% (611/676) |
-| controller | ActionController | 96% (25/26) | 80% (262/326) |
-| controller | ActionParser | 92% (12/13) | 90% (90/99)  |
-| controller | GameHandler | 94% (16/17) | 90% (64/71) |
-| controller | TurnController | 90% (10/11) | 91% (75/82)|
+| Package | Class | Method Coverage        | Line Coverage |
+|:-----------------------|:--------------:|:-----------------------|:--------------:|
+| model | global | 95% (139/145)          | 90% (611/676) |
+| controller | ActionController | 96% (25/26)            | 80% (262/326) |
+| controller | ActionParser | 92% (12/13)            | 90% (90/99)  |
+| controller | GameHandler | 94% (16/17)            | 90% (64/71) |
+| controller | TurnController | 90% (10/11)            | 91% (75/82)|
 
 note: the method missing in controller tests is always the addPropertyChangeListener.
 
