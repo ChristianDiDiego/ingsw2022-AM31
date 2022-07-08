@@ -728,7 +728,7 @@ public class ActionController {
      * @param p is the player to check
      */
     public void checkWinner(Player p) {
-        if (p.getMyBoard().getTowersOnBoard().getNumberOfTowers() == 0) {
+        if (p.getMyBoard().getTowersOnBoard().getNumberOfTowers() == 0 && p.getColorOfTowers() != null) {
             game.setPhase(Phase.END_GAME);
             turnController.getGameHandler().endGameImmediately(p);
         }

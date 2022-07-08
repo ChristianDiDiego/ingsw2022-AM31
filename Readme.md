@@ -1,9 +1,11 @@
-# Eryantis Board Game 
+# Eriantys Board Game 
 ## Software engineering project a.y. 2021/22
 
 Group: AM31
 
 Professor : Alessandro Margara
+
+Final Score : 30 cum laude
 
 ## Implemented functions: 
 
